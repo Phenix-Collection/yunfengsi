@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.qianfujiaoyu">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/indra"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/indra"
+        android:supportsRtl="true"
+        android:name=".Utils.mApplication"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <!--启动页-->
+        <activity
+            android:name=".Activitys.Splash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <!--主页-->
+        <activity
+            android:name=".Activitys.MainActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <!--登录-->
+        <activity
+            android:name=".Activitys.Login"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <!--注册-->
+        <activity
+            android:name=".Activitys.ZhuCe"
+            android:screenOrientation="portrait"
+            />
+        <!--个人设置-->
+        <activity
+            android:name=".Setting.gerenshezhi"
+            android:screenOrientation="portrait"
+            />
+        <!--昵称-->
+        <activity
+            android:name=".Setting.Mine_gerenziliao"
+            android:screenOrientation="portrait"
+            />
+
+        <!--个人信息-->
+        <activity
+            android:name=".Setting.GerenxinxiActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--签名-->
+        <activity
+            android:name=".Setting.Sign"
+            android:screenOrientation="portrait"
+            />
+        <!--账号安全-->
+        <activity
+            android:name=".Setting.AnquanActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--收藏-->
+        <activity
+            android:name=".Setting.Activity_ShouCang"
+            android:screenOrientation="portrait"
+            />
+        <!--昵称-->
+        <activity
+            android:name=".Setting.NiCTemple_Activity"
+            android:screenOrientation="portrait"
+            />
+        <!--性别-->
+        <activity
+            android:name=".Setting.XinBieActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--修改密码-->
+        <activity
+            android:name=".Setting.FindPassword"
+            android:screenOrientation="portrait"
+            />
+        <!--食谱-->
+        <activity
+            android:name=".Activitys.ShiPu"
+            android:screenOrientation="portrait"
+            />
+        <!--举报-->
+        <activity
+            android:name=".Setting.JuBaoActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--举报-->
+        <activity
+            android:name=".Setting.GanyuActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--视频回放-->
+        <activity
+            android:name=".TouGao.VideoPreviewActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--投稿-->
+        <activity
+            android:name=".TouGao.TouGao"
+            android:screenOrientation="portrait"
+            />
+        <!--图文详情-->
+        <activity
+            android:name=".Activitys.ZiXun_Detail"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"
+            />
+        <!--投稿管理列表-->
+        <activity
+            android:name=".TouGao.TG_List"
+            android:screenOrientation="portrait"
+            />
+        <!--用户详细资料-->
+        <activity
+            android:name=".Activitys.User_Detail"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
+        <!--&lt;!&ndash;商品搜索&ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".Activitys.Search"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden"-->
+            <!--/>-->
+        <!--私信界面-->
+        <activity
+            android:name=".Activitys.ZiXun_Upload"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            />
+        <!--评论回复页面-->
+        <activity
+            android:name=".Adapter.PingLunActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            />
+        <!--班级成员列表-->
+        <!--投稿修改-->
+        <activity
+            android:name=".TouGao.TG_Detail"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            />
+        <!--视频录制-->
+        <activity
+            android:name=".TouGao.RecordVideoActivity"
+            android:screenOrientation="portrait"
+            />
+        <!--商城搜索-->
+        <activity
+            android:name=".Model_Order.Search_Good"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+
+            />
+        <!--图片选择-->
+        <activity
+            android:name=".TouGao.Photo.PhotoPicker"
+            android:screenOrientation="portrait"
+            />
+        <!--商城列表页-->
+        <activity android:name=".Model_Order.Order_Tab"
+            android:screenOrientation="portrait"/>
+        <!--广告页-->
+        <activity android:name=".Activitys.AD"
+            android:screenOrientation="portrait"/>
+        <!--商城课程详情页-->
+        <activity android:name=".Model_Order.Order_detail"
+            android:screenOrientation="portrait"/>
+        <!--大图浏览-->
+        <activity android:name=".Activitys.ViewPagerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <!--园介绍-->
+        <activity android:name=".Activitys.YuanInfo"
+            android:screenOrientation="portrait"/>
+        <!--教师团队介绍-->
+        <activity android:name=".Activitys.Detail_Teachers"
+            android:screenOrientation="portrait"/>
+        <!--我的班级列表-->
+        <activity android:name=".Activitys.List_Classes"
+            android:screenOrientation="portrait"/>
+        <!--我的班级成员列表-->
+        <activity android:name=".Activitys.Member_List"
+            android:screenOrientation="portrait"/>
+        <!--我的班级动态-->
+        <activity android:name=".Activitys.Home_Class"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"/>
+        <!--动态详情-->
+        <activity android:name=".Activitys.Home_Zixun_detail"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+        <!--动态详情-->
+        <activity android:name=".Activitys.Ask_Detail"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
+        <!--申请通知列表 管理员-->
+        <activity android:name=".Activitys.ApplyShenhe"
+            android:screenOrientation="portrait"/>
+        <!--搜索界面-->
+        <activity android:name=".Activitys.Search"
+            android:screenOrientation="portrait"/>
+        <!--搜索结果界面-->
+        <activity android:name=".Activitys.SearchResult"
+            android:screenOrientation="portrait"/>
+        <!--活动列表-->
+        <activity android:name=".Model_activity.activity_fragment"
+            android:screenOrientation="portrait"/>
+        <!--活动详情-->
+        <activity android:name=".Model_activity.activity_Detail"
+            android:screenOrientation="portrait"/>
+        <!--消息列表-->
+        <activity
+            android:name=".Activitys.ChatMessage"
+            android:screenOrientation="portrait"
+            />
+        <!--我的活动-->
+        <activity android:name=".Model_activity.Mine_activity_list"
+            android:screenOrientation="portrait"/>
+        <!--短信邀请-->
+        <activity android:name=".SideListview.Contact"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
+        <!--订单-->
+        <activity android:name=".Model_Order.Dingdan_commit"
+            android:screenOrientation="portrait"/>
+        <!--我的收获地址-->
+        <activity android:name=".Model_Order.MyShouHuoAddress"
+            android:screenOrientation="portrait"/>
+        <!--添加收货地址-->
+        <activity android:name=".Model_Order.add_address"
+            android:screenOrientation="portrait"/>
+        <!--修改收货地址-->
+        <activity android:name=".Model_Order.Update"
+            android:screenOrientation="portrait"/>
+        <!--我的订单-->
+        <activity android:name=".Model_Order.Mine_GYQD"
+            android:screenOrientation="portrait"/>
+        <!--订单详情-->
+        <activity android:name=".Model_Order.MyZhiFuDetail"
+            android:screenOrientation="portrait"/>
+        <!--帮助-->
+        <activity android:name=".Setting.BangZhu"
+            android:screenOrientation="portrait"/>
+        <!--更新班级信息-->
+        <activity android:name=".Activitys.UpdateClassInfo"
+            android:screenOrientation="portrait"/>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="575e456f67e58e73d60024f6"></meta-data>
+
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng"></meta-data>
+        <!--&lt;!&ndash;友盟&ndash;&gt;-->
+        <activity
+            android:name="com.umeng.socialize.editorpage.ShareActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.UMDefault" />
+
+        <!--&lt;!&ndash;微信~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt;-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+        </activity>
+        <!--&lt;!&ndash;微信~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt;-->
+        <!--&lt;!&ndash;QQ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt;-->
+        <activity
+            android:name="com.umeng.qq.tencent.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1106057837" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--QQ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wx4cad8315141b7b59" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

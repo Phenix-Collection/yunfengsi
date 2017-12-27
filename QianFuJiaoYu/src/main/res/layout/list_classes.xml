@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    android:divider="@drawable/mdivider"
+    android:showDividers="end"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/main_color"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_sel"
+            android:visibility="gone"
+            android:id="@+id/back"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:textSize="18dp"/>
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="10dp"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:background="@drawable/back_sel"
+            android:layout_marginRight="45dp"
+            android:id="@+id/right1"/>
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:clickable="true"
+            android:background="@drawable/back_sel"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:id="@+id/right_text"/>
+
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swip">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycle">
+
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+</LinearLayout>

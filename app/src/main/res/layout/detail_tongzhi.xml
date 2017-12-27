@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0"
+    >
+
+    <include layout="@layout/title_default" />
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/sel_layout_selected"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="12dp"
+        >
+
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
+            android:id="@+id/head"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+
+        <TextView
+            android:id="@+id/pet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/head"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/head"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            tools:text="标题碧桃提 速连接al" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/head"
+            android:layout_alignLeft="@+id/pet_name"
+            android:layout_gravity="right|center_vertical"
+            android:textColor="#666666"
+            android:textSize="15dp"
+            tools:text="周五星期天下午一点" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/head"
+            android:textColor="#999999"
+            android:textSize="12dp"
+            tools:text="哈哈哈" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/shape_red_2dp"
+            android:paddingBottom="1dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="1dp"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            tools:text="公告" />
+
+    </RelativeLayout>
+
+    <lib.homhomlib.design.SlidingLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        >
+
+        <com.yunfengsi.View.myWebView
+            android:id="@+id/web"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.yunfengsi.View.myWebView>
+    </lib.homhomlib.design.SlidingLayout>
+
+</FrameLayout>

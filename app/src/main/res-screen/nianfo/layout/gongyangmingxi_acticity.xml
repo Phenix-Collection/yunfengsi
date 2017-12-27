@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:id="@+id/activity_lf_imageback"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="功课详情"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/activity_lf_layoutzx"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="#f6f6f6">
+
+            <TextView
+                android:id="@+id/activity_lf_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="念佛"
+                android:textColor="@color/main_color"
+                android:textSize="32dp" />
+
+
+            <TextView
+                android:id="@+id/activity_lf_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="时间"
+                android:layout_toRightOf="@+id/activity_lf_title"
+                android:layout_alignBaseline="@+id/activity_lf_title"
+                android:textColor="@color/wordhuise"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/activity_lf_tvleijione"
+                android:layout_width="0dp"
+                android:gravity="center"
+                app:layout_widthPercent="50%w"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:layout_below="@+id/activity_lf_time"
+                android:textColor="@color/wordhuise"
+                tools:text="个人累计"
+                android:layout_marginBottom="10dp"
+                android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/activity_lf_tvpintaitwo"
+            android:layout_width="0dp"
+            android:gravity="center"
+            app:layout_widthPercent="50%w"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/activity_lf_tvleijione"
+            android:layout_alignBottom="@+id/activity_lf_tvleijione"
+            android:layout_toEndOf="@+id/activity_lf_tvleijione"
+            android:layout_toRightOf="@+id/activity_lf_tvleijione"
+            android:ellipsize="end"
+            android:textColor="@color/wordhuise"
+            android:textSize="18dp"
+            tools:text="平台汇总" />
+
+
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaaaaa" />
+
+    <ListView
+        android:id="@+id/activity_lf_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:listSelector="#ffffff"
+        android:divider="#eeeeee" />
+</com.zhy.android.percent.support.PercentLinearLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg_sel"
+    android:padding="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/image"
+        android:background="#eeeeee"
+        android:layout_width="120dp"
+        android:layout_height="90dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:layout_alignTop="@+id/image"
+        android:layout_toRightOf="@+id/image"
+        android:layout_marginLeft="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="惊呆"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/info"
+        android:textSize="13dp"
+        android:textColor="@color/wordhuise"
+        android:layout_alignLeft="@+id/title"
+        android:maxLines="1"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/title"
+        android:ellipsize="end"
+        android:text="惊呆"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/money_num"
+        android:textSize="13dp"
+        android:textColor="@color/main_color"
+        android:layout_alignLeft="@+id/info"
+        android:maxLines="1"
+        android:layout_marginTop="5dp"
+        android:layout_above="@+id/people"
+        android:ellipsize="end"
+        android:text="惊呆"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/people"
+        android:textSize="13dp"
+        android:textColor="@color/main_color"
+        android:layout_alignLeft="@+id/info"
+        android:maxLines="1"
+        android:layout_marginTop="5dp"
+        android:layout_alignBottom="@+id/image"
+        android:ellipsize="end"
+        android:text="惊呆"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">House Loan</string>
+    <string name="tab_1">公积金贷款</string>
+    <string name="tab_2">商业贷款</string>
+    <string name="tab_3">组合贷款</string>
+    <string name="ze1">贷款金额</string>
+    <string name="nx1">贷款年限</string>
+    <string name="lv1">年利率</string>
+    <string name="btn_sub1">开始计算</string>
+    <string name="btn_cancel">重置</string>
+    <string name="action_settings">设置</string>
+    <string name="am10">贷款总额</string>
+    <string name="am11">还款月数</string>
+    <string name="am12">月还款</string>
+    <string name="am13">支付利息</string>
+    <string name="am14">本息总和</string>
+    <string name="zex1">公积金贷款总额</string>
+    <string name="zex2">商业贷款总额</string>
+    <string name="lvx1">公积金年利率</string>
+    <string name="lvx2">商业年利率</string>
+    <string name="dengebenxi"> 等额本息</string>
+    <string name="dengebenjin"> 等额本金</string>
+    <string name="fangshi"> 还款方式</string>
+    <string name="wang">万元</string>
+   
+
+</resources>

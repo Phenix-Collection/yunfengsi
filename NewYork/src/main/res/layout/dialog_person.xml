@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="该房源推荐经纪人"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="您可用选择电话或短信咨询"
+        android:textColor="@color/white"
+        android:textSize="13dp" />
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_white_5dp"
+        android:paddingTop="10dp">
+
+        <ImageView
+            android:id="@+id/person_head"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/person_years"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/person_head"
+            android:text="入职"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/person_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/person_head"
+            android:layout_centerHorizontal="true"
+            android:text="姓名"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/person_phone"
+            android:layout_width="149dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="5dp"
+            android:layout_below="@+id/person_name"
+            android:src="@drawable/phone" />
+        <View
+            android:layout_width="1.5px"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignTop="@+id/person_phone"
+            android:background="#eeeeee"
+            android:layout_marginTop="4dp"
+            />
+        <ImageView
+            android:id="@+id/person_sms"
+            android:paddingBottom="5dp"
+            android:layout_width="149dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/person_name"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/sms" />
+    </RelativeLayout>
+</LinearLayout>

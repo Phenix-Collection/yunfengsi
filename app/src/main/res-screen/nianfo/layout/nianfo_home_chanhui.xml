@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color"
+        android:id="@+id/relativeLayout">
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/back"
+            android:background="@drawable/back_sel"
+            android:padding="10dp"
+            android:id="@+id/nianfo_chanhui_back"
+            />
+        <TextView
+            android:id="@+id/nianfo_title"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:textSize="16sp" />
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/fenxiang2"
+            android:padding="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/back_sel"
+            android:id="@+id/Share"
+            />
+    </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom"
+        android:layout_marginTop="40dp"
+        android:id="@+id/chanhui_swip">
+
+        <com.yunfengsi.View.LoadMoreListView
+            android:id="@+id/nianfo_home_chanhui_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/relativeLayout"
+            android:divider="@drawable/mdivider"
+            android:scrollbars="none">
+
+        </com.yunfengsi.View.LoadMoreListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5px"
+        android:background="#cccccc"
+        android:layout_above="@+id/bottom"
+        />
+    <FrameLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_alignParentBottom="true"
+        android:background="#f6f6f6"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:id="@+id/nianfo_home_chanhui_content"
+            android:hint="请输入忏悔内容(200字以内)"
+            android:gravity="start"
+            android:textSize="14dp"
+            android:maxLength="200"
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/black"
+            android:textColorHint="#999999"
+            android:padding="8dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nianfo_home_chanhui_commit"
+           android:layout_gravity="center_horizontal|bottom"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:background="@drawable/button1_sel"
+            android:clickable="true"/>
+    </FrameLayout>
+
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

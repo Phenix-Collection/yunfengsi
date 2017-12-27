@@ -1,0 +1,247 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+    package="com.maimaizu">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+     
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!-- 允许程序监控一个将收到短信息，记录或处理 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application xmlns:tools="http://schemas.android.com/tools"
+        android:name=".Utils.mApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/indra"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/indra"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:replace="android:theme">
+
+        <!--启动页-->
+        <activity
+            android:name=".Activitys.Splash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <!--主页-->
+        <activity
+            android:name=".Activitys.HomeActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <!--城市选择页面-->
+        <activity
+            android:name=".citypicker.CityPickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CityPicker.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <!--二手房详情页-->
+        <activity
+            android:name=".Activitys.Home2_Detail"
+            android:screenOrientation="portrait" />
+        <!--租房详情页-->
+        <activity
+            android:name=".Activitys.ZuFangActivity"
+            android:screenOrientation="portrait" />
+        <!--新房详情页-->
+        <activity
+            android:name=".Activitys.NewHouseActivity"
+            android:screenOrientation="portrait" />
+        <!--地图页-->
+        <activity
+            android:name=".Activitys.MapActivity"
+            android:screenOrientation="portrait" />
+        <!--搜索页-->
+        <activity
+            android:name=".Activitys.Search"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <!--搜索结果页-->
+        <activity
+            android:name=".Activitys.SearchResult"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Activitys.AD"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Mine.Sign"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Activitys.ViewPagerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity
+            android:name=".Mine.Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.Mine_GZ"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.NiCTemple_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.PhoneCheck"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.ZhuCe"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.XinBieActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activitys.ZiXun_Detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Adapter.PingLunActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activitys.Video_Detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.Activity_ShouCang"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.AnquanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.Mine_gerenziliao"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.BangZhu"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.JuBaoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.FindPassword"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.GerenxinxiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.ST"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Mine.GanyuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Mine.gerenshezhi"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activitys.MaiFang_ChuZu"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
+        <activity
+            android:name=".Activitys.Mine_FangYuan"
+            android:screenOrientation="portrait"
+            />
+
+        <!--&lt;!&ndash;友盟&ndash;&gt;-->
+        <activity
+            android:name="com.umeng.socialize.editorpage.ShareActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.UMDefault" />
+
+        <!--&lt;!&ndash;微信~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt;-->
+        <activity
+            android:name="com.maimaizu.wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+        </activity>
+        <!--&lt;!&ndash;微信~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt;-->
+        <!--&lt;!&ndash;QQ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt;-->
+        <activity
+            android:name="com.umeng.qq.tencent.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1106120630" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--QQ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+        <!--非死不可-->
+        <activity
+            android:name="com.umeng.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <provider
+            android:name="com.umeng.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider123456"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <!--非死不可-->
+        <!--teitter-->
+        <activity
+            android:name="com.umeng.socialize.handler.TwitterWebActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--teitter-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="575e456f67e58e73d60024f6"></meta-data>
+
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng"></meta-data>
+        <!--line-->
+
+        <!--LINE 连我-->
+        <meta-data
+            android:name="jp.line.sdk.ChannelId"
+            android:value="1512056730" />
+        <meta-data
+            android:name="jp.line.sdk.AuthScheme"
+            android:value="line.1512056730" />
+
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="24ef397ba69454d3428087ff8e49f8c5" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAp2hCJJMH_XJkOkvCkbGIuzEtbzOE-1MM" />
+
+
+    </application>
+</manifest>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/fund_list_item_head"
+
+            />
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/level"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="25dp"
+
+            />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/fund_list_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="名"
+        android:layout_toLeftOf="@+id/fund_list_item_time"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/frame"
+        android:textColor="@color/main_color"
+        android:maxLines="5"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/fund_list_item_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="元"
+        android:textColor="@color/style_red"
+        android:textSize="15sp"
+        android:gravity="right"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+    <TextView
+        android:id="@+id/fund_list_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:text="time"
+        android:layout_alignBottom="@+id/frame"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>

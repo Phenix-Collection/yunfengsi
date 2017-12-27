@@ -1,0 +1,2 @@
+include ':app', ':jcvideoplayer-lib', ':okhttputils', ':library', ':videoDemo', ':NewYork', ':citypicker', ':demo', ':FangDaiComputer', ':QianFuJiaoYu', ':PhotoView'
+include ':openPaySample'

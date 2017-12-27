@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@drawable/mdivider"
+    android:orientation="vertical"
+    android:showDividers="middle|end"
+    android:background="#f2f2f2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color">
+
+        <ImageButton
+            android:id="@+id/shez_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_sel"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+
+    <TextView
+        android:id="@+id/shez_geren_back"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:drawableRight="@drawable/item_tip"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+
+
+    <TextView
+        android:id="@+id/shez_anquan_back"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:drawableRight="@drawable/item_tip"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:padding="10dp"
+
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/st"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:visibility="gone"
+        android:drawableRight="@drawable/item_tip"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:padding="10dp"
+
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <RelativeLayout
+        android:id="@+id/shez_huanc_back"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/qingchu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+
+            android:textColor="@color/wordblack"
+            android:textSize="18dp" />
+
+        <ImageButton
+            android:id="@+id/shez_huanc_back1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/item_tip" />
+
+        <TextView
+            android:id="@+id/shez_huanczi_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/shez_huanc_back1"
+            android:textColor="@color/wordhuise"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <Space
+
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+
+    <TextView
+        android:id="@+id/shez_jubao_back"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:drawableRight="@drawable/item_tip"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:padding="10dp"
+
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+
+
+    <TextView
+        android:id="@+id/shez_guanyu_back"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:drawableRight="@drawable/item_tip"
+        android:gravity="center_vertical"
+
+        android:onClick="onClick"
+        android:padding="10dp"
+
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+
+
+</LinearLayout>

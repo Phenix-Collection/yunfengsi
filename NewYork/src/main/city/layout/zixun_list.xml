@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/main_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="资讯"
+
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+    </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        android:id="@+id/zixun_refresh">
+        <com.maimaizu.View.LoadMoreListView
+            android:id="@+id/zixun_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#d9d9d9"
+            android:dividerHeight="1dp"
+            android:paddingLeft="10dp"
+            android:scrollbars="none"
+            android:paddingRight="10dp"
+            >
+
+        </com.maimaizu.View.LoadMoreListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:id="@+id/tip"
+        />
+
+
+</FrameLayout>

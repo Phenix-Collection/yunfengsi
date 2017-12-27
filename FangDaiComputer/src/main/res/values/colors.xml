@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="white">#FFFFFFFF</color>
+	<color name="black">#000000</color>
+	<color name="defult">#F5F5F5</color>
+	<color name="red">#A10000</color>
+	<color name="page1">#76EEC6</color>
+	<color name="page2">#EE82EE</color>
+	<color name="page3">#9AFF9A</color>
+	<color name="bg_blue">#065C99</color>
+	
+</resources>

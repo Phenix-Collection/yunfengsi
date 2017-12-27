@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:divider="@drawable/mdivider"
+    android:orientation="vertical"
+    android:showDividers="middle">
+
+    <TextView
+        android:id="@+id/mine_gongke_fragment_oneitme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/back_sel"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+
+    <TextView
+        android:id="@+id/mine_gongke_fragment_twoitme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/back_sel"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+
+    <TextView
+        android:id="@+id/mine_gongke_fragment_threeitme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:background="@drawable/back_sel"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/mine_gongke_fragment_sixitme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:background="@drawable/back_sel"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+
+    <TextView
+        android:id="@+id/mine_gongke_fragment_fouritme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/back_sel"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+
+    <TextView
+        android:id="@+id/mine_gongke_fragment_fiveitme"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:background="@drawable/back_sel"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+
+    <TextView
+
+        android:id="@+id/dismiss"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:background="@drawable/back_sel"
+        android:gravity="center"
+        android:textColor="#f7bebaad"
+        android:textSize="15dp" />
+
+
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:id="@+id/fund_list_item_head"
+        />
+    <TextView
+        android:id="@+id/fund_list_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="名"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@+id/fund_list_item_head"
+        android:layout_marginLeft="10dp"/>
+    <TextView
+        android:id="@+id/fund_list_item_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="元"
+        android:textColor="@color/main_color"
+        android:textSize="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:id="@+id/fund_list_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:text="time"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/fund_list_item_head"
+        android:layout_toRightOf="@+id/fund_list_item_head"
+        />
+</RelativeLayout>

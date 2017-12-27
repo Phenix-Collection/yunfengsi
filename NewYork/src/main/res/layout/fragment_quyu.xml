@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        app:layout_widthPercent="50%w"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:id="@+id/quyu"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="区域"/>
+        <View
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#e6e6e6"/>
+        <TextView
+            android:id="@+id/ditie"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="地铁"/>
+        <View
+            android:id="@+id/l2"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#e6e6e6"/>
+        <TextView
+            android:id="@+id/fujin"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="附近"/>
+        <View
+            android:id="@+id/l3"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#e6e6e6"/>
+
+
+    </LinearLayout>
+    <View
+        android:layout_width="2px"
+        android:layout_height="match_parent"
+        android:background="@color/main_color"/>
+
+    <LinearLayout
+        android:id="@+id/layout_quyu"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:visibility="gone"
+        app:layout_widthPercent="50%w">
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_ditie"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:visibility="gone"
+        app:layout_widthPercent="50%w">
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_fujin"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        app:layout_widthPercent="50%w">
+        <TextView
+            android:id="@+id/buxian"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="14dp"
+            android:textColor="@color/black"
+            android:text="不限"/>
+        <View
+            android:id="@+id/ll1"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#e6e6e6"/>
+        <TextView
+            android:id="@+id/one"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="1km"/>
+        <View
+            android:id="@+id/ll2"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#e6e6e6"/>
+        <TextView
+            android:id="@+id/one_two"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="1.5km"/>
+        <View
+            android:id="@+id/ll3"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#e6e6e6"/>
+        <TextView
+            android:id="@+id/two"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="2km"/>
+        <View
+            android:id="@+id/ll4"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#e6e6e6"/>
+
+
+
+    </LinearLayout>
+
+</com.zhy.android.percent.support.PercentLinearLayout>

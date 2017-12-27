@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/zixun_refresh">
+        <com.qianfujiaoyu.View.LoadMoreListView
+            android:id="@+id/zixun_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#d9d9d9"
+            android:dividerHeight="1dp"
+            android:paddingLeft="10dp"
+            android:scrollbars="none"
+            android:paddingRight="10dp"
+            >
+
+        </com.qianfujiaoyu.View.LoadMoreListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="40dp"
+        android:text="暂无公告"
+        android:id="@+id/tip"
+        />
+
+
+</FrameLayout>

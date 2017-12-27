@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="10dp"
+  >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_bg_sel"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="10dp"
+       >
+
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
+            android:id="@+id/list_itme_imageview"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+        <TextView
+            android:id="@+id/list_itme_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="2"
+            android:text="name"
+            android:textColor="@color/wordblack"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/list_itme_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="dfsd"
+            android:minEms="10"
+            android:gravity="center"
+            android:textColor="@color/huise"
+            android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/listitem_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="dfsd"
+            android:textColor="@color/main_color"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

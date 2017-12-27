@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:id="@+id/nianfo_home_back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="10dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/nianfo_title"
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/Share"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/back_sel"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:src="@drawable/fenxiang2" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/nianfo_1_swip"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.yunfengsi.View.LoadMoreListView
+            android:id="@+id/nianfo_home_tab1_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/mdivider"
+            android:listSelector="@null"
+            android:scrollbars="none">
+
+        </com.yunfengsi.View.LoadMoreListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5px"
+        android:background="#cccccc" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:paddingTop="5dp"
+            android:background="#f6f6f6"
+            >
+
+            <cn.carbs.android.avatarimageview.library.AvatarImageView
+                android:id="@+id/head"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/indra" />
+
+            <TextView
+                android:id="@+id/nianfo_home_tab1_mName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/head"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/head"
+                android:minEms="2"
+                android:textColor="@color/main_color"
+                android:textSize="18dp"
+                tools:text="幸运行者" />
+
+            <TextView
+                android:id="@+id/nianfo_home_tab1_chaxunchengji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/nianfo_home_tab1_mName"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:background="@drawable/shape_strock_1dp_main"
+                android:text="类型"
+                android:textColor="@drawable/sel_text_color"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/head"
+                android:layout_below="@+id/head"
+                android:paddingRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/sb2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=" 念 "
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+
+                <EditText
+                    android:id="@+id/nianfo_home_tab1_type"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/sb2"
+                    android:layout_toRightOf="@+id/sb2"
+                    android:gravity="center_horizontal"
+                    android:hint="请选择佛号"
+                    android:textCursorDrawable="@drawable/shape_editext_cursor_line"
+                    android:background="@drawable/sel_edittext_under_line"
+                    android:textColor="@color/main_color"
+                    android:maxLines="1"
+                    android:textSize="14dp" />
+
+                <EditText
+                    android:id="@+id/nianfo_home_tab1_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:hint="请输入数目"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:minEms="8"
+                    android:maxLines="1"
+                    android:textCursorDrawable="@drawable/shape_editext_cursor_line"
+                    android:background="@drawable/sel_edittext_under_line"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/sb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text=" 声"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/nianfo_home_tab1_commit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button1_sel"
+                android:gravity="center"
+                android:text="发愿"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/layout"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+
+
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_heightPercent="30%w"
+        app:delay_time="3000"
+        app:image_scale_type="center_crop"
+        app:is_auto_play="true"
+        app:indicator_drawable_selected="@drawable/shape_selected_circle"
+        app:indicator_drawable_unselected="@drawable/shape_unselected_circle"
+        app:indicator_height="6dp"
+        app:indicator_width="6dp"
+
+        >
+    </com.youth.banner.Banner>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_marginTopPercent="30%w"
+        android:paddingTop="5dp"
+        android:background="@color/white"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+</com.zhy.android.percent.support.PercentFrameLayout>

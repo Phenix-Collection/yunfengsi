@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            file('src/main/res-screen')
+                    .listFiles()
+                    .each { res.srcDirs += it.path }
+            res.srcDirs = ['src/main/res', 'src/main/sidebar', 'src/main/city', 'src/main/mine', 'src/main/photo'
+                           , 'src/main/share']
+            assets.srcDirs = ['src/main/assets']
+        }
+    }
+    defaultConfig {
+        multiDexEnabled true
+        applicationId "com.maimaizu"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 2
+        versionName "1.0.1"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'x86'//or armeabi、arm64-v8a、x86
+        }
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    signingConfigs {
+        debug {
+            storeFile file('C://Users/laoma/Desktop/WorkSpace/ytl.jks')
+            storePassword "883120"
+            keyAlias "ytl"
+            keyPassword "883120"
+        }
+    }
+}
+
+dependencies {
+    //65535 难受
+    compile 'com.android.support:multidex:1.0.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    testCompile 'junit:junit:4.12'
+    //播放器
+    compile 'fm.jiecao:jiecaovideoplayer:5.5.2'
+    //网络请求
+    compile 'com.lzy.net:okgo:2.1.4'
+    //图片加载
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    //图片加载扩展
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+    //二维码库
+    compile files('libs/zxing-3.2.1.jar')
+    //    //高德地图
+    compile files('libs/AMap_Search_V5.0.0_20170309.jar')
+    compile files('libs/AMap_Location_V3.3.0_20170118.jar')
+    compile files('libs/Amap_2DMap_V4.2.0_20170209.jar')
+    //    //高德地图
+    //textView
+    //    compile 'com.github.lygttpod:SuperTextView:1.1.2'
+    compile 'com.github.chenBingX:SuperTextView:v1.1'
+    //tiny图片压缩
+    compile 'com.zxy.android:tiny:0.0.1'
+    //recyclerView适配器
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
+    //材料设计支持库
+    compile 'com.android.support:design:25.3.1'
+    //事件总线
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //简繁转换
+    compile files('libs/jcc-bate-0.7.3.jar')
+    //房贷计算器
+    compile project(':FangDaiComputer')
+    //百分比布局
+    compile 'com.zhy:percent-support-extends:1.1.1'
+    //轮播图控件
+    compile 'com.youth.banner:banner:1.4.9'
+    //最新版本
+    //    compile 'com.google.android.gms:play-services:10.2.1'
+    compile 'com.google.android.gms:play-services-maps:10.2.1'
+    compile 'com.google.android.gms:play-services-places:10.2.1'
+    //条件筛选控件
+    compile 'com.github.dongjunkun:DropDownMenu:1.0.4'
+//大图缩放
+    compile project(':library')
+
+    compile 'cn.carbs.android:AvatarImageView:1.0.2'
+
+    compile files('libs/SocialSDK_facebook.jar')
+    compile files('libs/SocialSDK_line.jar')
+    compile files('libs/SocialSDK_QQ_Simplify.jar')
+    compile files('libs/SocialSDK_Sina_Simplify.jar')
+    compile files('libs/SocialSDK_twitter.jar')
+    compile files('libs/SocialSDK_WeiXin_Full.jar')
+    compile files('libs/umeng_shareboard_widget.jar')
+    compile files('libs/umeng_social_api.jar')
+    compile files('libs/umeng_social_net.jar')
+    compile files('libs/umeng_social_shareboard.jar')
+    compile files('libs/umeng_social_shareview.jar')
+    compile files('libs/umeng_social_tool.jar')
+    compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
+//侧滑
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.1'
+
+//内存测试
+    compile 'com.squareup.leakcanary:leakcanary-android:1.5'
+}

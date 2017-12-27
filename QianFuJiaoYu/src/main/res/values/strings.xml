@@ -1,0 +1,16 @@
+<resources>
+    <string-array name="mine_text">
+        <item>园介绍</item>
+        <item>食谱</item>
+        <item>活动</item>
+        <item>商城</item>
+        <item>我的班级</item>
+        <item>私信</item>
+        <item>通知</item>
+        <item>订单</item>
+        <item>收藏</item>
+        <item>邀请</item>
+        <item>设置</item>
+        <item>切换账号</item>
+    </string-array>
+</resources>

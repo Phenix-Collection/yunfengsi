@@ -1,0 +1,35 @@
+<resources>
+
+    <!--颜色-->
+
+    <color name="huise">#9b9b9b</color>
+    <color name="light_huise">#e1eeee</color>
+
+    <color name="textOnImg_bg">#22000000</color>
+
+    <!--<integer-array name="mine_image">-->
+    <!--<item>@mipmap/shoucang_justforleft</item>-->
+    <!--<item>@mipmap/shoucang_justforleft</item>-->
+    <!--<item>@mipmap/zhifu_justforleft</item>-->
+    <!--<item>@drawable/nianfo</item>-->
+    <!--<item>@drawable/gongke</item>-->
+    <!--<item>@drawable/mine_activity</item>-->
+    <!--<item>@mipmap/setting</item>-->
+    <!--</integer-array>-->
+
+    <string-array name="mine_text">
+        <item>会员中心</item>
+        <item>感谢信</item>
+        <item>收藏</item>
+        <item>功德</item>
+        <item>共修</item>
+        <item>功课</item>
+        <item>活动</item>
+        <item>消息中心</item>
+        <item>投稿</item>
+        <item>设置</item>
+        <item>切换账号</item>
+    </string-array>
+
+
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_default"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"/>
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_heightPercent="40%w"
+        app:indicator_drawable_selected="@drawable/shape_selected_circle"
+        app:indicator_drawable_unselected="@drawable/shape_unselected_circle"
+        app:indicator_height="5dp"
+        app:indicator_width="10dp">
+
+    </com.youth.banner.Banner>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f6f6f6">
+
+    </android.support.v7.widget.RecyclerView>
+
+</com.zhy.android.percent.support.PercentLinearLayout>

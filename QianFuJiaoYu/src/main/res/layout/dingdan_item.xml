@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="名称"
+        android:layout_toLeftOf="@+id/num"
+        android:layout_centerVertical="true"
+        android:textColor="@color/black"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="现价"
+        android:layout_centerVertical="true"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/money"
+        android:text="原价"
+        android:layout_marginRight="10dp"
+        android:minEms="6"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/cost"
+        android:layout_marginRight="10dp"
+        android:text="数量"
+        android:minEms="4"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:textSize="13dp" />
+
+
+</RelativeLayout>

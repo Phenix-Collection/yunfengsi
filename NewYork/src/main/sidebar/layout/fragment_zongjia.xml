@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="45dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/fangjia"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/buxian"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="不限"
+                    android:text="不限"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/l1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/four"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="40万以下"
+                    android:text="40万以下"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/l2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/four_six"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="40-60万"
+                    android:text="40-60万"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:id="@+id/l3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/six_eight"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="60-80万"
+                    android:text="60-80万"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/eight_100"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="80-100万"
+                    android:text="80-100万"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/ten_fif"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="100-150万"
+                    android:text="100-150万"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/zujin"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/buxian1"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="不限"
+                    android:text="不限"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/five_h"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="500以下"
+                    android:text="500以下"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/five_thourend"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="500-1000美元"
+                    android:text="500-1000美元"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/one_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="1000-2000美元"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:text="1000-2000美元"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/two_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="2000-3000美元"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:text="2000-3000美元"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+
+                <TextView
+                    android:id="@+id/three_five"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="3000-5000美元"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:text="3000-5000美元"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+                <TextView
+                    android:id="@+id/five_eight"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="5000-8000美元"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:text="5000-8000美元"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+                <TextView
+                    android:id="@+id/eight"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/back_sel"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:tag="8000以上"
+                    android:text="8000元以上"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:background="#e6e6e6" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:background="#f8f8f8"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <EditText
+            android:id="@+id/min"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#d6d6d6"
+            android:gravity="center"
+            android:hint="最小"
+            android:maxLength="12"
+            android:inputType="number"
+            android:minWidth="80dp"
+            android:textColorHint="#888888"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="-"
+            android:textColor="#d6d6d6"
+            android:textSize="30dp" />
+
+        <EditText
+            android:id="@+id/max"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#d6d6d6"
+            android:gravity="center"
+            android:hint="最大"
+            android:maxLength="12"
+            android:inputType="number"
+            android:minWidth="80dp"
+            android:textColorHint="#888888"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/commit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/main_color"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:text="确定"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+
+</FrameLayout>
+
+
+
+
+
+

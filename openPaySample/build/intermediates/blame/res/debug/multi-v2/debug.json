@@ -1,0 +1,84 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\laoma\\Desktop\\WorkSpace\\YunFengSi\\openPaySample\\build\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\laoma\\Desktop\\WorkSpace\\YunFengSi\\openPaySample\\src\\main\\res\\values\\dimens.xml",
+                    "from": {
+                        "startLines": "3,4",
+                        "startColumns": "4,4",
+                        "startOffsets": "92,151",
+                        "endColumns": "57,55",
+                        "endOffsets": "145,202"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,113",
+                        "endColumns": "57,55",
+                        "endOffsets": "108,164"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\laoma\\Desktop\\WorkSpace\\YunFengSi\\openPaySample\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "6,15",
+                        "startColumns": "4,4",
+                        "startOffsets": "191,522",
+                        "endLines": "12,17",
+                        "endColumns": "12,12",
+                        "endOffsets": "481,679"
+                    },
+                    "to": {
+                        "startLines": "11,18",
+                        "startColumns": "4,4",
+                        "startOffsets": "556,847",
+                        "endLines": "17,20",
+                        "endColumns": "12,12",
+                        "endOffsets": "842,1002"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\laoma\\Desktop\\WorkSpace\\YunFengSi\\openPaySample\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "4,3,10,5,7,8,6",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "103,58,399,157,264,327,212",
+                        "endColumns": "52,43,52,54,62,66,51",
+                        "endOffsets": "151,97,447,207,322,389,259"
+                    },
+                    "to": {
+                        "startLines": "4,5,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "169,222,266,319,374,437,504",
+                        "endColumns": "52,43,52,54,62,66,51",
+                        "endOffsets": "217,261,314,369,432,499,551"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\laoma\\Desktop\\WorkSpace\\YunFengSi\\openPaySample\\build\\intermediates\\res\\merged\\debug\\values-sw720dp-land-v13_values-sw720dp-land-v13.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\laoma\\Desktop\\WorkSpace\\YunFengSi\\openPaySample\\src\\main\\res\\values-sw720dp-land\\dimens.xml",
+                    "from": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "205",
+                        "endColumns": "58",
+                        "endOffsets": "259"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "58",
+                        "endOffsets": "109"
+                    }
+                }
+            ]
+        }
+    ]
+}

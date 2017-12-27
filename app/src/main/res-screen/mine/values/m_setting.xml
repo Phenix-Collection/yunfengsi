@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">云峰寺</string>
+    <string name="versonCode">1.6.1</string>
+    <color name="main_color">#fe963b</color>
+
+    <string-array name="bottom_title">
+        <item>图文</item>
+        <item>活动</item>
+        <item>供养</item>
+        <item>助学</item>
+        <item>我的</item>
+    </string-array>
+</resources>

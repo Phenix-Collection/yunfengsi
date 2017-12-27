@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/mdivider">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/back"
+            android:clickable="true"
+            android:src="@drawable/back"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/back_sel"
+            android:onClick="onClick"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="免费房源发布"
+            android:id="@+id/title"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/info"
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back"
+            android:visibility="gone"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/back_sel"
+            android:onClick="onClick"/>
+    </RelativeLayout>
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="小区名称"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="16dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               android:textColorHint="@color/wordhuise"
+                android:textColor="@color/wordhuise"
+                android:id="@+id/vallige"
+                android:background="@null"
+                android:gravity="right"
+                android:maxLength="20"
+                android:hint="请输入小区名字"
+                android:layout_marginRight="15dp"
+                android:textSize="15dp"
+                />
+
+        </LinearLayout>
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1px"
+          android:background="#dddddd"
+          android:layout_marginLeft="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="具体地址"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="16dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/wordhuise"
+                android:textColor="@color/wordhuise"
+                android:id="@+id/address"
+                android:background="@null"
+                android:gravity="right"
+                android:maxLength="20"
+                android:hint="请输入具体地址"
+                android:layout_marginRight="15dp"
+                android:textSize="15dp"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#dddddd"
+            android:layout_marginLeft="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/money_tv"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="期望售价"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="16dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/wordhuise"
+                android:textColor="@color/wordhuise"
+                android:id="@+id/money"
+                android:background="@null"
+                android:gravity="right"
+                android:maxLength="20"
+                android:inputType="number"
+                android:hint="请输入期望售价"
+                android:layout_marginRight="15dp"
+                android:textSize="15dp"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="称呼"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="16dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/wordhuise"
+                android:textColor="@color/wordhuise"
+                android:id="@+id/user_name"
+                android:background="@null"
+                android:gravity="right"
+                android:maxLength="20"
+                android:hint="请输入您的称呼"
+                android:layout_marginRight="15dp"
+                android:textSize="15dp"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#dddddd"
+            android:layout_marginLeft="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="联系方式"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:layout_marginLeft="16dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/wordhuise"
+                android:textColor="@color/wordhuise"
+                android:id="@+id/phone"
+                android:background="@null"
+                android:hint="请输入手机号码"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:inputType="number"
+                android:maxLength="11"
+                android:textSize="15dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:id="@+id/commit"
+            android:textSize="17dp"
+            android:textColor="@color/white"
+            android:text="立即发布"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:background="@drawable/button1_sel"
+            android:layout_gravity="center_horizontal"/>
+    </FrameLayout>
+
+</LinearLayout>

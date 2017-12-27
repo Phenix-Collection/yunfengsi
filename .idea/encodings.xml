@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/NewYork/src/main/java/com/maimaizu/SideListview/CharacterParser.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/NewYork/src/main/java/com/maimaizu/SideListview/ClearEditText.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/NewYork/src/main/java/com/maimaizu/SideListview/PinyinComparator.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/NewYork/src/main/java/com/maimaizu/SideListview/SideBar.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/NewYork/src/main/java/com/maimaizu/SideListview/SortAdapter.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/NewYork/src/main/java/com/maimaizu/SideListview/SortModel.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/QianFuJiaoYu/src/main/java/com/qianfujiaoyu/SideListview/CharacterParser.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/QianFuJiaoYu/src/main/java/com/qianfujiaoyu/SideListview/ClearEditText.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/QianFuJiaoYu/src/main/java/com/qianfujiaoyu/SideListview/PinyinComparator.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/QianFuJiaoYu/src/main/java/com/qianfujiaoyu/SideListview/SideBar.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/QianFuJiaoYu/src/main/java/com/qianfujiaoyu/SideListview/SortAdapter.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/QianFuJiaoYu/src/main/java/com/qianfujiaoyu/SideListview/SortModel.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/yunfengsi/SideListview/CharacterParser.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/yunfengsi/SideListview/ClearEditText.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/yunfengsi/SideListview/PinyinComparator.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/yunfengsi/SideListview/SideBar.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/yunfengsi/SideListview/SortAdapter.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/yunfengsi/SideListview/SortModel.java" charset="GBK" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
