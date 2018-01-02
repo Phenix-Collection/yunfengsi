@@ -82,6 +82,7 @@ public class ZhiFuShare extends AppCompatActivity {
                 if ("5".equals(getIntent().getStringExtra("type"))) {//红包
                     LogUtil.e("红包页面：：~~！~！~！~"+getIntent().getStringExtra("type"));
                     url = URL_Red+ "/status/1";//status  1  为本地app打开  该页面
+
                 } else {
 
                     stu_id = getIntent().getStringExtra("stu_id");
@@ -199,7 +200,8 @@ public class ZhiFuShare extends AppCompatActivity {
         });
         findViewById(R.id.reload).setVisibility(View.VISIBLE);
         if("5".equals(getIntent().getStringExtra("type"))||(getIntent().getStringExtra("url")!=null&&getIntent().getStringExtra("url").contains(URL_Red))){
-            ((TextView) findViewById(R.id.reload)).setText(mApplication.ST("分享福包"));
+            ((TextView) findViewById(R.id.reload)).setText(mApplication.ST("分享"));
+            name.setText("智灯师父发福包了！");
         }else{
             ((TextView) findViewById(R.id.reload)).setText(mApplication.ST("刷新"));
         }
@@ -216,9 +218,9 @@ public class ZhiFuShare extends AppCompatActivity {
                 if("5".equals(getIntent().getStringExtra("type"))||(getIntent().getStringExtra("url")!=null&&getIntent().getStringExtra("url").contains(URL_Red))){
                     UMWeb umWeb=new UMWeb(URL_Red);
                     umWeb.setThumb(new UMImage(ZhiFuShare.this,R.drawable.hongbao_3));
-                    umWeb.setTitle("云峰寺福包分享");
+                    umWeb.setTitle("智灯师父发福包啦！");
                     // TODO: 2017/11/29  
-                    umWeb.setDescription("智灯师父发福包啦！");
+                    umWeb.setDescription("智灯师父新年送祝福，福包抢不停");
                     ShareManager shareManager=new ShareManager();
                     shareManager.shareWeb(umWeb,ZhiFuShare.this);
                 }else{

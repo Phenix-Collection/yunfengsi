@@ -37,6 +37,8 @@ public class Verification {
         return m.matches();
     }
 
+
+
     // 得到本机Mac地址
     public static String getLocalMac(Context context) {
         String mac = "";
