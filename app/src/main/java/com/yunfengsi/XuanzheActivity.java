@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -33,6 +34,8 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.PL_List_Adapter;
+import com.yunfengsi.Managers.IBDRcognizeImpl;
+import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -106,6 +109,9 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
 
     private LinearLayout pinglun, fenxiangb;
     private FrameLayout overlay;
+    private ImageView toggle;
+    private TextView audio;
+    private IBDRcognizeImpl ibdRcognize;
     private UMWeb umWeb;
 
     private TextView abs;
@@ -121,6 +127,47 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
 
         tip = (ImageView) findViewById(R.id.tip);
         tip.setOnClickListener(this);
+
+        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
+        PLText.setHint(mApplication.ST("您的留言(300字以内)"));
+        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
+        audio = (TextView) findViewById(R.id.audio_button);
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggle.setSelected(!view.isSelected());
+                if (toggle.isSelected()) {
+                    audio.setVisibility(View.VISIBLE);
+                    PLText.setVisibility(View.GONE);
+                } else {
+                    audio.setVisibility(View.GONE);
+                    PLText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        audio.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        if(ibdRcognize==null){
+                            ibdRcognize=new IBDRcognizeImpl(XuanzheActivity.this);
+                            ibdRcognize.attachView(PLText,audio,toggle);
+                        }
+                        view.setSelected(true);
+                        audio.setText("松开完成识别");
+                        ibdRcognize.start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        view.setSelected(false);
+                        audio.setText("按住 说话");
+                        ibdRcognize.stop();
+                        break;
+                }
+                return true;
+            }
+        });
         overlay = (FrameLayout) findViewById(R.id.frame);
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,8 +209,7 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
         Pllist = new ArrayList<>();
         adapter = new PL_List_Adapter(this);
         adapter.setOnHuifuListener(this);
-        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
-        PLText.setHint(mApplication.ST("您的留言(300字以内)"));
+
         fasong = (TextView) findViewById(R.id.zixun_detail_fasong);
         fasong.setText(mApplication.ST("发送"));
         fasong.setOnClickListener(this);

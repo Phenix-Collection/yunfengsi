@@ -28,6 +28,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -64,6 +65,7 @@ import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Adapter.PingLunActivity;
 import com.yunfengsi.Login;
+import com.yunfengsi.Managers.IBDRcognizeImpl;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Setting.ViewPagerActivity;
@@ -86,6 +88,7 @@ import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDecoration;
 import com.yunfengsi.View.myWebView;
+import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.ZhiFuShare;
 
 import org.json.JSONArray;
@@ -179,6 +182,9 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
 
     private LinearLayout pinglun, fenxiangb;
     private FrameLayout overlay;
+    private ImageView toggle;
+    private TextView audio;
+    private IBDRcognizeImpl ibdRcognize;
     private UMWeb umWeb;
     private ArrayList<String> arrayList;
     JSONObject object;
@@ -220,6 +226,47 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
         ad.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         head = LayoutInflater.from(getActivity()).inflate(R.layout.fund_header, null);
         plNum = (TextView) head.findViewById(R.id.textView);
+
+        PLText = (EditText) view.findViewById(R.id.fund_detail_apply_edt);
+        PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+        toggle = (ImageView) view.findViewById(R.id.toggle_audio_word);
+        audio = (TextView) view.findViewById(R.id.audio_button);
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggle.setSelected(!view.isSelected());
+                if (toggle.isSelected()) {
+                    audio.setVisibility(View.VISIBLE);
+                    PLText.setVisibility(View.GONE);
+                } else {
+                    audio.setVisibility(View.GONE);
+                    PLText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        audio.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        if(ibdRcognize==null){
+                            ibdRcognize=new IBDRcognizeImpl(getActivity());
+                            ibdRcognize.attachView(PLText,audio,toggle);
+                        }
+                        view.setSelected(true);
+                        audio.setText("松开完成识别");
+                        ibdRcognize.start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        view.setSelected(false);
+                        audio.setText("按住 说话");
+                        ibdRcognize.stop();
+                        break;
+                }
+                return true;
+            }
+        });
         overlay = (FrameLayout) view.findViewById(R.id.frame);
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -421,8 +468,7 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
 //        });
         //底部
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        PLText = (EditText) view.findViewById(R.id.fund_detail_apply_edt);
-        PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+
         fasong = (TextView) view.findViewById(R.id.fund_detail_fasong);
         fasong.setText(mApplication.ST("发送"));
 

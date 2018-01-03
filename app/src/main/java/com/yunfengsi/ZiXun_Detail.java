@@ -20,6 +20,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
@@ -45,6 +46,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.PL_List_Adapter;
+import com.yunfengsi.Managers.IBDRcognizeImpl;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Setting.JuBaoActivity;
@@ -133,7 +135,12 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
 
     private LinearLayout pinglun, fenxiangb;
     private FrameLayout overlay;
+    private ImageView toggle;
+    private TextView audio;
+    private IBDRcognizeImpl ibdRcognize;
+
     private UMWeb umWeb;
+
 
     private TextView tougao, jianyi;
     private ImageView tip;
@@ -191,6 +198,48 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
     private void initView() {
         tip = (ImageView) findViewById(R.id.tip);
         tip.setOnClickListener(this);
+
+        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
+        PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
+        audio = (TextView) findViewById(R.id.audio_button);
+        toggle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggle.setSelected(!view.isSelected());
+                if (toggle.isSelected()) {
+                    audio.setVisibility(View.VISIBLE);
+                    PLText.setVisibility(View.GONE);
+                } else {
+                    audio.setVisibility(View.GONE);
+                    PLText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        audio.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        if(ibdRcognize==null){
+                            ibdRcognize=new IBDRcognizeImpl(ZiXun_Detail.this);
+                            ibdRcognize.attachView(PLText,audio,toggle);
+                        }
+                        view.setSelected(true);
+                        audio.setText("松开完成识别");
+                        ibdRcognize.start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        view.setSelected(false);
+                        audio.setText("按住 说话");
+                        ibdRcognize.stop();
+                        break;
+                }
+                return true;
+            }
+        });
+
         overlay = (FrameLayout) findViewById(R.id.frame);
         overlay.setOnClickListener(new OnClickListener() {
             @Override
@@ -237,8 +286,7 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
         Pllist = new ArrayList<>();
         adapter = new PL_List_Adapter(this);
         adapter.setOnHuifuListener(this);
-        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
-        PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+
         sp = getSharedPreferences("user", MODE_PRIVATE);
         plNum = (TextView) findViewById(R.id.zixun_Detail_appendPLNum);
         fasong = (TextView) findViewById(R.id.zixun_detail_fasong);
@@ -885,7 +933,7 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
 
     public void LoadData() {//加载详情数据
         if (!Network.HttpTest(this)) {
-            tip.setImageBitmap(ImageUtil.readBitMap(this,R.drawable.load_neterror));
+            tip.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.load_neterror));
             tip.setVisibility(View.VISIBLE);
             return;
         }
@@ -1062,16 +1110,16 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                             startActivity(intent);
                         }
                     });
-                }else{
-                    String  hongbao=active.substring(active.lastIndexOf("=")+1);
-                    LogUtil.e("红包类型：：；"+hongbao);
+                } else {
+                    String hongbao = active.substring(active.lastIndexOf("=") + 1);
+                    LogUtil.e("红包类型：：；" + hongbao);
                     tv_activity.setText(hongbao);
                     tv_activity.setBackgroundResource(R.drawable.button_red_sel);
                     tv_activity.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent=new Intent(ZiXun_Detail.this,ZhiFuShare.class);
-                            intent.putExtra("type","5");
+                            Intent intent = new Intent(ZiXun_Detail.this, ZhiFuShare.class);
+                            intent.putExtra("type", "5");
                             startActivity(intent);
                         }
                     });
@@ -1170,7 +1218,9 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
+
         content.removeAllViews();
         content.destroy();
         content = null;

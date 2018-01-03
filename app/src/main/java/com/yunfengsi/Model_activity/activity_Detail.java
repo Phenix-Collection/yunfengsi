@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -43,6 +44,7 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Login;
+import com.yunfengsi.Managers.IBDRcognizeImpl;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -63,6 +65,7 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
 import com.yunfengsi.ZhiFuShare;
+import com.yunfengsi.ZiXun_Detail;
 import com.yunfengsi.user_Info_First;
 
 import org.json.JSONArray;
@@ -114,6 +117,9 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
 
     private LinearLayout pinglun, fenxiangb;
     private FrameLayout overlay;
+    private ImageView toggle;
+    private TextView audio;
+    private IBDRcognizeImpl ibdRcognize;
     private UMWeb umWeb;
     private String act_prol = "";//活动协议Html
 
@@ -136,6 +142,47 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     private void initView() {
         tip = (ImageView) findViewById(R.id.tip);
         tip.setOnClickListener(this);
+
+        PLText = (EditText) findViewById(R.id.activity_detail_apply_edt);
+        PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
+        audio = (TextView) findViewById(R.id.audio_button);
+        toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggle.setSelected(!view.isSelected());
+                if (toggle.isSelected()) {
+                    audio.setVisibility(View.VISIBLE);
+                    PLText.setVisibility(View.GONE);
+                } else {
+                    audio.setVisibility(View.GONE);
+                    PLText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        audio.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        if(ibdRcognize==null){
+                            ibdRcognize=new IBDRcognizeImpl(activity_Detail.this);
+                            ibdRcognize.attachView(PLText,audio,toggle);
+                        }
+                        view.setSelected(true);
+                        audio.setText("松开完成识别");
+                        ibdRcognize.start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        view.setSelected(false);
+                        audio.setText("按住 说话");
+                        ibdRcognize.stop();
+                        break;
+                }
+                return true;
+            }
+        });
         overlay = (FrameLayout) findViewById(R.id.frame);
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,8 +301,7 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
             }
         });
         //评论框底部
-        PLText = (EditText) findViewById(R.id.activity_detail_apply_edt);
-        PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+
         FaSong = (TextView) findViewById(R.id.activity_detail_fasong);
         FaSong.setText(mApplication.ST("发送"));
         shoucang = (ImageView) findViewById(R.id.activity_detail_shoucang);

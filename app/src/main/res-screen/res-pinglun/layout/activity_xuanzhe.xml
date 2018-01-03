@@ -396,6 +396,26 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp">
 
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:id="@+id/toggle_audio_word"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/sel_audio_word_toggle"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/audio_button"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/sel_audio_button"
+                android:layout_marginRight="5dp"
+                android:text="按住 说话"
+                android:textSize="16dp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_weight="1"/>
             <EditText
                 android:id="@+id/zixun_detail_apply_edt"
                 android:layout_width="0dp"
