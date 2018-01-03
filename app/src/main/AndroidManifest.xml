@@ -492,15 +492,27 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="MW_APPID"
-            android:value="PV4XKRZX087KCE2NETY61XBY8VNB8T79" />
-        <!-- 总的activity，必须注册！！！ -->
-        <activity
-            android:name="cn.magicwindow.common.base.MWActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|navigation"
-            android:exported="true" />
+
+        <activity android:name=".Managers.AudioTest"/>
+
         <activity android:name=".RedPacket_Final"></activity>
+
+        <!--百度语音-->
+
+        <!-- 正式发布时，请替换成您自己的appId 本demo的appId会不定时下线 -->
+        <meta-data
+            android:name="com.baidu.speech.APP_ID"
+            android:value="10558348" />
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="tBBGe3A1UVuX5zZI96LFjwU0" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="cFOyGpcCy3TMvcfinvDIOclAGXNakQx3" />
+        <!-- 请确认集成后的包名是否正确，本demo的包名是com.baidu.speech.recognizerdemo，在build.gradle文件中查看 -->
+        <service
+            android:name="com.baidu.speech.VoiceRecognitionService"
+            android:exported="false" />
     </application>
 
 </manifest>

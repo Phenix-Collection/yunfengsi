@@ -96,6 +96,6 @@ dependencies {
     compile files('libs/SocialSDK_twitter.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
-
-//    compile 'cn.magicwindow:MagicWindowSDK:4.1'
+    //    compile 'cn.magicwindow:MagicWindowSDK:4.1'
+    implementation files('libs/bdasr_V3_20171108_9800a2a.jar')
 }

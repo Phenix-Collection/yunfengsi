@@ -58,6 +58,7 @@ import com.yunfengsi.Adapter.myHomePagerAdapter;
 import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.Mine;
 import com.yunfengsi.Fragment.ZiXun;
+import com.yunfengsi.Managers.AudioTest;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Model_activity.activity_fragment;
 import com.yunfengsi.Model_zhongchou.FundFragment;
@@ -706,17 +707,17 @@ public class MainActivity extends UpPayUtil {
         layout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri content_url;
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                if (jishuSupprot.equals("")) {
-                    content_url = Uri.parse("http://www.indranet.cn");
-                } else {
-                    content_url = Uri.parse(jishuSupprot);
-                }
-                intent.setData(content_url);
-                startActivity(intent);
-
+//                Uri content_url;
+//                Intent intent = new Intent();
+//                intent.setAction("android.intent.action.VIEW");
+//                if (jishuSupprot.equals("")) {
+//                    content_url = Uri.parse("http://www.indranet.cn");
+//                } else {
+//                    content_url = Uri.parse(jishuSupprot);
+//                }
+//                intent.setData(content_url);
+//                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, AudioTest.class));
 
 
                 pp.dismiss();
