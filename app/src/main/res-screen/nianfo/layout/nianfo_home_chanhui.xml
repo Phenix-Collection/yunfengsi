@@ -62,15 +62,16 @@
         android:background="#cccccc"
         android:layout_above="@+id/bottom"
         />
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="190dp"
         android:layout_alignParentBottom="true"
         android:background="#f6f6f6"
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
+        android:clipChildren="false"
         android:paddingRight="10dp">
 
         <EditText
@@ -88,14 +89,31 @@
             />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:id="@+id/nianfo_home_chanhui_commit"
-           android:layout_gravity="center_horizontal|bottom"
+           android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
             android:textColor="@color/white"
             android:textSize="15sp"
+            android:gravity="center"
             android:background="@drawable/button1_sel"
             android:clickable="true"/>
-    </FrameLayout>
+        <com.yunfengsi.View.DiffuseView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/audio"
+            app:diffuse_color="@color/main_color"
+            app:diffuse_coreImage="@drawable/auido_white"
+            app:diffuse_width="3"
+            app:diffuse_maxWidth="100"
+            app:diffuse_coreRadius="20dp"
+            android:layout_toRightOf="@+id/nianfo_home_chanhui_commit"
+            android:layout_alignParentBottom="true"
+            app:diffuse_speed="100"
+            android:layout_marginLeft="20dp"
+            app:diffuse_coreColor="@color/main_color"
+           />
+    </RelativeLayout>
 
 
 </com.zhy.android.percent.support.PercentRelativeLayout>

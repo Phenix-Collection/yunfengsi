@@ -2,7 +2,6 @@ package com.yunfengsi.Managers;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +15,7 @@ import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,14 +34,16 @@ public class IBDRcognizeImpl implements EventListener {
     private EditText displayView;//需要显示语音识别结果的控件
     private ImageView keyView;//需要切换语音文字状态的开关控件
     private TextView audioButton;//长按录音的控件
-
     public IBDRcognizeImpl(Activity context) {
         this.context = context;
         initPermission();
         asr = EventManagerFactory.create(context, "asr");
         asr.registerListener(this); //  EventListener 中 onEvent方法
     }
-
+    public void setEventListener(EventListener eventListener){
+        asr.unregisterListener(this);
+        asr.registerListener(eventListener);
+    }
     public void attachView(EditText displayView, TextView audioButton, ImageView keyView) {
         this.displayView = displayView;
         this.keyView = keyView;
@@ -93,6 +95,7 @@ public class IBDRcognizeImpl implements EventListener {
                 break;
             case SpeechConstant.CALLBACK_EVENT_ASR_READY://识别引擎就绪
                 LogUtil.e("语音识别Ready");
+                ToastUtil.showToastShort("请说话");
                 break;
             case SpeechConstant.ASR_CANCEL://识别取消
                 LogUtil.e("语音识别Cancel");

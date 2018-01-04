@@ -6,9 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +23,7 @@ import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
+import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.ZhiFuShare;
@@ -47,12 +48,12 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
     private AvatarImageView mcircleview; //RoundedImageView头像
     private SharedPreferences sp;
     private String xb;
-    private HashMap<String, String> map;
+    private HashMap<String, String> map,moreMap=null;
     private int screenWidth;
     private TextView tvPerfect;
 
     private TextView more,trueName, faName, shenfenzheng, address, workPlace, xiuxingjingli, job, morePhone, carId;
-    private ImageView moreImg;
+
 
     public void init() {
         ((TextView) findViewById(R.id.titletv)).setText(mApplication.ST("个人信息"));
@@ -100,7 +101,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
         job = (TextView) findViewById(R.id.tv_job);
         morePhone = (TextView) findViewById(R.id.tv_morePhone);
         carId = (TextView) findViewById(R.id.tv_carId);
-        moreImg = (ImageView) findViewById(R.id.image);
+
         screenWidth = this.getResources().getDisplayMetrics().widthPixels;
         final RelativeLayout r= (RelativeLayout) findViewById(R.id.back_bg);
         Glide.with(this).load(R.drawable.mine_banner)
@@ -112,7 +113,38 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
     }
+    private View.OnClickListener changeClickListener =new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            AlertDialog.Builder builder=new AlertDialog.Builder(GerenxinxiActivity.this);
 
+
+            String hint="";
+            switch (view.getId()){
+                case R.id.jiatingzhuzhi://家庭住址
+                    hint="请输入您的家庭住址";
+                    break;
+                case R.id.faming://法名
+                    hint="请输入您的法名";
+                    break;
+                case R.id.gongzuodanwei://工作单位
+                    hint="请输入您的工作单位";
+                    break;
+                case R.id.xiuxingjingli://修行经历
+                    hint="请输入您的修行经历";
+                    break;
+                case R.id.zhiye://职业
+                    hint="请输入您的的职业";
+                    break;
+                case R.id.jinjilianxirenshouji://紧急联系人手机号码
+                    hint="请输入您的紧急联系人手机号码";
+                    break;
+                case R.id.chepaidengji://车牌登记
+                    hint="请输入您的车牌";
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,21 +182,21 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                     try {
                         String data=response.body().string();
                         if(!"".equals(data)){
-                            HashMap<String ,String >map=AnalyticalJSON.getHashMap(data);
-                            if(map!=null){
+                            moreMap=AnalyticalJSON.getHashMap(data);
+                            if(moreMap!=null){
                                 findViewById(R.id.moreInfo).setVisibility(View.VISIBLE);
-                                ((TextView) findViewById(R.id.gerenxinxi_sign_tv)).setText("".equals(map.get("signature"))?"未填写":map.get("signature"));
-                                trueName.setText("".equals(map.get("name"))?"未填写":map.get("name"));
-                                faName.setText(mApplication.ST(map.get("farmington")));
-                                shenfenzheng.setText(map.get("cid"));
-                                address.setText(mApplication.ST(map.get("address")));
-                                workPlace.setText(mApplication.ST(map.get("workunit")));
-                                xiuxingjingli.setText(mApplication.ST(map.get("practice")));
-                                job.setText(mApplication.ST(map.get("work")));
-                                morePhone.setText(mApplication.ST(map.get("contact")));
-                                carId.setText(map.get("plate"));
-                                Glide.with(GerenxinxiActivity.this).load(map.get("cidimage")).thumbnail(0.1f)
-                                        .into(moreImg);
+                                ((TextView) findViewById(R.id.gerenxinxi_sign_tv)).setText("".equals(moreMap.get("signature"))?"未填写":moreMap.get("signature"));
+                                trueName.setText("".equals(moreMap.get("name"))?"未填写":moreMap.get("name"));
+                                faName.setText(mApplication.ST(moreMap.get("farmington")));
+                                shenfenzheng.setText(moreMap.get("cid"));
+                                address.setText(mApplication.ST(moreMap.get("address")));
+                                workPlace.setText(mApplication.ST(moreMap.get("workunit")));
+                                xiuxingjingli.setText(mApplication.ST(moreMap.get("practice")));
+                                job.setText(mApplication.ST(moreMap.get("work")));
+                                morePhone.setText(mApplication.ST(moreMap.get("contact")));
+                                carId.setText(moreMap.get("plate"));
+//                                Glide.with(GerenxinxiActivity.this).load(map.get("cidimage")).thumbnail(0.1f)
+//                                        .into(moreImg);
                             }
                         }
                     } catch (Exception e) {
@@ -188,11 +220,22 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                 if (sp.getString("perfect", "1").equals("1")) {
                     Intent intent =new Intent(this,ZhiFuShare.class);
                     intent.putExtra(ZhiFuShare.ISFORM,true);
-                    startActivity(intent);
+                    startActivityForResult(intent,666);
 //                    finish();
                 }
                 break;
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogUtil.e("resultCode:::"+resultCode);
+        if(resultCode==66){//完善资料成功 刷新界面
+            tvPerfect.setVisibility(View.GONE);
+            more.append(mApplication.ST("\n[修改个人信息请联系:15397639879或106889@qq.com]"));
+            getMore();
         }
     }
 

@@ -15,10 +15,13 @@
         android:id="@+id/audio_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:diffuse_color="@color/skyblue"
+        app:diffuse_color="@color/main_color"
         app:diffuse_coreImage="@drawable/auido_white"
-        app:diffuse_width="4"
-
+        app:diffuse_width="3"
+        app:diffuse_maxWidth="100"
+        app:diffuse_coreRadius="25dp"
+        app:diffuse_speed="100"
+        app:diffuse_coreColor="@color/main_color"
         android:layout_gravity="bottom|center_horizontal" />
 
     <TextView

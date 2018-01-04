@@ -2,7 +2,6 @@ package com.yunfengsi.Managers;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,11 +16,7 @@ import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.yunfengsi.R;
-import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.View.DiffuseView;
@@ -59,15 +54,7 @@ public class AudioTest extends AppCompatActivity implements EventListener{
 
     private void initButton() {
         diffuseView = (DiffuseView) findViewById(R.id.audio_button);
-        Glide.with(this).load(R.drawable.auido_white)
-                .asBitmap().override(DimenUtils.dip2px(this, 40), DimenUtils.dip2px(this, 40))
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        diffuseView.setCoreImage(resource);
-                        diffuseView.setCoreRadius(DimenUtils.dip2px(AudioTest.this, 40));
-                    }
-                });
+
         diffuseView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

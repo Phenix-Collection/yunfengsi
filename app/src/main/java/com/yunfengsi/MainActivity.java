@@ -58,7 +58,6 @@ import com.yunfengsi.Adapter.myHomePagerAdapter;
 import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.Mine;
 import com.yunfengsi.Fragment.ZiXun;
-import com.yunfengsi.Managers.AudioTest;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Model_activity.activity_fragment;
 import com.yunfengsi.Model_zhongchou.FundFragment;

@@ -13,6 +13,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -27,11 +28,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.speech.EventListener;
+import com.baidu.speech.asr.SpeechConstant;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
+import com.yunfengsi.Managers.IBDRcognizeImpl;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
@@ -39,10 +43,13 @@ import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
+import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.NumUtils;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.View.DiffuseView;
 import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.ZiXun_Detail;
 
@@ -183,7 +190,8 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     private List<HashMap<String, String>> listList;
     private String type;//搜索类别标示
     private ProgressBar p;
-
+    private DiffuseView diffuseView;
+    private IBDRcognizeImpl ibdRcognize;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,11 +223,84 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         adapter = new listAdapter(this, listList);
         back = (ImageView) findViewById(R.id.search_back);
         back.setOnClickListener(this);
+        sousuo = (TextView) findViewById(R.id.search_sousuo);//搜索按钮
+        sousuo.setText(mApplication.ST("搜索"));
         p = (ProgressBar) findViewById(R.id.search_loading);
         input = (EditText) findViewById(R.id.search_edit);//搜索输入框
         input.setHint(mApplication.ST("请输入关键字"));
-        sousuo = (TextView) findViewById(R.id.search_sousuo);//搜索按钮
-        sousuo.setText(mApplication.ST("搜索"));
+        diffuseView= (DiffuseView) findViewById(R.id.audio);
+        ibdRcognize=new IBDRcognizeImpl(this);
+        ibdRcognize.setEventListener(new EventListener() {
+            @Override
+            public void onEvent(String name, String params, byte[] data, int offset, int length) {
+                switch (name) {
+                    case SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL://临时结果
+                        if (params.contains("nlu_result")) {
+                            if (length > 0 && data.length > 0) {
+                                if (input != null) {
+                                    input.setText(new String(data, offset, length));
+                                    LogUtil.e("语意解析成功：" + new String(data, offset, length));
+                                }
+                                return;
+                            }
+                        }
+                        if(params.contains("final_result")){
+                            try {
+                                JSONObject js = new JSONObject(params);
+                                if (input != null) {
+                                    input.setText(js.getJSONArray("results_recognition").getString(0));
+                                }
+
+                                LogUtil.e(":识别结果：：：" + js.getJSONArray("results_recognition").getString(0));
+                            } catch (JSONException e) {
+                                LogUtil.e("json解析错误");
+                                e.printStackTrace();
+                            }
+                        }
+
+                        break;
+                    case SpeechConstant.CALLBACK_EVENT_ASR_FINISH://本次识别结束
+                        LogUtil.e("语音识别finish");
+                        if (input != null) {
+                            input.setVisibility(View.VISIBLE);
+                        }
+
+                        if (sousuo != null) {
+                            sousuo.performClick();
+                        }
+
+
+                        break;
+                    case SpeechConstant.CALLBACK_EVENT_ASR_READY://识别引擎就绪
+                        LogUtil.e("语音识别Ready");
+                        ToastUtil.showToastShort("请说话");
+                        break;
+                    case SpeechConstant.ASR_CANCEL://识别取消
+                        LogUtil.e("语音识别Cancel");
+                        break;
+
+                }
+            }
+        });
+        diffuseView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        diffuseView.start();
+                        ibdRcognize.start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        diffuseView.stop();
+                        ibdRcognize.stop();
+                        break;
+
+                }
+                return true;
+            }
+        });
+
         zixun = (TextView) findViewById(R.id.search_zixun);
         zixun.setText(mApplication.ST("图文"));
         huodong = (TextView) findViewById(R.id.search_huodong);

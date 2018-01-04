@@ -8,7 +8,7 @@
     <!--中心圆图片-->
     <attr name="diffuse_coreImage" format="reference"/>
     <!--中心圆半径-->
-    <attr name="diffuse_coreRadius" format="float"/>
+    <attr name="diffuse_coreRadius" format="dimension"/>
     <!--扩散圆宽度,值越小越宽-->
     <attr name="diffuse_width" format="integer"/>
     <!--最大扩散宽度-->

@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -23,6 +24,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.nianfo_home_zhunian_adapter;
 import com.yunfengsi.Login;
+import com.yunfengsi.Managers.IBDRcognizeImpl;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -36,6 +38,7 @@ import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.View.DiffuseView;
 import com.yunfengsi.View.LoadMoreListView;
 
 import org.json.JSONException;
@@ -62,21 +65,44 @@ public class nianfo_home_tab4 extends AppCompatActivity implements View.OnClickL
     private String page = "1";
     private String endPage = "";
     private InputMethodManager imm;
-
+    private DiffuseView diffuseView;
+    private IBDRcognizeImpl ibdRcognize;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.nianfo_home_chanhui);
+        editText = (EditText) findViewById(R.id.nianfo_home_chanhui_content);
+        editText.setHint(mApplication.ST("请输入申请助念内容（200字以内）"));
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
+        diffuseView= (DiffuseView) findViewById(R.id.audio);
+        ibdRcognize=new IBDRcognizeImpl(this);
+        ibdRcognize.attachView(editText,null,null);
+        diffuseView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        diffuseView.start();
+                        ibdRcognize.start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        diffuseView.stop();
+                        ibdRcognize.stop();
+                        break;
+
+                }
+                return true;
+            }
+        });
         listView = (LoadMoreListView) findViewById(R.id.nianfo_home_chanhui_listview);
         listView.setLoadMoreListen(this);
         swip = (SwipeRefreshLayout) findViewById(R.id.chanhui_swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
-        editText = (EditText) findViewById(R.id.nianfo_home_chanhui_content);
-        editText.setHint(mApplication.ST("请输入申请助念内容（200字以内）"));
-        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
+
         textView = (TextView) findViewById(R.id.nianfo_home_chanhui_commit);
         textView.setText(mApplication.ST("申请助念"));
         sp = getSharedPreferences("user", Context.MODE_PRIVATE);

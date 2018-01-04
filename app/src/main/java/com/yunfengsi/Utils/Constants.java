@@ -9,9 +9,9 @@ public class Constants {
 
 
     //服务器测试域名
-//    public static final String host_Ip = "http://yintolo.net";
+    public static final String host_Ip = "http://yintolo.net";
     //    //服务器域名
-    public static  final String host_Ip="https://indrah.cn";
+//    public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo = "/api.php/EncryptApi/";
     public static final String iiiiii = "/api.php/SecretApi/";

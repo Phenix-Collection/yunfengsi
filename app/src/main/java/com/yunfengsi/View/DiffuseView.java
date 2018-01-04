@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.yunfengsi.R;
+import com.yunfengsi.Utils.Bitmaptest;
+import com.yunfengsi.Utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class DiffuseView extends View {
     /**
      * 最大宽度
      */
-    private Integer mMaxWidth = 255;
+    private int mMaxWidth = 200;
     /**
      * 是否正在扩散中
      */
@@ -73,18 +75,26 @@ public class DiffuseView extends View {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DiffuseView, defStyleAttr, 0);
         mColor = a.getColor(R.styleable.DiffuseView_diffuse_color, mColor);
         mCoreColor = a.getColor(R.styleable.DiffuseView_diffuse_coreColor, mCoreColor);
-        mCoreRadius = a.getFloat(R.styleable.DiffuseView_diffuse_coreRadius, mCoreRadius);
+        mCoreRadius = a.getDimension(R.styleable.DiffuseView_diffuse_coreRadius, mCoreRadius);
         mDiffuseWidth = a.getInt(R.styleable.DiffuseView_diffuse_width, mDiffuseWidth);
         mMaxWidth = a.getInt(R.styleable.DiffuseView_diffuse_maxWidth, mMaxWidth);
         int imageId = a.getResourceId(R.styleable.DiffuseView_diffuse_coreImage, -1);
         if (imageId != -1) mBitmap = BitmapFactory.decodeResource(getResources(), imageId);
+        LogUtil.e("width::"+mBitmap.getWidth()+"   Height::"+mBitmap.getHeight());
+        if(mCoreRadius>mBitmap.getWidth()||mCoreRadius>mBitmap.getHeight()){
+
+        }else{
+            mBitmap= Bitmaptest.scaleImage(mBitmap,(int)mCoreRadius, ((int) mCoreRadius));
+        }
+        LogUtil.e("width::"+mBitmap.getWidth()+"   Height::"+mBitmap.getHeight());
         a.recycle();
+
     }
 
     private void init() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mAlphas.add(255);
+        mAlphas.add(mMaxWidth);
         mWidths.add(0);
     }
 
@@ -116,7 +126,7 @@ public class DiffuseView extends View {
             }
             // 判断当扩散圆扩散到指定宽度时添加新扩散圆
             if (mWidths.get(mWidths.size() - 1) == mMaxWidth / mDiffuseWidth) {
-                mAlphas.add(255);
+                mAlphas.add(mMaxWidth);
                 mWidths.add(0);
             }
             // 超过10个扩散圆，删除最外层
@@ -131,8 +141,10 @@ public class DiffuseView extends View {
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, mCoreRadius, mPaint);
 
         if (mBitmap != null) {
+
             canvas.drawBitmap(mBitmap, getWidth() / 2 - mBitmap.getWidth() / 2
                     , getHeight() / 2 - mBitmap.getHeight() / 2, mPaint);
+            LogUtil.e("width::"+getWidth()+"   Height::"+mBitmap.getHeight());
         }
 
 
@@ -183,6 +195,7 @@ public class DiffuseView extends View {
      */
     public void setCoreImage(int imageId) {
         mBitmap = BitmapFactory.decodeResource(getResources(), imageId);
+        mBitmap= Bitmaptest.scaleImage(mBitmap,(int)mCoreRadius, ((int) mCoreRadius));
     }
 
     /**
@@ -190,6 +203,7 @@ public class DiffuseView extends View {
      */
     public void setCoreImage(Bitmap bitmap) {
         mBitmap = bitmap;
+        mBitmap= Bitmaptest.scaleImage(mBitmap,(int)mCoreRadius, ((int) mCoreRadius));
     }
 
     /**

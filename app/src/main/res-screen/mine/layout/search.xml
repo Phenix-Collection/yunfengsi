@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical">
 
     <LinearLayout
@@ -52,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:orientation="horizontal"
+        android:layout_marginTop="45dp"
         android:paddingLeft="10dp"
         android:background="#f0f0f0"
         android:paddingRight="10dp"
@@ -151,6 +154,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:layout_marginTop="90dp"
         android:divider="@drawable/mdivider"
         >
 
@@ -165,4 +169,25 @@
         android:layout_marginTop="10dp"
         android:visibility="gone"
         />
-</LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:layout_marginTop="90dp">
+        <com.yunfengsi.View.DiffuseView
+            android:id="@+id/audio"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|right"
+            app:diffuse_color="@color/main_color"
+            app:diffuse_coreImage="@drawable/auido_white"
+            app:diffuse_width="3"
+            app:diffuse_maxWidth="100"
+            app:diffuse_coreRadius="30dp"
+            app:diffuse_speed="100"
+            app:diffuse_coreColor="@color/main_color"
+            android:layout_margin="20dp"/>
+    </FrameLayout>
+
+</FrameLayout>
