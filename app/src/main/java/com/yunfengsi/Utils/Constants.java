@@ -409,4 +409,8 @@ public class Constants {
     public static final String RedBack = host_Ip + iiiiii + "Redback";
     //微信授权
     public static final String WeChatRed = host_Ip + iiiiii + "Apphb";
+    //个人认证资料更换
+    public static final String Dzgrzlxg = host_Ip + oooooo + "Dzgrzlxg";
+
+
 }

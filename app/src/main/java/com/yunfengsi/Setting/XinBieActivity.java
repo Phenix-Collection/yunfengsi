@@ -99,6 +99,8 @@ private RadioGroup mrgroup;
                                 Toast.makeText(XinBieActivity.this, mApplication.ST("性别修改成功"),Toast.LENGTH_SHORT).show();
                                 intent.putExtra("xinbie", xinbie);
                                 XinBieActivity.this.setResult(1, intent);
+                                Intent i=new Intent("Mine");
+                                sendBroadcast(i);
                                  finish();
                             }
                         });

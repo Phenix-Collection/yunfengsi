@@ -112,6 +112,7 @@ private TextView mtvtitle;
                 }
                 break;
             case R.id.ncqmht_back:
+                setResult(1000);
                 finish();
                 break;
             case R.id.ncqmht_qingchu:  //清除

@@ -28,6 +28,15 @@
             android:text=""
             android:textColor="#ffffff"
             android:textSize="20sp" />
+
+
+        <ImageView
+            android:id="@+id/bangzhu"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:padding="8dp"
+            android:src="@drawable/wenhao_white" />
     </RelativeLayout>
 
     <ScrollView
@@ -59,9 +68,10 @@
 
 
             <RelativeLayout
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="#ffffff"
+                android:background="@drawable/layout_bg_sel"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
 
@@ -112,9 +122,10 @@
 
 
             <RelativeLayout
+                android:id="@+id/xingbie"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="#ffffff"
+                android:background="@drawable/layout_bg_sel"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -137,9 +148,10 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/sign"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="#ffffff"
+                android:background="@drawable/layout_bg_sel"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 

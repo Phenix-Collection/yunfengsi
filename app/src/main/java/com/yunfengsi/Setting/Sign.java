@@ -64,9 +64,12 @@ public class Sign extends AppCompatActivity implements View.OnClickListener {
                                             SharedPreferences.Editor ed = sp.edit();
                                             ed.putString("signature", sign.getText().toString());
                                             ed.commit();
+                                            Intent i=new Intent("Mine");
+                                            sendBroadcast(i);
                                             Intent intent1=new Intent();
                                             intent1.putExtra("sign",sign.getText().toString());
                                             setResult(4,intent1);
+
                                             finish();
                                             Toast.makeText(Sign.this, mApplication.ST("修改签名成功"), Toast.LENGTH_SHORT).show();
                                         }
@@ -81,6 +84,7 @@ public class Sign extends AppCompatActivity implements View.OnClickListener {
                 }).start();
                 break;
             case R.id.title_back:
+                setResult(1000);
                 finish();
                 break;
         }
