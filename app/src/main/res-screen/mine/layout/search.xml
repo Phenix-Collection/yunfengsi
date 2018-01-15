@@ -165,7 +165,7 @@
         android:layout_height="40dp"
         style="@android:style/Widget.Holo.Light.ProgressBar.Small"
         android:indeterminate="true"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:visibility="gone"
         />

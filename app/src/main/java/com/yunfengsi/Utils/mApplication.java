@@ -49,7 +49,7 @@ public class mApplication extends Application {
     public static  boolean isChina=true;
     public  Login login;
 
-    public static String gg_url="",gg_image="";//首页广告弹窗 背景图  ggimage   跳转链接  ggurl
+//    public static String gg_url="",gg_image="";//首页广告弹窗 背景图  ggimage   跳转链接  ggurl
     public static boolean changeIcon=false;//是否切换图标
     public static ComponentName componentName;//入口名称
 

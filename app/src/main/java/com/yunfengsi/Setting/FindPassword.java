@@ -54,6 +54,33 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
     private InputMethodManager imm;
 
     private int time=60000;
+//    private BroadcastReceiver smsReceiver =new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Object[] pdus = (Object[]) intent.getExtras().get("pdus");
+//            for (Object pdu : pdus) {
+//                SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
+//                String sender = smsMessage.getDisplayOriginatingAddress();
+//                String content = smsMessage.getMessageBody();
+//                long date = smsMessage.getTimestampMillis();
+//                Date timeDate = new Date(date);
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                String time = simpleDateFormat.format(timeDate);
+//
+//               LogUtil.e("onReceive: 短信来自:" + sender);
+//               LogUtil.e( "onReceive: 短信内容:" + content);
+//               LogUtil.e( "onReceive: 短信时间:" + time);
+//
+//                //如果短信号码来自自己的短信网关号码
+//                String code="";
+//                code=content.substring(content.indexOf("验证码为"),content.indexOf("验证码为")+6);
+//                LogUtil.e("验证码：："+code);
+//                if(Mid!=null){
+//                    Mid.setText(code);
+//                }
+//            }
+//        }
+//    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {//找回密码
         super.onCreate(savedInstanceState);
@@ -103,6 +130,7 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
         }else{
             t.setText(mApplication.ST(PreferenceUtil.getSettingIncetance(this).getString("country","")+"   +"+PreferenceUtil.getSettingIncetance(this).getString("code","")));
         }
+//        registerReceiver(smsReceiver,new IntentFilter(Constants.SMS_RECEIVED_ACTION));
     }
 
     CountDownTimer timer = new CountDownTimer(time, 1000) {//验证码倒计时
@@ -127,6 +155,7 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
+//        unregisterReceiver(smsReceiver);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -79,24 +79,36 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 zixun.setSelected(true);
                 zixun.setTextColor(ContextCompat.getColor(this,R.color.main_color));
                 type = "news";
+                if(!"".equals(input.getText().toString())){
+                    getData();
+                }
                 break;
             case R.id.search_huodong://活动分类
                 resetStatus();
                 huodong.setSelected(true);
                 huodong.setTextColor(ContextCompat.getColor(this,R.color.main_color));
                 type = "activity";
+                if(!"".equals(input.getText().toString())){
+                    getData();
+                }
                 break;
             case R.id.search_gongyang://供养分类
                 resetStatus();
                 gongyang.setSelected(true);
                 gongyang.setTextColor(ContextCompat.getColor(this,R.color.main_color));
                 type = "shop";
+                if(!"".equals(input.getText().toString())){
+                    getData();
+                }
                 break;
             case R.id.search_cishan://助学分类
                 resetStatus();
                 zhongchou.setSelected(true);
                 zhongchou.setTextColor(ContextCompat.getColor(this,R.color.main_color));
                 type = "cfg";
+                if(!"".equals(input.getText().toString())){
+                    getData();
+                }
                 break;
         }
 

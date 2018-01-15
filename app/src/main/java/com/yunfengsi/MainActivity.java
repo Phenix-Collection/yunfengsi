@@ -49,6 +49,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.callback.StringCallback;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -153,58 +154,81 @@ public class MainActivity extends UpPayUtil {
 
     // TODO: 2017/12/5 弹出广告弹窗
     private void showAdDialog() {
-        if (!mApplication.gg_image.equals("")&&mApplication.changeIcon) {
-            android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(this);
-            View view = LayoutInflater.from(this).inflate(R.layout.main_ad_dialog, null);
-            ImageView cancle = (ImageView) view.findViewById(R.id.cancle);
-            final ImageView image = (ImageView) view.findViewById(R.id.main_ad_image);
-            b.setView(view);
-            dialog = b.create();
-            cancle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-            //点击广告页
-            image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!mApplication.gg_url.equals("")) {
-                        Intent intent = new Intent(MainActivity.this, ZhiFuShare.class);
-                        intent.putExtra("url", mApplication.gg_url);
-                        startActivity(intent);
-                        dialog.dismiss();
-                    } else {
-                        dialog.dismiss();
-                    }
-                }
-            });
-
-            Glide.with(this).load(mApplication.gg_image)
-                    .asBitmap()
-                    .skipMemoryCache(true)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                            RoundedBitmapDrawable tbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
-                            tbd.setCornerRadius(15);
-                            image.setImageDrawable(tbd);
-                        }
-                    });
-
-            Window window = dialog.getWindow();
-            WindowManager.LayoutParams wl = window.getAttributes();
-            window.getDecorView().setPadding(0, 0, 0, 0);
-            wl.gravity = Gravity.CENTER;
-            wl.width = getResources().getDisplayMetrics().widthPixels * 8 / 10;
-            wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            window.setDimAmount(0.7f);
-            window.setWindowAnimations(R.style.dialogWindowAnim);
-            window.setBackgroundDrawableResource(R.color.transparent);
-            window.setAttributes(wl);
-            dialog.show();
+        JSONObject js=new JSONObject();
+        try {
+            js.put("m_id",Constants.M_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        ApisSeUtil.M m=ApisSeUtil.i(js);
+        OkGo.post(Constants.App_GGY).tag(this).params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        final HashMap<String,String > map=AnalyticalJSON.getHashMap(s);
+                        if(map!=null){
+                            if("2".equals(map.get("act_start"))){
+                                if(!"".equals(map.get("gg_image"))){
+                                    android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
+                                    View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.main_ad_dialog, null);
+                                    ImageView cancle = (ImageView) view.findViewById(R.id.cancle);
+                                    final ImageView image = (ImageView) view.findViewById(R.id.main_ad_image);
+                                    b.setView(view);
+                                    dialog = b.create();
+                                    cancle.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    //点击广告页
+                                    image.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (!map.get("gg_url").equals("")) {
+                                                Intent intent = new Intent(MainActivity.this, ZhiFuShare.class);
+                                                intent.putExtra("url", map.get("gg_url"));
+                                                startActivity(intent);
+                                                dialog.dismiss();
+                                            } else {
+                                                dialog.dismiss();
+                                            }
+                                        }
+                                    });
+
+                                    Glide.with(MainActivity.this).load(map.get("gg_image"))
+                                            .asBitmap()
+                                            .skipMemoryCache(true)
+                                            .into(new SimpleTarget<Bitmap>() {
+                                                @Override
+                                                public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                                    RoundedBitmapDrawable tbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
+                                                    tbd.setCornerRadius(15);
+                                                    image.setImageDrawable(tbd);
+                                                    Window window = dialog.getWindow();
+                                                    WindowManager.LayoutParams wl = window.getAttributes();
+                                                    window.getDecorView().setPadding(0, 0, 0, 0);
+                                                    wl.gravity = Gravity.CENTER;
+                                                    wl.width = getResources().getDisplayMetrics().widthPixels * 7/ 10;
+                                                    wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                                                    window.setDimAmount(0.7f);
+                                                    window.setWindowAnimations(R.style.dialogWindowAnim);
+                                                    window.setBackgroundDrawableResource(R.color.transparent);
+                                                    window.setAttributes(wl);
+                                                    dialog.show();
+                                                }
+                                            });
+
+
+                                }
+                            }
+                        }
+
+                    }
+
+                });
+
     }
 
     // TODO: 2017/4/21 登录

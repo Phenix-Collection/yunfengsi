@@ -152,8 +152,6 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                             if (map != null) {
                                 String url = map.get("image1");
                                 String detail = map.get("url");
-                                mApplication.gg_image=map.get("gg_image");
-                                mApplication.gg_url=map.get("gg_url");
                                 getBitmapForAD(url, detail);
                                 mApplication.changeIcon="2".equals(map.get("act_start"))?true:false;
                                 mApplication.componentName=getComponentName();

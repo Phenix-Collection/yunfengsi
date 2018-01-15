@@ -9,9 +9,9 @@ public class Constants {
 
 
     //服务器测试域名
-    public static final String host_Ip = "http://yintolo.net";
+//    public static final String host_Ip = "http://yintolo.net";
     //    //服务器域名
-//    public static  final String host_Ip="https://indrah.cn";
+    public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo = "/api.php/EncryptApi/";
     public static final String iiiiii = "/api.php/SecretApi/";
@@ -98,7 +98,7 @@ public class Constants {
     //新闻收藏信息展示接口
     public static final String temple_sc_list_Ip = host_Ip + oooooo + "Keeptemple";
 
-
+    public static final String SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED";
     //忘记密码接口
     public static final String WJMM_IP = host_Ip + oooooo + "Mpwd";
     //寺庙列表接口
@@ -411,6 +411,8 @@ public class Constants {
     public static final String WeChatRed = host_Ip + iiiiii + "Apphb";
     //个人认证资料更换
     public static final String Dzgrzlxg = host_Ip + oooooo + "Dzgrzlxg";
+    //首页广告弹窗
+    public static final String App_GGY = host_Ip + oooooo + "App_ggy";
 
 
 }

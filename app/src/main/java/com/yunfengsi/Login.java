@@ -201,7 +201,7 @@ public class Login extends AppCompatActivity implements OnClickListener {
                         Response response = null;
                         try {
                             JSONObject js = new JSONObject();
-                            js.put("phone", username.getText().toString());
+                            js.put("phone", username.getText().toString().trim());
                             js.put("password", password.getText().toString());
                             js.put("type", type);
                             js.put("m_id", Constants.M_id);

@@ -75,7 +75,7 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
 
 
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.title_title)).setText("消息中心");
+        ((TextView) findViewById(R.id.title_title)).setText("通知中心");
         ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

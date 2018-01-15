@@ -80,6 +80,34 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
     private String code="86";
 
     private boolean isAgreeed = false;
+//    private BroadcastReceiver smsReceiver =new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Object[] pdus = (Object[]) intent.getExtras().get("pdus");
+//            for (Object pdu : pdus) {
+//                SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) pdu);
+//                String sender = smsMessage.getDisplayOriginatingAddress();
+//                String content = smsMessage.getMessageBody();
+//                long date = smsMessage.getTimestampMillis();
+//                Date timeDate = new Date(date);
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                String time = simpleDateFormat.format(timeDate);
+//
+//                LogUtil.e("onReceive: 短信来自:" + sender);
+//                LogUtil.e( "onReceive: 短信内容:" + content);
+//                LogUtil.e( "onReceive: 短信时间:" + time);
+//
+//                //如果短信号码来自自己的短信网关号码
+//                String code="";
+//                code=content.substring(content.indexOf("验证码为"),content.indexOf("验证码为")+6);
+//                LogUtil.e("验证码：："+code);
+//                if(Mid!=null){
+//                    Mid.setText(code);
+//                }
+//            }
+//        }
+//    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +115,7 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
         StatusBarCompat.compat(this, getResources().getColor(R.color.umeng_socialize_divider));
 //        instance = this;
         sp = getSharedPreferences("user", MODE_PRIVATE);
+
         initView();
     }
 
@@ -133,6 +162,9 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
             t.setText(mApplication.ST(PreferenceUtil.getSettingIncetance(this).getString("country","")+"   +"+code));
         }
 //        (findViewById(R.id.zhuce_main)).setBackgroundDrawable(new GlideBitmapDrawable(getResources(), ImageUtil.readBitMap(this, R.drawable.backgd)));
+
+
+//        registerReceiver(smsReceiver,new IntentFilter(Constants.SMS_RECEIVED_ACTION));
     }
 
     CountDownTimer timer = new CountDownTimer(time, 1000) {//验证码倒计时
@@ -170,6 +202,7 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
         super.onDestroy();
         timer.cancel();
         OkGo.getInstance().cancelTag(TAG);
+//        unregisterReceiver(smsReceiver);
 //        (findViewById(R.id.zhuce_main)).setBackgroundDrawable(null);
     }
 

@@ -180,7 +180,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 HashMap<String, Object> map = mineManager.getMaps().get(i);
 
                 switch (map.get(mineManager.text).toString()) {
-                    case "消息中心":
+                    case "通知":
                         if(new LoginUtil().checkLogin(getActivity())){
                             intent.setClass(getActivity(), MessageCenter.class);
                             startActivity(intent);

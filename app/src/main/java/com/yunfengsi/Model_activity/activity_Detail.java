@@ -65,7 +65,6 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
 import com.yunfengsi.ZhiFuShare;
-import com.yunfengsi.ZiXun_Detail;
 import com.yunfengsi.user_Info_First;
 
 import org.json.JSONArray;
@@ -949,7 +948,7 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                         View view = LayoutInflater.from(this).inflate(R.layout.activity_confirm_dialog, null);
                         final WebView web = (WebView) view.findViewById(R.id.web);
                         TextView cancle = (TextView) view.findViewById(R.id.cancle);
-                        cancle.setText(mApplication.ST("点错了"));
+                        cancle.setText(mApplication.ST("不同意"));
                         final TextView baoming = (TextView) view.findViewById(R.id.baoming);
                         baoming.setEnabled(false);
                         final CountDownTimer cdt = new CountDownTimer(10000, 1000) {

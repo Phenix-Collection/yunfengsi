@@ -365,6 +365,7 @@
                 android:id="@+id/title_image2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:visibility="gone"
                 android:layout_marginLeft="5dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/share_small" />
