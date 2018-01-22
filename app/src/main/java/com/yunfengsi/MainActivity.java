@@ -21,6 +21,7 @@ import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -43,6 +44,7 @@ import android.widget.Toast;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.baidu.speech.asr.SpeechConstant;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -56,6 +58,9 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.myHomePagerAdapter;
+import com.yunfengsi.Audio_BD.WakeUp.IWakeupListener;
+import com.yunfengsi.Audio_BD.WakeUp.MyWakeup;
+import com.yunfengsi.Audio_BD.WakeUp.SimpleWakeupListener;
 import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.Mine;
 import com.yunfengsi.Fragment.ZiXun;
@@ -91,6 +96,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import okhttp3.Call;
@@ -126,7 +132,7 @@ public class MainActivity extends UpPayUtil {
     public ImageView notice;
     private android.support.v7.app.AlertDialog dialog;
 
-
+private MyWakeup myWakeup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +156,45 @@ public class MainActivity extends UpPayUtil {
 //            //跳转后结束当前activity
 //            finish();
 //        }
+        
+        initAudio();
+    }
+    /**
+     * android 6.0 以上需要动态申请权限
+     */
+    private void initPermission() {
+        String permissions[] = {Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        ArrayList<String> toApplyList = new ArrayList<String>();
+
+        for (String perm :permissions){
+            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
+                toApplyList.add(perm);
+                //进入到这里代表没有权限.
+
+            }
+        }
+        String tmpList[] = new String[toApplyList.size()];
+        if (!toApplyList.isEmpty()){
+            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+        }
+
+    }
+    private void initAudio() {
+        initPermission();
+
+        IWakeupListener iWakeupListener=new SimpleWakeupListener();
+         myWakeup=new MyWakeup(this,iWakeupListener);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("appid","10558348");
+        params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");//"assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
+        myWakeup.start(params);
+
     }
 
     // TODO: 2017/12/5 弹出广告弹窗
@@ -294,7 +339,9 @@ public class MainActivity extends UpPayUtil {
         LogUtil.e("主页销毁");
         UMShareAPI.get(this).release();
         unregisterReceiver(receiver);
-
+        if(myWakeup!=null){
+            myWakeup.release();
+        }
     }
 
     @Override
