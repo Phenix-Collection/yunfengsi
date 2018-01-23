@@ -43,6 +43,7 @@ public class MyWakeup {
         this(context,new WakeupEventAdapter(eventListener));
     }
     public void start(Map<String, Object> params) {
+        params.put("appid","10558348");
         String json = new JSONObject(params).toString();
 
         LogUtil.e( "wakeup params(反馈请带上此行日志):" + json);

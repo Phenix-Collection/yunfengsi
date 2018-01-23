@@ -44,7 +44,7 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Login;
-import com.yunfengsi.Managers.IBDRcognizeImpl;
+import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;

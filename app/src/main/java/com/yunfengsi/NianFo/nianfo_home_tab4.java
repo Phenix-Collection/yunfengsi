@@ -24,7 +24,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.nianfo_home_zhunian_adapter;
 import com.yunfengsi.Login;
-import com.yunfengsi.Managers.IBDRcognizeImpl;
+import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;

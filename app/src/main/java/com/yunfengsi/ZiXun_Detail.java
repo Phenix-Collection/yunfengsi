@@ -46,7 +46,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.PL_List_Adapter;
-import com.yunfengsi.Managers.IBDRcognizeImpl;
+import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Setting.JuBaoActivity;

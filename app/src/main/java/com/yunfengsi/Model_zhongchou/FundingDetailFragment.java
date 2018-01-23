@@ -65,7 +65,7 @@ import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Adapter.PingLunActivity;
 import com.yunfengsi.Login;
-import com.yunfengsi.Managers.IBDRcognizeImpl;
+import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Setting.ViewPagerActivity;
@@ -88,7 +88,6 @@ import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDecoration;
 import com.yunfengsi.View.myWebView;
-import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.ZhiFuShare;
 
 import org.json.JSONArray;

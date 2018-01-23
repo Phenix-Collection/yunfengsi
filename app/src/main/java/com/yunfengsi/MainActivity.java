@@ -185,13 +185,16 @@ private MyWakeup myWakeup;
         }
 
     }
+
+    // TODO: 2018/1/23  
+    //初始化语音唤醒
     private void initAudio() {
         initPermission();
 
-        IWakeupListener iWakeupListener=new SimpleWakeupListener();
+        IWakeupListener iWakeupListener=new SimpleWakeupListener(this);
          myWakeup=new MyWakeup(this,iWakeupListener);
         Map<String,Object> params = new HashMap<String,Object>();
-        params.put("appid","10558348");
+
         params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");//"assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
         myWakeup.start(params);
 

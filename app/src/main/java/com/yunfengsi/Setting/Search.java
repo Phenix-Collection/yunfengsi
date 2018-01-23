@@ -35,7 +35,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
-import com.yunfengsi.Managers.IBDRcognizeImpl;
+import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
