@@ -13,8 +13,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -22,7 +22,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
@@ -65,8 +64,13 @@ import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.Mine;
 import com.yunfengsi.Fragment.ZiXun;
 import com.yunfengsi.Managers.MessageCenter;
+import com.yunfengsi.Model_activity.Mine_activity_list;
+import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_activity.activity_fragment;
 import com.yunfengsi.Model_zhongchou.FundFragment;
+import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.More.Fortune;
+import com.yunfengsi.NianFo.NianFo;
 import com.yunfengsi.Setting.PhoneCheck;
 import com.yunfengsi.Setting.Search;
 import com.yunfengsi.SideListview.Contact;
@@ -111,7 +115,7 @@ public class MainActivity extends UpPayUtil {
     private static final String TAG = "MainActivity";
     private ImageView back;
     private TextView title;
-    private ViewPager pager;
+    public ViewPager pager;
     public TabLayout tabLayout;
     private myHomePagerAdapter adapter;
     private SharedPreferences sp;
@@ -131,8 +135,8 @@ public class MainActivity extends UpPayUtil {
     public static MainActivity activity;
     public ImageView notice;
     private android.support.v7.app.AlertDialog dialog;
-
-private MyWakeup myWakeup;
+    private SimpleWakeupListener iWakeupListener;//语音唤醒
+    public MyWakeup myWakeup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,21 +148,26 @@ private MyWakeup myWakeup;
         registerReceiver(receiver, intentFilter);
 
         initView();
+
         checkUpdate();
-//        checkUserinfo();
         getSmsInviteCode();
         showAdDialog();
         login();
 
-//        //跳转router调用
-//        if (getIntent().getData() != null) {
-//            MLinkAPIFactory.createAPI(this).router(getIntent().getData());
-//            //跳转后结束当前activity
-//            finish();
-//        }
-        
+
         initAudio();
+        changeSystemVolume();//修改媒体音量  80%
+
     }
+
+    // TODO: 2018/2/2 媒体音量调至8成
+    private void changeSystemVolume() {
+        AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,maxVolume*8/10 , 0);
+
+    }
+
     /**
      * android 6.0 以上需要动态申请权限
      */
@@ -167,12 +176,17 @@ private MyWakeup myWakeup;
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.INTERNET,
                 Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+
+
+
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_CONTACTS
         };
 
         ArrayList<String> toApplyList = new ArrayList<String>();
 
-        for (String perm :permissions){
+        for (String perm : permissions) {
             if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
                 toApplyList.add(perm);
                 //进入到这里代表没有权限.
@@ -180,7 +194,7 @@ private MyWakeup myWakeup;
             }
         }
         String tmpList[] = new String[toApplyList.size()];
-        if (!toApplyList.isEmpty()){
+        if (!toApplyList.isEmpty()) {
             ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
         }
 
@@ -191,9 +205,9 @@ private MyWakeup myWakeup;
     private void initAudio() {
         initPermission();
 
-        IWakeupListener iWakeupListener=new SimpleWakeupListener(this);
-         myWakeup=new MyWakeup(this,iWakeupListener);
-        Map<String,Object> params = new HashMap<String,Object>();
+        iWakeupListener = new SimpleWakeupListener(this);
+        myWakeup = new MyWakeup(this, ((IWakeupListener) iWakeupListener));
+        Map<String, Object> params = new HashMap<String, Object>();
 
         params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");//"assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
         myWakeup.start(params);
@@ -202,22 +216,22 @@ private MyWakeup myWakeup;
 
     // TODO: 2017/12/5 弹出广告弹窗
     private void showAdDialog() {
-        JSONObject js=new JSONObject();
+        JSONObject js = new JSONObject();
         try {
-            js.put("m_id",Constants.M_id);
+            js.put("m_id", Constants.M_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ApisSeUtil.M m=ApisSeUtil.i(js);
-        OkGo.post(Constants.App_GGY).tag(this).params("key",m.K())
-                .params("msg",m.M())
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(Constants.App_GGY).tag(this).params("key", m.K())
+                .params("msg", m.M())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        final HashMap<String,String > map=AnalyticalJSON.getHashMap(s);
-                        if(map!=null){
-                            if("2".equals(map.get("act_start"))){
-                                if(!"".equals(map.get("gg_image"))){
+                        final HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
+                        if (map != null) {
+                            if ("2".equals(map.get("act_start"))) {
+                                if (!"".equals(map.get("gg_image"))) {
                                     android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
                                     View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.main_ad_dialog, null);
                                     ImageView cancle = (ImageView) view.findViewById(R.id.cancle);
@@ -234,10 +248,68 @@ private MyWakeup myWakeup;
                                     image.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            if (!map.get("gg_url").equals("")) {
-                                                Intent intent = new Intent(MainActivity.this, ZhiFuShare.class);
-                                                intent.putExtra("url", map.get("gg_url"));
-                                                startActivity(intent);
+                                            String url = map.get("gg_url");
+                                            Intent intent = new Intent();
+                                            if (url != null && !url.equals("")) {
+                                                if (url.contains("yfs.php") && url.contains("red")) {
+                                                    intent.setClass(MainActivity.this, ZhiFuShare.class);
+                                                    intent.putExtra("url", map.get("gg_url"));
+                                                    startActivity(intent);
+                                                    finish();
+                                                    return;
+                                                };
+                                                if(url.equals(Constants.Help)){
+                                                    intent.setClass(MainActivity.this,AD.class);
+                                                    intent.putExtra("bangzhu",true);
+                                                    startActivity(intent);
+                                                    return;
+                                                }
+                                                if (!url.equals("") && url.contains("yfs.php")) {
+                                                    if (url.contains("?")) {
+                                                        int index = url.lastIndexOf("?");
+                                                        String arg = url.substring(index + 1, url.length());
+                                                        LogUtil.e("截取后的参数字段：" + arg);
+                                                        if (arg.contains("&")) {
+                                                            String[] args = arg.split("&");
+                                                            final String id = args[0].substring(args[0].lastIndexOf("=") + 1);
+                                                            final String type = args[1].substring(args[1].lastIndexOf("=") + 1);
+                                                            LogUtil.e("字段信息：  id::" + id + "  type::" + type);
+
+                                                            Intent intent1 = new Intent();
+                                                            switch (type) {
+                                                                case mReceiver.HUODong:
+                                                                    intent1.setClass(MainActivity.this, activity_Detail.class);
+                                                                    intent1.putExtra("id", id);
+                                                                    break;
+                                                                case mReceiver.GOngyang:
+                                                                    intent1.setClass(MainActivity.this, XuanzheActivity.class);
+                                                                    intent1.putExtra("id", id);
+                                                                    break;
+                                                                case mReceiver.ZHONGCHou:
+                                                                    intent1.setClass(MainActivity.this, FundingDetailActivity.class);
+                                                                    intent1.putExtra("id", id);
+                                                                    break;
+                                                                case mReceiver.ZIXUN:
+                                                                    intent1.setClass(MainActivity.this, ZiXun_Detail.class);
+                                                                    intent1.putExtra("id", id);
+                                                                    break;
+                                                                case mReceiver.BaoMing:
+                                                                    intent1.setClass(MainActivity.this, Mine_activity_list.class);
+                                                                    break;
+                                                                case mReceiver.GONGXIU:
+                                                                    intent1.setClass(MainActivity.this, NianFo.class);
+                                                                    break;
+                                                                case mReceiver.TongZhi:
+                                                                    intent1.setClass(MainActivity.this, MessageCenter.class);
+                                                                    break;
+
+                                                            }
+
+                                                            startActivity(intent1);
+                                                            return;
+                                                        }
+                                                    }
+                                                }
                                                 dialog.dismiss();
                                             } else {
                                                 dialog.dismiss();
@@ -258,7 +330,7 @@ private MyWakeup myWakeup;
                                                     WindowManager.LayoutParams wl = window.getAttributes();
                                                     window.getDecorView().setPadding(0, 0, 0, 0);
                                                     wl.gravity = Gravity.CENTER;
-                                                    wl.width = getResources().getDisplayMetrics().widthPixels * 7/ 10;
+                                                    wl.width = getResources().getDisplayMetrics().widthPixels * 7 / 10;
                                                     wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
                                                     window.setDimAmount(0.7f);
                                                     window.setWindowAnimations(R.style.dialogWindowAnim);
@@ -342,9 +414,13 @@ private MyWakeup myWakeup;
         LogUtil.e("主页销毁");
         UMShareAPI.get(this).release();
         unregisterReceiver(receiver);
-        if(myWakeup!=null){
+        if (myWakeup != null) {
             myWakeup.release();
         }
+//        if (iWakeupListener.syntherizer != null) {
+//            iWakeupListener.syntherizer.release();
+//        }
+
     }
 
     @Override
@@ -594,9 +670,7 @@ private MyWakeup myWakeup;
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ZhiFuShare.class);
-                intent.putExtra("type", "5");
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, Fortune.class));
             }
         });
     }
@@ -691,7 +765,7 @@ private MyWakeup myWakeup;
                 LogUtil.e("红包入口");
                 PackageManager pm = getPackageManager();
 
-                pm.setComponentEnabledSetting(new ComponentName(this,alias1),
+                pm.setComponentEnabledSetting(new ComponentName(this, alias1),
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
                 pm.setComponentEnabledSetting(new ComponentName(this, alias2),
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
@@ -713,7 +787,7 @@ private MyWakeup myWakeup;
             if (new ComponentName(this, alias1) != mApplication.componentName) {
                 LogUtil.e("正常入口");
                 PackageManager pm = getPackageManager();
-                pm.setComponentEnabledSetting(new ComponentName(this,alias2),
+                pm.setComponentEnabledSetting(new ComponentName(this, alias2),
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
                 pm.setComponentEnabledSetting(new ComponentName(this, alias1),
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
@@ -790,7 +864,6 @@ private MyWakeup myWakeup;
                 }
                 intent.setData(content_url);
                 startActivity(intent);
-//                startActivity(new Intent(MainActivity.this, AudioTest.class));
 
 
                 pp.dismiss();
@@ -822,32 +895,18 @@ private MyWakeup myWakeup;
         layout5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    //判断有没有拨打电话权限
-                    if (PermissionChecker.checkSelfPermission(MainActivity.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
-                            && PermissionChecker.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-                        //请求拨打电话权限
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_CONTACTS}, 222);
-                        return;
-                    }
-                }
+
                 Intent i = new Intent(MainActivity.this, Contact.class);
-                i.putExtra("sms", ST("".equals(SMS) ? sp.getString("sms", "") : SMS));
+                i.putExtra("sms", ("".equals(SMS) ? sp.getString("sms", "") : SMS));
                 startActivity(i);
                 pp.dismiss();
-//                if (debug) {
-//                    ToastUtil.showToastShort(MainActivity.this,"测试 ");
-//                    debug=false;
-//                }else{
-//                    ToastUtil.showToastShort(MainActivity.this,"哈哈哈 ");
-//                    debug=true;
-//                }
+
 
             }
         });
     }
 
-    //    boolean debug=false;
+
     public void createShortCut() {
         //创建快捷方式的Intent
         Intent shortcutintent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
@@ -871,7 +930,7 @@ private MyWakeup myWakeup;
     @Override
     protected void onResume() {
         super.onResume();
-//        ToastUtil.showToastShort(ST("迦叶一笑")+"    "+isChina);
+
     }
 
     @Override
@@ -893,32 +952,6 @@ private MyWakeup myWakeup;
         }, 2000);
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//
-//        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-//            if (backDialog == null) {
-//                backDialog = new AlertDialog.Builder(this).setMessage("确认要退出吗").setNegativeButton("确认",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                finish();
-//                            }
-//                        }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        backDialog.dismiss();
-//                    }
-//                }).create();
-//                backDialog.setCanceledOnTouchOutside(false);
-//            }
-//            if (backDialog.isShowing())
-//                return false;
-//            backDialog.show();
-//
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
 
     private static final String TAG_EXIT = "exit";
 
@@ -976,5 +1009,7 @@ private MyWakeup myWakeup;
 //            MLinkAPIFactory.createAPI(this).checkYYB();
 //        }
     }
+
+
 
 }

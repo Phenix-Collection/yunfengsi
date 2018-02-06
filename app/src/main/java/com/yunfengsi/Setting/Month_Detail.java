@@ -48,6 +48,7 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.month_detail);
+        mApplication.addActivity(this);
         ((TextView) findViewById(R.id.reload)).setText(mApplication.ST("刷新"));
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("感谢信"));
         ((TextView) findViewById(R.id.share)).setText(mApplication.ST("分享"));
@@ -94,6 +95,12 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
             }
 
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mApplication.romoveActivity(this);
     }
 
     @Override

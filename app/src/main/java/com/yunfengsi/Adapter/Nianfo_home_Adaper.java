@@ -108,23 +108,23 @@ public class Nianfo_home_Adaper extends BaseAdapter {
         if (type.equals("念佛")) {
 
             holder.txt_name.setText(mlist.get(position).get("pet_name").equals("") ? mApplication.ST("佚名") : mlist.get(position).get("pet_name"));
-            SpannableString ss=new SpannableString(mApplication.ST(type + "--念 " + mlist.get(position).get("ba_name") + " " + NumUtils.getNumStr(mlist.get(position).get("ls_nfnum")) + " 声"));
-            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-map.get("ls_nfnum").length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString ss=new SpannableString(mApplication.ST(type + "--念 " + mlist.get(position).get("ba_name") + " " + NumUtils.getNumStr(map.get("ls_nfnum")) + " 声"));
+            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-NumUtils.getNumStr(map.get("ls_nfnum")).length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.txt_desc.setText(ss);
             holder.txt_date.setText(TimeUtils.getTrueTimeStr(mlist.get(position).get("ls_time")));
 
         } else if (type.equals("诵经")) {
 
             holder.txt_name.setText(mlist.get(position).get("pet_name").equals("") ? mApplication.ST("佚名") : mlist.get(position).get("pet_name"));
-            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("rg_name") + " " +NumUtils.getNumStr(mlist.get(position).get("ls_nfnum")) + " 部"));
-            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-map.get("ls_nfnum").length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("rg_name") + " " +NumUtils.getNumStr(map.get("ls_nfnum")) + " 部"));
+            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-NumUtils.getNumStr(map.get("ls_nfnum")).length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.txt_desc.setText(ss);
             holder.txt_date.setText(TimeUtils.getTrueTimeStr(mlist.get(position).get("ls_time")));
         } else if (type.equals("持咒")) {
 
             holder.txt_name.setText(mlist.get(position).get("pet_name").equals("") ? mApplication.ST("佚名") : mlist.get(position).get("pet_name"));
-            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("ja_name") + " " +NumUtils.getNumStr(mlist.get(position).get("ls_nfnum"))  + " 遍"));
-            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-map.get("ls_nfnum").length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("ja_name") + " " +NumUtils.getNumStr(map.get("ls_nfnum"))  + " 遍"));
+            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-NumUtils.getNumStr(map.get("ls_nfnum")).length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.txt_desc.setText(ss);
             holder.txt_date.setText(TimeUtils.getTrueTimeStr(mlist.get(position).get("ls_time")));
         }

@@ -18,6 +18,8 @@
     <!--</integer-array>-->
 
     <string-array name="mine_text">
+        <item>卜事</item>
+        <item>在线坐禅</item>
         <item>会员中心</item>
         <item>感谢信</item>
         <item>收藏</item>

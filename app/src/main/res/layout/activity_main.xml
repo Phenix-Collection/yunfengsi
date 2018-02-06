@@ -78,12 +78,12 @@
         android:layout_height="80dp"
         android:background="@color/red"
         android:gravity="center"
+        android:visibility="gone"
         android:textSize="28dp"
         android:textColor="@color/white"
         android:layout_gravity="bottom"
-        android:visibility="gone"
         android:layout_marginBottom="50dp"
-        android:text="红包入口"/>
+        android:text="抽签入口"/>
 
     <View android:layout_width="match_parent"
         android:layout_height="1px"

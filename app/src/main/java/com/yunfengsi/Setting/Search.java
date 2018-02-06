@@ -11,7 +11,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -209,6 +212,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.search);
+        mApplication.addActivity(this);
         initView();
 //        loadHistroy();
     }
@@ -240,6 +244,10 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         p = (ProgressBar) findViewById(R.id.search_loading);
         input = (EditText) findViewById(R.id.search_edit);//搜索输入框
         input.setHint(mApplication.ST("请输入关键字"));
+        String message=getIntent().getStringExtra("text");
+        if(message!=null){
+            input.setText(message);
+        }
         diffuseView= (DiffuseView) findViewById(R.id.audio);
         ibdRcognize=new IBDRcognizeImpl(this);
         ibdRcognize.setEventListener(new EventListener() {
@@ -247,15 +255,15 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
             public void onEvent(String name, String params, byte[] data, int offset, int length) {
                 switch (name) {
                     case SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL://临时结果
-                        if (params.contains("nlu_result")) {
-                            if (length > 0 && data.length > 0) {
-                                if (input != null) {
-                                    input.setText(new String(data, offset, length));
-                                    LogUtil.e("语意解析成功：" + new String(data, offset, length));
-                                }
-                                return;
-                            }
-                        }
+//                        if (params.contains("nlu_result")) {
+//                            if (length > 0 && data.length > 0) {
+//                                if (input != null) {
+//                                    input.setText(new String(data, offset, length));
+//                                    LogUtil.e("语意解析成功：" + new String(data, offset, length));
+//                                }
+//                                return;
+//                            }
+//                        }
                         if(params.contains("final_result")){
                             try {
                                 JSONObject js = new JSONObject(params);
@@ -499,7 +507,18 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 
                             }
                         });
-                holder.title.setText(mApplication.ST(map.get("title")));
+
+                if(map.get("title").contains(input.getText().toString().trim())){
+                    int dex=map.get("title").indexOf(input.getText().toString().trim());
+                    SpannableString title=new SpannableString(mApplication.ST(map.get("title")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder.title.setText(title);
+                }else{
+                    holder.title.setText(mApplication.ST(map.get("title")));
+                }
+
+
+
                 String time = map.get("time");
                 holder.time.setText(mApplication.ST(TimeUtils.getTrueTimeStr(time)));
                 holder.user.setText(mApplication.ST(map.get("issuer")));
@@ -538,7 +557,14 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                         setDrawable(rbd);
                     }
                 });
-                holder2.title.setText(mApplication.ST(map.get("title")));
+                if(map.get("title").contains(input.getText().toString().trim())){
+                    int dex=map.get("title").indexOf(input.getText().toString().trim());
+                    SpannableString title=new SpannableString(mApplication.ST(map.get("title")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder2.title.setText(title);
+                }else{
+                    holder2.title.setText(mApplication.ST(map.get("title")));
+                }
                 holder2.title.setTag(map.get("id"));
                 holder2.content.setText(mApplication.ST(map.get("abstract")));
                 holder2.peopleNum.setText(mApplication.ST("报名人数:" + map.get("enrollment")));
@@ -561,7 +587,16 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 holder.type.setTag(map.get("id"));
                 Glide.with(context).load(map.get("image")).override(screenWidth / 5, screenWidth / 5).centerCrop().into(holder.image);
                 holder.user.setText(mApplication.ST(map.get("product")));
-                holder.title.setText(mApplication.ST(map.get("type1")));
+
+                if(map.get("type1").contains(input.getText().toString().trim())){
+                    int dex=map.get("type1").indexOf(input.getText().toString().trim());
+                    SpannableString title=new SpannableString(mApplication.ST(map.get("type1")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder.title.setText(title);
+                }else{
+                    holder.title.setText(mApplication.ST(map.get("type1")));
+                }
+//                holder.title.setText(mApplication.ST(map.get("type1")));
                 holder.time.setText(mApplication.ST("￥" + map.get("money1")));
             } else if (getItemViewType(position) == 3) {
                 ViewHolder holder;
@@ -581,7 +616,14 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 holder.type.setText(mApplication.ST("助学"));
                 holder.type.setTag(map.get("id"));
                 holder.user.setText(mApplication.ST("参与人数：" + map.get("cy_people")));
-                holder.title.setText(mApplication.ST(map.get("title")));
+                if(map.get("title").contains(input.getText().toString().trim())){
+                    int dex=map.get("title").indexOf(input.getText().toString().trim());
+                    SpannableString title=new SpannableString(mApplication.ST(map.get("title")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder.title.setText(title);
+                }else{
+                    holder.title.setText(mApplication.ST(map.get("title")));
+                }
                 final ImageView img=holder.image;
                 Glide.with(context).load(map.get("image"))
                         .asBitmap().override(DimenUtils.dip2px(Search.this,120),DimenUtils.dip2px(Search.this,90)).centerCrop()
@@ -634,6 +676,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 //        IOUtil.setData(this,TAG,"history",gridList);
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(input.getWindowToken(), 0);
         super.onDestroy();
+        mApplication.romoveActivity(this);
 
     }
 

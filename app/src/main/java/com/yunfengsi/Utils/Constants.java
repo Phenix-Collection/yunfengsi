@@ -7,7 +7,8 @@ import android.os.Environment;
  */
 public class Constants {
 
-
+    //帮助网页
+   public static final String Help="https://indrah.cn/yfs.php/Index/help" ;
     //服务器测试域名
     public static final String host_Ip = "http://yintolo.net";
     //    //服务器域名
@@ -414,5 +415,29 @@ public class Constants {
     //首页广告弹窗
     public static final String App_GGY = host_Ip + oooooo + "App_ggy";
 
+    //抽签
+    public static final String Fortune = host_Ip + iiiiii + "Draw";
+    //抽签历史
+    public static final String FortuneHistory= host_Ip + iiiiii + "Drawlist";
 
+    //通讯录上传
+    public static final String Contacts= host_Ip + iiiiii + "Txlupload";
+
+    //坐禅提交
+    public static final String Muse= host_Ip + iiiiii + "Muse";
+
+    //坐禅记录
+    public static final String MuseList= host_Ip + iiiiii + "Muselist";
+
+    //判断用户是否报名
+    public static final String IsEnrolled= host_Ip + oooooo + "Actpd";
+
+
+    //发布约车
+    public static final String SubmitCar= host_Ip + oooooo + "Fbcar";
+
+
+
+    //约车列表
+    public static final String CarList= host_Ip + oooooo + "Yuecarlist";
 }

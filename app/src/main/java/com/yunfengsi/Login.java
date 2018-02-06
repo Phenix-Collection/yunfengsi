@@ -179,12 +179,12 @@ public class Login extends AppCompatActivity implements OnClickListener {
                     return;
                 }
                 if (!username.getText().toString().trim().contains("@")) {
-                    if (!Verification.isMobileNO(username.getText().toString().trim())) {
-                        Toast.makeText(Login.this, mApplication.ST("请输入正确的手机号码"), Toast.LENGTH_SHORT).show();
-                        return;
-                    } else {
+//                    if (!Verification.isMobileNO(username.getText().toString().trim())) {
+//                        Toast.makeText(Login.this, mApplication.ST("请输入正确的手机号码"), Toast.LENGTH_SHORT).show();
+//                        return;
+//                    } else {
                         type = "1";
-                    }
+//                    }
                 }
                 if (username.getText().toString().trim().contains("@")) {
                     if (!Verification.isEmail(username.getText().toString().trim())) {

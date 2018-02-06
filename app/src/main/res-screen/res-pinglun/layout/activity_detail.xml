@@ -114,6 +114,18 @@
                 android:focusable="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+            <TextView
+                android:id="@+id/activity_detail_yue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/activity_detail_baoming"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/button1_sel"
+                android:focusable="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/activity_detail_faxidanwei"

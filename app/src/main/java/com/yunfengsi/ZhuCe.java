@@ -525,10 +525,13 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
                     Toast.makeText(ZhuCe.this, mApplication.ST("请输入手机号码") , Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!Verification.isMobileNO(phonenum.getText().toString())) {
-                    Toast.makeText(ZhuCe.this, mApplication.ST("请输入正确的手机号码"), Toast.LENGTH_SHORT).show();
-                    return;
+                if(code.equals("86")){
+                    if (!Verification.isMobileNO(phonenum.getText().toString())) {
+                        Toast.makeText(ZhuCe.this, mApplication.ST("请输入正确的手机号码"), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
+
                 //获取验证码
                 v.setEnabled(false);
                 getMid.setText(mApplication.ST("正在请求验证码"));
@@ -635,10 +638,14 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
                     }
                 }
                 if (isPhone) {
-                    if (!Verification.isMobileNO(phonenum.getText().toString())) {
+                    // TODO: 2018/1/26 国外手机注册  不使用手机验证
+                    if(code.equals("86")){
+                        if (!Verification.isMobileNO(phonenum.getText().toString())) {
                         Toast.makeText(ZhuCe.this, mApplication.ST("请输入正确的手机号码"), Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    }
+//
                     if ("".equals(Mid.getText().toString().trim())) {
                         Toast.makeText(ZhuCe.this, mApplication.ST("请输入验证码"), Toast.LENGTH_SHORT).show();
                         return;

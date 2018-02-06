@@ -30,7 +30,7 @@ public class MineManager {
     public static final String img = "mine_image";
     public static final String text = "mine_text";
     public static final String CACHE_NAME = "mine_cache";
-    public static final String CACHE_VERSON= "cache_verson";
+    public static final String CACHE_VERSON = "cache_verson";
 
 
     //    private ArrayList<Integer> imageList;
@@ -52,11 +52,13 @@ public class MineManager {
     public List<HashMap<String, Object>> getMaps() {
         return maps;
     }
-    public void notifyDataChanged(){
-        if(adapter!=null){
+
+    public void notifyDataChanged() {
+        if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }
+
     public MineManager(Context context, RecyclerView recyclerView) {
         super();
         this.recyclerView = recyclerView;
@@ -68,26 +70,28 @@ public class MineManager {
     public void initMine() {
         maps = FileUtils.getStorageMapEntities(mApplication.getInstance(), CACHE_NAME);
 
-        if(FileUtils.getStorageIntEntities(mApplication.getInstance(),CACHE_VERSON)==null||FileUtils.getStorageIntEntities(mApplication.getInstance(),CACHE_VERSON).get(0)!=Verification.getVersionCode(mApplication.getInstance())){
-            maps=null;
+        if (FileUtils.getStorageIntEntities(mApplication.getInstance(), CACHE_VERSON) == null || FileUtils.getStorageIntEntities(mApplication.getInstance(), CACHE_VERSON).get(0) != Verification.getVersionCode(mApplication.getInstance())) {
+            maps = null;
         }
         if (maps == null) {
             maps = new ArrayList<>();
             String text[] = mApplication.getInstance().getResources().getStringArray(R.array.mine_text);
             int img[] = new int[]
                     {
-                    R.mipmap.huiyuan,
-                    R.drawable.ganxiexin,
-                    R.mipmap.shoucang_justforleft,
-                    R.mipmap.zhifu_justforleft,
-                    R.drawable.gongxiu,
-                    R.drawable.gongke,
-                    R.drawable.mine_activity,
-                    R.drawable.tongzhi_normal,
-                    R.drawable.tougao_mine,
-                    R.mipmap.setting,
-                    R.drawable.qiehuan
-            };
+                            R.drawable.qian_icon,
+                            R.drawable.meditation,
+                            R.mipmap.huiyuan,
+                            R.drawable.ganxiexin,
+                            R.mipmap.shoucang_justforleft,
+                            R.mipmap.zhifu_justforleft,
+                            R.drawable.gongxiu,
+                            R.drawable.gongke,
+                            R.drawable.mine_activity,
+                            R.drawable.tongzhi_normal,
+                            R.drawable.tougao_mine,
+                            R.mipmap.setting,
+                            R.drawable.qiehuan
+                    };
 
             for (int i = 0; i < img.length; i++) {
                 LogUtil.e("img::::" + img[i] + "  text::::" + text[i]);
@@ -100,7 +104,7 @@ public class MineManager {
         LogUtil.e(maps + "  @#@#@#@#@~!!@!~~");
         adapter = new Mine_GridAdapter(maps);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 4));
-        mItemDeraction mItemDeraction=new mItemDeraction(1, Color.parseColor("#f2f2f2"));
+        mItemDeraction mItemDeraction = new mItemDeraction(1, Color.parseColor("#f2f2f2"));
         recyclerView.addItemDecoration(mItemDeraction);
         ItemDragAndSwipeCallback swipeCallback = new ItemDragAndSwipeCallback(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
@@ -110,7 +114,7 @@ public class MineManager {
             @Override
             public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int i) {
                 LogUtil.e("起始：：" + i);
-                LogUtil.e("     onItemDragStart    "+maps);
+                LogUtil.e("     onItemDragStart    " + maps);
             }
 
             @Override
@@ -122,26 +126,28 @@ public class MineManager {
             @Override
             public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int i) {
                 LogUtil.e("最后位置：：" + i);
-                LogUtil.e("onItemDragEnd      "+maps);
+                LogUtil.e("onItemDragEnd      " + maps);
             }
         });
 
         recyclerView.setAdapter(adapter);
 
     }
-    public void setOnitemClickListener(BaseQuickAdapter.OnRecyclerViewItemClickListener listener){
+
+    public void setOnitemClickListener(BaseQuickAdapter.OnRecyclerViewItemClickListener listener) {
         adapter.setOnRecyclerViewItemClickListener(listener);
     }
+
     public void saveMySetting() {
-        ArrayList<Integer > arrayList=new ArrayList<>();
+        ArrayList<Integer> arrayList = new ArrayList<>();
         arrayList.add(Verification.getVersionCode(context));
-        FileUtils.saveStorage2SDCard(mApplication.getInstance(),arrayList,CACHE_VERSON );
+        FileUtils.saveStorage2SDCard(mApplication.getInstance(), arrayList, CACHE_VERSON);
         FileUtils.saveStorage2SDCard(mApplication.getInstance(), maps, CACHE_NAME);
     }
 
-    public void chageRedPoint(){
-        for(int i=0;i<maps.size();i++){
-            if(maps.get(i).get(text).equals("会员中心")){
+    public void chageRedPoint() {
+        for (int i = 0; i < maps.size(); i++) {
+            if (maps.get(i).get(text).equals("会员中心")) {
                 recyclerView.getChildAt(i).findViewById(R.id.badge).setVisibility(View.VISIBLE);
                 break;
             }
@@ -149,10 +155,6 @@ public class MineManager {
         }
 
     }
-
-
-
-
 
 
 }

@@ -30,9 +30,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
@@ -43,8 +45,8 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
-import com.yunfengsi.Login;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.Login;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -62,8 +64,10 @@ import com.yunfengsi.Utils.ScaleImageUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
+import com.yunfengsi.YaoYue.Activity_YaoYue;
 import com.yunfengsi.ZhiFuShare;
 import com.yunfengsi.user_Info_First;
 
@@ -73,6 +77,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import okhttp3.Call;
@@ -126,9 +132,14 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     //第一次加载的评论数量
     private int firstNum = 0;
 
+
+    private boolean isNeedToChooseTime = false;
+    private String startTime = "", endTime ="";
+    private TextView  yue;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail);
 
         initView();
@@ -142,6 +153,10 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
         tip = (ImageView) findViewById(R.id.tip);
         tip.setOnClickListener(this);
 
+
+        yue= (TextView) findViewById(R.id.activity_detail_yue);
+        yue.setText("约");
+        yue.setOnClickListener(this);
         PLText = (EditText) findViewById(R.id.activity_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
         toggle = (ImageView) findViewById(R.id.toggle_audio_word);
@@ -165,9 +180,9 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        if(ibdRcognize==null){
-                            ibdRcognize=new IBDRcognizeImpl(activity_Detail.this);
-                            ibdRcognize.attachView(PLText,audio,toggle);
+                        if (ibdRcognize == null) {
+                            ibdRcognize = new IBDRcognizeImpl(activity_Detail.this);
+                            ibdRcognize.attachView(PLText, audio, toggle);
                         }
                         view.setSelected(true);
                         audio.setText("松开完成识别");
@@ -313,8 +328,8 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-        LogUtil.e("报名返回：：："+requestCode+    "       "+resultCode);
-        if (requestCode == 666&&resultCode==66) {//第一次完善资料返回报名
+        LogUtil.e("报名返回：：：" + requestCode + "       " + resultCode);
+        if (requestCode == 666 && resultCode == 66) {//第一次完善资料返回报名
             BaoMing();
         }
     }
@@ -441,6 +456,7 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                             js.put("user_id", PreferenceUtil.getUserId(activity_Detail.this));
                         }
 
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -459,6 +475,10 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                     @Override
                                     public void run() {
                                         tip.setVisibility(View.GONE);
+
+                                        isNeedToChooseTime = map.get("term").equals("2") ? true : false;
+
+
                                         if (map.get("prol") != null && !map.get("prol").equals("")) {
                                             act_prol = map.get("prol");
                                             LogUtil.e("活动协议：：" + act_prol);
@@ -797,9 +817,14 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
             try {
                 js.put("act_id", Id);
                 js.put("user_id", sp.getString("user_id", ""));
+                if(isNeedToChooseTime&&!startTime.equals("")&&!endTime.equals("")){
+                    js.put("start_time",startTime);
+                    js.put("end_time",endTime);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            LogUtil.e("提交报名信息：：；"+js);
             ApisSeUtil.M m = ApisSeUtil.i(js);
             OkGo.post(Constants.Activity_BaoMing).tag(TAG)
                     .params("key", m.K())
@@ -880,7 +905,41 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
+            case R.id.activity_detail_yue:
+                if(new LoginUtil().checkLogin(this)){
+                    JSONObject js=new JSONObject();
+                    try {
+                        js.put("m_id",Constants.M_id);
+                        js.put("user_id",PreferenceUtil.getUserId(this));
+                        js.put("act_id",Id);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ApisSeUtil.M m=ApisSeUtil.i(js);
+                    LogUtil.e("判断用户是否报名审核成功"+js);
+                    OkGo.post(Constants.IsEnrolled).params("key",m.K())
+                            .params("msg",m.M())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(String s, Call call, Response response) {
+                                    HashMap<String,String> map=AnalyticalJSON.getHashMap(s);
+                                    if(map!=null){
+                                        if("000".equals(map.get("code"))){
+                                            LogUtil.e("已通过审核");
+                                            Intent intent=new Intent(activity_Detail.this, Activity_YaoYue.class);
+                                            intent.putExtra("id",Id);
+                                            startActivity(intent);
+                                        }else if("001".equals(map.get("code"))){
+                                            ToastUtil.showToastShort("您的报名还没通过审核，请留意活动中的审核结果");
+                                        }else if("002".equals(map.get("code"))){
+                                            ToastUtil.showToastShort("您还没有报名该活动，快去报名参加吧");
+                                        }
+                                    }
+                                }
+                            });
+                }
 
+                break;
             case R.id.tip:
                 LoadData();
                 break;
@@ -1074,22 +1133,100 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showBaoMingDialog() {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(activity_Detail.this);
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(mApplication.ST("取消"), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).setTitle(mApplication.ST("确定报名参加" + title.getText().toString() + "吗？")).setNegativeButton(mApplication.ST("确定"), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                BaoMing();
-            }
+        if (isNeedToChooseTime) {//选择活动参与时间
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            Calendar end = Calendar.getInstance();
+            end.set(calendar.get(Calendar.YEAR) + 100, 11, 31);
+            TimePickerView timePickerView = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+                @Override
+                public void onTimeSelect(Date date, View v) {
+                    LogUtil.e("开始时间：：" + TimeUtils.getYMDTime(date, true));
+                    startTime =TimeUtils.getYMDTime(date, true);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date);
+                    calendar.add(Calendar.DAY_OF_MONTH, 29);
+                    Calendar end = Calendar.getInstance();
+                    end.set(calendar.get(Calendar.YEAR) + 100, 11, 31);
+                    TimePickerView timePickerView = new TimePickerView.Builder(activity_Detail.this, new TimePickerView.OnTimeSelectListener() {
+                        @Override
+                        public void onTimeSelect(Date endDate, View v) {
+                            LogUtil.e("结束时间：：" + TimeUtils.getYMDTime(endDate, false));
+                            endTime =TimeUtils.getYMDTime(endDate, false);
+
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(activity_Detail.this);
+                            builder1.setCancelable(true);
+                            builder1.setPositiveButton(mApplication.ST("取消"), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setTitle(mApplication.ST("确定报名参加" + title.getText().toString() + "吗？")).setNegativeButton(mApplication.ST("确定"), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    BaoMing();
+                                }
 
 
-        }).create().show();
+                            }).create().show();
+                        }
+                    })
+                            .setSubmitText("确定")
+                            .setCancelText("取消")
+                            .setCancelColor(Color.GRAY)
+                            .setSubmitColor(Color.BLACK)
+                            .setTitleColor(ContextCompat.getColor(activity_Detail.this,R.color.main_color))
+                            .setTitleBgColor(Color.WHITE)
+                            .setTitleSize(18)
+                            .setTitleText("请选择结束时间")
+                            .setContentSize(22)
+                            .isCyclic(true)
+                            .isCenterLabel(true)
+                            .setDate(calendar)
+                            .setType(new boolean[]{true, true, true, false, false, false})
+                            .setLineSpacingMultiplier(1.5f)
+                            .build();
+                    timePickerView.show();
+                }
+            })
+                    .setSubmitText("确定")
+                    .setCancelText("取消")
+                    .setCancelColor(Color.GRAY)
+                    .setSubmitColor(Color.BLACK)
+                    .setTitleColor(Color.BLACK)
+                    .setTitleBgColor(Color.WHITE)
+                    .setTitleSize(18)
+                    .setTitleText("请选择开始时间")
+                    .setContentSize(22)
+                    .isCyclic(true)
+                    .isCenterLabel(true)
+                    .setRangDate(calendar, end)
+                    .setType(new boolean[]{true, true, true, false, false, false})
+                    .setLineSpacingMultiplier(1.5f)
+                    .build();
+            timePickerView.show();
+
+        } else {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(activity_Detail.this);
+            builder1.setCancelable(true);
+            builder1.setPositiveButton(mApplication.ST("取消"), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).setTitle(mApplication.ST("确定报名参加" + title.getText().toString() + "吗？")).setNegativeButton(mApplication.ST("确定"), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    BaoMing();
+                }
+
+
+            }).create().show();
+        }
+
+
     }
 
     @Override

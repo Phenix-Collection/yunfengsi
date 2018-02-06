@@ -68,11 +68,17 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
     private boolean isRefresh = false;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mApplication.romoveActivity(this);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.message_center);
-
+        mApplication.addActivity(this);
 
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("通知中心");
@@ -145,7 +151,7 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
         swip.post(new Runnable() {
             @Override
             public void run() {
-                swip.setRefreshing(false);
+                swip.setRefreshing(true);
                 onRefresh();
             }
         });

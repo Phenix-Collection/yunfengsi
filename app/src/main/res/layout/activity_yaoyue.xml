@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/back"
+            android:src="@drawable/back"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:background="@drawable/back_sel"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:text="约列表"/>
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/fabu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="16dp"
+            app:text_color_normal="@color/white"
+            app:text_color_pressed="@color/grey"
+            android:text="发布信息"/>
+
+
+    </RelativeLayout>
+
+
+    <fragment
+        android:id="@+id/yaoyue"
+        android:name="com.yunfengsi.YaoYue.YaoYue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="45dp"/>
+
+</merge>

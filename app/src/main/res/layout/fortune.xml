@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/test">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_sel"
+            android:padding="10dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="每日一签"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:foreground="#90000000"
+         />
+
+
+    <RelativeLayout
+        android:id="@+id/qiantongContainer"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:animateLayoutChanges="true"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/qiantong"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/qian1_low" />
+
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/autoFortune"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/qiantong"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="自动摇签"
+            android:textSize="16dp"
+            app:background_normal="#B4342E"
+            app:background_pressed="#ccB4342E"
+            app:background_unable="@color/gray"
+            app:corner_radius="5dp"
+            app:text_color_normal="@color/white"
+            app:text_color_unable="@color/grey"
+
+            />
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/fortuneHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/qiantong"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="摇签记录"
+            android:textSize="16dp"
+            app:background_normal="#B4342E"
+            app:background_pressed="#ccB4342E"
+            app:background_unable="@color/gray"
+            app:corner_radius="5dp"
+            app:text_color_normal="@color/white"
+            app:text_color_unable="@color/grey" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:text="Tip : 摇一摇手机开始抽签"
+            android:layout_below="@+id/autoFortune"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/qian"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:visibility="gone" />
+
+
+    <ImageView
+        android:id="@+id/qian_small"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="10dp"
+        android:adjustViewBounds="true"
+        android:enabled="false"
+        android:src="@drawable/qian1_low" />
+
+
+        <TextView
+            android:id="@+id/tip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+
+</FrameLayout>

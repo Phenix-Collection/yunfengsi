@@ -5,11 +5,11 @@ import android.content.Intent;
 
 import com.alibaba.sdk.android.push.MessageReceiver;
 import com.alibaba.sdk.android.push.notification.CPushMessage;
+import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.NianFo.NianFo;
-import com.yunfengsi.Setting.Detail_Tongzhi;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.mApplication;
@@ -21,13 +21,13 @@ import java.util.Map;
  * Created by Administrator on 2016/12/16.
  */
 public class mReceiver extends MessageReceiver {
-    private static final String ZIXUN = "1";
-    private static final String GOngyang = "4";
-    private static final String ZHONGCHou = "5";
-    private static final String HUODong = "6";
-    private static final String GONGXIU = "14";
-    private static final String BaoMing = "10";
-    private static final String TongZhi = "17";
+   public static final String ZIXUN = "1";
+   public static final String GOngyang = "4";
+   public static final String ZHONGCHou = "5";
+   public static final String HUODong = "6";
+   public static final String GONGXIU = "14";
+   public static final String BaoMing = "10";
+   public static final String TongZhi = "17";
 
     @Override
     protected void onMessage(Context context, CPushMessage cPushMessage) {// TODO: 2016/12/16 透传
@@ -67,7 +67,7 @@ public class mReceiver extends MessageReceiver {
         } else if (BaoMing.equals(map.get("type"))) {
             intent.setClass(mApplication.getInstance(), Mine_activity_list.class);
         } else if (TongZhi.equals(map.get("type"))) {
-            intent.setClass(mApplication.getInstance(), Detail_Tongzhi.class);
+            intent.setClass(mApplication.getInstance(), MessageCenter.class);
         }
         context.startActivity(intent);
 

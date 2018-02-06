@@ -30,6 +30,8 @@ import com.umeng.socialize.UMShareConfig;
 import com.yunfengsi.Login;
 import com.yunfengsi.R;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.logging.Level;
 
 /**
@@ -55,6 +57,7 @@ public class mApplication extends Application {
 
     public static final String alias1 = "com.yunfengsi.Splash";
     public static final String alias2 = "com.yunfengsi.Splash1";
+    public static HashMap<Class,Activity> activityHashMap=new HashMap<>();
     @Override
     public void onCreate() {
         super.onCreate();
@@ -180,8 +183,33 @@ public class mApplication extends Application {
         });
     }
 
+    public static void closeAllActivities(){
+        Iterator<Activity> iterActivity = activityHashMap.values().iterator();
+        while(iterActivity.hasNext()){
+            iterActivity.next().finish();
+        }
+        activityHashMap.clear();
+    }
+    public static void addActivity(Activity activity){
+        activityHashMap.put(activity.getClass(),activity);
+    }
+
+    public static void romoveActivity(Activity activity){
+        if(activityHashMap.containsValue(activity)){
+            activityHashMap.remove(activity.getClass());
+            if(activity!=null){
+                activity.finish();
+            }
+
+        }
+    }
+
+
+
 
     public static void openPayLayout(final Activity context, final String allmoney, final String attachId, final String title, final String num, final String type, final String extra) {// TODO: 2016/12/20 打开支付窗口
+
+
         AlertDialog.Builder b=new AlertDialog.Builder(context);
         final AlertDialog alertDialog=b.create();
         View view= LayoutInflater.from(context).inflate(R.layout.pay_bottom_layout,null);

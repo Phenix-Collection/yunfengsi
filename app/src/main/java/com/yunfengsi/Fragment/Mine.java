@@ -55,6 +55,8 @@ import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Managers.MineManager;
 import com.yunfengsi.Model_activity.Mine_activity_list;
+import com.yunfengsi.More.Fortune;
+import com.yunfengsi.More.Meditation;
 import com.yunfengsi.NianFo.GYMX;
 import com.yunfengsi.NianFo.GYMX_FaYuan;
 import com.yunfengsi.NianFo.NianFo;
@@ -180,6 +182,16 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 HashMap<String, Object> map = mineManager.getMaps().get(i);
 
                 switch (map.get(mineManager.text).toString()) {
+                    case "卜事":
+                        if(new LoginUtil().checkLogin(getActivity())){
+                            startActivity(new Intent(getActivity(), Fortune.class));
+                        }
+                        break;
+                    case "在线坐禅":
+                        if(new LoginUtil().checkLogin(getActivity())){
+                            startActivity(new Intent(getActivity(), Meditation.class));
+                        }
+                        break;
                     case "通知":
                         if(new LoginUtil().checkLogin(getActivity())){
                             intent.setClass(getActivity(), MessageCenter.class);

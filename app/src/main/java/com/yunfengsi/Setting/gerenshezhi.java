@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yunfengsi.AD;
 import com.yunfengsi.BaseSTActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.ACache;
@@ -29,6 +30,7 @@ public class gerenshezhi extends BaseSTActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerenshezhi);
+        mApplication.addActivity(this);
         StatusBarCompat.compat(this, ContextCompat.getColor(this,R.color.main_color));
         aCache=ACache.get(this);
         sp=getSharedPreferences("user",MODE_PRIVATE);
@@ -44,12 +46,19 @@ public class gerenshezhi extends BaseSTActivity implements View.OnClickListener{
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mApplication.romoveActivity(this);
+    }
+
+    @Override
     protected void resetData() {
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("設置"));
         ((TextView) findViewById(R.id.shez_geren_back)).setText(mApplication.ST("個人信息"));
         ((TextView) findViewById(R.id.shez_anquan_back)).setText(mApplication.ST("信息修改"));
         ((TextView) findViewById(R.id.findPassword)).setText(mApplication.ST("账号安全"));
         ((TextView) findViewById(R.id.st)).setText(mApplication.ST("多語言"));
+        ((TextView) findViewById(R.id.bangzhu)).setText(mApplication.ST("帮助"));
         ((TextView) findViewById(R.id.qingchu)).setText(mApplication.ST("清除緩存"));
         ((TextView) findViewById(R.id.shez_jubao_back)).setText(mApplication.ST("建议反馈"));
         ((TextView) findViewById(R.id.shez_guanyu_back)).setText(mApplication.ST("关于我们"));
@@ -59,6 +68,11 @@ public class gerenshezhi extends BaseSTActivity implements View.OnClickListener{
     public void onClick(View view) {
        int id =view.getId();
         switch (id){
+            case R.id.bangzhu:
+                Intent intent1=new Intent(this, AD.class);
+                intent1.putExtra("bangzhu",true);
+                startActivity(intent1);
+                break;
             case R.id.st:
                 Intent intent=new Intent(this,ST.class);
                 startActivity(intent);

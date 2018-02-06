@@ -65,7 +65,7 @@ public class CharacterParser {
 	}
 
 	/**
-	 * * 汉字转成ASCII码 * * @param chs * @return */
+	 *  * 汉字转成ASCII码 * * @param chs * @return */
 	private int getChsAscii(String chs) {
 		int asc = 0;
 		try {

@@ -70,6 +70,7 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.nianfo_home_chanhui);
+        mApplication.addActivity(this);
         editText= (EditText) findViewById(R.id.nianfo_home_chanhui_content);
         diffuseView= (DiffuseView) findViewById(R.id.audio);
         ibdRcognize=new IBDRcognizeImpl(this);
@@ -123,6 +124,7 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         OkGo.getInstance().cancelTag(TAG);
+        mApplication.romoveActivity(this);
     }
 
     private void initData() {

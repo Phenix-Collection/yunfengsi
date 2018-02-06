@@ -274,7 +274,7 @@ public class ZhiFuShare extends AppCompatActivity {
 
         @JavascriptInterface
         public void openShare(String imgUrl, String petName, String goodName, String num, String info, String units, String money) {
-            if("5".equals(getIntent().getStringExtra("type"))){
+            if("5".equals(getIntent().getStringExtra("type"))||(getIntent().getStringExtra("url")!=null&&getIntent().getStringExtra("url").contains(URL_Red))){
                 LogUtil.e("跳转红包页面");
                 if(new LoginUtil().checkLogin(ZhiFuShare.this)){
                     Intent intent=new Intent(ZhiFuShare.this,RedPacket.class);

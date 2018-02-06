@@ -30,6 +30,35 @@ public class TimeUtils {
 
         return re_StrTime;
     }
+
+
+    //活动报名时间使用
+    public static String getYMDTime(Date cc_time,boolean isStart) {
+        String re_StrTime = null;
+        //同理也可以转为其它样式的时间格式.例如："yyyy/MM/dd HH:mm"
+        SimpleDateFormat sdf;
+        if(isStart)
+        {
+            sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+        }else{
+            sdf = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        }
+
+        re_StrTime = sdf.format(cc_time);
+
+        return re_StrTime;
+    }
+    //活动报名时间使用
+    public static String getYMDTime(Date cc_time) {
+        String re_StrTime = null;
+        //同理也可以转为其它样式的时间格式.例如："yyyy/MM/dd HH:mm"
+        SimpleDateFormat sdf;
+
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        re_StrTime = sdf.format(cc_time);
+
+        return re_StrTime;
+    }
 ///////////////////////////////////////
     public static String getStrTime_spe(SimpleDateFormat s,String cc_time,SimpleDateFormat formatter2) {
 

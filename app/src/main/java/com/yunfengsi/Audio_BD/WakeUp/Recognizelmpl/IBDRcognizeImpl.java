@@ -34,6 +34,7 @@ public class IBDRcognizeImpl implements EventListener {
     private EditText displayView;//需要显示语音识别结果的控件
     private ImageView keyView;//需要切换语音文字状态的开关控件
     private TextView audioButton;//长按录音的控件
+    private int defaultTimeOut=0;
     public IBDRcognizeImpl(Activity context) {
         this.context = context;
         initPermission();
@@ -43,6 +44,9 @@ public class IBDRcognizeImpl implements EventListener {
     public void setEventListener(EventListener eventListener){
         asr.unregisterListener(this);
         asr.registerListener(eventListener);
+    }
+    public void setTimeOut(int second){
+        defaultTimeOut=second;
     }
     public void attachView(EditText displayView, TextView audioButton, ImageView keyView) {
         this.displayView = displayView;
@@ -54,15 +58,15 @@ public class IBDRcognizeImpl implements EventListener {
     public void onEvent(String name, String params, byte[] data, int offset, int length) {
         switch (name) {
             case SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL://临时结果
-                if (params.contains("nlu_result")) {
-                    if (length > 0 && data.length > 0) {
-                        if (displayView != null) {
-                            displayView.append(new String(data, offset, length));
-                            LogUtil.e("语意解析成功：" + new String(data, offset, length));
-                        }
-                        return;
-                    }
-                }
+//                if (params.contains("nlu_result")) {
+//                    if (length > 0 && data.length > 0) {
+//                        if (displayView != null) {
+//                            displayView.append(new String(data, offset, length));
+//                            LogUtil.e("语意解析成功：" + new String(data, offset, length));
+//                        }
+//                        return;
+//                    }
+//                }
                 if(params.contains("final_result")){
                     try {
                         JSONObject js = new JSONObject(params);
@@ -115,8 +119,9 @@ public class IBDRcognizeImpl implements EventListener {
         event = SpeechConstant.ASR_START; // 替换成测试的event
 
         params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
+        params.put(SpeechConstant.PID, 15361);
         params.put(SpeechConstant.NLU, "enable");
-        params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0);//0 为长语音
+        params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, defaultTimeOut);//0 为长语音
         // params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
         //  params.put(SpeechConstant.PROP ,20000);
         // 请先使用如‘在线识别’界面测试和生成识别参数。 params同ActivityRecog类中myRecognizer.start(params);
@@ -130,7 +135,7 @@ public class IBDRcognizeImpl implements EventListener {
         asr.send(SpeechConstant.ASR_STOP, null, null, 0, 0); //
     }
 
-    private void cancel() {
+    public void cancel() {
         asr.send(SpeechConstant.ASR_CANCEL, null, null, 0, 0); //
     }
 

@@ -95,6 +95,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fragment_nianfo_home_tab6);
+        mApplication.addActivity(this);
         listView = (LoadMoreListView) findViewById(R.id.nianfo_home_tab1_listview);
         listView.setLoadMoreListen(this);
         listView.setFooterDividersEnabled(false);
@@ -740,6 +741,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
     protected void onDestroy() {
         super.onDestroy();
         OkGo.getInstance().cancelTag(TAG);
+        mApplication.romoveActivity(this);
     }
 
     @Override

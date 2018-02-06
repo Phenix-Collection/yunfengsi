@@ -63,6 +63,7 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ganyu);
+        mApplication.addActivity(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         wangzhan = (TextView) findViewById(R.id.guanfangwangzhan);
         qq = (TextView) findViewById(R.id.QQqun);
@@ -383,6 +384,7 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
     protected void onDestroy() {
         OkGo.getInstance().cancelTag(TAG);
         super.onDestroy();
+        mApplication.romoveActivity(this);
     }
 
     /*

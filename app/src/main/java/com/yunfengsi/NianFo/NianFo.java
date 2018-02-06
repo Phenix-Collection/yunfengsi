@@ -76,6 +76,7 @@ public class NianFo extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.nianfo);
+        mApplication.addActivity(this);
 //        SMS=getIntent().getStringExtra("sms");
 //        ((TextView) findViewById(R.id.title)).setText(mApplication.ST("共修"));
         //轮播
@@ -167,7 +168,7 @@ public class NianFo extends AppCompatActivity implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-
+        mApplication.romoveActivity(this);
     }
 
     static class mAdapter extends BaseAdapter {
@@ -234,6 +235,7 @@ public class NianFo extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.main_search:
                 finish();
+
 //                Intent intent = new Intent(mApplication.getInstance(), Search.class);
 //                startActivity(intent);
                 break;

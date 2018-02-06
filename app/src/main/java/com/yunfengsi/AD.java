@@ -37,8 +37,14 @@ public class AD extends AppCompatActivity {
 
         setContentView(R.layout.enter_wrap);
         webView= (WebView) findViewById(R.id.enter_wrap_web);
-        ((TextView) findViewById(R.id.ad_name)).setText(mApplication.ST(getResources().getString(R.string.app_name)));
-        webView.loadUrl(getIntent().getStringExtra("url"));
+        if(getIntent().getBooleanExtra("bangzhu",false)){
+            ((TextView) findViewById(R.id.ad_name)).setText(mApplication.ST("帮助"));
+            webView.loadUrl("https://indrah.cn/yfs.php/Index/help");
+        }else{
+            ((TextView) findViewById(R.id.ad_name)).setText(mApplication.ST(getResources().getString(R.string.app_name)));
+            webView.loadUrl(getIntent().getStringExtra("url"));
+        }
+
         WebSettings webSettings=webView.getSettings();
         //设置WebView属性，能够执行Javascript脚本
         webSettings.setJavaScriptEnabled(true);

@@ -51,7 +51,7 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shoucang_activity);
-
+        mApplication.addActivity(this);
         initView();
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -62,6 +62,12 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
         });
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mApplication.romoveActivity(this);
     }
 
     /**

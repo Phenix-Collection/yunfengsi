@@ -4,10 +4,16 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -356,5 +362,83 @@ public class ImageUtil {
             }
 
         }
+    }
+
+
+    public static Bitmap scaleWithWH(Bitmap src, double w, double h) {
+        if (w == 0 || h == 0 || src == null) {
+            return src;
+        } else {
+            // 记录src的宽高
+            int width = src.getWidth();
+            int height = src.getHeight();
+            // 创建一个matrix容器
+            Matrix matrix = new Matrix();
+            // 计算缩放比例
+            float scaleWidth = (float) (w / width);
+            float scaleHeight = (float) (h / height);
+            // 开始缩放
+            matrix.postScale(scaleWidth, scaleHeight);
+            // 创建缩放后的图片
+            return Bitmap.createBitmap(src, 0, 0, width, height, matrix, true);
+        }
+    }
+
+    public static Bitmap drawTextToBitmap(Context gContext,
+                                   int gResId,
+                                   String gText,int mWidthDP,int mHeightDP,int textSizeDp,boolean isVertical) {
+        Resources resources = gContext.getResources();
+//        float scale = resources.getDisplayMetrics().density;
+        Bitmap bitmap =
+                BitmapFactory.decodeResource(resources, gResId);
+
+        bitmap = scaleWithWH(bitmap, mWidthDP, mHeightDP);
+
+        android.graphics.Bitmap.Config bitmapConfig =
+                bitmap.getConfig();
+
+
+
+        // set default bitmap config if none
+        if(bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888;
+        }
+        // resource bitmaps are imutable,
+        // so we need to convert it to mutable one
+        bitmap = bitmap.copy(bitmapConfig, true);
+
+        Canvas canvas = new Canvas(bitmap);
+        // new antialised Paint
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // text color - #3D3D3D
+        final float scale = gContext.getResources().getDisplayMetrics().density;
+        int tetSize=(int) (textSizeDp * scale + 0.5f);
+
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(tetSize);
+        paint.setDither(true); //获取跟清晰的图像采样
+        paint.setFilterBitmap(true);//过滤一些
+        Rect bounds = new Rect();
+        if(isVertical){
+            paint.getTextBounds(gText, 0, 1, bounds);
+            int textheight=bounds.right;
+            int allHeight=textheight*gText.length();
+            LogUtil.e("一个字的高度：；"+textheight+"   全部高度：："+allHeight
+            +"  图片宽度：："+bitmap.getWidth()+"   图片高度：："+bitmap.getHeight());
+            char[] chars=gText.toCharArray();
+            int x=(bitmap.getWidth()-textheight)/2;
+            int y=(bitmap.getHeight()-allHeight)/2;
+            for(int i=0;i<chars.length;i++){
+                canvas.drawText(chars[i]+"\n", x , y +i*textheight+20, paint);
+            }
+
+        }else{
+
+
+        }
+
+
+
+        return bitmap;
     }
 }

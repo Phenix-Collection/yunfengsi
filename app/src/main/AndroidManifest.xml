@@ -63,8 +63,10 @@
     <!-- 电话号码相关 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- 重力加速度传感器权限 -->
+    <uses-permission android:name="android.hardware.sensor.accelerometer" />
 
     <application
         android:name=".Utils.mApplication"
@@ -88,14 +90,11 @@
             </intent-filter>
         </activity>
 
-
-        <!--<receiver android:name=".Managers.SMSBroadcastReceiver">-->
-           <!--<intent-filter android:priority="1000">-->
-               <!--<action android:name="android.provider.Telephony.SMS_RECEIVED"/>-->
-           <!--</intent-filter>-->
-        <!--</receiver>-->
-
-
+        <!-- <receiver android:name=".Managers.SMSBroadcastReceiver"> -->
+        <!-- <intent-filter android:priority="1000"> -->
+        <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED"/> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
 
 
         <!-- <activity android:name=".Splash1"> -->
@@ -133,9 +132,30 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".AD"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".More.Fortune"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".More.Fortune_History"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".More.Meditation_History"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".YaoYue.YaoYue_Fabu"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".YaoYue.YaoYue_Setting"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".More.Fortune_Detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".More.Meditation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".NianFo.HuiXiang"
@@ -224,6 +244,7 @@
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".Setting.Search"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -371,7 +392,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- &lt;!&ndash;微信~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt; -->
         <!-- &lt;!&ndash;QQ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt; -->
         <activity
@@ -504,13 +525,11 @@
                 <data android:scheme="qwallet1105643311" />
             </intent-filter>
         </activity>
+        <activity android:name=".Managers.AudioTest" />
+        <activity android:name=".RedPacket_Final" />
 
+        <!-- 百度语音 -->
 
-        <activity android:name=".Managers.AudioTest"/>
-
-        <activity android:name=".RedPacket_Final"></activity>
-
-        <!--百度语音-->
 
         <!-- 正式发布时，请替换成您自己的appId 本demo的appId会不定时下线 -->
         <meta-data
@@ -526,6 +545,9 @@
         <service
             android:name="com.baidu.speech.VoiceRecognitionService"
             android:exported="false" />
+
+        <activity android:name=".YaoYue.Activity_YaoYue"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

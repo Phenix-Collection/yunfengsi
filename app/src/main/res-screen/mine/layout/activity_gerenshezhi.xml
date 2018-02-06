@@ -143,6 +143,18 @@
         android:textColor="@color/wordblack"
         android:textSize="18dp" />
     <TextView
+        android:id="@+id/bangzhu"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:padding="10dp"
+
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+    <TextView
         android:id="@+id/shez_guanyu_back"
         android:layout_width="match_parent"
         android:layout_height="45dp"

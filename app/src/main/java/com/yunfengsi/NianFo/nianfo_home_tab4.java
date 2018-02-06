@@ -72,6 +72,7 @@ public class nianfo_home_tab4 extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.nianfo_home_chanhui);
+        mApplication.addActivity(this);
         editText = (EditText) findViewById(R.id.nianfo_home_chanhui_content);
         editText.setHint(mApplication.ST("请输入申请助念内容（200字以内）"));
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
@@ -347,6 +348,7 @@ public class nianfo_home_tab4 extends AppCompatActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         OkGo.getInstance().cancelTag(TAG);
+        mApplication.romoveActivity(this);
     }
 
     @Override
