@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.mArrayAdapter;
@@ -95,7 +96,6 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fragment_nianfo_home_tab6);
-        mApplication.addActivity(this);
         listView = (LoadMoreListView) findViewById(R.id.nianfo_home_tab1_listview);
         listView.setLoadMoreListen(this);
         listView.setFooterDividersEnabled(false);
@@ -411,43 +411,44 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                 loadData2();
                 break;
             case R.id.nianfo_home_tab1_commit:
-                if(type.getTag()==null||num.getText().toString().equals("")){
-                    ToastUtil.showToastShort("请填写发愿信息");
-                    return;
+                if (!type.getText().toString().trim().equals("") && !num.getText().toString().trim().equals("") &&
+                        !num.getText().toString().trim().equals("0")) {
+                    v.setEnabled(false);
+                    String content = "您发愿" + sb2.getText().toString().trim() + type.getTag(R.id.type_text).toString()
+                            + num.getText().toString() + sb.getText().toString() + "\n\n截止日期:" + targetTime + "(农历7月15日)";
+                    AlertDialog.Builder builder = new AlertDialog.Builder(nianfo_home_tab6.this);
+                    View view = LayoutInflater.from(nianfo_home_tab6.this).inflate(R.layout.fayuan_dialog, null);
+                    TextView c = (TextView) view.findViewById(R.id.content);
+                    ((TextView) view.findViewById(R.id.title)).setText("请确认您的发愿信息");
+                    c.setText(content);
+                    builder.setView(view);
+                    final AlertDialog d = builder.create();
+
+                    ((TextView) view.findViewById(R.id.cancle)).setText("取消");
+                    view.findViewById(R.id.cancle).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            d.dismiss();
+                        }
+                    });
+                    ((TextView) view.findViewById(R.id.commit)).setText("确认发愿");
+                    view.findViewById(R.id.commit).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            uploadData(v, d);
+                        }
+                    });
+                    d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            v.setEnabled(true);
+                        }
+                    });
+                    d.show();
+                }else{
+                    Toast.makeText(mApplication.getInstance(), mApplication.ST("请仔细填写发愿信息"), Toast.LENGTH_SHORT).show();
+                    v.setEnabled(true);
                 }
-                v.setEnabled(false);
-                String content="您发愿"+sb2.getText().toString().trim()+type.getTag(R.id.type_text).toString()
-                        +num.getText().toString()+sb.getText().toString()+"\n\n截止日期:"+targetTime+"(农历7月15日)";
-                AlertDialog.Builder builder = new AlertDialog.Builder(nianfo_home_tab6.this);
-                View view=LayoutInflater.from(nianfo_home_tab6.this).inflate(R.layout.fayuan_dialog,null);
-                TextView c= (TextView) view.findViewById(R.id.content);
-                ((TextView) view.findViewById(R.id.title)).setText("请确认您的发愿信息");
-                c.setText(content);
-                builder.setView(view);
-                final AlertDialog d=builder.create();
-
-                ((TextView) view.findViewById(R.id.cancle)).setText("取消");
-                view.findViewById(R.id.cancle).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        d.dismiss();
-                    }
-                });
-                ((TextView) view.findViewById(R.id.commit)).setText("确认发愿");
-                view.findViewById(R.id.commit).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        uploadData(v,d);
-                    }
-                });
-                d.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        v.setEnabled(true);
-                    }
-                });
-               d.show();
-
 
                 break;
             case R.id.nianfo_home_tab1_chaxunchengji:
@@ -527,6 +528,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                                                 HashMap<String, String> map = new HashMap<>();
                                                 map.put("user_id", PreferenceUtil.getUserId(nianfo_home_tab6.this));
                                                 map.put("type", choosedType);
+                                                map.put("name",type.getText().toString());
                                                 map.put("ls_id", type.getTag().toString());
                                                 map.put("user_image", sp.getString("head_url", ""));
                                                 map.put("pet_name", username.getText().toString());
@@ -534,13 +536,13 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                                                 map.put("num","0");
                                                 map.put("end_time",targetTime);
                                                 map.put("time", TimeUtils.getStrTime(System.currentTimeMillis() + ""));
-                                                if (choosedType.equals("1")) {
-                                                    map.put("name", "念佛");
-                                                } else if (choosedType.equals("2")) {
-                                                    map.put("name", "诵经");
-                                                } else if (choosedType.equals("3")) {
-                                                    map.put("name", "持咒");
-                                                }
+//                                                if (choosedType.equals("1")) {
+//                                                    map.put("name", "念佛");
+//                                                } else if (choosedType.equals("2")) {
+//                                                    map.put("name", "诵经");
+//                                                } else if (choosedType.equals("3")) {
+//                                                    map.put("name", "持咒");
+//                                                }
                                                 map.put("id", m1.get("id"));
                                                 adapter.mlist.add(0, map);
                                                 adapter.notifyDataSetChanged();
@@ -642,6 +644,8 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                 holder.txt_name = (TextView) view.findViewById(R.id.nianfo_item_name);
                 holder.txt_share = (TextView) view.findViewById(R.id.nianfo_item_share);
                 holder.text_status = (TextView) view.findViewById(R.id.nianfo_item_status);
+                holder.swipeview = (SwipeMenuLayout) view.findViewById(R.id.swipview);
+                holder.text_delete = (TextView) view.findViewById(R.id.delete);
                 view.setTag(holder);
             } else {
                 holder = (Holder) view.getTag();
@@ -652,7 +656,8 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                 holder.txt_share.setText(mApplication.ST("发愿分享"));
             } else {
                 view.setBackgroundColor(Color.WHITE);
-                holder.txt_share.setVisibility(View.INVISIBLE);
+                holder.txt_share.setVisibility(View.GONE);
+
             }
             if(targetTime.equals("")){
                 targetTime=map.get("end_time");
@@ -665,7 +670,10 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
             Double offset = target == 0 ? 0 : (now * 100d / target);
             final long targetTime = TimeUtils.dataOne(map.get("end_time"));
 
-
+            if((holder.swipeview.isSwipeEnable())){{
+                holder.swipeview.quickClose();
+            }}
+            holder.swipeview.setSwipeEnable(false);
             if (now >= target) {//发愿已达成
                 holder.text_status.setText("已达成 ");
                 holder.text_status.setBackgroundResource(R.drawable.status_completed_shape_fayuan);
@@ -677,6 +685,12 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                 } else if (targetTime > System.currentTimeMillis()) {//发愿未过期
                     holder.text_status.setText("进行中 " + offset.intValue() + "%");
                     holder.text_status.setBackgroundResource(R.drawable.status_playing_shape_fayuan);
+                    if(getItemViewType(position)==1){
+                        if(!holder.swipeview.isSwipeEnable()){{
+                            holder.swipeview.setSwipeEnable(true);
+                        }}
+                        holder.swipeview.quickClose();
+                    }
                 }
             }
 
@@ -687,13 +701,13 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                 String sb = "", sb2 = "";
                 if ("1".equals(type)) {
                     sb = "念";
-                    sb2 = "声";
+                    sb2 = " 声";
                 } else if ("2".equals(type)) {
                     sb = "诵";
-                    sb2 = "部";
+                    sb2 = " 部";
                 } else if ("3".equals(type)) {
                     sb = "持";
-                    sb2 = "遍";
+                    sb2 = " 遍";
                 }
 
                 SpannableString ss = new SpannableString(mApplication.ST("发愿" + "--" + sb + "  " + map.get("name") + " " + NumUtils.getNumStr(mlist.get(position).get("target_num")) + sb2));
@@ -719,7 +733,64 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                     }
                 });
             }
+            final View finalView = view;
+            holder.text_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    android.app.AlertDialog.Builder builder=new android.app.AlertDialog.Builder(nianfo_home_tab6.this);
 
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //删除发愿
+                            if(!Network.HttpTest(nianfo_home_tab6.this)){
+                                return;
+                            }
+                            JSONObject js=new JSONObject();
+                            try {
+                                js.put("m_id", Constants.M_id);
+                                js.put("user_id",map.get("user_id"));
+                                js.put("id",map.get("id"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ApisSeUtil.M m=ApisSeUtil.i(js);
+                            LogUtil.e("发愿删除：：："+js);
+                            OkGo.post(Constants.Fayuan_Delete).params("key",m.K())
+                                    .params("msg",m.M())
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(String s, Call call, Response response) {
+                                            HashMap<String,String > m= AnalyticalJSON.getHashMap(s);
+                                            if(m!=null){
+                                                if("000".equals(m.get("code"))){
+                                                    ToastUtil.showToastShort("删除成功");
+                                                    ((SwipeMenuLayout) finalView.findViewById(R.id.swipview)).quickClose();
+                                                    mlist.remove(map);
+                                                    notifyDataSetChanged();
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Call call, Response response, Exception e) {
+                                            super.onError(call, response, e);
+                                            ToastUtil.showToastShort("删除失败，请稍后重试");
+                                        }
+                                    });
+                        }
+                    });
+                    android.app.AlertDialog alertDialog=builder.create();
+                    alertDialog.setMessage("确认删除该条发愿吗？");
+                    alertDialog.show();
+
+                }
+            });
 
             holder.txt_date.setText(TimeUtils.getTrueTimeStr(mlist.get(position).get("time")));
 //            view.setAnimation(AnimationUtils.loadAnimation(nianfo_home_tab6.this,R.anim.umeng_socialize_fade_in));
@@ -733,7 +804,9 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
             TextView txt_name;
             TextView txt_desc;
             TextView txt_date;
-            TextView txt_share, text_status;
+            TextView txt_share, text_status,text_delete;
+            SwipeMenuLayout swipeview;
+
         }
     }
 
@@ -741,7 +814,6 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
     protected void onDestroy() {
         super.onDestroy();
         OkGo.getInstance().cancelTag(TAG);
-        mApplication.romoveActivity(this);
     }
 
     @Override

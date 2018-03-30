@@ -106,10 +106,10 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
 
         adapter = new countryAdapter(new ArrayList<JXl.CountryModel>());
         sortListView.setAdapter(adapter);
-        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int i) {
-                JXl.CountryModel s = (JXl.CountryModel) adapter.getItem(i);
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                JXl.CountryModel s = (JXl.CountryModel) adapter.getItem(position);
                 Intent intent = new Intent();
                 intent.putExtra("country", s.getChinaName());
                 intent.putExtra("code", s.getAreaNumber());
@@ -117,6 +117,8 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
                 finish();
             }
         });
+
+
 
 
         jxl.loader.execute("excel.xls");
@@ -128,7 +130,7 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
         mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
         mClearEditText.setHint(mApplication.ST("搜索"));
         Drawable d = ContextCompat.getDrawable(this, R.drawable.search_gray);
-        d.setBounds(0, 0, DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25));
+        d.setBounds(0, 0, DimenUtils.dip2px(this, 20), DimenUtils.dip2px(this, 20));
         mClearEditText.setCompoundDrawables(d, null, null, null);
         //�������������ֵ�ĸı�����������
         mClearEditText.addTextChangedListener(new TextWatcher() {
@@ -151,7 +153,7 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
         });
     }
 
-    public static class countryAdapter extends BaseQuickAdapter<JXl.CountryModel> {
+    public static class countryAdapter extends BaseQuickAdapter<JXl.CountryModel,BaseViewHolder> {
         public countryAdapter(List<JXl.CountryModel> data) {
             super(R.layout.country_sort_item, data);
         }

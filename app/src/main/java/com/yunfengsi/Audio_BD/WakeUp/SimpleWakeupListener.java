@@ -13,8 +13,11 @@ import android.support.v4.content.ContextCompat;
 import com.baidu.speech.EventListener;
 import com.baidu.speech.asr.SpeechConstant;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.BlessTree.BlessTree;
+import com.yunfengsi.E_Book.BookList;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
+import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.More.Fortune;
 import com.yunfengsi.More.Meditation;
 import com.yunfengsi.NianFo.NianFo;
@@ -27,11 +30,14 @@ import com.yunfengsi.NianFo.nianfo_home_tab6;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Activity_ShouCang;
 import com.yunfengsi.Setting.GanyuActivity;
+import com.yunfengsi.Setting.Mine_HuiYuan;
 import com.yunfengsi.Setting.Month_Detail;
 import com.yunfengsi.Setting.Search;
 import com.yunfengsi.Setting.gerenshezhi;
+import com.yunfengsi.TouGao.TouGao;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
+import com.yunfengsi.Utils.WakeLockUtil;
 import com.yunfengsi.Utils.mApplication;
 
 import org.json.JSONException;
@@ -419,6 +425,14 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
                 text=OK;
                 Intent i2=new Intent(context,GanyuActivity.class);
                 context.startActivity(i2);
+            }else if(result.contains("祈愿树")||result.contains("许愿")||result.contains("祈愿")){
+                text=OK;
+                Intent i2=new Intent(context,BlessTree.class);
+                context.startActivity(i2);
+            }else if(result.contains("电子书")||result.contains("佛经")||result.contains("经书")){
+                text=OK;
+                Intent i2=new Intent(context,BookList.class);
+                context.startActivity(i2);
             }else if(result.contains("活动")||result.contains("报名")){
                 text=OK;
                 ((MainActivity) context).pager.setCurrentItem(1);
@@ -466,20 +480,36 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
             }else if(result.contains("发愿")){
                 text=OK;
                 context.startActivity(new Intent(context,nianfo_home_tab6.class));
-            }else if(result.contains("坐禅")||result.contains("禅修")){
+            }else if(result.contains("坐禅")||result.contains("禅修")||result.contains("打坐")||result.contains("静坐")){
                 text=OK;
                 context.startActivity(new Intent(context,Meditation.class));
-            }else if(result.contains("通知中心")){
+            }else if(result.contains("通知")){
                 if(new LoginUtil().checkLogin(context)){
                     text=OK;
                     context.startActivity(new Intent(context,MessageCenter.class));
+                }
+            }else if(result.contains("会员")){
+                if(new LoginUtil().checkLogin(context)){
+                    text=OK;
+                    context.startActivity(new Intent(context,Mine_HuiYuan.class));
+                }
+            }else if(result.contains("投稿")){
+                if(new LoginUtil().checkLogin(context)){
+                    text=OK;
+                    context.startActivity(new Intent(context,TouGao.class));
+                }
+            }else if(result.contains("签到")||result.contains("我的活动")||result.contains("活动审核结果")){
+                if(new LoginUtil().checkLogin(context)){
+                    text=OK;
+                    context.startActivity(new Intent(context,Mine_activity_list.class));
                 }
             }else if(result.contains("感谢信")){
                 if(new LoginUtil().checkLogin(context)){
                     text=OK;
                     context.startActivity(new Intent(context,Month_Detail.class));
                 }
-            }else if(result.contains("抽签")||result.contains("运势")||result.contains("每日一签")){
+            }else if(result.contains("抽签")||result.contains("运势")||result.contains("每日一签")||result.contains("卜事")
+                    ||result.contains("算命")||result.contains("卜卦")||result.contains("解梦")||result.contains("算卦")){
                 if(new LoginUtil().checkLogin(context)){
                     text=OK;
                     context.startActivity(new Intent(context,Fortune.class));
@@ -498,6 +528,7 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
                 mediaPlayer=MediaPlayer.create(context,R.raw.ohno);
                 mediaPlayer.start();
             }else{
+                WakeLockUtil.wakeUpAndUnlock();
                 mediaPlayer=MediaPlayer.create(context,R.raw.ok);
                 mediaPlayer.start();
             }

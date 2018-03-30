@@ -27,6 +27,7 @@ import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
+import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.LoadMoreListView;
@@ -60,12 +61,14 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
     private View view;
 
     private ImageView tip;
+//    private ValueAnimator valueAnimator;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.zixun_list, container, false);
+
         if (isFirstIn) {
             initView(view);
             refreshLayout.post(new Runnable() {
@@ -78,13 +81,25 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
             });
             isFirstIn = false;
         }
+
         return view;
     }
+
+
+
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        valueAnimator.cancel();
+//        valueAnimator=null;
+//    }
+
+
 
     // TODO: 2017/4/19 重置简繁
     @Override
     protected void resetData() {
-        if(adapter!=null){
+        if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }
@@ -183,17 +198,19 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
             public void run() {
                 String data1 = null;
                 try {
-                    JSONObject js=new JSONObject();
+                    JSONObject js = new JSONObject();
                     try {
-                        js.put("m_id",Constants.M_id);
+                        js.put("m_id", Constants.M_id);
                         js.put("page", page);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    ApisSeUtil.M m = ApisSeUtil.i(js);
+                    LogUtil.e("首页资讯：：" + js);
                     ////上拉加载是 Integer.valueof(page)++;
                     data1 = OkGo.post(Constants.ZiXun_total_Ip).tag(TAG)
-                            .params("key", ApisSeUtil.getKey())
-                            .params("msg", ApisSeUtil.getMsg(js)).execute().body().string();
+                            .params("key", m.K())
+                            .params("msg", m.M()).execute().body().string();
                     if (!data1.equals("")) {
                         if (AnalyticalJSON.getList(data1, "news") == null) {
                             //无直播信息
@@ -206,53 +223,60 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
                             final ProgressBar p = (ProgressBar) (ziXunListView.footer.findViewById(R.id.load_more_bar));
                             dataList = AnalyticalJSON.getList(data1, "news");
                             if (0 == adapter.mlist.size()) {
-                                adapter.addList(dataList);
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ziXunListView.setAdapter(adapter);
-                                        if (refreshLayout.isRefreshing())
-                                            refreshLayout.setRefreshing(false);
-                                        tip.setVisibility(View.GONE);
-                                    }
-                                });
-                            } else {
-                                if (isRefresh) {
-                                    isRefresh = false;
-                                    endPage = "";
-                                    adapter.addList(dataList);
+                                if (getActivity() != null) {
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            adapter.addList(dataList);
+                                            ziXunListView.setAdapter(adapter);
                                             if (refreshLayout.isRefreshing())
                                                 refreshLayout.setRefreshing(false);
-                                            if (t.getText().toString().equals("没有更多数据了")) {
-                                                p.setVisibility(View.VISIBLE);
-                                                t.setText("正在加载....");
-                                            }
-                                            adapter.notifyDataSetChanged();
-                                            ziXunListView.onLoadComplete();
                                             tip.setVisibility(View.GONE);
                                         }
                                     });
-                                } else {
-                                    adapter.mlist.addAll(dataList);
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            adapter.notifyDataSetChanged();
-                                            if (endPage.equals(page)) {
-                                                p.setVisibility(View.GONE);
-                                                t.setText("没有更多数据了");
-                                                return;
-                                            } else {
-                                                p.setVisibility(View.VISIBLE);
-                                                t.setText("正在加载....");
+                                }
+                            } else {
+                                if (isRefresh) {
+                                    if (getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                isRefresh = false;
+                                                endPage = "";
+                                                adapter.addList(dataList);
+                                                if (refreshLayout.isRefreshing())
+                                                    refreshLayout.setRefreshing(false);
+                                                if (t.getText().toString().equals("没有更多数据了")) {
+                                                    p.setVisibility(View.VISIBLE);
+                                                    t.setText("正在加载....");
+                                                }
+                                                adapter.notifyDataSetChanged();
                                                 ziXunListView.onLoadComplete();
+                                                tip.setVisibility(View.GONE);
                                             }
-                                            tip.setVisibility(View.GONE);
-                                        }
-                                    });
+                                        });
+                                    }
+                                } else {
+                                    if (getActivity() != null) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                adapter.mlist.addAll(dataList);
+                                                adapter.notifyDataSetChanged();
+                                                if (endPage.equals(page)) {
+                                                    p.setVisibility(View.GONE);
+                                                    t.setText("没有更多数据了");
+                                                    return;
+                                                } else {
+                                                    p.setVisibility(View.VISIBLE);
+                                                    t.setText("正在加载....");
+                                                    ziXunListView.onLoadComplete();
+                                                }
+                                                tip.setVisibility(View.GONE);
+                                            }
+                                        });
+                                    }
+
                                 }
 
 
@@ -264,13 +288,17 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
                     }
                 } catch (Exception e) {
                     mZiXunhandler.sendEmptyMessage(Constants.LoadFail);
-                }finally {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(refreshLayout!=null&&refreshLayout.isRefreshing())refreshLayout.setRefreshing(false);
-                        }
-                    });
+                } finally {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (refreshLayout != null && refreshLayout.isRefreshing())
+                                    refreshLayout.setRefreshing(false);
+                            }
+                        });
+                    }
+
                 }
 
 
@@ -287,21 +315,23 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
             switch (msg.what) {
 
                 case Constants.LoadFail:
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Network.HttpTest(getActivity())) {
-                                Glide.with(getActivity()).load(R.drawable.load_nothing).override(DimenUtils.dip2px(getActivity(), 150), DimenUtils.dip2px(getActivity(), 150))
-                                        .fitCenter().into(tip);
-                            } else {
-                                Glide.with(getActivity()).load(R.drawable.load_neterror).override(DimenUtils.dip2px(getActivity(), 150), DimenUtils.dip2px(getActivity(), 150))
-                                        .fitCenter().into(tip);
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (Network.HttpTest(getActivity())) {
+                                    Glide.with(getActivity()).load(R.drawable.load_nothing).override(DimenUtils.dip2px(getActivity(), 150), DimenUtils.dip2px(getActivity(), 150))
+                                            .fitCenter().into(tip);
+                                } else {
+                                    Glide.with(getActivity()).load(R.drawable.load_neterror).override(DimenUtils.dip2px(getActivity(), 150), DimenUtils.dip2px(getActivity(), 150))
+                                            .fitCenter().into(tip);
+                                }
+                                tip.setVisibility(View.VISIBLE);
+                                if (refreshLayout.isShown()) refreshLayout.setRefreshing(false);
+                                if (ziXunListView.footer.isShown()) ziXunListView.onLoadComplete();
                             }
-                            tip.setVisibility(View.VISIBLE);
-                            if (refreshLayout.isShown()) refreshLayout.setRefreshing(false);
-                            if (ziXunListView.footer.isShown()) ziXunListView.onLoadComplete();
-                        }
-                    });
+                        });
+                    }
 
                     break;
 
@@ -310,7 +340,7 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
     };
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.tip:
                 v.setVisibility(View.GONE);
@@ -322,6 +352,8 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
                     }
                 });
                 break;
+
+
         }
     }
 

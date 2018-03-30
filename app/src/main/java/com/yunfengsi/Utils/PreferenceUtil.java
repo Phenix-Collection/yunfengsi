@@ -27,6 +27,8 @@ public  class PreferenceUtil  {
     public static SharedPreferences getSettingIncetance(Context c){
         return  c.getSharedPreferences("setting",Context.MODE_PRIVATE);
     }
+
+
     public static void setChina(Context c,boolean flag){
         getSettingIncetance(c).edit().putBoolean("isChina",flag).apply();
     }

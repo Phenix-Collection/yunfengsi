@@ -32,6 +32,7 @@
             android:layout_toLeftOf="@+id/tv_support_count"
             android:ellipsize="end"
             android:maxLines="2"
+            android:textIsSelectable="true"
             android:textColor="@color/black"
             android:textSize="18sp" />
 

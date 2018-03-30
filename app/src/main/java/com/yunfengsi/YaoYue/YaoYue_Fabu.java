@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,7 +48,7 @@ public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListen
     private Date currentDate;
     private String money, address;
     //    private boolean canCommit = false;
-    private String status = "1";
+    private String status = "2";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,14 +96,14 @@ public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.haveCar:
-                status = "1";
+                status = "2";
                 haveCar.setEnabled(false);
                 Nocar.setEnabled(true);
                 ((TextView) findViewById(R.id.txt_people)).setText("空余座位:");
                 edt_peolle.setHint("请输入空余座位数量");
                 break;
             case R.id.noCar:
-                status = "2";
+                status = "1";
                 haveCar.setEnabled(true);
                 Nocar.setEnabled(false);
                 ((TextView) findViewById(R.id.txt_people)).setText("需求座位:");
@@ -275,7 +276,7 @@ public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListen
                         HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
                         if (map != null) {
                             if ("000".equals(map.get("code"))) {
-                                ToastUtil.showToastShort("信息发布成功");
+                                ToastUtil.showToastLong("发布成功,如果您已约车成功，请将您发布的信息及时删除", Gravity.CENTER);
                                 Intent intent=new Intent("yaoyue");
                                 sendBroadcast(intent);
                                 finish();

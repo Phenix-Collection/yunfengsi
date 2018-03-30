@@ -68,7 +68,7 @@ public class Mine_SC extends Fragment implements View.OnClickListener {
         listView = (mPLlistview2) view.findViewById(R.id.mine_shoucang_listview);
         listView.removeFooterView(listView.footer);
         tip = (TextView) view.findViewById(R.id.mine_shoucang_tip);
-        Drawable d= ContextCompat.getDrawable(getActivity(),R.drawable.indra);
+        Drawable d= ContextCompat.getDrawable(getActivity(), R.drawable.indra);
         d.setBounds(0,0,200,200);
         tip.setCompoundDrawables(null,d,null,null);
         listView.setEmptyView(tip);

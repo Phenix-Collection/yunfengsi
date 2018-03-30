@@ -262,6 +262,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="简介"
+
                 android:gravity="center_vertical"
                 android:textSize="18dp"
                 android:background="#eeeeee"
@@ -281,6 +282,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="#111111"
+                android:textIsSelectable="true"
                 android:textSize="14dp" />
             <TextView
                 android:id="@+id/pinglun1"

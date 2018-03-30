@@ -3,17 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
- <include layout="@layout/title_default"/>
 
-    <com.yunfengsi.View.LoadMoreListView
+    <include layout="@layout/title_default" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swip"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fund_people_list"
-        android:divider="@drawable/mdivider"
-        android:listSelector="@color/white"
-        >
+        android:layout_height="match_parent">
 
-    </com.yunfengsi.View.LoadMoreListView>
+        <com.yunfengsi.View.LoadMoreListView
+            android:id="@+id/fund_people_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/mdivider">
+
+        </com.yunfengsi.View.LoadMoreListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </LinearLayout>

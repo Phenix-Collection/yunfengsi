@@ -92,15 +92,15 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
         recyclerView.addItemDecoration(new mItemDeraction(1, Color.parseColor("#b6b6b6")));
         adapter = new mJiLuAdapter(this, new ArrayList<HashMap<String, String>>());
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        adapter.openLoadMore(5, true);
-        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int i) {
+            public void onItemClick(BaseQuickAdapter a, View view, int position) {
                 Intent intent = new Intent(ChengZhangJiLu.this, FundingDetailActivity.class);
-                intent.putExtra("id", adapter.getData().get(i).get("shop_id"));
+                intent.putExtra("id", adapter.getData().get(position).get("shop_id"));
                 startActivity(intent);
             }
         });
+
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -112,7 +112,7 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
                     getData();
                 }
             }
-        });
+        },recyclerView);
         TextView textView = new TextView(this);
         textView.setText(mApplication.ST("暂无数据\n下拉刷新"));
         Drawable drawable = ActivityCompat.getDrawable(this, R.drawable.load_nothing);
@@ -172,21 +172,23 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
                                 adapter.setNewData(l);
                                 isRefresh = false;
                                 swip.setRefreshing(false);
-                                adapter.openLoadMore(5,true);
+
                             } else if (isLoadMore) {
                                 isLoadMore = false;
                                 if (l.size() < 5) {
                                     ToastUtil.showToastShort(mApplication.ST("已经没有更多数据啦"), Gravity.CENTER);
                                     endPage = page;
-                                    adapter.notifyDataChangedAfterLoadMore(l, false);
+                                    adapter.addData(l);
+                                    adapter.loadMoreEnd(false);
                                 } else {
-                                    adapter.notifyDataChangedAfterLoadMore(l, true);
+                                    adapter.addData(l);
+                                    adapter.loadMoreComplete();
                                 }
                             }
                         } else if (data.equals("null")) {
                             endPage = page--;
                             swip.setRefreshing(false);
-                            adapter.notifyDataChangedAfterLoadMore(new ArrayList<HashMap<String, String>>(), false);
+                            adapter.setEnableLoadMore(false);
                         } else {
                             ToastUtil.showToastShort(mApplication.ST("数据加载失败，请检查网络连接"), Gravity.CENTER);
                         }
@@ -224,7 +226,7 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
     }
 
 
-    public static class mJiLuAdapter extends BaseQuickAdapter<HashMap<String, String>> {
+    public static class mJiLuAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
         private Context context;
 
         public mJiLuAdapter(Context context, List<HashMap<String, String>> data) {

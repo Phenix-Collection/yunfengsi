@@ -78,19 +78,21 @@ public class MineManager {
             String text[] = mApplication.getInstance().getResources().getStringArray(R.array.mine_text);
             int img[] = new int[]
                     {
-                            R.drawable.qian_icon,
-                            R.drawable.meditation,
-                            R.mipmap.huiyuan,
-                            R.drawable.ganxiexin,
-                            R.mipmap.shoucang_justforleft,
-                            R.mipmap.zhifu_justforleft,
-                            R.drawable.gongxiu,
-                            R.drawable.gongke,
-                            R.drawable.mine_activity,
-                            R.drawable.tongzhi_normal,
-                            R.drawable.tougao_mine,
-                            R.mipmap.setting,
-                            R.drawable.qiehuan
+                            R.raw.qiyuan,
+                            R.raw.jinshu,
+                            R.raw.qian_icon,
+                            R.raw.meditation,
+                            R.raw.huiyuan,
+                            R.raw.ganxiexin,
+                            R.raw.shoucang_justforleft,
+                            R.raw.zhifu_justforleft,
+                            R.raw.gongxiu,
+                            R.raw.gongke,
+                            R.raw.mine_activity,
+                            R.raw.tongzhi_normal,
+                            R.raw.tougao_mine,
+                            R.raw.setting,
+                            R.raw.qiehuan
                     };
 
             for (int i = 0; i < img.length; i++) {
@@ -134,8 +136,8 @@ public class MineManager {
 
     }
 
-    public void setOnitemClickListener(BaseQuickAdapter.OnRecyclerViewItemClickListener listener) {
-        adapter.setOnRecyclerViewItemClickListener(listener);
+    public void setOnitemClickListener(BaseQuickAdapter.OnItemClickListener listener) {
+        adapter.setOnItemClickListener(listener);
     }
 
     public void saveMySetting() {

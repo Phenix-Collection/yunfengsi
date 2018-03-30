@@ -10,9 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +19,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.yunfengsi.Adapter.PingLunActivity;
+import com.yunfengsi.BlessTree.BlessTree;
+import com.yunfengsi.E_Book.BookList;
+import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.More.Fortune;
+import com.yunfengsi.More.Meditation;
+import com.yunfengsi.NianFo.NianFo;
+import com.yunfengsi.Push.mReceiver;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -32,7 +38,6 @@ import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
-import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.ZiXun_Detail;
@@ -95,8 +100,8 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
         recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new MessageAdapter(this,new ArrayList<HashMap<String, String>>());
-        adapter.openLoadMore(pageSize, true);
+        adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());
+
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -107,47 +112,63 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
                     getNotice();
                 }
             }
-        });
-        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        }, recyclerView);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+
             @Override
-            public void onItemClick(View view, int i) {
-                Intent intent=new Intent();
-                HashMap<String,String > map=adapter.getData().get(i);
-                if(map.get("type")!=null){
-                    switch (Integer.valueOf(map.get("type"))){
-                        case 1:
-                            intent.setClass(MessageCenter.this,ZiXun_Detail.class);
+            public void onItemClick(BaseQuickAdapter a, View view, int position) {
+                Intent intent = new Intent();
+                HashMap<String, String> map = adapter.getData().get(position);
+                if (map.get("type") != null) {
+                    switch (map.get("type")) {
+                        case mReceiver.ZIXUN:
+                            intent.setClass(MessageCenter.this, ZiXun_Detail.class);
                             break;
-                        case 2:
-                            intent.setClass(MessageCenter.this,activity_Detail.class);
+                        case mReceiver.HUODong:
+                            intent.setClass(MessageCenter.this, activity_Detail.class);
                             break;
-                        case 3:
-                            intent.setClass(MessageCenter.this,XuanzheActivity.class);
+                        case mReceiver.GOngyang:
+                            intent.setClass(MessageCenter.this, XuanzheActivity.class);
                             break;
-                        case 4:
-                            intent.setClass(MessageCenter.this,FundingDetailActivity.class);
+                        case mReceiver.GONGXIU:
+                            intent.setClass(MessageCenter.this, NianFo.class);
                             break;
+                        case mReceiver.BaoMing:
+                            intent.setClass(MessageCenter.this, Mine_activity_list.class);
+                            break;
+                        case mReceiver.Pinglun:
+                            intent.setClass(MessageCenter.this, PingLunActivity.class);
+                            break;
+                        case mReceiver.QiYuan:
+                            intent.setClass(MessageCenter.this, BlessTree.class);
+                            break;
+                        case mReceiver.Fojin:
+                            intent.setClass(MessageCenter.this, BookList.class);
+                            break;
+                        case mReceiver.Bushi:
+                            intent.setClass(MessageCenter.this, Fortune.class);
+                            break;
+                        case mReceiver.ZuoChan:
+                            intent.setClass(MessageCenter.this, Meditation.class);
+                            break;
+
+
                     }
-                    intent.putExtra("id",map.get("type_id"));
+                    intent.putExtra("id", map.get("type_id"));
                     startActivity(intent);
                 }
             }
         });
         recyclerView.setAdapter(adapter);
 
-        TextView textView = new TextView(this);
+        View empty = LayoutInflater.from(this).inflate(R.layout.empty_layout, null);
+        TextView textView = empty.findViewById(R.id.empty);
         Drawable d = ContextCompat.getDrawable(this, R.drawable.load_nothing);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
-        textView.setCompoundDrawablePadding(DimenUtils.dip2px(this, 10));
         textView.setText(mApplication.ST("暂无通知"));
+        adapter.setEmptyView(empty);
 
-
-        textView.setGravity(Gravity.CENTER);
-        ViewGroup.MarginLayoutParams vl = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        vl.topMargin = DimenUtils.dip2px(this, 180);
-        textView.setLayoutParams(vl);
-        adapter.setEmptyView(textView);
         swip.post(new Runnable() {
             @Override
             public void run() {
@@ -157,38 +178,63 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
         });
     }
 
-    private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>> {
+    private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
         Drawable next;
         int dp30;
-        public MessageAdapter(Context context,List<HashMap<String, String>> data) {
+
+        public MessageAdapter(Context context, List<HashMap<String, String>> data) {
             super(R.layout.item_message_center, data);
-            dp30=DimenUtils.dip2px(context,20);
-            next=ContextCompat.getDrawable(context,R.drawable.item_tip);
-            next.setBounds(0,0,dp30,dp30);
+            dp30 = DimenUtils.dip2px(context, 20);
+            next = ContextCompat.getDrawable(context, R.drawable.item_tip);
+            next.setBounds(0, 0, dp30, dp30);
         }
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            if(map.get("type")!=null){
-                switch (Integer.valueOf(map.get("type"))){
-                    case 1:
-                        holder.setText(R.id.title,"资讯");
+            if (map.get("type") != null) {
+                switch (map.get("type")) {
+                    case mReceiver.ZIXUN:
+                        holder.setText(R.id.title, "图文");
                         break;
-                    case 2:
-                        holder.setText(R.id.title,"活动");
+                    case mReceiver.HUODong:
+                        holder.setText(R.id.title, "活动");
                         break;
-                    case 3:
-                        holder.setText(R.id.title,"供养");
+                    case mReceiver.GOngyang:
+                        holder.setText(R.id.title, "供养");
                         break;
-                    case 4:
-                        holder.setText(R.id.title,"助学");
+                    case mReceiver.ZHONGCHou:
+                        holder.setText(R.id.title, "助学");
+                        break;
+                    case mReceiver.GONGXIU:
+                        holder.setText(R.id.title, "共修");
+                        break;
+                    case mReceiver.BaoMing:
+                        holder.setText(R.id.title, "报名结果");
+                        break;
+                    case mReceiver.TongZhi:
+                        holder.setText(R.id.title, "通知");
+                        break;
+                    case mReceiver.Pinglun:
+                        holder.setText(R.id.title, "评论");
+                        break;
+                    case mReceiver.QiYuan:
+                        holder.setText(R.id.title, "祈愿树");
+                        break;
+                    case mReceiver.Fojin:
+                        holder.setText(R.id.title, "佛经");
+                        break;
+                    case mReceiver.Bushi:
+                        holder.setText(R.id.title, "卜事");
+                        break;
+                    case mReceiver.ZuoChan:
+                        holder.setText(R.id.title, "坐禅");
                         break;
                 }
             }
-            holder.setText(R.id.content,mApplication.ST(map.get("contents")))
-                    .setText(R.id.time,mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))))
-                    .setText(R.id.time2,mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))));
-            ((TextView) holder.getView(R.id.detail)).setCompoundDrawables(null,null,next,null);
+            holder.setText(R.id.content, mApplication.ST(map.get("contents")))
+                    .setText(R.id.time, mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))))
+                    .setText(R.id.time2, mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))));
+            ((TextView) holder.getView(R.id.detail)).setCompoundDrawables(null, null, next, null);
 
 
         }
@@ -222,11 +268,12 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
                                 } else if (isLoadMore) {
                                     isLoadMore = false;
                                     if (list.size() < 10) {
-                                        ToastUtil.showToastShort(mApplication.ST("通知加载完毕"), Gravity.BOTTOM);
                                         endPage = page;
-                                        adapter.notifyDataChangedAfterLoadMore(list, false);
+                                        adapter.addData(list);
+                                        adapter.loadMoreEnd(false);
                                     } else {
-                                        adapter.notifyDataChangedAfterLoadMore(list, true);
+                                        adapter.addData(list);
+                                        adapter.loadMoreComplete();
                                     }
                                 }
                             }
@@ -253,7 +300,7 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
 //        adapter.setNewData(list);
         page = 1;
         isRefresh = true;
-        adapter.openLoadMore(10, true);
+        adapter.setEnableLoadMore(true);
         getNotice();
         swip.setRefreshing(false);
     }

@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="在线坐禅"
+            android:text="坐禅"
             android:textColor="@color/white"
             android:textSize="18dp" />
 
@@ -37,7 +37,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="坐禅记录"
+            android:text="记录"
             android:textSize="16dp"
             app:text_color_normal="@color/white"
             app:text_color_pressed="@color/grey" />

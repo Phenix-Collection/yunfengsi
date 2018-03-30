@@ -30,6 +30,7 @@ import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
+import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
@@ -113,6 +114,7 @@ public class nianfo_home_tab4 extends AppCompatActivity implements View.OnClickL
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LogUtil.e("点击助念" );
                 if (position != parent.getCount() - 1) {
                     String Id = (String) view.findViewById(R.id.nianfo_home_chanhui_item_tip).getTag();
                     Intent intent = new Intent(nianfo_home_tab4.this,
@@ -301,6 +303,7 @@ public class nianfo_home_tab4 extends AppCompatActivity implements View.OnClickL
                                     map.put("id", map1.get("rtg_id"));
                                     map.put("rtg_likes", "0");
                                     map.put("user_id", PreferenceUtil.getUserIncetance(nianfo_home_tab4.this).getString("user_id",""));
+                                    map.put("rtg_userid", PreferenceUtil.getUserIncetance(nianfo_home_tab4.this).getString("user_id",""));
                                     adapter.list.add(0, map);
                                     adapter.addList(adapter.list);
                                     adapter.sba.add(0,true);

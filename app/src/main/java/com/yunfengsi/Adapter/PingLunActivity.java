@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -293,8 +294,42 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
         adapter = new PL_List_Adapter(this);
         adapter.setIsHuifu(true);
         PlListVIew.setAdapter(adapter);
+        if(getIntent().getStringExtra("content")==null){
+            getHead();
+        }
+
+    }
+
+    private void getHead() {
+        JSONObject js=new JSONObject();
+        try {
+            js.put("m_id",Constants.M_id);
+            js.put("comment_id",pLId);
+            js.put("page",page);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApisSeUtil.M m=ApisSeUtil.i(js);
+        LogUtil.e("获取评论回复楼主信息：："+js);
+        OkGo.post(Constants.PingLunDetail).params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                            HashMap<String,String > map=AnalyticalJSON.getHashMap(s);
+                            if(map!=null){
+                                if(map.get("code")!=null&&map.get("code").equals("000")){
+                                    time.setText(TimeUtils.getTrueTimeStr(map.get("ct_time")));
+                                    name.setText(map.get("pet_name"));
+                                    dianzanNum.setText(map.get("ct_ctr"));
+                                    content.setText(map.get("ct_contents"));
+                                }
+                            }
+
+                    }
 
 
+                });
     }
 
     private void getData() {

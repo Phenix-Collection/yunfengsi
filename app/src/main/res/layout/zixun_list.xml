@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/zixun_refresh">
-        <com.yunfengsi.View.LoadMoreListView
+        <com.yunfengsi.View.LoadMoreListView2
             android:id="@+id/zixun_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -15,7 +15,7 @@
             android:scrollbars="none"
             >
 
-        </com.yunfengsi.View.LoadMoreListView>
+        </com.yunfengsi.View.LoadMoreListView2>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <ImageView
@@ -24,6 +24,8 @@
         android:layout_gravity="center"
         android:id="@+id/tip"
         />
+
+
 
 
 </FrameLayout>

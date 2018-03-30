@@ -104,16 +104,17 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
         textView.setLayoutParams(vl);
         adapter = new DingdanAdapter(getActivity(), new ArrayList<HashMap<String, String>>());
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
-        adapter.openLoadMore(10, true);
+
         adapter.setEmptyView(textView);
-        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int i) {
-//                        Intent intent = new Intent(getActivity(), Pintuan_Detail.class);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //                        Intent intent = new Intent(getActivity(), Pintuan_Detail.class);
 //                        intent.putExtra("id", adapter.getData().get(i).get("id"));
 //                        startActivity(intent);
-                    }
-                });
+            }
+        });
+
         recyclerView.setAdapter(adapter);
         swip.post(new Runnable() {
             @Override
@@ -165,9 +166,11 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
                                         if (list.size() < 10) {
                                             ToastUtil.showToastShort(mApplication.ST("已经没有更多通知啦"), Gravity.CENTER);
 //                                endPage = page;
-                                            adapter.notifyDataChangedAfterLoadMore(list, false);
+                                            adapter.addData(list);
+                                            adapter.loadMoreEnd(false);
                                         } else {
-                                            adapter.notifyDataChangedAfterLoadMore(list, true);
+                                           adapter.addData(list);
+                                           adapter.loadMoreComplete();
                                         }
                                     }
 
@@ -195,11 +198,11 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
         page = 1;
         endPage = -1;
         isRefresh = true;
-        adapter.openLoadMore(10, true);
+      adapter.setEnableLoadMore(true);
         getData();
     }
 
-    public class DingdanAdapter extends BaseQuickAdapter<HashMap<String, String>> {
+    public class DingdanAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
         private Activity a;
 
         public DingdanAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
@@ -210,11 +213,11 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         @Override
         protected void convert(BaseViewHolder holder, final HashMap<String, String> map) {
-            holder.setText(R.id.title,mApplication.ST(map.get("title")))
-                    .setText(R.id.pet_name,mApplication.ST(map.get("pet_name")))
-                    .setText(R.id.time,TimeUtils.getTrueTimeStr(map.get("time")));
+            holder.setText(R.id.title, mApplication.ST(map.get("title")))
+                    .setText(R.id.pet_name, mApplication.ST(map.get("pet_name")))
+                    .setText(R.id.time, TimeUtils.getTrueTimeStr(map.get("time")));
             Glide.with(getActivity()).load(map.get("user_image"))
-                    .override(DimenUtils.dip2px(getActivity(),60),DimenUtils.dip2px(getActivity(),60))
+                    .override(DimenUtils.dip2px(getActivity(),60), DimenUtils.dip2px(getActivity(),60))
                     .into((ImageView) holder.getView(R.id.head));
             if(map.get("status").equals("2")){
                 holder.getView(R.id.content).setSelected(true);
@@ -229,7 +232,7 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 holder.setText(R.id.type, mApplication.ST("公告"));
                 holder.setVisible(R.id.cancle,false);
             }else{
-                holder.setText(R.id.type,mApplication.ST("通知"));
+                holder.setText(R.id.type, mApplication.ST("通知"));
                 holder.setVisible(R.id.cancle,true);
             }
             holder.setOnClickListener(R.id.content, new View.OnClickListener() {
@@ -247,13 +250,13 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     if(Network.HttpTest(getActivity())){
                         JSONObject js=new JSONObject();
                         try {
-                            js.put("m_id",Constants.M_id);
+                            js.put("m_id", Constants.M_id);
                             js.put("id",map.get("id"));
                             js.put("user_id",map.get("user_id"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        ApisSeUtil.M m=ApisSeUtil.i(js);
+                        ApisSeUtil.M m= ApisSeUtil.i(js);
                         OkGo.post(Constants.tongzhi_Delete)
                                 .params("key",m.K())
                                 .params("msg",m.M())

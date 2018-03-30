@@ -1,6 +1,8 @@
 package com.yunfengsi.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,18 +14,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import com.yunfengsi.NianFo.HuiXiang;
 import com.yunfengsi.R;
+import com.yunfengsi.Utils.AnalyticalJSON;
+import com.yunfengsi.Utils.ApisSeUtil;
+import com.yunfengsi.Utils.Constants;
+import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.NumUtils;
 import com.yunfengsi.Utils.TimeUtils;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Carry_lew on 2016/7/29.
@@ -92,6 +110,8 @@ public class Nianfo_home_Adaper extends BaseAdapter {
             holder.txt_desc = (TextView) view.findViewById(R.id.nianfo_item_desc);
             holder.txt_name = (TextView) view.findViewById(R.id.nianfo_item_name);
             holder.txt_share= (TextView) view.findViewById(R.id.nianfo_item_share);
+            holder.content= (RelativeLayout) view.findViewById(R.id.content);
+            holder.txt_delete= (TextView) view.findViewById(R.id.delete);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();
@@ -99,32 +119,42 @@ public class Nianfo_home_Adaper extends BaseAdapter {
         if(getItemViewType(position)==1){
             view.setBackgroundColor(Color.parseColor("#eeeeee"));
             holder.txt_share.setVisibility(View.VISIBLE);
+            if(!((SwipeMenuLayout) view).isSwipeEnable()){{
+                ((SwipeMenuLayout) view).setSwipeEnable(true);
+            }}
+            ((SwipeMenuLayout) view).quickClose();
+
         }else{
             view.setBackgroundColor(Color.WHITE);
-            holder.txt_share.setVisibility(View.INVISIBLE);
+            holder.txt_share.setVisibility(View.GONE);
+            if(((SwipeMenuLayout) view).isSwipeEnable()){
+                ((SwipeMenuLayout) view).quickClose();
+                ((SwipeMenuLayout) view).setSwipeEnable(false);
+            }
+
         }
-        Glide.with(context).load(mlist.get(position).get("user_image")).placeholder(R.drawable.def).override(screenWidth * 3 / 20, screenWidth * 3 / 20)
+        Glide.with(context).load(mlist.get(position).get("user_image")).override(screenWidth * 3 / 20, screenWidth * 3 / 20)
                 .centerCrop().into(holder.imageView);
         if (type.equals("念佛")) {
 
             holder.txt_name.setText(mlist.get(position).get("pet_name").equals("") ? mApplication.ST("佚名") : mlist.get(position).get("pet_name"));
-            SpannableString ss=new SpannableString(mApplication.ST(type + "--念 " + mlist.get(position).get("ba_name") + " " + NumUtils.getNumStr(map.get("ls_nfnum")) + " 声"));
-            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-NumUtils.getNumStr(map.get("ls_nfnum")).length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString ss=new SpannableString(mApplication.ST(type + "--念 " + mlist.get(position).get("ba_name") + " " + NumUtils.getNumStr( mlist.get(position).get("ls_nfnum") )+ " 声"));
+            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-map.get("ls_nfnum").length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.txt_desc.setText(ss);
             holder.txt_date.setText(TimeUtils.getTrueTimeStr(mlist.get(position).get("ls_time")));
 
         } else if (type.equals("诵经")) {
 
             holder.txt_name.setText(mlist.get(position).get("pet_name").equals("") ? mApplication.ST("佚名") : mlist.get(position).get("pet_name"));
-            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("rg_name") + " " +NumUtils.getNumStr(map.get("ls_nfnum")) + " 部"));
-            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-NumUtils.getNumStr(map.get("ls_nfnum")).length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("rg_name") + " " + NumUtils.getNumStr( mlist.get(position).get("ls_nfnum") )+ " 部"));
+            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-map.get("ls_nfnum").length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.txt_desc.setText(ss);
             holder.txt_date.setText(TimeUtils.getTrueTimeStr(mlist.get(position).get("ls_time")));
         } else if (type.equals("持咒")) {
 
             holder.txt_name.setText(mlist.get(position).get("pet_name").equals("") ? mApplication.ST("佚名") : mlist.get(position).get("pet_name"));
-            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("ja_name") + " " +NumUtils.getNumStr(map.get("ls_nfnum"))  + " 遍"));
-            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-NumUtils.getNumStr(map.get("ls_nfnum")).length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString ss=new SpannableString(mApplication.ST(type + "-- " + mlist.get(position).get("ja_name") + " " + NumUtils.getNumStr( mlist.get(position).get("ls_nfnum") ) + " 遍"));
+            ss.setSpan(new AbsoluteSizeSpan(17,true),ss.length()-map.get("ls_nfnum").length()-2,ss.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.txt_desc.setText(ss);
             holder.txt_date.setText(TimeUtils.getTrueTimeStr(mlist.get(position).get("ls_time")));
         }
@@ -157,9 +187,72 @@ public class Nianfo_home_Adaper extends BaseAdapter {
                     context.startActivity(intent);
                 }
             });
+            
+            
         }
+
+        final View finalView = view;
+        holder.txt_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog .Builder builder=new AlertDialog.Builder(context);
+
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //删除功课
+                        if(!Network.HttpTest(context)){
+                            return;
+                        }
+                        JSONObject js=new JSONObject();
+                        try {
+                            js.put("m_id", Constants.M_id);
+                            js.put("user_id",map.get("id"));
+                            js.put("id",map.get("nf_id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        ApisSeUtil.M m=ApisSeUtil.i(js);
+                        LogUtil.e("功课删除：：："+js);
+                        OkGo.post(Constants.Buddha_Delete).params("key",m.K())
+                                .params("msg",m.M())
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                        HashMap<String,String > m= AnalyticalJSON.getHashMap(s);
+                                        if(m!=null){
+                                            if("000".equals(m.get("code"))){
+                                                ToastUtil.showToastShort("删除成功");
+                                                ((SwipeMenuLayout) finalView).quickClose();
+                                                mlist.remove(map);
+                                                notifyDataSetChanged();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        super.onError(call, response, e);
+                                        ToastUtil.showToastShort("删除失败，请稍后重试");
+                                    }
+                                });
+                    }
+                });
+                AlertDialog alertDialog=builder.create();
+                alertDialog.setMessage("确认删除该条信息吗？");
+                alertDialog.show();
+
+            }
+        });
         return view;
     }
+
+
 
     static class Holder {
         ImageView imageView;
@@ -167,5 +260,7 @@ public class Nianfo_home_Adaper extends BaseAdapter {
         TextView txt_desc;
         TextView txt_date;
         TextView txt_share;
+        TextView txt_delete;
+        RelativeLayout content;
     }
 }

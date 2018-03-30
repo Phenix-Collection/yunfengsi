@@ -15,8 +15,10 @@ import java.util.Locale;
  */
 public class TimeUtils {
     private static final String TAG = "TimeUtils";
+
     /**
      * 时间戳转为年月日，时分秒
+     *
      * @param cc_time
      * @return
      */
@@ -26,21 +28,20 @@ public class TimeUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // 例如：cc_time=1291778220
         long lcc_time = Long.valueOf(cc_time);
-        re_StrTime = sdf.format(new Date(lcc_time ));
+        re_StrTime = sdf.format(new Date(lcc_time));
 
         return re_StrTime;
     }
 
 
     //活动报名时间使用
-    public static String getYMDTime(Date cc_time,boolean isStart) {
+    public static String getYMDTime(Date cc_time, boolean isStart) {
         String re_StrTime = null;
         //同理也可以转为其它样式的时间格式.例如："yyyy/MM/dd HH:mm"
         SimpleDateFormat sdf;
-        if(isStart)
-        {
+        if (isStart) {
             sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-        }else{
+        } else {
             sdf = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
         }
 
@@ -48,23 +49,25 @@ public class TimeUtils {
 
         return re_StrTime;
     }
+
     //活动报名时间使用
     public static String getYMDTime(Date cc_time) {
         String re_StrTime = null;
         //同理也可以转为其它样式的时间格式.例如："yyyy/MM/dd HH:mm"
         SimpleDateFormat sdf;
 
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
         re_StrTime = sdf.format(cc_time);
 
         return re_StrTime;
     }
-///////////////////////////////////////
-    public static String getStrTime_spe(SimpleDateFormat s,String cc_time,SimpleDateFormat formatter2) {
+
+    ///////////////////////////////////////
+    public static String getStrTime_spe(SimpleDateFormat s, String cc_time, SimpleDateFormat formatter2) {
 
 //        SimpleDateFormat formatter2=new SimpleDateFormat("yyyy年HH月dd日");
         try {
-            cc_time=formatter2.format(s.parse(cc_time));
+            cc_time = formatter2.format(s.parse(cc_time));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -73,6 +76,7 @@ public class TimeUtils {
         return cc_time;
     }
     /////////////////////////////
+
     /**
      * 获取增加多少月的时间
      *
@@ -94,6 +98,7 @@ public class TimeUtils {
         calendar.add(Calendar.DAY_OF_YEAR, addDay);
         return calendar.getTime();
     }
+
     /**
      * 获取增加多少小时的时间
      *
@@ -104,6 +109,7 @@ public class TimeUtils {
         calendar.add(Calendar.HOUR, addHour);
         return calendar.getTime();
     }
+
     /**
      * 显示时间格式为 hh:mm
      *
@@ -121,6 +127,7 @@ public class TimeUtils {
         }
         return temp;
     }
+
     /**
      * 是否同一天
      *
@@ -133,6 +140,7 @@ public class TimeUtils {
         long days2 = date2 / (1000 * 60 * 60 * 24);
         return days1 == days2;
     }
+
     /**
      * 显示时间格式为今天、昨天、yyyy/MM/dd hh:mm
      *
@@ -151,21 +159,21 @@ public class TimeUtils {
             formatStr = "yyyy年M月d日 H:mm:ss";
         } else if (then.yearDay != now.yearDay) {
             // If it is from a different day than today, show only the date.
-            if(now.yearDay-then.yearDay==1){
-                formatStr="昨天 H:mm";
-            }else if(now.yearDay-then.yearDay==2){
-                formatStr="前天 H:mm";
-            }else {
+            if (now.yearDay - then.yearDay == 1) {
+                formatStr = "昨天 H:mm";
+            } else if (now.yearDay - then.yearDay == 2) {
+                formatStr = "前天 H:mm";
+            } else {
                 formatStr = "M月d日 H:mm";
             }
         } else {
             // Otherwise, if the message is from today, show the time.
-            if(now.hour!=then.hour){
-                formatStr=(now.hour-then.hour)+"小时前";
-            }else if(now.minute!=then.minute){
-                formatStr=(now.minute-then.minute)+"分钟前";
-            }else {
-                formatStr="刚刚";
+            if (now.hour != then.hour) {
+                formatStr = (now.hour - then.hour) + "小时前";
+            } else if (now.minute != then.minute) {
+                formatStr = (now.minute - then.minute) + "分钟前";
+            } else {
+                formatStr = "刚刚";
             }
 //            if(then.hour<6){
 //                if(then.hour==0){
@@ -189,15 +197,16 @@ public class TimeUtils {
 //        } else if ((then.year == now.year) && ((now.yearDay - then.yearDay) == 1)) {
 //            return context.getString(R.string.date_yesterday);
 //        } else {
-            SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
-            String temp = sdf.format(when);
-            if (temp != null && temp.length() == 5 && temp.substring(0, 1).equals("0")) {
-                temp = temp.substring(1);
-            }
+        SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
+        String temp = sdf.format(when);
+        if (temp != null && temp.length() == 5 && temp.substring(0, 1).equals("0")) {
+            temp = temp.substring(1);
+        }
 //        temp
-            return temp;
+        return temp;
 //        }
     }
+
     /**
      * 掉此方法输入所要转换的时间输入例如（"2014-06-14-16-09-00"）返回时间戳
      *
@@ -205,7 +214,7 @@ public class TimeUtils {
      * @return
      */
     public static long dataOne(String time) {
-        if(time==null||time.equals("")){
+        if (time == null || time.equals("")) {
             return 0;
         }
         SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
@@ -221,7 +230,31 @@ public class TimeUtils {
         }
         return l;
     }
-    public  static String getTrueTimeStr(String time,String simpleDateFormat,Locale locale){
+
+    public static Date getDate(String time) {
+        if (time == null || time.equals("")) {
+            try {
+                throw new Exception("时间为空");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        SimpleDateFormat sdr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                Locale.CHINA);
+        Date date;
+        try {
+            date = sdr.parse(time);
+            return date;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static String getTrueTimeStr(String time, String simpleDateFormat, Locale locale) {
         SimpleDateFormat sdr = new SimpleDateFormat(simpleDateFormat,
                 locale);
         Date date;
@@ -233,10 +266,11 @@ public class TimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return  formatTimeString(l);
+        return formatTimeString(l);
     }
-    public  static String getTrueTimeStr(String time){
 
-        return  dataOne(time)!=0?TimeUtils.formatTimeString(dataOne(time)):"";
+    public static String getTrueTimeStr(String time) {
+
+        return dataOne(time) != 0 ? TimeUtils.formatTimeString(dataOne(time)) : "";
     }
 }

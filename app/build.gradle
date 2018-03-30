@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     useLibrary 'org.apache.http.legacy'
     sourceSets {
         main {
@@ -14,13 +15,25 @@ android {
         }
 
     }
+
+//    configurations.all {
+//        resolutionStrategy.eachDependency { details ->
+//            def requested = details.requested
+//            if (requested.group == 'com.android.support') {
+//                if (!requested.name.startsWith("multidex")) {
+//                    details.useVersion '26.0.1'
+//                }
+//            }
+//        }
+//    }
     defaultConfig {
+
         multiDexEnabled true
         applicationId "com.yunfengsi"
-        minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 50
-        versionName "1.7.0"
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 61
+        versionName "2.1.0"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86"
         }
@@ -40,24 +53,34 @@ android {
             keyPassword "883120"
         }
     }
-}
 
+
+}
+repositories {
+    flatDir {
+        dirs 'libs' //this way we can find the .aar file in libs folder
+    }
+}
 dependencies {
+
     //65535 难受
+//    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:multidex:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:26.0.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'fm.jiecao:jiecaovideoplayer:3.6.1'
+
     //    compile 'fm.jiecao:jiecaovideoplayer:5.5.1'
+
     //友盟、、、、、、、、、、、、、、、、、、、、
+
     //友盟、、、、、、、、、、、、、、、、、、、、
     compile 'com.android.support:design:23.3.0'
-    //    //地图
-    //地图
     compile 'cn.carbs.android:AvatarImageView:1.0.2'
+
     //网络请求
     compile 'com.lzy.net:okgo:2.1.4'
     compile 'com.zhy:percent-support-extends:1.1.1'
@@ -66,9 +89,10 @@ dependencies {
     compile files('libs/UPPayAssistEx.jar')
     compile project(':library')
     compile files('libs/zxing-3.2.1.jar')
-    //    compile files('libs/utdid4all-1.1.5.2.jar')
-    compile files('libs/alisdk-ut-5.jar')
-    compile files('libs/alicloud-android-push-sdk-2.3.5.jar')
+
+    //        compile files('libs/utdid4all-1.1.5.2.jar')
+
+    //    compile files('libs/alisdk-ut-5.jar')
     compile files('libs/mqqopenpay.jar')
     compile files('libs/SocialSDK_QQ_Simplify.jar')
     compile files('libs/SocialSDK_Sina_Simplify.jar')
@@ -77,29 +101,76 @@ dependencies {
     compile files('libs/umeng_social_net.jar')
     compile files('libs/umeng_social_shareview.jar')
     compile files('libs/umeng_social_shareboard.jar')
+
     //    compile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    compile files('libs/alipaySdk-20160825.jar')
+
+    //    compile files('libs/alipaySdk-20160825.jar')
+
     //    compile files('libs/jcc-bate-0.7.3.jar')
+
     //recyclerView适配器
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
+//    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile files('libs/jxl.jar')
+
     //轮播图控件
-    compile 'com.youth.banner:banner:1.4.9'
+    compile 'com.youth.banner:banner:1.4.10'
     compile files('libs/ZHConverter.jar')
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
     compile 'com.pnikosis:materialish-progress:1.7'
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.1'
+
     //继续滑动
     compile 'homhomlin.lib:sldinglayout:0.9.0'
     compile files('libs/SocialSDK_line.jar')
     compile files('libs/SocialSDK_twitter.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
+
     //    compile 'cn.magicwindow:MagicWindowSDK:4.1'
     implementation files('libs/bdasr_V3_20171108_9800a2a.jar')
+
     //无情字
     compile 'com.ruffian.library:RTextView:1.0.3'
+
     //选择器
     compile 'com.contrarywind:Android-PickerView:3.2.7'
+    implementation files('libs/AMap_Location_V3.8.0_20180201.jar')
+
+    //    //下拉刷新
+
+    //    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
+
+    //    compile 'com.aliyun.ams:alicloud-android-push:3.1.1'
+    compile(name: 'alicloud-android-third-push-3.0.5', ext: 'aar')
+    implementation files('libs/alipaySdk-20160825.jar')
+    implementation files('libs/alicloud-android-push-sdk-3.1.1.jar')
+    implementation files('libs/alicloud-android-beacon-1.0.1.jar')
+
+    //    implementation files('libs/utdid4all-1.1.5.3_proguard.jar')
+    implementation files('libs/alicloud-android-ut-5.1.0.jar')
+    implementation files('libs/alicloud-android-utils-1.1.1.jar')
+
+    //许愿树  3d球形特效
+    compile 'com.moxun:tagcloudlib:1.2.1'
+
+    //    compile project(':reader')
+//    compile project(':txtYanapp')
+//      compile project(':hwtxtreaderlib')
+//    compile 'com.github.bifan-wei:HwTxtReader:V1.1'
+
+//    compile 'com.yansheng.txtreaderplayer:ebookread:1.1'
+
+    //阅读器   待优化
+//    compile project(':ebookread')
+    //阴影效果
+    compile 'com.lijiankun24:shadowlayout:1.0.0'
+
+    compile 'org.greenrobot:eventbus:3.0.0'
+//    implementation 'com.android.support:support-v4:23.3.0'
+
+    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.16'
+
+
 }

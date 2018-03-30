@@ -50,6 +50,8 @@ import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.yunfengsi.BaseSTFragement;
+import com.yunfengsi.BlessTree.BlessTree;
+import com.yunfengsi.E_Book.BookList;
 import com.yunfengsi.Login;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
@@ -139,13 +141,13 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     private TextView tvtwo;
     private TextView tvthree;
     private TextView tvfour;
-    private TextView tvfive,tv6;
+    private TextView tvfive, tv6;
 
     private MineManager mineManager;
     private RecyclerView recyclerView;
     private Intent intent = new Intent();
     private ImageView level;
-    private boolean isAgreeed=false;//是否同意隐私政策
+    private boolean isAgreeed = false;//是否同意隐私政策
     private BroadcastReceiver userReseiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -174,32 +176,43 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         aCache = ACache.get(mApplication.getInstance());
         recyclerView = (RecyclerView) v.findViewById(R.id.recycle);
         mineManager = new MineManager(getActivity(), recyclerView);
-        isAgreeed=sp.getString("agree_status","").equals("0")||sp.getString("agree_status","").equals("")?false:true;
+        isAgreeed = sp.getString("agree_status", "").equals("0") || sp.getString("agree_status", "").equals("") ? false : true;
 
-        mineManager.setOnitemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+
+        mineManager.setOnitemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int i) {
-                HashMap<String, Object> map = mineManager.getMaps().get(i);
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                HashMap<String, Object> map = mineManager.getMaps().get(position);
 
                 switch (map.get(mineManager.text).toString()) {
+                    case "祈愿树":
+                        if (new LoginUtil().checkLogin(getActivity())) {
+                            startActivity(new Intent(getActivity(), BlessTree.class));
+                        }
+                        break;
+                    case "佛经":
+//                        if (new LoginUtil().checkLogin(getActivity())) {
+                            startActivity(new Intent(getActivity(), BookList.class));
+//                        }
+                        break;
                     case "卜事":
-                        if(new LoginUtil().checkLogin(getActivity())){
+                        if (new LoginUtil().checkLogin(getActivity())) {
                             startActivity(new Intent(getActivity(), Fortune.class));
                         }
                         break;
-                    case "在线坐禅":
-                        if(new LoginUtil().checkLogin(getActivity())){
+                    case "坐禅":
+                        if (new LoginUtil().checkLogin(getActivity())) {
                             startActivity(new Intent(getActivity(), Meditation.class));
                         }
                         break;
                     case "通知":
-                        if(new LoginUtil().checkLogin(getActivity())){
+                        if (new LoginUtil().checkLogin(getActivity())) {
                             intent.setClass(getActivity(), MessageCenter.class);
                             startActivity(intent);
                         }
                         break;
                     case "投稿":
-                        if(new LoginUtil().checkLogin(getActivity())){
+                        if (new LoginUtil().checkLogin(getActivity())) {
                             intent.setClass(getActivity(), TouGao.class);
                             startActivity(intent);
                         }
@@ -228,8 +241,8 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                         ed.putLong("time", 0);
                         ed.putString("pet_name", "");
                         ed.putString("level", "0");
-                        ed.putString("tougao_title","");
-                        ed.putString("tougao_content","");
+                        ed.putString("tougao_title", "");
+                        ed.putString("tougao_content", "");
                         aCache.remove("head_" + sp.getString("user_id", ""));
                         ed.apply();
                         Glide.with(getActivity()).load(R.drawable.indra).into(head);
@@ -288,43 +301,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                         startActivity(intent);
                         break;
                     case "功课":
-                        View vi = LayoutInflater.from(getActivity()).inflate(R.layout.mine_gongke_fragment, null);
-                        tvone = (TextView) vi.findViewById(R.id.mine_gongke_fragment_oneitme);
-
-                        tvtwo = (TextView) vi.findViewById(R.id.mine_gongke_fragment_twoitme);
-                        tvthree = (TextView) vi.findViewById(R.id.mine_gongke_fragment_threeitme);
-                        tvfour = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fouritme);
-                        tvfive = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fiveitme);
-                        tv6= (TextView) vi.findViewById(R.id.mine_gongke_fragment_sixitme);
-                        TextView cancle = (TextView) vi.findViewById(R.id.dismiss);
-                        cancle.setText(mApplication.ST("取消"));
-                        tvone.setText(mApplication.ST("念佛"));
-                        tvtwo.setText(mApplication.ST("诵经"));
-                        tvthree.setText(mApplication.ST("持咒"));
-                        tv6.setText(mApplication.ST("发愿"));
-                        tvfour.setText(mApplication.ST("助念"));
-                        tvfive.setText(mApplication.ST("忏悔"));
-                        tvone.setOnClickListener(Mine.this);
-                        tvtwo.setOnClickListener(Mine.this);
-                        tvthree.setOnClickListener(Mine.this);
-                        tvfour.setOnClickListener(Mine.this);
-                        tv6.setOnClickListener(Mine.this);
-                        tvfive.setOnClickListener(Mine.this);
-
-                        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-                        final AlertDialog d = b.create();
-                        d.setView(vi);
-                        cancle.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                d.dismiss();
-                            }
-                        });
-
-                        Window window = d.getWindow();
-                        window.setGravity(Gravity.BOTTOM);
-                        window.setWindowAnimations(R.style.dialogWindowAnim);
-                        d.show();
+                        openGongke();
                         break;
                     case "设置":
                         intent.setClass(getActivity(), gerenshezhi.class);
@@ -384,6 +361,46 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         return v;
     }
 
+    public void openGongke() {
+        View vi = LayoutInflater.from(getActivity()).inflate(R.layout.mine_gongke_fragment, null);
+        tvone = (TextView) vi.findViewById(R.id.mine_gongke_fragment_oneitme);
+
+        tvtwo = (TextView) vi.findViewById(R.id.mine_gongke_fragment_twoitme);
+        tvthree = (TextView) vi.findViewById(R.id.mine_gongke_fragment_threeitme);
+        tvfour = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fouritme);
+        tvfive = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fiveitme);
+        tv6 = (TextView) vi.findViewById(R.id.mine_gongke_fragment_sixitme);
+        TextView cancle = (TextView) vi.findViewById(R.id.dismiss);
+        cancle.setText(mApplication.ST("取消"));
+        tvone.setText(mApplication.ST("念佛"));
+        tvtwo.setText(mApplication.ST("诵经"));
+        tvthree.setText(mApplication.ST("持咒"));
+        tv6.setText(mApplication.ST("发愿"));
+        tvfour.setText(mApplication.ST("助念"));
+        tvfive.setText(mApplication.ST("忏悔"));
+        tvone.setOnClickListener(Mine.this);
+        tvtwo.setOnClickListener(Mine.this);
+        tvthree.setOnClickListener(Mine.this);
+        tvfour.setOnClickListener(Mine.this);
+        tv6.setOnClickListener(Mine.this);
+        tvfive.setOnClickListener(Mine.this);
+
+        AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+        final AlertDialog d = b.create();
+        d.setView(vi);
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+
+        Window window = d.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.dialogWindowAnim);
+        d.show();
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -421,7 +438,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
             e.printStackTrace();
         }
         ApisSeUtil.M m
-                =ApisSeUtil.i(js);
+                = ApisSeUtil.i(js);
         OkGo.post(Constants.getLevelInfo).tag(TAG)
                 .params("key", m.K())
                 .params("msg", m.M())
@@ -503,13 +520,13 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        final ApisSeUtil.M m=ApisSeUtil.i(js);
+        final ApisSeUtil.M m = ApisSeUtil.i(js);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     String data = OkGo.post(Constants.User_Info_Ip).tag(TAG)
-                            .params("key",m.K()).params("msg", m.M())
+                            .params("key", m.K()).params("msg", m.M())
 
                             .execute().body().string();
 
@@ -522,9 +539,9 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                 public void run() {
                                     if (map != null) {
                                         //notice   消息中心    1有新消息  2 没有新消息
-                                        if("1".equals(map.get("notice"))){
+                                        if ("1".equals(map.get("notice"))) {
                                             ((MainActivity) getActivity()).notice.setSelected(true);
-                                        }else if("2".equals(map.get("notice"))){
+                                        } else if ("2".equals(map.get("notice"))) {
                                             ((MainActivity) getActivity()).notice.setSelected(false);
                                         }
                                         if (!"".equals(map.get("user_image"))) {
@@ -609,6 +626,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
             }
         }).start();
     }
+
     public void getProl() {
         JSONObject js = new JSONObject();
         try {
@@ -630,7 +648,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                             String data = response.body().string();
                             if (!data.equals("")) {
                                 final HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
-                                getActivity(). runOnUiThread(new Runnable() {
+                                getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         if (map != null) {
@@ -664,9 +682,9 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                                     web.destroy();
                                                     cdt.cancel();
                                                     dialog.dismiss();
-                                                    if(MainActivity.activity!=null){
+                                                    if (MainActivity.activity != null) {
                                                         MainActivity.activity.finish();
-                                                        MainActivity.activity=null;
+                                                        MainActivity.activity = null;
                                                     }
                                                     System.exit(0);
                                                 }
@@ -680,7 +698,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                             });
                                             cdt.start();
                                             builder.setCancelable(false);
-                                            web.setWebViewClient(new WebViewClient(){
+                                            web.setWebViewClient(new WebViewClient() {
                                                 @Override
                                                 public void onPageFinished(WebView view, String url) {
                                                     super.onPageFinished(view, url);
@@ -699,6 +717,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
 
                 });
     }
+
     //同意隐私政策
     private void agreeSecret() {
         if (Network.HttpTest(getActivity())) {
@@ -739,6 +758,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
 
         }
     }
+
     public void SetHead() {
         Bitmap bm = aCache.getAsBitmap("head_" + sp.getString("user_id", ""));
         if (bm != null) {
@@ -782,11 +802,11 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
             @Override
             public void run() {
                 try {
-                    JSONObject js=new JSONObject();
-                    js.put("user_id",uid);
+                    JSONObject js = new JSONObject();
+                    js.put("user_id", uid);
                     Response response = OkGo.post(Constants.uploadHead_IP).tag(TAG)
                             .params("head", file).params("key", ApisSeUtil.getKey())
-                            .params("msg",ApisSeUtil.getMsg(js)).execute();
+                            .params("msg", ApisSeUtil.getMsg(js)).execute();
                     String data1 = response.body().string();
 
                     if (!data1.equals("")) {
@@ -1056,6 +1076,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
             }
         });
         Window window = dialog.getWindow();
+        window.setGravity(Gravity.CENTER_HORIZONTAL);
         window.setWindowAnimations(R.style.dialogWindowAnim);
         window.setBackgroundDrawableResource(R.color.vifrification);
         WindowManager.LayoutParams wl = window.getAttributes();

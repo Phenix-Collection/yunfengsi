@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.Utils.mApplication;
 
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public class Fortune_Detail extends AppCompatActivity {
         setContentView(R.layout.activity_fortune_detail);
 
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.title_title)).setText("观音灵签");
+        ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("灵签详解"));
         ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,13 +38,13 @@ public class Fortune_Detail extends AppCompatActivity {
 
         HashMap<String,String > map= (HashMap<String, String>) getIntent().getSerializableExtra("map");
         LogUtil.e("map:::"+map);
-        ((TextView) findViewById(R.id.num)).setText(map.get("num"));
-        ((TextView) findViewById(R.id.title)).setText(map.get("title"));
-        ((TextView) findViewById(R.id.poetry)).setText(map.get("poetry"));
-        ((TextView) findViewById(R.id.translate)).setText(map.get("translate"));
-        ((TextView) findViewById(R.id.draw)).setText(map.get("draw"));
-        ((TextView) findViewById(R.id.content)).setText(map.get("content"));
-        ((TextView) findViewById(R.id.story)).setText(map.get("story"));
+        ((TextView) findViewById(R.id.num)).setText(mApplication.ST(map.get("num")));
+        ((TextView) findViewById(R.id.title)).setText(mApplication.ST(map.get("title")));
+        ((TextView) findViewById(R.id.poetry)).setText(mApplication.ST(map.get("poetry")));
+        ((TextView) findViewById(R.id.translate)).setText(mApplication.ST(map.get("translate")));
+        ((TextView) findViewById(R.id.draw)).setText(mApplication.ST(map.get("draw")));
+        ((TextView) findViewById(R.id.content)).setText(mApplication.ST(map.get("content")));
+        ((TextView) findViewById(R.id.story)).setText(mApplication.ST(map.get("story")));
 
 
     }

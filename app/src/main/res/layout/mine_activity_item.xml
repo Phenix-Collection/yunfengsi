@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:padding="10dp">
+    android:background="@drawable/layout_bg_sel"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
 
     <ImageView
         android:layout_width="120dp"
@@ -17,6 +19,7 @@
         android:layout_height="wrap_content"
         android:textSize="15dp"
         android:text="名"
+        android:layout_toLeftOf="@+id/signact"
         android:textColor="@color/black"
         android:layout_toRightOf="@+id/fund_list_item_head"
         android:layout_marginLeft="10dp"/>
@@ -42,4 +45,22 @@
         android:layout_alignBottom="@+id/fund_list_item_head"
         android:layout_toRightOf="@+id/fund_list_item_head"
         />
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/signact"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/activity_detail_baoming"
+        app:text_color_normal="@color/white"
+        app:text_color_unable="@color/white"
+        app:background_unable="@color/grey"
+        app:background_normal="@color/main_color"
+        app:background_pressed="#90ff6000"
+        app:corner_radius="3dp"
+        android:focusable="false"
+        android:text="签到"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </RelativeLayout>

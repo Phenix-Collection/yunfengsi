@@ -10,9 +10,9 @@ public class Constants {
     //帮助网页
    public static final String Help="https://indrah.cn/yfs.php/Index/help" ;
     //服务器测试域名
-    public static final String host_Ip = "http://yintolo.net";
+//    public static final String host_Ip = "http://yintolo.net";
     //    //服务器域名
-//    public static  final String host_Ip="https://indrah.cn";
+    public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo = "/api.php/EncryptApi/";
     public static final String iiiiii = "/api.php/SecretApi/";
@@ -436,8 +436,42 @@ public class Constants {
     //发布约车
     public static final String SubmitCar= host_Ip + oooooo + "Fbcar";
 
-
+    //念佛、诵经、持咒 删除
+    public static final String Buddha_Delete = host_Ip + oooooo + "Buddhadelete";
+    //发愿 删除
+    public static final String Fayuan_Delete = host_Ip + oooooo + "Fayuandelete";
+    //助念 删除
+    public static final String Reciting_Delete = host_Ip + oooooo + "Recitingdelete";
+    //忏悔 删除
+    public static final String Confess_Delete = host_Ip + oooooo + "Confessdelete";
 
     //约车列表
     public static final String CarList= host_Ip + oooooo + "Yuecarlist";
+    //删除约车
+    public static final String DeleteYueCar= host_Ip + oooooo + "Deleteyuecar";
+    //申请约车
+    public static final String SubmitYueCar= host_Ip + oooooo + "Sqyuecar";
+
+    //约车管理列表
+    public static final String YuecarManageList= host_Ip + oooooo + "Yuecargl";
+
+    //活动签到
+    public static final String Signact= host_Ip + oooooo + "Signact";
+
+    //经书加载
+    public static final String JingShu= host_Ip + iiiiii + "Ebooklist";
+    //获取许愿动态
+    public static final String BlessContent= host_Ip + iiiiii + "Wishlist";
+    //许愿
+    public static final String Bless= host_Ip + iiiiii + "Wishadd";
+    //我的祈愿记录
+    public static final String BlessHistory= host_Ip + iiiiii + "Mywish";
+    //评论回复页信息获取
+    public static final String PingLunDetail= host_Ip + iiiiii + "Pinglund";
+
+    //大藏经顶级目录接口
+    public static final String DaZang_Chapter_Top= host_Ip + iiiiii + "Dzjlist";
+
+    //大藏经次级目录及内容接口
+    public static final String DaZang_Chapter_Detail= host_Ip + iiiiii + "Dzjd";
 }

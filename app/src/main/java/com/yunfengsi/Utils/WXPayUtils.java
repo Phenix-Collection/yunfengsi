@@ -111,6 +111,18 @@ public class WXPayUtils {
             Toast.makeText(mApplication.getInstance(), "网络连接不稳定，请稍后重试", Toast.LENGTH_SHORT).show();
             return;
         }
+
+            IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
+            msgApi.registerApp(Constants.WXPay_APPID);
+
+            boolean sIsWXAppInstalledAndSupported = msgApi.isWXAppInstalled()
+                    && msgApi.isWXAppSupportAPI();
+
+            if(!sIsWXAppInstalledAndSupported){
+                ToastUtil.showToastShort("请安装微信");
+                return;
+            }
+
         ProgressUtil.show(context, "", "正在调起微信支付,请稍等");
         new Thread(new Runnable() {
             @Override
@@ -197,4 +209,6 @@ public class WXPayUtils {
     }
 
     ;
+
+
 }

@@ -126,9 +126,10 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
         tvPhone.performClick();
         TextView t= (TextView) findViewById(R.id.country_code);
         if(PreferenceUtil.getSettingIncetance(this).getString("country","").equals("")){
-            t.setText(mApplication.ST("中国大陆  +86"));
+            t.setText(mApplication.ST("国家/地区: 中国大陆  +86"));
         }else{
-            t.setText(mApplication.ST(PreferenceUtil.getSettingIncetance(this).getString("country","")+"   +"+PreferenceUtil.getSettingIncetance(this).getString("code","")));
+            code=PreferenceUtil.getSettingIncetance(this).getString("code","");
+            t.setText(mApplication.ST("国家/地区: "+PreferenceUtil.getSettingIncetance(this).getString("country","")+"   +"+code));
         }
 //        registerReceiver(smsReceiver,new IntentFilter(Constants.SMS_RECEIVED_ACTION));
     }

@@ -33,6 +33,7 @@ import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.NianFo.NianFo;
+import com.yunfengsi.Push.mReceiver;
 import com.yunfengsi.Utils.ACache;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -139,7 +140,9 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
             e.printStackTrace();
         }
         ApisSeUtil.M m = ApisSeUtil.i(js);
+        LogUtil.e("获取广告：："+js);
         OkGo.post(Constants.getAD)
+                .tag(this)
                 .params("key", m.K())
                 .params("msg", m.M()).execute(new AbsCallback<Object>() {
 
@@ -395,15 +398,18 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        image = null;
+        if(image!=null){
+            image.destroyDrawingCache();
+            image=null;
+        }
         if (mAD != null && !mAD.isRecycled()) {
+            mAD.recycle();
             mAD = null;
         }
         pagerAdapter = null;
         pager = null;
-        OkGo.getInstance().cancelTag(TAG);
-        Log.w(TAG, "onDestroy: 销毁页面");
-        Log.w(TAG, "onDestroy: " + PreferenceUtil.getUserIncetance(this).getBoolean("isFirstIn", true));
+        OkGo.getInstance().cancelTag(this);
+        Log.w(TAG, "广告页 :::onDestroy::: " + PreferenceUtil.getUserIncetance(this).getBoolean("isFirstIn", true));
         if (PreferenceUtil.getUserIncetance(this).getBoolean("isFirstIn", true)) {
             SharedPreferences.Editor editor = PreferenceUtil.getUserIncetance(this).edit();
             editor.putBoolean("isFirstIn", false);
@@ -476,7 +482,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
                 finish();
-                new LoginUtil().checkLogin(this);
+//                new LoginUtil().checkLogin(this);
 
 
                 break;

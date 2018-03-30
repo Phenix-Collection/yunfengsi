@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.alibaba.sdk.android.push.register.HuaWeiRegister;
+import com.alibaba.sdk.android.push.register.MiPushRegister;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
@@ -40,29 +42,30 @@ import java.util.logging.Level;
 public class mApplication extends Application {
     private int caheM;
     private static final String TAG = "mApplication";
-    private static  mApplication application;
+    private static mApplication application;
     //当前交易的订单id
-    public static  String sut_id="";
-    public static  String id="";
-    public static  String title="";
-    public static  String type="";
-//    public   ShareBoardConfig config;//分享面板配置
-    private boolean Debug=true;
-    public static  boolean isChina=true;
-    public  Login login;
+    public static String sut_id = "";
+    public static String id = "";
+    public static String title = "";
+    public static String type = "";
+    //    public   ShareBoardConfig config;//分享面板配置
+    private boolean Debug = true;
+    public static boolean isChina = true;
+    public Login login;
 
-//    public static String gg_url="",gg_image="";//首页广告弹窗 背景图  ggimage   跳转链接  ggurl
-    public static boolean changeIcon=false;//是否切换图标
+    //    public static String gg_url="",gg_image="";//首页广告弹窗 背景图  ggimage   跳转链接  ggurl
+    public static boolean changeIcon = false;//是否切换图标
     public static ComponentName componentName;//入口名称
 
     public static final String alias1 = "com.yunfengsi.Splash";
     public static final String alias2 = "com.yunfengsi.Splash1";
-    public static HashMap<Class,Activity> activityHashMap=new HashMap<>();
+    public static HashMap<Class, Activity> activityHashMap = new HashMap<>();
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        application=this;
+        application = this;
         //Glide
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         caheM = maxMemory / 8;
@@ -97,10 +100,10 @@ public class mApplication extends Application {
                 .addCommonParams(params);
 
         UMShareAPI.get(this);//初始化友盟
-        PlatformConfig.setWeixin("wxd33fe2dd9a8d2b6b","5c43f64262abc1e2f0b18434afff7919");
+        PlatformConfig.setWeixin("wxd33fe2dd9a8d2b6b", "5c43f64262abc1e2f0b18434afff7919");
 //        PlatformConfig.setWeixin("wx7f8b711548c749fb","6159914840766b002a4542c899c9fba3");//公众号数据  测试
         PlatformConfig.setQQZone("1105643311", "QPle8NDkjehWHPx8");
-        PlatformConfig.setSinaWeibo("2018815414", "9bc9e490e67fe21e177b69eed248cb4f","https://api.weibo.com/oauth2/default.html");//
+        PlatformConfig.setSinaWeibo("2018815414", "9bc9e490e67fe21e177b69eed248cb4f", "https://api.weibo.com/oauth2/default.html");//
         PlatformConfig.setTwitter("Z9vhrsa91vvyahIKTDffPxuY7", "w0OsXsQ9N4DUIdfL6uAlFbI5ZdQ1m4MUAHsjMUSVH7mTXm2pl2");//
 
 //        config = new ShareBoardConfig();
@@ -108,22 +111,31 @@ public class mApplication extends Application {
 //        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_CIRCULAR);
 //        config.setCancelButtonVisibility(true);
         Config.DEBUG = Debug;
-        com.umeng.socialize.utils.Log.LOG=Debug;
+        com.umeng.socialize.utils.Log.LOG = Debug;
         UMShareConfig config = new UMShareConfig();
         config.isOpenShareEditActivity(true);
 
         UMShareAPI.get(this).setShareConfig(config);
-        isChina=PreferenceUtil.getSettingIncetance(this).getBoolean("isChina",true);
+        isChina = PreferenceUtil.getSettingIncetance(this).getBoolean("isChina", true);
+
+//        Intent intent = new Intent(this, GohnsonService.class);
+//        startService(intent);
 
 
         //初始化阿里云推送
         initCloudChannel(this);
+
+        // 注册方法会自动判断是否支持小米系统推送，如不支持会跳过注册。
+        MiPushRegister.register(this, "2882303761517517038", "5341751749038");
+// 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
+        HuaWeiRegister.register(this);
 
 //       if(LeakCanary.isInAnalyzerProcess(this)){
 //           return;
 //       }
 //       LeakCanary.install(this);
     }
+
     public static mApplication getInstance() {
         return application;
     }
@@ -133,19 +145,19 @@ public class mApplication extends Application {
      *
      * @return
      */
-    public static String ST(String s){
-        if(isChina){
-            s=ZHConverter.getInstance(ZHConverter.SIMPLIFIED).convert(s);
-        }else{
-           StringBuilder stringBuilder=new StringBuilder(s);
-            if(s.contains("叶")){
-                stringBuilder.replace(s.indexOf("叶"),s.indexOf("叶")+1,"......");
+    public static String ST(String s) {
+        if (isChina) {
+            s = ZHConverter.getInstance(ZHConverter.SIMPLIFIED).convert(s);
+        } else {
+            StringBuilder stringBuilder = new StringBuilder(s);
+            if (s.contains("叶")) {
+                stringBuilder.replace(s.indexOf("叶"), s.indexOf("叶") + 1, "......");
             }
-            stringBuilder.replace(0,stringBuilder.length(),ZHConverter.getInstance(ZHConverter.TRADITIONAL).convert(stringBuilder.toString()));
-            if(stringBuilder.toString().contains("......")){
-                stringBuilder.replace(stringBuilder.indexOf("......"),stringBuilder.indexOf("......")+6,"葉");
+            stringBuilder.replace(0, stringBuilder.length(), ZHConverter.getInstance(ZHConverter.TRADITIONAL).convert(stringBuilder.toString()));
+            if (stringBuilder.toString().contains("......")) {
+                stringBuilder.replace(stringBuilder.indexOf("......"), stringBuilder.indexOf("......") + 6, "葉");
             }
-            s=stringBuilder.toString();
+            s = stringBuilder.toString();
         }
 //        s= ZHConverter.getInstance(isChina?ZHConverter.SIMPLIFIED:ZHConverter.TRADITIONAL).convert(s);
 //        s=StUtil.convert(s,isChina?0:1);
@@ -155,17 +167,19 @@ public class mApplication extends Application {
 //            e.printStackTrace();
 //            LogUtil.e("简繁转换错误");
 //        }
-        return  s;
+        return s;
     }
 
-    public static byte[] PK(){
+    public static byte[] PK() {
         return Base64.decode("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDMzj1J20jfuAU3CQDPElbOuASC" +
                 "1Qase0eyA1j+bvp64foNnrJ7O5ggM2zJDP3jmEMPrm9BywTIKou30jA0fZh62dRl" +
                 "3DslBLJKLlq9xnpecLaawMe0xT3AM54fYMYZdVzKXK8s9OKSYt61V+yDIo+AMgw/" +
                 "P60irfotxeRNZNNhHQIDAQAB");
     }
+
     /**
      * 初始化云推送通道
+     *
      * @param applicationContext
      */
     private void initCloudChannel(Context applicationContext) {
@@ -174,8 +188,9 @@ public class mApplication extends Application {
         pushService.register(applicationContext, new CommonCallback() {
             @Override
             public void onSuccess(String response) {
-                Log.e(TAG, "初始化阿里云推送成功,设备Id:"+pushService.getDeviceId());
+                Log.e(TAG, "初始化阿里云推送成功,设备Id:" + pushService.getDeviceId());
             }
+
             @Override
             public void onFailed(String errorCode, String errorMessage) {
                 Log.e(TAG, "初始化阿里云推送失败 -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
@@ -183,21 +198,22 @@ public class mApplication extends Application {
         });
     }
 
-    public static void closeAllActivities(){
+    public static void closeAllActivities() {
         Iterator<Activity> iterActivity = activityHashMap.values().iterator();
-        while(iterActivity.hasNext()){
+        while (iterActivity.hasNext()) {
             iterActivity.next().finish();
         }
         activityHashMap.clear();
     }
-    public static void addActivity(Activity activity){
-        activityHashMap.put(activity.getClass(),activity);
+
+    public static void addActivity(Activity activity) {
+        activityHashMap.put(activity.getClass(), activity);
     }
 
-    public static void romoveActivity(Activity activity){
-        if(activityHashMap.containsValue(activity)){
+    public static void romoveActivity(Activity activity) {
+        if (activityHashMap.containsValue(activity)) {
             activityHashMap.remove(activity.getClass());
-            if(activity!=null){
+            if (activity != null) {
                 activity.finish();
             }
 
@@ -205,62 +221,60 @@ public class mApplication extends Application {
     }
 
 
-
-
     public static void openPayLayout(final Activity context, final String allmoney, final String attachId, final String title, final String num, final String type, final String extra) {// TODO: 2016/12/20 打开支付窗口
 
 
-        AlertDialog.Builder b=new AlertDialog.Builder(context);
-        final AlertDialog alertDialog=b.create();
-        View view= LayoutInflater.from(context).inflate(R.layout.pay_bottom_layout,null);
-        Drawable drawable=context.getResources().getDrawable(R.drawable.pay_wc);
-        Drawable drawable1=context.getResources().getDrawable(R.drawable.pay_qq);
-        Drawable drawable2=context.getResources().getDrawable(R.drawable.pay_up);
+        AlertDialog.Builder b = new AlertDialog.Builder(context);
+        final AlertDialog alertDialog = b.create();
+        View view = LayoutInflater.from(context).inflate(R.layout.pay_bottom_layout, null);
+        Drawable drawable = context.getResources().getDrawable(R.drawable.pay_wc);
+        Drawable drawable1 = context.getResources().getDrawable(R.drawable.pay_qq);
+        Drawable drawable2 = context.getResources().getDrawable(R.drawable.pay_up);
         Drawable drawable3 = context.getResources().getDrawable(R.drawable.pay_ali);
-        drawable.setBounds(0,0,DimenUtils.dip2px(context,35),DimenUtils.dip2px(context,35));
-        drawable1.setBounds(0,0,DimenUtils.dip2px(context,35),DimenUtils.dip2px(context,35));
-        drawable2.setBounds(0,0,DimenUtils.dip2px(context,35),DimenUtils.dip2px(context,35));
-        drawable3.setBounds(0,0,DimenUtils.dip2px(context,35),DimenUtils.dip2px(context,35));
-        ((TextView) view.findViewById(R.id.tv_pay_wx)).setCompoundDrawables(drawable,null,null,null);
-        ((TextView) view.findViewById(R.id.tv_pay_qq)).setCompoundDrawables(drawable1,null,null,null);
-        ((TextView) view.findViewById(R.id.tv_pay_up)).setCompoundDrawables(drawable2,null,null,null);
+        drawable.setBounds(0, 0, DimenUtils.dip2px(context, 35), DimenUtils.dip2px(context, 35));
+        drawable1.setBounds(0, 0, DimenUtils.dip2px(context, 35), DimenUtils.dip2px(context, 35));
+        drawable2.setBounds(0, 0, DimenUtils.dip2px(context, 35), DimenUtils.dip2px(context, 35));
+        drawable3.setBounds(0, 0, DimenUtils.dip2px(context, 35), DimenUtils.dip2px(context, 35));
+        ((TextView) view.findViewById(R.id.tv_pay_wx)).setCompoundDrawables(drawable, null, null, null);
+        ((TextView) view.findViewById(R.id.tv_pay_qq)).setCompoundDrawables(drawable1, null, null, null);
+        ((TextView) view.findViewById(R.id.tv_pay_up)).setCompoundDrawables(drawable2, null, null, null);
         ((TextView) view.findViewById(R.id.tv_pay_ali)).setCompoundDrawables(drawable3, null, null, null);
         view.findViewById(R.id.tv_pay_wx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WXPayUtils.openWXPay(context,allmoney,attachId,title,num,type,extra);
+                WXPayUtils.openWXPay(context, allmoney, attachId, title, num, type, extra);
                 alertDialog.dismiss();
             }
         });
         view.findViewById(R.id.tv_pay_qq).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QpayUtil.openQQPay(context,attachId,title,allmoney,num,type,extra);
+                QpayUtil.openQQPay(context, attachId, title, allmoney, num, type, extra);
                 alertDialog.dismiss();
             }
         });
         view.findViewById(R.id.tv_pay_ali).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AliPayUtil.openAliPay(context,allmoney, attachId, title, num,extra,type );
+                AliPayUtil.openAliPay(context, allmoney, attachId, title, num, extra, type);
                 alertDialog.dismiss();
             }
         });
         view.findViewById(R.id.tv_pay_up).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Double.valueOf(allmoney)>5000){
+                if (Double.valueOf(allmoney) > 5000) {
                     Toast.makeText(context, "银联支付最高限额5000元人民币", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ((UpPayUtil) context).allmoney=allmoney;
-                ((UpPayUtil) context).type=type;
-                ((UpPayUtil) context).num=num;
-                ((UpPayUtil) context).shop_id=attachId;
-                ((UpPayUtil) context).extra=extra;
-                ((UpPayUtil) context).title=title;
+                ((UpPayUtil) context).allmoney = allmoney;
+                ((UpPayUtil) context).type = type;
+                ((UpPayUtil) context).num = num;
+                ((UpPayUtil) context).shop_id = attachId;
+                ((UpPayUtil) context).extra = extra;
+                ((UpPayUtil) context).title = title;
 
-                Runnable r=((UpPayUtil) context).payRunnable;
+                Runnable r = ((UpPayUtil) context).payRunnable;
                 new Thread(r).start();
                 alertDialog.dismiss();
             }

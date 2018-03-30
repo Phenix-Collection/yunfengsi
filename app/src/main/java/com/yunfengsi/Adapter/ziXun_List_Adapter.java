@@ -42,8 +42,8 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 public class ziXun_List_Adapter extends BaseAdapter {
     public List<HashMap<String, String>> mlist;
     private static final String TAG = "ziXun_List_Adapter";
-    private int screenwidth;
     private Context context;
+    private int screenwidth;
     private Drawable ctr, like, comment;
 
     //    app:layout_widthPercent="30%w"     图文列表图片宽高
@@ -118,6 +118,7 @@ public class ziXun_List_Adapter extends BaseAdapter {
             final ImageView imageView = holder.img;
             Glide.with(context).load(bean.get("image"))
                     .asBitmap()
+                    .skipMemoryCache(true)
                     .override(DimenUtils.dip2px(context,136), DimenUtils.dip2px(context,102))
                     .centerCrop()
                     .into(new BitmapImageViewTarget(holder.img) {

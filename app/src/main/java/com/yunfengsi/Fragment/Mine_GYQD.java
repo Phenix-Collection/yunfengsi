@@ -76,11 +76,11 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
         listView = (mPLlistview2)findViewById(R.id.mine_shoucang_listview);
         ImageView back= (ImageView) findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
-        back.setImageBitmap(ImageUtil.readBitMap(this,R.drawable.back));
+        back.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.back));
         back.setOnClickListener(this);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("功德"));
         tip = (TextView) findViewById(R.id.mine_shoucang_tip);
-        Drawable d= ContextCompat.getDrawable(this,R.drawable.indra);
+        Drawable d= ContextCompat.getDrawable(this, R.drawable.indra);
         d.setBounds(0,0,200,200);
         tip.setCompoundDrawables(null,d,null,null);
         listView.setEmptyView(tip);
@@ -211,7 +211,7 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.title_back){
+        if(v.getId()== R.id.title_back){
             finish();
         }
     }
@@ -263,7 +263,7 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
 //            .centerCrop().into(holder.image);
             if("4".equals(list.get(position).get("sut_type"))){
                 holder.image.setText(mApplication.ST("供养"));
-                holder.image.setTextColor(ContextCompat.getColor(Mine_GYQD.this,R.color.main_color));
+                holder.image.setTextColor(ContextCompat.getColor(Mine_GYQD.this, R.color.main_color));
                 holder.image.setSelected(false);
             }else{
                 holder.image.setText(mApplication.ST("助学"));

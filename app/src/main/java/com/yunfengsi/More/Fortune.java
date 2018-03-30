@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -32,6 +34,7 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.OneDrawable;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
+import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
@@ -54,7 +57,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     private ImageView back;
     private ImageView qiantong, qian_small, qian;
     private TextView auto, history;
-      private TextView tip;
+    private TextView tip;
     private int width, height;
     private SensorManager sensorManager;
     private boolean isWaved = false;//是否摇过签
@@ -65,7 +68,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     private boolean isDisplay = false;//是否正在显示签
     private boolean isRegist = false;//是否注册加速度传感器
     private int streamid;//音效流
-    private int limit=14;
+    private int limit = 14;
 
     @Override
     protected void onDestroy() {
@@ -80,6 +83,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         setContentView(R.layout.fortune);
         mApplication.addActivity(this);
         back = (ImageView) findViewById(R.id.back);
+        ((TextView) findViewById(R.id.title)).setText(mApplication.ST("卜事"));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,12 +93,15 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         qian_small = (ImageView) findViewById(R.id.qian_small);
         Drawable drawable = OneDrawable.createBgDrawable(this, R.drawable.qian1_low);
         auto = (TextView) findViewById(R.id.autoFortune);
+        auto.setText(mApplication.ST("自动摇签"));
         auto.setOnClickListener(this);
         history = (TextView) findViewById(R.id.fortuneHistory);
+        history.setText(mApplication.ST("摇签记录"));
         history.setOnClickListener(this);
         qian_small.setImageDrawable(drawable);
         qian = (ImageView) findViewById(R.id.qian);
         tip = (TextView) findViewById(R.id.tip);
+
         width = getResources().getDisplayMetrics().widthPixels - DimenUtils.dip2px(this, 100);
         height = getResources().getDisplayMetrics().heightPixels - DimenUtils.dip2px(this, 145);
         qiantong = (ImageView) findViewById(R.id.qiantong);
@@ -112,15 +119,16 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         qian_small.setOnClickListener(this);
         qian.setOnClickListener(this);
         tip.setOnClickListener(this);
-        tip.setText("1.抽签前双手合十，默念[南无观世音菩萨]三遍。\n\n2.默念自己姓名、出生时辰、年龄、地址。\n\n3.助学供养可以更好的体现您的诚意。\n\n4.晃动手机开始抽签，且每日一次。");
+        tip.setText(mApplication.ST("1.抽签前双手合十，默念[南无观世音菩萨]三遍。\n\n2.默念自己姓名、出生时辰、年龄、地址。\n\n3.助学供养可以更好的体现您的诚意。\n\n4.晃动手机开始抽签，且每日一次。"));
+        findViewById(R.id.share).setOnClickListener(this);
 
+        ((TextView) findViewById(R.id.tip1)).setText(mApplication.ST("Tip : 摇一摇手机开始抽签"));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
+        ProgressUtil.dismiss();
     }
 
 //    @Override
@@ -132,6 +140,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     @Override
     protected void onStop() {
         super.onStop();
+        ProgressUtil.dismiss();
         sensorManager.unregisterListener(this);
     }
 
@@ -144,8 +153,8 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     // TODO: 2018/1/29 传感器回调
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(isDisplay){
-            LogUtil.e("正在显示签" );
+        if (isDisplay) {
+            LogUtil.e("正在显示签");
             return;
         }
         //获取传感器类型
@@ -154,12 +163,12 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         float[] values = event.values;
         //如果传感器类型为加速度传感器，则判断是否为摇一摇
         if (sensorType == Sensor.TYPE_ACCELEROMETER) {
-            if(Build.VERSION.SDK_INT>=21){
-                limit=11;
-            }else{
-                limit=10;
+            if (Build.VERSION.SDK_INT >= 21) {
+                limit = 11;
+            } else {
+                limit = 10;
             }
-            if ((Math.abs(values[0]) > limit|| Math.abs(values[1]) > limit || Math
+            if ((Math.abs(values[0]) > limit || Math.abs(values[1]) > limit || Math
                     .abs(values[2]) > limit)) {
                 LogUtil.e("sensor x ============ values[0] = " + values[0]);
                 LogUtil.e("sensor y =========== values[1] = " + values[1]);
@@ -186,7 +195,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
             } else {
                 cancelCount++;
                 LogUtil.e("cancelCount::;" + cancelCount + "    是否正在摇签：：    " + (isWaved ? "是" : "否"));
-                if (cancelCount >= 3&& isWaved) {
+                if (cancelCount >= 3 && isWaved) {
                     LogUtil.e("停止声音");
                     cancelCount = 0;
 
@@ -286,6 +295,13 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     public void onClick(View view) {
 
         switch (view.getId()) {
+            case R.id.share:
+                UMWeb umWeb = new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
+                umWeb.setTitle(mApplication.ST("人生卜事"));
+                umWeb.setDescription(mApplication.ST("想知道今天有什么好运将要发生吗？我来告诉你答案~"));
+                umWeb.setThumb(new UMImage(this, R.drawable.indra_share));
+                new ShareManager().shareWeb(umWeb, this);
+                break;
             case R.id.qian:
                 Intent intent = new Intent(this, Fortune_Detail.class);
                 intent.putExtra("map", ((HashMap<String, String>) qian.getTag()));
@@ -295,8 +311,8 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
                 isDisplay = false;
                 isWaved = false;
                 waveCount = 0;
-                if(!isRegist){
-                    isRegist=true;
+                if (!isRegist) {
+                    isRegist = true;
                     sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
                 }
                 findViewById(R.id.qiantongContainer).setVisibility(View.VISIBLE);

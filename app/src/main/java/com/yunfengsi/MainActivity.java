@@ -60,17 +60,18 @@ import com.yunfengsi.Adapter.myHomePagerAdapter;
 import com.yunfengsi.Audio_BD.WakeUp.IWakeupListener;
 import com.yunfengsi.Audio_BD.WakeUp.MyWakeup;
 import com.yunfengsi.Audio_BD.WakeUp.SimpleWakeupListener;
+import com.yunfengsi.E_Book.BookList;
 import com.yunfengsi.Fragment.GongYangActivity;
+import com.yunfengsi.Fragment.HomePage;
 import com.yunfengsi.Fragment.Mine;
-import com.yunfengsi.Fragment.ZiXun;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_activity.activity_fragment;
 import com.yunfengsi.Model_zhongchou.FundFragment;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
-import com.yunfengsi.More.Fortune;
 import com.yunfengsi.NianFo.NianFo;
+import com.yunfengsi.Push.mReceiver;
 import com.yunfengsi.Setting.PhoneCheck;
 import com.yunfengsi.Setting.Search;
 import com.yunfengsi.SideListview.Contact;
@@ -255,7 +256,6 @@ public class MainActivity extends UpPayUtil {
                                                     intent.setClass(MainActivity.this, ZhiFuShare.class);
                                                     intent.putExtra("url", map.get("gg_url"));
                                                     startActivity(intent);
-                                                    finish();
                                                     return;
                                                 };
                                                 if(url.equals(Constants.Help)){
@@ -358,7 +358,7 @@ public class MainActivity extends UpPayUtil {
             pushService.addAlias(PreferenceUtil.getUserIncetance(this).getString("user_id", ""), new CommonCallback() {
                 @Override
                 public void onSuccess(String s) {
-                    LogUtil.e("别名绑定成功，哈哈哈哈哈哈哈哈");
+                    LogUtil.e("别名绑定成功，哈哈哈哈哈哈哈哈"+s);
                 }
 
                 @Override
@@ -598,7 +598,8 @@ public class MainActivity extends UpPayUtil {
         //初始化fragment
         list = new ArrayList<>();
 
-        Fragment f = new ZiXun();
+//        Fragment f = new ZiXun();
+        Fragment f = new HomePage();
         Fragment f1 = new activity_fragment();
         Fragment f2 = new GongYangActivity();
         Fragment f3 = new FundFragment();
@@ -631,7 +632,7 @@ public class MainActivity extends UpPayUtil {
                 pager.setCurrentItem(tab.getPosition());
                 switch (tab.getPosition()) {
                     case 0:
-                        title.setText(ST("图文"));
+                        title.setText(ST("首页"));
                         break;
                     case 1:
                         title.setText(ST("活动"));
@@ -661,7 +662,7 @@ public class MainActivity extends UpPayUtil {
             }
         });
         pager.setCurrentItem(0);
-        title.setText(ST("图文"));
+        title.setText(ST("首页"));
         tabLayout.getTabAt(0).getCustomView().setSelected(true);
         ((TextView) tabLayout.getTabAt(0).getCustomView().findViewById(R.id.home_tab_text)).setTextColor(getResources().getColor(R.color.main_color));
 
@@ -670,7 +671,7 @@ public class MainActivity extends UpPayUtil {
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, Fortune.class));
+                startActivity(new Intent(MainActivity.this, BookList.class));
             }
         });
     }

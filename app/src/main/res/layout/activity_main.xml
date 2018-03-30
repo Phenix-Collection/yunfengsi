@@ -56,7 +56,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/pinglun_sel"
-            android:padding="9dp"
+            android:padding="5dp"
             android:layout_marginLeft="5dp"/>
     </RelativeLayout>
     <android.support.v4.view.ViewPager
@@ -83,7 +83,7 @@
         android:textColor="@color/white"
         android:layout_gravity="bottom"
         android:layout_marginBottom="50dp"
-        android:text="抽签入口"/>
+        android:text="电子书入口"/>
 
     <View android:layout_width="match_parent"
         android:layout_height="1px"

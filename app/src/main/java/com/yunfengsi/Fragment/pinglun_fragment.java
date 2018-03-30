@@ -254,13 +254,13 @@ public class pinglun_fragment extends Fragment implements SwipeRefreshLayout.OnR
                     return;
                 }
                 if (PreferenceUtil.getUserIncetance(getActivity()).getString("pet_name", "").trim().equals("")) {
-                    Toast.makeText(getActivity(),mApplication.ST("请完善信息") , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), mApplication.ST("请完善信息") , Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), Mine_gerenziliao.class);
                     startActivity(intent);
                     return;
                 }
                 v.setEnabled(false);
-                ProgressUtil.show(getActivity(), "",mApplication.ST( "正在提交"));
+                ProgressUtil.show(getActivity(), "", mApplication.ST( "正在提交"));
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -277,7 +277,7 @@ public class pinglun_fragment extends Fragment implements SwipeRefreshLayout.OnR
                             }
                             final String data = OkGo.post(Constants.little_zixun_pl_add_IP)
                                     .params("key", ApisSeUtil.getKey())
-                                    .params("msg",ApisSeUtil.getMsg(js)).execute().body().string();
+                                    .params("msg", ApisSeUtil.getMsg(js)).execute().body().string();
                             if (!data.equals("")) {
                                 final HashMap<String, String> hashMap = AnalyticalJSON.getHashMap(data);
                                 if (hashMap != null && "000".equals(hashMap.get("code"))) {

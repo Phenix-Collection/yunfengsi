@@ -96,7 +96,7 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
         mlistview = (RecyclerView) findViewById(R.id.activity_lf_list);
         mimageback = (ImageView) findViewById(R.id.activity_lf_imageback);
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
-        adapter.openLoadMore(PAGESIZE, true);
+
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -107,7 +107,7 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
                     getList();
                 }
             }
-        });
+        },mlistview);
         TextView textView = new TextView(this);
         Drawable d = ContextCompat.getDrawable(this, R.drawable.load_nothing);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
@@ -119,18 +119,17 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
         vl.topMargin = DimenUtils.dip2px(this, 150);
         textView.setLayoutParams(vl);
         adapter.setEmptyView(textView);
-
-        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int i) {
+            public void onItemClick(BaseQuickAdapter a, View view, int i) {
                 Intent intent=new Intent(GYMX_FaYuan.this,FaYuan_Detail.class);
                 intent.putExtra("id",adapter.getData().get(i).get("id"));
                 intent.putExtra("type",adapter.getData().get(i).get("name"));
                 intent.putExtra("type_id",adapter.getData().get(i).get("type"));
                 startActivity(intent);
-
             }
         });
+
     }
 
 
@@ -279,9 +278,11 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
                                     if (list.size() < PAGESIZE) {
                                         ToastUtil.showToastShort("发愿记录加载完毕", Gravity.CENTER);
 //                                endPage = page;
-                                        adapter.notifyDataChangedAfterLoadMore(list, false);
+                                        adapter.addData(list);
+                                        adapter.loadMoreEnd(false);
                                     } else {
-                                        adapter.notifyDataChangedAfterLoadMore(list, true);
+                                        adapter.addData(list);
+                                        adapter.loadMoreComplete();
                                     }
                                 }
                             }
@@ -296,11 +297,11 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
         page = 1;
         endPage = -1;
         isRefresh = true;
-        adapter.openLoadMore(PAGESIZE, true);
+        adapter.setEnableLoadMore(true);
         getList();
     }
 
-    public class FayuanAdapter extends BaseQuickAdapter<HashMap<String, String>> {
+    public class FayuanAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
         public FayuanAdapter(List<HashMap<String, String>> data) {
             super(R.layout.fayuan_detail_item, data);
         }

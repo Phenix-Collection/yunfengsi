@@ -55,20 +55,22 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.meditation);
         mApplication.addActivity(this);
+        ((TextView) findViewById(R.id.title)).setText(mApplication.ST("坐禅"));
+        ((TextView) findViewById(R.id.meditationHistory)).setText(mApplication.ST("记录"));
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (destTime > 0 && status == OVER) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(Meditation.this);
-                    builder.setMessage("坐禅时间还未结束，确定要结束坐禅吗？")
-                            .setPositiveButton("确定结束", new DialogInterface.OnClickListener() {
+                    builder.setMessage(mApplication.ST("坐禅时间还未结束，确定要结束坐禅吗？"))
+                            .setPositiveButton(mApplication.ST("确定结束"), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
                                     doOver();
                                 }
-                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            }).setNegativeButton(mApplication.ST("取消"), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
@@ -81,6 +83,7 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
             }
         });
         key = (TextView) findViewById(R.id.meditation_key);
+        key.setText(mApplication.ST("开始坐禅"));
         key.setOnClickListener(this);
         time = (TextView) findViewById(R.id.time);
         countDownTimer = new CountDownTimer(allTime, 1000) {
@@ -90,7 +93,7 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
                 long minute = l / 1000 / 60;
                 long second = l / 1000 - minute * 60;
                 LogUtil.e("当前时间：：；" + minute + " : " + second);
-                time.setText(minute + "分  :  " + (second < 10 ? "0" + second : second) + "秒");
+                time.setText(mApplication.ST(minute + "分  :  " + (second < 10 ? "0" + second : second) + "秒"));
 
             }
 
@@ -132,7 +135,7 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
                     status = OVER;
                     time.setVisibility(View.VISIBLE);
                     //播放上座音，开始倒计时，变化按钮文字
-                    key.setText("结束坐禅");
+                    key.setText(mApplication.ST("结束坐禅"));
                     countDownTimer.start();
                     mediaPlayer.start();
                     mediaPlayer.setVolume(1.0f,1.0f);
@@ -157,14 +160,14 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
                     //播放下座音，按钮失效，坐禅结束
                     if (destTime > 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Meditation.this);
-                        builder.setMessage("本次坐禅时间还未结束，确定要结束坐禅吗？")
-                                .setPositiveButton("确定结束", new DialogInterface.OnClickListener() {
+                        builder.setMessage(mApplication.ST("本次坐禅时间还未结束，确定要结束坐禅吗？"))
+                                .setPositiveButton(mApplication.ST("确定结束"), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         dialogInterface.dismiss();
                                         doOver();
                                     }
-                                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                }).setNegativeButton(mApplication.ST("取消"), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
@@ -187,7 +190,7 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
         countDownTimer.cancel();
         status = FINAL;
         time.setVisibility(View.GONE);
-        key.setText("坐禅结束");
+        key.setText(mApplication.ST("坐禅结束"));
         mediaPlayer.reset();
         mediaPlayer = MediaPlayer.create(Meditation.this, R.raw.bells);
         mediaPlayer.start();

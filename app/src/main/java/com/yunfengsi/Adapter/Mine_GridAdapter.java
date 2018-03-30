@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Administrator on 2017/5/10.
  */
 
-public class Mine_GridAdapter extends BaseItemDraggableAdapter<HashMap<String,Object>> {
+public class Mine_GridAdapter extends BaseItemDraggableAdapter<HashMap<String, Object>,BaseViewHolder> {
     public Mine_GridAdapter(List<HashMap<String, Object>> data) {
         super(R.layout.item_mine, data);
     }
@@ -25,11 +25,11 @@ public class Mine_GridAdapter extends BaseItemDraggableAdapter<HashMap<String,Ob
     @Override
     protected void convert(BaseViewHolder holder, HashMap<String, Object> map) {
 
-        holder.setText(R.id.text,mApplication.ST(map.get(MineManager.text).toString()));
+        holder.setText(R.id.text, mApplication.ST(map.get(MineManager.text).toString()));
         Glide.with(mApplication.getInstance()).load(map.get(MineManager.img))
-                .override(DimenUtils.dip2px(mApplication.getInstance(),40),DimenUtils.dip2px(mApplication.getInstance(),40))
-                .placeholder(R.drawable.invite)
+                .override(DimenUtils.dip2px(mApplication.getInstance(), 40), DimenUtils.dip2px(mApplication.getInstance(), 40))
                 .fitCenter().into((ImageView) holder.getView(R.id.image));
+
     }
 
 

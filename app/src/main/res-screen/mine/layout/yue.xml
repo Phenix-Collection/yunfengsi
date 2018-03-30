@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/title_default"/>
-
-
+    <include layout="@layout/title_default" />
 
 
     <ScrollView
@@ -26,6 +24,7 @@
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="10dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -39,48 +38,49 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:text="是否是车主:"
+                        android:text="我         是:"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
 
                     <com.ruffian.library.RTextView
-                        android:layout_marginLeft="10dp"
                         android:id="@+id/haveCar"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="6dp"
                         android:layout_marginBottom="6dp"
-                        android:textSize="16dp"
-                        app:text_color_normal="@color/main_color"
-                        android:text="是"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="6dp"
+                        android:enabled="false"
                         android:gravity="center"
-                        app:corner_radius_bottom_left="5dp"
-                        app:corner_radius_top_left="5dp"
+                        android:text="车主"
+                        android:textSize="16dp"
+                        app:background_pressed="@color/main_color"
+                        app:background_unable="@color/main_color"
                         app:border_color_normal="@color/main_color"
                         app:border_width_normal="1dp"
-                        android:enabled="false"
-                        app:text_color_unable="@color/white"
-                        app:background_pressed="@color/main_color"
-                        app:background_unable="@color/main_color"/>
+                        app:corner_radius_bottom_left="5dp"
+                        app:corner_radius_top_left="5dp"
+                        app:text_color_normal="@color/main_color"
+                        app:text_color_unable="@color/white" />
+
                     <com.ruffian.library.RTextView
                         android:id="@+id/noCar"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="6dp"
                         android:layout_marginBottom="6dp"
-                        android:textSize="16dp"
-                        app:text_color_normal="@color/main_color"
-                        android:text="不是"
+                        android:layout_marginTop="6dp"
                         android:gravity="center"
-                        app:corner_radius_bottom_right="5dp"
-                        app:corner_radius_top_right="5dp"
+                        android:text="乘客"
+                        android:textSize="16dp"
+                        app:background_pressed="@color/main_color"
+                        app:background_unable="@color/main_color"
                         app:border_color_normal="@color/main_color"
                         app:border_width_normal="1dp"
-                        app:text_color_unable="@color/white"
-                        app:background_pressed="@color/main_color"
-                        app:background_unable="@color/main_color"/>
+                        app:corner_radius_bottom_right="5dp"
+                        app:corner_radius_top_right="5dp"
+                        app:text_color_normal="@color/main_color"
+                        app:text_color_unable="@color/white" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -137,6 +137,7 @@
                         android:background="@null"
                         android:hint="请输入您的需求人数"
                         android:inputType="number"
+                        android:maxLength="2"
                         android:textColor="@color/black"
                         android:textSize="13dp" />
 
@@ -144,9 +145,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="人"
-                        android:visibility="gone"
                         android:textColor="@color/black"
-                        android:textSize="13dp" />
+                        android:textSize="13dp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -180,16 +181,15 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#e6e6e6"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:visibility="gone"
                     android:paddingRight="10dp"
-                    android:paddingTop="10dp">
+                    android:paddingTop="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -234,9 +234,9 @@
                     android:background="#e6e6e6"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:visibility="gone"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:paddingRight="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -265,6 +265,7 @@
                         android:textSize="13dp" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -289,10 +290,12 @@
                         android:background="@null"
                         android:hint="请输入联系方式"
                         android:inputType="phone"
+                        android:maxLength="15"
                         android:textColor="@color/black"
                         android:textSize="13dp" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="45dp"

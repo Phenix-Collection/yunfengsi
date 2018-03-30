@@ -149,7 +149,7 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
         });
         adapter = new fdAdapter(new ArrayList<HashMap<String, String>>(), digit, sb2);
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
-        adapter.openLoadMore(PAGESIZE, true);
+
 
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -161,7 +161,7 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
                     getweb();
                 }
             }
-        });
+        },mlistview);
         TextView textView = new TextView(this);
         Drawable d = ContextCompat.getDrawable(this, R.drawable.load_nothing);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
@@ -262,9 +262,11 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
                                             if (list.size() < PAGESIZE) {
                                                 ToastUtil.showToastShort("加载完毕", Gravity.CENTER);
 //                                endPage = page;
-                                                adapter.notifyDataChangedAfterLoadMore(list, false);
+                                                adapter.addData(list);
+                                                adapter.loadMoreEnd(false);
                                             } else {
-                                                adapter.notifyDataChangedAfterLoadMore(list, true);
+                                                adapter.addData(list);
+                                                adapter.loadMoreComplete();
                                             }
                                         }
 
@@ -290,7 +292,7 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
         OkGo.getInstance().cancelTag(TAG);
     }
 
-    public class fdAdapter extends BaseQuickAdapter<HashMap<String, String>> {
+    public class fdAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
         private String digit, sb2;
 
         public fdAdapter(List<HashMap<String, String>> data, String digit, String sb2) {
@@ -313,7 +315,7 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
         page = 1;
         endPage = -1;
         isRefresh = true;
-        adapter.openLoadMore(PAGESIZE, true);
+        adapter.setEnableLoadMore(true);
         getweb();
     }
 }

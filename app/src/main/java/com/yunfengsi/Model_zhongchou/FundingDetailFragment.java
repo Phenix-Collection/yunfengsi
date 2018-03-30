@@ -65,8 +65,8 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Adapter.PingLunActivity;
-import com.yunfengsi.Login;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.Login;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Setting.ViewPagerActivity;
@@ -85,7 +85,6 @@ import com.yunfengsi.Utils.QrUtils;
 import com.yunfengsi.Utils.ScaleImageUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.TimeUtils;
-import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDecoration;
 import com.yunfengsi.View.myWebView;
@@ -224,7 +223,9 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
         ViewGroup.LayoutParams vl = new ViewGroup.LayoutParams(getResources().getDisplayMetrics().widthPixels, DimenUtils.dip2px(getActivity(), 200));
         imageView.setLayoutParams(vl);
         imageView.setPadding(0, DimenUtils.dip2px(getActivity(), 20), 0, DimenUtils.dip2px(getActivity(), 20));
-        ad.setEmptyView(true, imageView);
+        ad.setEmptyView(imageView);
+        ad.setHeaderFooterEmpty(true,true);
+
         ad.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         head = LayoutInflater.from(getActivity()).inflate(R.layout.fund_header, null);
         plNum = (TextView) head.findViewById(R.id.textView);
@@ -440,17 +441,18 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
         PlListVIew.setLayoutManager(new LinearLayoutManager(getActivity()));
         PlListVIew.addItemDecoration(new mItemDecoration(getActivity()));
         ad.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        ad.openLoadMore(10, true);
         ad.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
+                LogUtil.e("加载更多评论");
                 if (!endPage.equals(page)) {
-                    ad.openLoadMore(10, true);
+                    ad.setEnableLoadMore(true);
                     page = String.valueOf(Integer.valueOf(page) + 1);
                     getFundingComments(fundId);
                 }
             }
-        });
+        },PlListVIew);
+
         ad.addHeaderView(head, 0);
         ad.setIsHuifu(false);
         PlListVIew.setAdapter(ad);
@@ -790,8 +792,7 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                                                 map.put("id", hashMap.get("id"));
                                                 map.put("reply", new JSONArray().toString());
                                                 map.put("level", sp.getString("level", "0"));
-                                                ad.getData().add(0, map);
-                                                ad.notifyDataSetChanged();
+                                                ad.addData(0,map);
                                                 ad.flagList.add(0, false);
 
 
@@ -1019,16 +1020,25 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                 if (Pllist != null) {
                     if (Pllist.size() != 10) {
                         endPage = page;
-                        ToastUtil.showToastShort("评论加载完毕");
-                        ad.notifyDataChangedAfterLoadMore(Pllist, false);
+                        ad.addData(Pllist);
+                        ad.loadMoreEnd(false);
                     } else {
-                        ad.notifyDataChangedAfterLoadMore(Pllist, true);
+                        ad.loadMoreComplete();
+                        ad.addData(Pllist);
 
                     }
                     boolean flag = false;
                     for (int i = 0; i < Pllist.size(); i++) {
                         ad.flagList.add(flag);
                     }
+                }else{
+                    if("null".equals(result)){
+                        ad.loadMoreEnd(false);
+                    }else{
+                        ad.loadMoreFail();
+                    }
+
+
                 }
                 ProgressUtil.dismiss();
                 break;
@@ -1292,7 +1302,7 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public static class ShuChengAdapter extends BaseQuickAdapter<HashMap<String, String>> {
+    public static class ShuChengAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
 
         public List<HashMap<String, String>> mlist;
         private int screenwidth;

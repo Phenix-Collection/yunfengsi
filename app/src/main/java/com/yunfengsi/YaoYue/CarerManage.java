@@ -1,7 +1,6 @@
-package com.yunfengsi.More;
+package com.yunfengsi.YaoYue;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,10 +26,8 @@ import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.Network;
-import com.yunfengsi.Utils.PreferenceUtil;
+import com.yunfengsi.Utils.PhoneSMSManager;
 import com.yunfengsi.Utils.StatusBarCompat;
-import com.yunfengsi.Utils.TimeUtils;
-import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDecoration;
 
@@ -49,7 +46,7 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 
-public class Fortune_History extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class CarerManage extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
     private RecyclerView recyclerView;
@@ -69,7 +66,7 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
 
 
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("灵签记录"));
+        ((TextView) findViewById(R.id.title_title)).setText("申请列表");
         ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,33 +81,19 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDecoration(this));
 
-        adapter = new MessageAdapter(this,new ArrayList<HashMap<String, String>>());
-//        adapter.openLoadMore(pageSize, true);
+        adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());
 
-        adapter.disableLoadMoreIfNotFullPage();
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                LogUtil.e("加载更多");
-                if (endPage != page) {
-                    isLoadMore = true;
-                    page++;
-                    getHistory();
-                }
-            }
-        },recyclerView);
 
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
 
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(Fortune_History.this,Fortune_Detail.class);
-                intent.putExtra("map", ((HashMap) view.getTag()));
-                startActivity(intent);
-            }
-        });
-
+//        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int i) {
+//                Intent intent=new Intent(Meditation_History.this,Fortune_Detail.class);
+//                intent.putExtra("map", ((HashMap) view.getTag()));
+//                startActivity(intent);
+//            }
+//        });
         recyclerView.setAdapter(adapter);
 
         TextView textView = new TextView(this);
@@ -118,7 +101,7 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
         textView.setCompoundDrawablePadding(DimenUtils.dip2px(this, 10));
-        textView.setText(mApplication.ST("暂无灵签记录"));
+        textView.setText(mApplication.ST("暂无申请"));
 
 
         textView.setGravity(Gravity.CENTER);
@@ -135,20 +118,31 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         });
     }
 
+    private  class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
 
-
-    private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
-
-        public MessageAdapter(Context context,@Nullable List<HashMap<String, String>> data) {
-            super(R.layout.item_fortune_history, data);
+        public MessageAdapter(Context context, List<HashMap<String, String>> data) {
+            super(R.layout.item_yaoyue, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            holder.setText(R.id.msg,mApplication.ST(map.get("title")))
-                    .setText(R.id.title,mApplication.ST(map.get("num")))
-                    .setText(R.id.time, mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))));
-            holder.itemView.setTag(map);
+        protected void convert(BaseViewHolder holder, final HashMap<String, String> map) {
+            holder.getView(R.id.delete).setVisibility(View.GONE);
+            holder.setVisible(R.id.button, true)
+                    .setVisible(R.id.timeLayout, false)
+                    .setVisible(R.id.titleLayout, false);
+            holder.setText(R.id.user,"乘客:")
+                    .setText(R.id.userName,map.get("pet_name"))
+                    .setText(R.id.phone,map.get("phone"))
+                    .setText(R.id.seat,"乘坐人数:")
+                    .setText(R.id.num,map.get("passenger"))
+                    .setText(R.id.address,map.get("address"));
+            holder.setText(R.id.button,"拨打电话");
+            holder.getView(R.id.button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PhoneSMSManager.callPhone1(CarerManage.this,map.get("phone"));
+                }
+            });
 
         }
     }
@@ -157,15 +151,15 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         if (Network.HttpTest(this)) {
             JSONObject js = new JSONObject();
             try {
-                js.put("page", page);
                 js.put("m_id", Constants.M_id);
-                js.put("user_id", PreferenceUtil.getUserId(this));
+                js.put("act_id", getIntent().getStringExtra("id"));
+                js.put("num", getIntent().getStringExtra("num"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             ApisSeUtil.M m = ApisSeUtil.i(js);
-            LogUtil.e("获取摇签记录：：" + js);
-            OkGo.post(Constants.FortuneHistory)
+            LogUtil.e("获取约车管理列表：：" + js);
+            OkGo.post(Constants.YuecarManageList)
                     .tag(this)
                     .params("key", m.K())
                     .params("msg", m.M())
@@ -179,17 +173,6 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
                                     adapter.setNewData(list);
                                     isRefresh = false;
                                     swip.setRefreshing(false);
-                                } else if (isLoadMore) {
-                                    isLoadMore = false;
-                                    if (list.size() < 10) {
-                                        ToastUtil.showToastShort(mApplication.ST("灵签记录加载完毕"), Gravity.BOTTOM);
-                                        endPage = page;
-                                        adapter.loadMoreEnd();
-                                        adapter.addData(list);
-                                    } else {
-                                        adapter.addData(list);
-                                        adapter.loadMoreComplete();
-                                    }
                                 }
                             }
 
@@ -213,10 +196,7 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
 //            list.add(map);
 //        }
 //        adapter.setNewData(list);
-        page = 1;
         isRefresh = true;
-        adapter.setEnableLoadMore(true);
         getHistory();
-        swip.setRefreshing(false);
     }
 }

@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingTop="10dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipview"
+    >
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp">
+
+
 
     <cn.carbs.android.avatarimageview.library.AvatarImageView
         android:id="@+id/nianfo_item_ima"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
         android:scaleType="centerCrop"
-        app:layout_heightPercent="13%w"
-        app:layout_widthPercent="13%w" />
+        />
 
 
     <TextView
@@ -49,8 +56,7 @@
         android:id="@+id/nianfo_item_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/nianfo_item_share"
-        android:layout_marginRight="5dp"
+        android:layout_alignBottom="@+id/nianfo_item_ima"
         android:layout_alignLeft="@+id/nianfo_item_name"
         android:layout_toLeftOf="@+id/nianfo_item_share"
         android:textColor="@color/wordhuise"
@@ -78,4 +84,15 @@
         android:text="回向给众生"
         android:textColor="@drawable/sel_text_color"
         android:textSize="14dp" />
-</com.zhy.android.percent.support.PercentRelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/delete"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="删除"
+        android:textSize="18dp"
+        android:background="@color/red"/>
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

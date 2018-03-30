@@ -2,43 +2,63 @@
 <com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-   >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/layout_bg_sel"
+        android:background="@color/white"
         android:id="@+id/content"
         >
-        <cn.carbs.android.avatarimageview.library.AvatarImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="6dp"
-            android:id="@+id/head"
-            android:background="#e6e6e6"
-            android:layout_marginLeft="6dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="50dp"
             android:padding="6dp"
             >
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:clipChildren="true"
-                android:layout_marginRight="35dp"
+                android:layout_marginRight="100dp"
+                android:padding="3dp">
+
+                <TextView
+                    android:id="@+id/user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="车          主:"
+                    android:textColor="@color/gray"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="昵称"
+                    android:textColor="@color/wordhuise"
+                    android:textSize="14dp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:clipChildren="true"
+                android:id="@+id/titleLayout"
+                android:layout_marginRight="100dp"
                 android:padding="3dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ta的需求:"
+                    android:text="Ta的标题:"
                     android:textColor="@color/gray"
                     android:textSize="14dp" />
 
@@ -47,6 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
+                    android:text="标题内容"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
 
@@ -57,37 +78,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginRight="35dp"
+                android:layout_marginRight="100dp"
                 android:padding="3dp">
 
                 <TextView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="愿付押金:"
+                    android:text="联系方式:"
                     android:textColor="@color/gray"
                     android:textSize="14dp" />
 
                 <TextView
-                    android:id="@+id/money"
+                    android:id="@+id/phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
+                    android:text="100000000"
                     android:textColor="@color/red"
                     android:textSize="14dp" />
 
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginRight="100dp"
                 android:padding="3dp">
 
                 <TextView
-
+                    android:id="@+id/seat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="需求人数:"
+                    android:text="空余座位:"
                     android:textColor="@color/gray"
                     android:textSize="14dp" />
 
@@ -96,53 +119,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
+                    android:text="124"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
 
             </LinearLayout>
 
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginRight="100dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:id="@+id/timeLayout"
                 android:padding="3dp">
 
                 <TextView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="需求详情:"
-                    android:textColor="@color/gray"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/contents"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="14dp"
-                    android:paddingLeft="10dp"
-                    android:lineSpacingExtra="7dp"
-                    />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="3dp">
-
-                <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="有效期限:"
+                    android:text="出发时间:"
                     android:textColor="@color/gray"
                     android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/time"
                     android:paddingLeft="10dp"
+                    android:text="2018-02-19 00:00:00"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -152,7 +155,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="3dp">
@@ -161,13 +164,14 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="邀约地点:"
+                    android:text="出发地点:"
                     android:textColor="@color/gray"
                     android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/address"
                     android:paddingLeft="10dp"
+                    android:text="福年广场2410"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -176,50 +180,33 @@
 
             </LinearLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/people"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="3dp"
-                    android:text="应邀人数"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:textColor="@color/gray"
-                    android:drawablePadding="5dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="right"
-                    android:minWidth="80dp"
-                    android:id="@+id/yingyao"
-                    android:textSize="15dp"
-                    android:textColor="@color/white"
-                    android:text="应邀"
-                    android:gravity="center"
-                    android:background="@drawable/button1_sel"/>
-            </FrameLayout>
 
         </LinearLayout>
-        <ImageView
-            android:id="@+id/share"
-            android:layout_width="30dp"
+
+        <com.ruffian.library.RTextView
+            android:layout_width="80dp"
             android:layout_height="30dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/indra"
-            android:layout_gravity="right"/>
+            android:layout_gravity="right|center_vertical"
+            android:id="@+id/button"
+            app:background_normal="@color/black"
+            app:background_pressed="#90000000"
+            app:background_unable="@color/grey"
+            app:text_color_normal="@color/white"
+            app:text_color_pressed="@color/grey"
+            app:text_color_unable="@color/white"
+            app:corner_radius="3dp"
+            android:textSize="15dp"
+            android:text="申请"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            />
     </FrameLayout>
 
     <TextView
         android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:id="@+id/cancle"
+        android:id="@+id/delete"
         android:text="删除"
         android:textSize="20dp"
         android:gravity="center"

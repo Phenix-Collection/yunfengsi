@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -73,17 +74,21 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </FrameLayout>
-    <TextView
+    <com.ruffian.library.RTextView
         android:id="@+id/country_code"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:text="中国大陆  +86"
-        android:onClick="onClick"
-        android:paddingLeft="35dp"
+        android:paddingLeft="37dp"
         android:background="@drawable/layout_bg_sel"
         android:clickable="true"
-        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        app:icon_direction="right"
+        app:icon_height="35dp"
+        app:icon_src_normal="@drawable/item_tip"
+        app:icon_width="35dp"
+        app:text_color_normal="@color/black"
+
         />
     <View
         android:layout_width="match_parent"

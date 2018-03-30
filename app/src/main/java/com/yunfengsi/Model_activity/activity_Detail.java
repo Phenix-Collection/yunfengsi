@@ -131,7 +131,7 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     private ImageView tip;
     //第一次加载的评论数量
     private int firstNum = 0;
-
+   private  HashMap<String, String> map;
 
     private boolean isNeedToChooseTime = false;
     private String startTime = "", endTime ="";
@@ -339,7 +339,10 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     protected void onDestroy() {
-        if (thread.isAlive()) thread.interrupt();
+        if(thread!=null){
+            if (thread.isAlive()) thread.interrupt();
+        }
+
         OkGo.getInstance().cancelTag(TAG);
         if (needTochange) {
             Intent intent = new Intent("Mine_SC");
@@ -467,7 +470,7 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                         Log.e(TAG, "run: " + data + "   id-=-=>" + Id);
                         final HashMap<String, String> totalMap = AnalyticalJSON.getHashMap(data);
                         if (totalMap != null) {
-                            final HashMap<String, String> map = AnalyticalJSON.getHashMap(totalMap.get("activity"));
+                            map = AnalyticalJSON.getHashMap(totalMap.get("activity"));
 
                             if (map != null) {//加载数据成功
 
@@ -477,7 +480,9 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                         tip.setVisibility(View.GONE);
 
                                         isNeedToChooseTime = map.get("term").equals("2") ? true : false;
-
+                                        if(TimeUtils.dataOne(map.get("act_time"))<System.currentTimeMillis()){
+                                            yue.setVisibility(View.GONE);
+                                        }
 
                                         if (map.get("prol") != null && !map.get("prol").equals("")) {
                                             act_prol = map.get("prol");
@@ -505,15 +510,13 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                         ));//活动时间
 //                                        }
                                         if ((TimeUtils.dataOne(endTime) - System.currentTimeMillis()) <= 0) {
-                                            Tobaoming.setText(mApplication.ST("报名已结束"));
+                                            Tobaoming.setText(mApplication.ST("已结束"));
                                             Tobaoming.setEnabled(false);
-                                            Tobaoming.setBackgroundColor(Color.DKGRAY);
                                         } else {
                                             if (!PreferenceUtil.getUserId(activity_Detail.this).equals("")) {
                                                 if ("000".equals(totalMap.get("code"))) {
                                                     Tobaoming.setText(mApplication.ST("已报名"));
                                                     Tobaoming.setEnabled(false);
-                                                    Tobaoming.setBackgroundColor(Color.DKGRAY);
                                                 }
                                             }
 
@@ -869,13 +872,13 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                             view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#40d976"));
                                             Tobaoming.setText(mApplication.ST("已报名"));
                                             Tobaoming.setEnabled(false);
-                                            Tobaoming.setBackgroundColor(Color.DKGRAY);
+
                                         } else if ("003".equals(map.get("code"))) {
                                             ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已经报名过了哟~"));
                                             view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#e75e5e"));
                                             Tobaoming.setText(mApplication.ST("已报名"));
                                             Tobaoming.setEnabled(false);
-                                            Tobaoming.setBackgroundColor(Color.DKGRAY);
+
                                         }
                                         ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
 
@@ -906,6 +909,10 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.activity_detail_yue:
+//                if(TimeUtils.dataOne(map.get("act_time"))<System.currentTimeMillis()){
+//                    ToastUtil.showToastShort("该活动已经开始，约功能已停止");
+//                    return;
+//                }
                 if(new LoginUtil().checkLogin(this)){
                     JSONObject js=new JSONObject();
                     try {

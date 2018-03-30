@@ -19,14 +19,20 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
+import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.MD5Utls;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
+import com.yunfengsi.Utils.ProgressUtil;
+import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
@@ -66,9 +72,24 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.message_center);
 
-
+        findViewById(R.id.title_image2).setVisibility(View.VISIBLE);
+        ((ImageView) findViewById(R.id.title_image2)).setImageBitmap(ImageUtil.readBitMap(this, R.drawable.fenxiang2));
+        findViewById(R.id.title_image2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String md5 = MD5Utls.stringToMD5(Constants.safeKey);
+                String m1 = md5.substring(0, 16);
+                String m2 = md5.substring(16, md5.length());
+                LogUtil.e("m1:::" + m1 + "\n" + "m2:::" + m2);
+                UMWeb umWeb = new UMWeb(Constants.FX_host_Ip + "sharemuse" + "/id/" + m1 + PreferenceUtil.getUserId(Meditation_History.this) + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
+                umWeb.setTitle(mApplication.ST(PreferenceUtil.getUserIncetance(Meditation_History.this).getString("pet_name", "") + " 正在这里坐禅"));
+                umWeb.setDescription(mApplication.ST("智灯师父在云峰寺APP里引领大家一起坐禅，快来看看吧！"));
+                umWeb.setThumb(new UMImage(Meditation_History.this, R.drawable.indra_share));
+                new ShareManager().shareWeb(umWeb, Meditation_History.this);
+            }
+        });
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.title_title)).setText("坐禅记录");
+        ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("坐禅记录"));
         ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,8 +104,9 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDecoration(this));
 
-        adapter = new MessageAdapter(this,new ArrayList<HashMap<String, String>>());
-        adapter.openLoadMore(pageSize, true);
+        adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());
+
+
 
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -96,7 +118,7 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
                     getHistory();
                 }
             }
-        });
+        },recyclerView);
 //        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
 //            @Override
 //            public void onItemClick(View view, int i) {
@@ -129,20 +151,26 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
         });
     }
 
-    private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>> {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ProgressUtil.dismiss();
+    }
 
-        public MessageAdapter(Context context,List<HashMap<String, String>> data) {
+    private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
+
+        public MessageAdapter(Context context, List<HashMap<String, String>> data) {
             super(R.layout.item_fortune_history, data);
         }
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            int seconds=Integer.valueOf(map.get("time"));
-            int hour=seconds/60;
-            String time=hour+"分"+(seconds-60*hour)+"秒";
-            holder.setText(R.id.title,"坐禅"+time)
-                    .setText(R.id.time, TimeUtils.getTrueTimeStr(map.get("last_time")));
-            holder.setVisible(R.id.msg,false);
+            int seconds = Integer.valueOf(map.get("time"));
+            int hour = seconds / 60;
+            String time = hour + "分" + (seconds - 60 * hour) + "秒";
+            holder.setText(R.id.title, mApplication.ST("坐禅" + time))
+                    .setText(R.id.time, mApplication.ST(TimeUtils.getTrueTimeStr(map.get("last_time"))));
+            holder.setVisible(R.id.msg, false);
 //            holder.itemView.setTag(map);
 
         }
@@ -179,10 +207,13 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
                                     if (list.size() < 10) {
                                         ToastUtil.showToastShort(mApplication.ST("摇签记录加载完毕"), Gravity.BOTTOM);
                                         endPage = page;
-                                        adapter.notifyDataChangedAfterLoadMore(list, false);
+                                        adapter.addData(list);
+                                        adapter.loadMoreEnd(false);
                                     } else {
-                                        adapter.notifyDataChangedAfterLoadMore(list, true);
+                                        adapter.addData(list);
+                                        adapter.loadMoreComplete();
                                     }
+
                                 }
                             }
 
@@ -208,8 +239,8 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
 //        adapter.setNewData(list);
         page = 1;
         isRefresh = true;
-        adapter.openLoadMore(10, true);
+        adapter.setEnableLoadMore(true);
+
         getHistory();
-        swip.setRefreshing(false);
     }
 }

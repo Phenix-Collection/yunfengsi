@@ -3,6 +3,7 @@ package com.yunfengsi.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -23,22 +24,28 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import com.yunfengsi.NianFo.HuiXiang;
+import com.yunfengsi.NianFo.MyZuNianActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.TimeUtils;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 
 import org.json.JSONArray;
@@ -49,6 +56,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2016/8/2.
@@ -105,7 +115,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         // TODO: 2017/8/30  助念点击后修改
-        if (list.get(position).get("user_id").equals(sp.getString("user_id", ""))||!sba.get(position)) {
+        if (list.get(position).get("rtg_userid").equals(sp.getString("user_id", "")) || !sba.get(position)) {
             return 1;
         } else {
             return 0;
@@ -115,23 +125,25 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         viewHolder holder;
-        View view = convertView;
-         HashMap<String, String> map = list.get(position);
-        if (view == null) {
-            holder = new viewHolder();
+//        View view = convertView;
+        final HashMap<String, String> map = list.get(position);
+//        if (view == null) {
+        holder = new viewHolder();
 
-            view = LayoutInflater.from(context).inflate(R.layout.nianfo_home_zhunian_item, parent, false);
-
-            holder.time = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_time);
-            holder.username = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_username);
-            holder.head = (ImageView) view.findViewById(R.id.nianfo_home_chanhui_item_head);
-            holder.content = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_content);
-            holder.tip = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_tip);
-            holder.dianzan = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_dianzan);
-            view.setTag(holder);
-        } else {
-            holder = (viewHolder) view.getTag();
-        }
+        View view = LayoutInflater.from(context).inflate(R.layout.nianfo_home_zhunian_item, parent, false);
+        holder.container= (RelativeLayout) view.findViewById(R.id.content);
+        holder.time = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_time);
+        holder.username = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_username);
+        holder.head = (ImageView) view.findViewById(R.id.nianfo_home_chanhui_item_head);
+        holder.content = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_content);
+        holder.tip = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_tip);
+        holder.dianzan = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_dianzan);
+        holder.swipeview = (SwipeMenuLayout) view.findViewById(R.id.swipview);
+        holder.text_delete = (TextView) view.findViewById(R.id.delete);
+//            view.setTag(holder);
+//        } else {
+//            holder = (viewHolder) view.getTag();
+//        }
         Glide.with(context).load(map.get("user_image"))
                 .placeholder(R.color.huise)
                 .override(DimenUtils.dip2px(context, 50), DimenUtils.dip2px(context, 50)).diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -148,7 +160,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
 
         }
         // TODO: 2017/8/30  助念点击后修改
-        if (map.get("head") != null) {
+        if (map.get("head") != null && !map.get("head").equals("")) {
             list1 = AnalyticalJSON.getList_zj(list.get(position).get("head"));
             if (list1 != null && list1.size() != 0) {
                 for (int i = 0; i < list1.size(); i++) {
@@ -159,14 +171,36 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                 }
             }
         }
+
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,
+                        MyZuNianActivity.class);
+                intent.putExtra("id", map.get("id"));
+                context.startActivity(intent);
+            }
+        });
+        if ((holder.swipeview.isSwipeEnable())) {
+            holder.swipeview.quickClose();
+            holder.text_delete.setVisibility(View.GONE);
+            holder.swipeview.setSwipeEnable(false);
+        }
         if (getItemViewType(position) == 0) {
             holder.dianzan.setText(mApplication.ST("为他助念"));
             view.setBackgroundColor(Color.parseColor("#ffffff"));
         } else {
             holder.dianzan.setText(mApplication.ST("邀请同修来助念"));
-            if(map.get("user_id").equals(PreferenceUtil.getUserIncetance(context).getString("user_id",""))){
+            if (map.get("rtg_userid").equals(PreferenceUtil.getUserIncetance(context).getString("user_id", ""))) {
                 view.setBackgroundColor(Color.parseColor("#eeeeee"));
-            }else{
+                if (!((SwipeMenuLayout) view).isSwipeEnable()) {
+                    {
+                        ((SwipeMenuLayout) view).setSwipeEnable(true);
+                    }
+                }
+                ((SwipeMenuLayout) view).quickClose();
+                holder.text_delete.setVisibility(View.VISIBLE);
+            } else {
                 view.setBackgroundColor(Color.parseColor("#ffffff"));
             }
         }
@@ -180,8 +214,8 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                 if (getItemViewType(p) == 1) {
                     Intent intent = new Intent(context, HuiXiang.class);
                     intent.putExtra("status", 4);
-                    intent.putExtra("content",list.get(p).get("rtg_contents"));
-                    intent.putExtra("pet_name",list.get(p).get("pet_name"));
+                    intent.putExtra("content", list.get(p).get("rtg_contents"));
+                    intent.putExtra("pet_name", list.get(p).get("pet_name"));
                     intent.putExtra("nf_id", list.get(p).get("id"));
                     context.startActivity(intent);
                     return;
@@ -219,11 +253,6 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                         wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
                         wl.width = context.getResources().getDisplayMetrics().widthPixels * 75 / 100;
                         window.setAttributes(wl);
-
-
-
-
-
                         dialog1.show();
                         new Thread(new Runnable() {
                             @Override
@@ -267,7 +296,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                             return;
                         }
                         view.setEnabled(false);
-                        ProgressUtil.show(context,"","请稍等");
+                        ProgressUtil.show(context, "", "请稍等");
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -287,17 +316,17 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                                                 @Override
                                                 public void run() {
                                                     if (sba.get(p)) {
-                                                        sba.set(p,false);
+                                                        sba.set(p, false);
                                                         String newNum = String.valueOf(Integer.valueOf(list.get(p).get("rtg_likes")) + 1);
                                                         list.get(p).put("rtg_likes", newNum);
                                                         tip.setText(mApplication.ST("助念人数: " + newNum + " 人"));
                                                         try {
-                                                            JSONArray jsonArray=new JSONArray(list.get(p).get("head"));
-                                                            JSONObject js=new JSONObject();
-                                                            js.put("id",PreferenceUtil.getUserIncetance(context).getString("user_id",""));
+                                                            JSONArray jsonArray = new JSONArray(list.get(p).get("head"));
+                                                            JSONObject js = new JSONObject();
+                                                            js.put("id", PreferenceUtil.getUserIncetance(context).getString("user_id", ""));
                                                             jsonArray.put(js);
-                                                            list.get(p).put("head",jsonArray.toString());
-                                                            LogUtil.e("助念后本地修改数据：："+list.get(p).get("head"));
+                                                            list.get(p).put("head", jsonArray.toString());
+                                                            LogUtil.e("助念后本地修改数据：：" + list.get(p).get("head"));
                                                             ((TextView) v).setText(mApplication.ST("邀请同修来助念"));
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
@@ -317,7 +346,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                                     e.printStackTrace();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                }finally {
+                                } finally {
                                     ((Activity) context).runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -331,12 +360,71 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                 });
             }
         });
+        final View finalView = view;
+        holder.text_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //删除功课
+                        if (!Network.HttpTest(context)) {
+                            return;
+                        }
+                        JSONObject js = new JSONObject();
+                        try {
+                            js.put("m_id", Constants.M_id);
+                            js.put("user_id", map.get("rtg_userid"));
+                            js.put("id", map.get("id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        ApisSeUtil.M m = ApisSeUtil.i(js);
+                        LogUtil.e("助念删除：：：" + js);
+                        OkGo.post(Constants.Reciting_Delete).params("key", m.K())
+                                .params("msg", m.M())
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(String s, Call call, Response response) {
+                                        HashMap<String, String> m = AnalyticalJSON.getHashMap(s);
+                                        if (m != null) {
+                                            if ("000".equals(m.get("code"))) {
+                                                ToastUtil.showToastShort("删除成功");
+                                                ((SwipeMenuLayout) finalView.findViewById(R.id.swipview)).quickClose();
+                                                list.remove(map);
+                                                notifyDataSetChanged();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Call call, Response response, Exception e) {
+                                        super.onError(call, response, e);
+                                        ToastUtil.showToastShort("删除失败，请稍后重试");
+                                    }
+                                });
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.setMessage("确认删除该条忏悔吗？");
+                alertDialog.show();
+
+            }
+        });
         return view;
     }
 
     static class viewHolder {
-        TextView username, time, content, tip, dianzan;
+        TextView username, time, content, tip, dianzan, text_delete;
         ImageView head;
+        SwipeMenuLayout swipeview;
+        RelativeLayout container;
     }
 }

@@ -1,7 +1,9 @@
 package com.yunfengsi.Utils;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -55,6 +57,17 @@ public class AliPayUtil {
             Toast.makeText(mApplication.getInstance(), "网络连接不稳定，请稍后重试", Toast.LENGTH_SHORT).show();
             return;
         }
+
+
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        if (componentName == null) {
+            ToastUtil.showToastShort("请安装支付宝软件");
+            return;
+        }
+
+
         ProgressUtil.show(context, "", "正在调起支付宝,请稍等");
 
         new Thread(new Runnable() {
@@ -78,7 +91,7 @@ public class AliPayUtil {
                     js.put("num", num);
                     js.put("type", type);
                     js.put("pay_type", "2");
-                    ApisSeUtil.M m1=ApisSeUtil.i(js);
+                    ApisSeUtil.M m1 = ApisSeUtil.i(js);
                     String attachIdData = OkGo.post(url)
                             .params("key", m1.K())
                             .params("msg", m1.M())

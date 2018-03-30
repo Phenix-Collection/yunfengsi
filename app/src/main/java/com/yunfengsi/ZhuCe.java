@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
@@ -112,7 +114,7 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.zhuce1);
-        StatusBarCompat.compat(this, getResources().getColor(R.color.umeng_socialize_divider));
+        StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
 //        instance = this;
         sp = getSharedPreferences("user", MODE_PRIVATE);
 
@@ -156,12 +158,12 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
         tvPhone.performClick();
         TextView t= (TextView) findViewById(R.id.country_code);
         if(PreferenceUtil.getSettingIncetance(this).getString("country","").equals("")){
-            t.setText(mApplication.ST("中国大陆  +86"));
+            t.setText(mApplication.ST("国家/地区: 中国大陆  +86"));
         }else{
             code=PreferenceUtil.getSettingIncetance(this).getString("code","");
-            t.setText(mApplication.ST(PreferenceUtil.getSettingIncetance(this).getString("country","")+"   +"+code));
+            t.setText(mApplication.ST("国家/地区: "+PreferenceUtil.getSettingIncetance(this).getString("country","")+"   +"+code));
         }
-//        (findViewById(R.id.zhuce_main)).setBackgroundDrawable(new GlideBitmapDrawable(getResources(), ImageUtil.readBitMap(this, R.drawable.backgd)));
+        (findViewById(R.id.zhuce_main)).setBackgroundDrawable(new GlideBitmapDrawable(getResources(), ImageUtil.readBitMap(this, R.drawable.backgd)));
 
 
 //        registerReceiver(smsReceiver,new IntentFilter(Constants.SMS_RECEIVED_ACTION));

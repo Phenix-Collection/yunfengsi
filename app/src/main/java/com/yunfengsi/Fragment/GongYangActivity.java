@@ -221,7 +221,7 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
                             ArrayList<HashMap<String, String>> list = AnalyticalJSON.getList_zj(s);
                             LogUtil.e("供养最新消息::::"+list);
                             if (list != null) {
-                                headLineView.onDataArrival(list,mHeadLineView.GONGYANG);
+                                headLineView.onDataArrival(list, mHeadLineView.GONGYANG);
                             }
                         }
                     });
@@ -241,14 +241,14 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
                 try {
                     JSONObject js=new JSONObject();
                     try {
-                        js.put("m_id",Constants.M_id);
+                        js.put("m_id", Constants.M_id);
                         js.put("page", page);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     String data = OkGo.post(Constants.ShangPin_list_Ip)
                             .params("key", ApisSeUtil.getKey())
-                            .params("msg",ApisSeUtil.getMsg(js)).tag(TAG).execute().body().string();
+                            .params("msg", ApisSeUtil.getMsg(js)).tag(TAG).execute().body().string();
                     if (!TextUtils.isEmpty(data)) {
                         final List<HashMap<String, String>> list1 = AnalyticalJSON.getList(data, "shop");
                         if (list1 != null) {

@@ -408,6 +408,7 @@ public class ImageUtil {
         bitmap = bitmap.copy(bitmapConfig, true);
 
         Canvas canvas = new Canvas(bitmap);
+
         // new antialised Paint
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         // text color - #3D3D3D
@@ -425,6 +426,65 @@ public class ImageUtil {
             int allHeight=textheight*gText.length();
             LogUtil.e("一个字的高度：；"+textheight+"   全部高度：："+allHeight
             +"  图片宽度：："+bitmap.getWidth()+"   图片高度：："+bitmap.getHeight());
+            char[] chars=gText.toCharArray();
+            int x=(bitmap.getWidth()-textheight)/2;
+            int y=(bitmap.getHeight()-allHeight)/2;
+            for(int i=0;i<chars.length;i++){
+                canvas.drawText(chars[i]+"\n", x , y +i*textheight+20, paint);
+            }
+
+        }else{
+
+
+        }
+
+
+
+        return bitmap;
+    }
+    public static Bitmap drawTextToBitmap(Context gContext,
+                                          int gResId,
+                                          String gText,int mWidthDP,int mHeightDP,int textSizeDp,boolean isVertical,int color) {
+        Resources resources = gContext.getResources();
+//        float scale = resources.getDisplayMetrics().density;
+        Bitmap bitmap =
+                BitmapFactory.decodeResource(resources, gResId);
+
+        bitmap = scaleWithWH(bitmap, mWidthDP, mHeightDP);
+
+        android.graphics.Bitmap.Config bitmapConfig =
+                bitmap.getConfig();
+
+
+
+        // set default bitmap config if none
+        if(bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888;
+        }
+        // resource bitmaps are imutable,
+        // so we need to convert it to mutable one
+        bitmap = bitmap.copy(bitmapConfig, true);
+
+        Canvas canvas = new Canvas(bitmap);
+
+        // new antialised Paint
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // text color - #3D3D3D
+        final float scale = gContext.getResources().getDisplayMetrics().density;
+        int tetSize=(int) (textSizeDp * scale + 0.5f);
+
+        paint.setColor(color);
+        paint.setTextSize(tetSize);
+        paint.setDither(true); //获取跟清晰的图像采样
+        paint.setFilterBitmap(true);//过滤一些
+        paint.setFakeBoldText(true);
+        Rect bounds = new Rect();
+        if(isVertical){
+            paint.getTextBounds(gText, 0, 1, bounds);
+            int textheight=bounds.right;
+            int allHeight=textheight*gText.length();
+            LogUtil.e("一个字的高度：；"+textheight+"   全部高度：："+allHeight
+                    +"  图片宽度：："+bitmap.getWidth()+"   图片高度：："+bitmap.getHeight());
             char[] chars=gText.toCharArray();
             int x=(bitmap.getWidth()-textheight)/2;
             int y=(bitmap.getHeight()-allHeight)/2;
