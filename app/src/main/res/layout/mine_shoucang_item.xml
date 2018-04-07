@@ -1,54 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/layout_bg_sel"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/mine_shoucang_item_image"
-        android:layout_width="120dp"
-        android:layout_height="90dp"
-        android:layout_margin="10dp"
-        />
-    <TextView
-        android:id="@+id/mine_shoucang_item_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/mine_shoucang_item_image"
-        android:layout_alignTop="@+id/mine_shoucang_item_image"
-        android:textSize="13dp"
-        android:textColor="@color/main_color"
-        android:layout_marginBottom="1dp"/>
-    <TextView
-        android:id="@+id/mine_shoucang_item_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="13dp"
-        android:textColor="@color/colorAccent"
-        android:layout_alignTop="@+id/mine_shoucang_item_image"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"/>
-    <TextView
-        android:id="@+id/mine_shoucang_item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dsfsdf"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:layout_alignLeft="@+id/mine_shoucang_item_user"
-        android:layout_below="@+id/mine_shoucang_item_user"
-        android:textColor="@color/black"
-        android:textSize="14dp"
-        android:layout_marginBottom="5dp"/>
-    <TextView
-        android:id="@+id/mine_shoucang_item_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dfsdf"
-        android:layout_alignLeft="@+id/mine_shoucang_item_user"
-        android:layout_alignBottom="@+id/mine_shoucang_item_image"
-        android:textSize="12dp"
-        android:layout_marginTop="3dp"/>
+    android:layout_height="wrap_content">
 
-</com.zhy.android.percent.support.PercentRelativeLayout>
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg_sel">
+
+
+        <ImageView
+            android:id="@+id/mine_shoucang_item_image"
+            android:layout_width="120dp"
+            android:layout_height="90dp"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/mine_shoucang_item_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/mine_shoucang_item_image"
+            android:layout_marginBottom="1dp"
+            android:layout_toRightOf="@+id/mine_shoucang_item_image"
+            android:textColor="@color/main_color"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/mine_shoucang_item_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/mine_shoucang_item_image"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="13dp" />
+
+        <TextView
+            android:id="@+id/mine_shoucang_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mine_shoucang_item_user"
+            android:layout_below="@+id/mine_shoucang_item_user"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="dsfsdf"
+            android:textColor="@color/black"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/mine_shoucang_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/mine_shoucang_item_image"
+            android:layout_alignLeft="@+id/mine_shoucang_item_user"
+            android:layout_marginTop="3dp"
+            android:text="dfsdf"
+            android:textSize="12dp" />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:id="@+id/delete"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:background="@color/red"
+        android:gravity="center"
+        android:textSize="20dp"/>
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="sut_type" type="id">sut_type</item>
+    <item name="position" type="id">position</item>
     <item name="BookPath" type="id">book</item>
+    <item name="BookId" type="id">bookId</item>
     <item name="type_text" type="id" format="integer">666</item>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:background="@drawable/book_shelf_cell"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/item1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/jinshu"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
+        app:layout_marginLeftPercent="6%w"
+        app:layout_marginRightPercent="3%w"
+        app:layout_textSizePercent="4%w"
+        app:layout_widthPercent="25%"
+        tools:text="那屋阿弥陀佛圣诞节疯狂了圣"
+        android:visibility="gone"
+
+        />
+
+    <TextView
+        android:id="@+id/item2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/jinshu"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
+        app:layout_marginLeftPercent="3.5%w"
+        app:layout_marginRightPercent="3.5%w"
+        app:layout_textSizePercent="4%w"
+        android:visibility="gone"
+        app:layout_widthPercent="25%" />
+
+    <TextView
+        android:id="@+id/item3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/jinshu"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
+        app:layout_marginLeftPercent="3%w"
+        app:layout_marginRightPercent="6%w"
+        app:layout_textSizePercent="4%w"
+        app:layout_widthPercent="25%"
+        android:visibility="gone"
+
+        />
+
+</com.zhy.android.percent.support.PercentLinearLayout>

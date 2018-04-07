@@ -9,6 +9,7 @@ public class Constants {
 
     //帮助网页
    public static final String Help="https://indrah.cn/yfs.php/Index/help" ;
+
     //服务器测试域名
 //    public static final String host_Ip = "http://yintolo.net";
     //    //服务器域名
@@ -22,7 +23,8 @@ public class Constants {
     public  static final String NAME_LOW="yfs";
     public static  final int  NAME_CHAR_NUM=9;
 
-    public static final String Temples = host_Ip + oooooo + "Templexz";
+    //统一更新
+    public static final String UPDATE=host_Ip+"/download/yfs/index.php" ;
 
     public static  final String cacheO=NAME_LOW;
     //外部缓存储存地址
@@ -474,4 +476,8 @@ public class Constants {
 
     //大藏经次级目录及内容接口
     public static final String DaZang_Chapter_Detail= host_Ip + iiiiii + "Dzjd";
+    //大藏经搜索接口
+    public static final String DaZang_Search= host_Ip + iiiiii + "Dzjquery";
+    //经书纠错接口
+    public static final String JiuCuo= host_Ip + iiiiii + "Ebookadd";
 }

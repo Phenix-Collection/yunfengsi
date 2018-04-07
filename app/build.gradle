@@ -16,24 +16,24 @@ android {
 
     }
 
-//    configurations.all {
-//        resolutionStrategy.eachDependency { details ->
-//            def requested = details.requested
-//            if (requested.group == 'com.android.support') {
-//                if (!requested.name.startsWith("multidex")) {
-//                    details.useVersion '26.0.1'
-//                }
-//            }
-//        }
-//    }
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '26.0.1'
+                }
+            }
+        }
+    }
     defaultConfig {
 
         multiDexEnabled true
         applicationId "com.yunfengsi"
         minSdkVersion 17
-        targetSdkVersion 27
-        versionCode 61
-        versionName "2.1.0"
+        targetSdkVersion 23
+        versionCode 68
+        versionName "2.1.3.4"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86"
         }
@@ -52,6 +52,7 @@ android {
             keyAlias "yunfengsi"
             keyPassword "883120"
         }
+
     }
 
 
@@ -165,10 +166,10 @@ dependencies {
     //阅读器   待优化
 //    compile project(':ebookread')
     //阴影效果
-    compile 'com.lijiankun24:shadowlayout:1.0.0'
+//    compile 'com.lijiankun24:shadowlayout:1.0.0'
 
     compile 'org.greenrobot:eventbus:3.0.0'
-//    implementation 'com.android.support:support-v4:23.3.0'
+//    implementation 'com.android.support:support-v4:24.2.1'
 
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.16'
 

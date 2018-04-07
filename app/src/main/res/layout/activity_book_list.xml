@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunfengsi.E_Book.BookList">
+
+
+    <include layout="@layout/title_default" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:background="@drawable/back_sel"
+            android:src="@drawable/back" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <com.ruffian.library.RTextView
+                android:id="@+id/fojing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:text="佛  经"
+                android:textSize="16dp"
+                app:background_normal="@color/transparent"
+                app:background_unable="@color/white"
+                app:border_color_normal="@color/white"
+                app:border_width_normal="1.5px"
+                app:corner_radius_bottom_left="5dp"
+                app:corner_radius_top_left="5dp"
+                app:text_color_normal="@color/white"
+                app:text_color_unable="@color/black"
+
+                />
+
+            <com.ruffian.library.RTextView
+                android:id="@+id/dazang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:text="大藏经"
+                android:textSize="16dp"
+                app:background_normal="@color/transparent"
+                app:background_unable="@color/white"
+                app:border_color_normal="@color/white"
+                app:border_width_normal="1.5px"
+                app:corner_radius_bottom_right="5dp"
+                app:corner_radius_top_right="5dp"
+                app:text_color_normal="@color/white"
+                app:text_color_unable="@color/black"
+
+                />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:id="@+id/share"
+            android:src="@drawable/fenxiang2"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="45dp"
+        >
+
+
+        <com.yunfengsi.View.BookRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycle">
+
+        </com.yunfengsi.View.BookRecyclerView>
+
+
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="45dp"
+        android:divider="@drawable/mdivider"
+        android:showDividers="middle"
+        android:id="@+id/dazang_mulu2"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f0f0f0"
+
+            android:padding="8dp"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:id="@+id/search_edit"
+                android:hint="请输入关键词搜索"
+                android:textSize="16dp"
+
+                android:paddingLeft="20dp"
+                android:background="@drawable/edittext_background"
+                />
+
+            <com.ruffian.library.RTextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/search"
+                app:text_color_normal="@color/black"
+                app:text_color_pressed="#d6d6d6"
+                android:text="搜索"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:padding="10dp"/>
+
+        </LinearLayout>
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/dazang_mulu">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+
+
+
+</merge>

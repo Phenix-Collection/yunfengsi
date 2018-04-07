@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/shape_corner_white_10dp"
+
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="申请信息"
+        android:textSize="18dp"
+        android:id="@+id/title"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/credit_now"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="请认真填写，以避免不必要的麻烦"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/item_shape"
+        android:divider="@drawable/mdivider"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:ellipsize="end"
+            android:maxLength="15"
+            android:hint="请输入联系方式"
+            android:inputType="phone"
+            android:lines="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/wordhuise"
+            android:textSize="14dp" />
+
+        <EditText
+            android:id="@+id/peopleNum"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:ellipsize="end"
+            android:hint="请输入乘车人数"
+            android:lines="1"
+            android:maxLength="2"
+            android:inputType="number"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/wordhuise"
+            android:textSize="14dp" />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="35dp"
+            android:background="@null"
+            android:ellipsize="end"
+            android:hint="请输入出发地址"
+            android:lines="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/wordhuise"
+            android:textSize="14dp" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#d6d6d6"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/cancle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:text_color_normal="@color/black"
+            app:text_color_pressed="#888888"
+            android:text="取消"/>
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#d6d6d6"/>
+        <com.ruffian.library.RTextView
+            android:id="@+id/commit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:text_color_normal="@color/lightpink"
+            app:text_color_pressed="@color/pink"
+            android:text="立即申请"/>
+    </LinearLayout>
+</LinearLayout>

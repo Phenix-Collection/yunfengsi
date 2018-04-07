@@ -16,7 +16,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -36,7 +35,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +47,6 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
-import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
@@ -60,7 +57,6 @@ import com.yunfengsi.Adapter.myHomePagerAdapter;
 import com.yunfengsi.Audio_BD.WakeUp.IWakeupListener;
 import com.yunfengsi.Audio_BD.WakeUp.MyWakeup;
 import com.yunfengsi.Audio_BD.WakeUp.SimpleWakeupListener;
-import com.yunfengsi.E_Book.BookList;
 import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.HomePage;
 import com.yunfengsi.Fragment.Mine;
@@ -79,7 +75,6 @@ import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
-import com.yunfengsi.Utils.FileUtils;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.MD5Utls;
@@ -96,7 +91,6 @@ import com.yunfengsi.View.mAudioManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -163,9 +157,9 @@ public class MainActivity extends UpPayUtil {
 
     // TODO: 2018/2/2 媒体音量调至8成
     private void changeSystemVolume() {
-        AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,maxVolume*8/10 , 0);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume * 8 / 10, 0);
 
     }
 
@@ -178,7 +172,6 @@ public class MainActivity extends UpPayUtil {
                 Manifest.permission.INTERNET,
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-
 
 
                 Manifest.permission.SEND_SMS,
@@ -257,10 +250,11 @@ public class MainActivity extends UpPayUtil {
                                                     intent.putExtra("url", map.get("gg_url"));
                                                     startActivity(intent);
                                                     return;
-                                                };
-                                                if(url.equals(Constants.Help)){
-                                                    intent.setClass(MainActivity.this,AD.class);
-                                                    intent.putExtra("bangzhu",true);
+                                                }
+                                                ;
+                                                if (url.equals(Constants.Help)) {
+                                                    intent.setClass(MainActivity.this, AD.class);
+                                                    intent.putExtra("bangzhu", true);
                                                     startActivity(intent);
                                                     return;
                                                 }
@@ -358,7 +352,7 @@ public class MainActivity extends UpPayUtil {
             pushService.addAlias(PreferenceUtil.getUserIncetance(this).getString("user_id", ""), new CommonCallback() {
                 @Override
                 public void onSuccess(String s) {
-                    LogUtil.e("别名绑定成功，哈哈哈哈哈哈哈哈"+s);
+                    LogUtil.e("别名绑定成功，哈哈哈哈哈哈哈哈" + s);
                 }
 
                 @Override
@@ -671,7 +665,8 @@ public class MainActivity extends UpPayUtil {
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, BookList.class));
+//                Verification.setPermission(new File(Environment.getExternalStorageDirectory(), "yunfengsi2.0.0.apk").getPath());
+                Verification.installApk(MainActivity.this, "yunfengsi2.0.0.apk");
             }
         });
     }
@@ -691,48 +686,53 @@ public class MainActivity extends UpPayUtil {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((TextView) v).getText().equals(ST("后台更新"))) {
-                    dialog.dismiss();
-                    return;
-                }
+//                if (((TextView) v).getText().equals(ST("后台更新"))) {
+//                    dialog.dismiss();
+//                    return;
+//                }
                 PermissionUtil.checkPermission(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS});
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
 
-                ((TextView) v).setText(ST("后台更新"));
-                final ProgressBar updateBar = (ProgressBar) view.findViewById(R.id.version_update_progress);
-                updateBar.setVisibility(View.VISIBLE);
-                final TextView percent = (TextView) view.findViewById(R.id.version_update_percent);
-                percent.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.GONE);
-                OkGo.get(appUrl).tag("download").execute(new FileCallback(Environment.getExternalStorageDirectory().getAbsolutePath(), appname) {
-
-                    @Override
-                    public void onSuccess(File file, Call call, Response response) {
-
-                    }
-
-                    @Override
-                    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
-                        super.downloadProgress(currentSize, totalSize, progress, networkSpeed);
-                        percent.setText((int) (progress * 100) + "%");
-                        updateBar.setProgress((int) (progress * 100));
-                    }
-
-                    @Override
-                    public void onAfter(File file, Exception e) {
-                        super.onAfter(file, e);
-                        Verification.installApk(getApplicationContext(), appname);
-                    }
-
-
-                });
+                intent.setData(Uri.parse(Constants.UPDATE));
+                startActivity(intent);
+//                ((TextView) v).setText(ST("后台更新"));
+//                final ProgressBar updateBar = (ProgressBar) view.findViewById(R.id.version_update_progress);
+//                updateBar.setVisibility(View.VISIBLE);
+//                final TextView percent = (TextView) view.findViewById(R.id.version_update_percent);
+//                percent.setVisibility(View.VISIBLE);
+//                textView.setVisibility(View.GONE);
+//                OkGo.get(appUrl).tag("download").execute(new FileCallback(Environment.getExternalStorageDirectory().getAbsolutePath(), appname) {
+//
+//                    @Override
+//                    public void onSuccess(final File file, Call call, Response response) {
+////                        Verification.setPermission(file.getPath());
+//
+//                    }
+//
+//                    @Override
+//                    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+//                        super.downloadProgress(currentSize, totalSize, progress, networkSpeed);
+//                        percent.setText((int) (progress * 100) + "%");
+//                        updateBar.setProgress((int) (progress * 100));
+//                    }
+//
+//                    @Override
+//                    public void onAfter(File file, Exception e) {
+//                        super.onAfter(file, e);
+//                        Verification.installApk(getApplicationContext(), appname);
+//                    }
+//
+//
+//                });
             }
         });
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                OkGo.getInstance().cancelTag("download");
-                FileUtils.deleteFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath(), appname));
+//                OkGo.getInstance().cancelTag("download");
+//                FileUtils.deleteFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath(), appname));
             }
         });
         dialog.setView(view);
@@ -1010,7 +1010,6 @@ public class MainActivity extends UpPayUtil {
 //            MLinkAPIFactory.createAPI(this).checkYYB();
 //        }
     }
-
 
 
 }

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipview"
+    >
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <cn.carbs.android.avatarimageview.library.AvatarImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/indra"
+        android:id="@+id/nianfo_home_chanhui_item_head"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/nianfo_home_chanhui_item_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/nianfo_home_chanhui_item_head"
+        android:textSize="16dp"
+        android:textColor="@color/main_color"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="5dp"
+        />
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/nianfo_home_chanhui_item_time"
+         android:textSize="12sp"
+         android:layout_alignParentRight="true"
+         />
+    <TextView
+        android:id="@+id/nianfo_home_chanhui_item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nianfo_home_chanhui_item_username"
+        android:layout_below="@+id/nianfo_home_chanhui_item_username"
+        android:layout_marginTop="5dp"
+        android:lineSpacingExtra="5dp"
+        android:textColor="@color/wordhuise"
+        android:textSize="14dp" />
+
+
+
+
+
+    <TextView
+        android:id="@+id/nianfo_home_chanhui_item_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nianfo_home_chanhui_item_content"
+        android:layout_alignLeft="@+id/nianfo_home_chanhui_item_content"
+       tools:text="助念人数"
+        android:textColor="@color/wordhuise"
+        android:layout_marginTop="5dp"
+        android:textSize="16dp" />
+    <TextView
+        android:id="@+id/nianfo_home_chanhui_item_dianzan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="随喜"
+        android:layout_below="@+id/nianfo_home_chanhui_item_content"
+        android:textColor="@drawable/sel_text_color"
+        android:textSize="16dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/delete"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="删除"
+        android:textSize="18dp"
+        android:background="@color/red"/>
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

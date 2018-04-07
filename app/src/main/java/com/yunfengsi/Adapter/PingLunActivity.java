@@ -178,11 +178,11 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            LogUtil.e("js::::"+js);
+                            LogUtil.e("评论点赞s::::"+js);
                             ApisSeUtil.M m=ApisSeUtil.i(js);
                             String data1 = OkGo.post(Constants.PL_DZ_IP)
-                                    .params("key",m.M())
-                                    .params("msg", m.K())
+                                    .params("key",m.K())
+                                    .params("msg", m.M())
                                     .execute().body().string();
                             if (!data1.equals("")) {
                                 HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);
@@ -256,6 +256,7 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
         time.setText(TimeUtils.getTrueTimeStr(getIntent().getStringExtra("time")));
         imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         head = (AvatarImageView) findViewById(R.id.PL_item_Head);
+
         Glide.with(this).load(getIntent().getStringExtra("user_image")).override(DimenUtils.dip2px(this, 50), DimenUtils.dip2px(this, 50))
                 .centerCrop().into(head);
         name = (TextView) findViewById(R.id.PL_item_Name);
@@ -323,6 +324,8 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
                                     name.setText(map.get("pet_name"));
                                     dianzanNum.setText(map.get("ct_ctr"));
                                     content.setText(map.get("ct_contents"));
+                                    Glide.with(PingLunActivity.this).load(map.get("user_image")).override(DimenUtils.dip2px(PingLunActivity.this, 50), DimenUtils.dip2px(PingLunActivity.this, 50))
+                                            .centerCrop().into(head);
                                 }
                             }
 

@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
@@ -134,6 +136,12 @@ public class mApplication extends Application {
 //           return;
 //       }
 //       LeakCanary.install(this);
+
+        if (Build.VERSION.SDK_INT >23) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            builder.detectFileUriExposure();
+        }
     }
 
     public static mApplication getInstance() {

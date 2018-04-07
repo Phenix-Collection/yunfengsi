@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.yunfengsi">
-    、
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.READ_LOGS" />
@@ -101,6 +101,16 @@
             </intent-filter>
         </activity>
 
+
+        <provider
+            android:authorities="${applicationId}.fileProvider"
+            android:name="android.support.v4.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
         <!-- <receiver android:name=".Managers.SMSBroadcastReceiver"> -->
         <!-- <intent-filter android:priority="1000"> -->
         <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED"/> -->

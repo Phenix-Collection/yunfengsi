@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -16,18 +15,15 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
-import com.lzy.okgo.callback.FileCallback;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
-import com.yunfengsi.Utils.FileUtils;
 import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.PermissionUtil;
 import com.yunfengsi.Utils.PhoneSMSManager;
@@ -40,11 +36,12 @@ import com.yunfengsi.Utils.mApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Response;
+
+import static com.yunfengsi.Utils.mApplication.ST;
 
 
 public class GanyuActivity extends AppCompatActivity implements View.OnClickListener {
@@ -456,52 +453,62 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
         ((TextView) view.findViewById(R.id.version_update_title)).setText("检测到新版本安装包：" + appname.substring(Constants.NAME_CHAR_NUM, appname.length() - 4));
         final TextView textView = (TextView) view.findViewById(R.id.version_update_content);
         textView.setText(content.equals("") ? "是否需要更新？" : content);
+        TextView update = (TextView) view.findViewById(R.id.version_update_update);
+        update.setText(ST("更新"));
+        TextView cancle = (TextView) view.findViewById(R.id.version_update_cancel);
+        cancle.setText(ST("取消"));
         view.findViewById(R.id.version_update_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((TextView) v).getText().equals("后台更新")) {
-                    dialog.dismiss();
-                    return;
-                }
+//                if (((TextView) v).getText().equals("后台更新")) {
+//                    dialog.dismiss();
+//                    return;
+//                }
                 PermissionUtil.checkPermission(GanyuActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS});
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
 
-                ((TextView) v).setText("后台更新");
-                final ProgressBar updateBar = (ProgressBar) view.findViewById(R.id.version_update_progress);
-                updateBar.setVisibility(View.VISIBLE);
-                final TextView percent = (TextView) view.findViewById(R.id.version_update_percent);
-                percent.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.GONE);
-                OkGo.get(appUrl).tag("download").execute(new FileCallback(Environment.getExternalStorageDirectory().getAbsolutePath(), appname) {
-
-
-                    @Override
-                    public void onSuccess(File file, Call call, Response response) {
-
-                    }
-
-                    @Override
-                    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
-                        super.downloadProgress(currentSize, totalSize, progress, networkSpeed);
-                        if (percent != null) percent.setText((int) (progress * 100) + "%");
-                        if (updateBar != null) updateBar.setProgress((int) (progress * 100));
-                    }
-
-                    @Override
-                    public void onAfter(File file, Exception e) {
-                        super.onAfter(file, e);
-                        Verification.installApk(getApplicationContext(), appname);
-                    }
-
-
-                });
+                intent.setData(Uri.parse(Constants.UPDATE));
+                startActivity(intent);
+//
+//                ((TextView) v).setText("后台更新");
+//                final ProgressBar updateBar = (ProgressBar) view.findViewById(R.id.version_update_progress);
+//                updateBar.setVisibility(View.VISIBLE);
+//                final TextView percent = (TextView) view.findViewById(R.id.version_update_percent);
+//                percent.setVisibility(View.VISIBLE);
+//                textView.setVisibility(View.GONE);
+//                OkGo.get(appUrl).tag("download").execute(new FileCallback(Environment.getExternalStorageDirectory().getAbsolutePath(), appname) {
+//
+//
+//                    @Override
+//                    public void onSuccess(File file, Call call, Response response) {
+//
+//                    }
+//
+//                    @Override
+//                    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+//                        super.downloadProgress(currentSize, totalSize, progress, networkSpeed);
+//                        if (percent != null) percent.setText((int) (progress * 100) + "%");
+//                        if (updateBar != null) updateBar.setProgress((int) (progress * 100));
+////                        LogUtil.e("当前进度：："+currentSize);
+//                    }
+//
+//                    @Override
+//                    public void onAfter(File file, Exception e) {
+//                        super.onAfter(file, e);
+//                        Verification.installApk(getApplicationContext(), appname);
+//                    }
+//
+//
+//                });
             }
         });
         view.findViewById(R.id.version_update_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                OkGo.getInstance().cancelTag("download");
-                FileUtils.deleteFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath(), appname));
+//                OkGo.getInstance().cancelTag("download");
+//                FileUtils.deleteFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath(), appname));
             }
         });
         dialog.setView(view);

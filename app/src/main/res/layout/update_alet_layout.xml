@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/transparent"
     >
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="@color/white"
-        android:background="@drawable/top_right_radius_shape"
+        android:background="@color/main_color"
         android:padding="10dp"
         android:gravity="center"/>
     <ProgressBar
@@ -37,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
+        android:lineSpacingExtra="5dp"
         android:textSize="16dp"
         android:textColor="@color/black"
         android:layout_margin="20dp"/>

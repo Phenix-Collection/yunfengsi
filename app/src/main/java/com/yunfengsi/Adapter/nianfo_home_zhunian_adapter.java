@@ -306,9 +306,11 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                                     js.put("gongke_id", (String) fohao.getTag());
                                     js.put("num", num.getText().toString());
                                     js.put("recit_id", tip.getTag().toString());
+                                    ApisSeUtil.M m=ApisSeUtil.i(js);
+                                    LogUtil.e("助念提交：："+js);
                                     String data = OkGo.post(Constants.nianfo_home_zhunian_ZN_Ip)
-                                            .params("key", ApisSeUtil.getKey())
-                                            .params("msg", ApisSeUtil.getMsg(js)).execute().body().string();
+                                            .params("key", m.K())
+                                            .params("msg",m.M()).execute().body().string();
                                     if (!data.equals("")) {
                                         final HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
                                         if (map != null && "000".equals(map.get("code"))) {
@@ -328,6 +330,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                                                             list.get(p).put("head", jsonArray.toString());
                                                             LogUtil.e("助念后本地修改数据：：" + list.get(p).get("head"));
                                                             ((TextView) v).setText(mApplication.ST("邀请同修来助念"));
+                                                            notifyDataSetChanged();
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
                                                         }

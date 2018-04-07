@@ -482,7 +482,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
                 finish();
-//                new LoginUtil().checkLogin(this);
+                new LoginUtil().checkLogin(this);
 
 
                 break;

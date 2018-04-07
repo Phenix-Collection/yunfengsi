@@ -20,14 +20,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Adapter.PingLunActivity;
-import com.yunfengsi.BlessTree.BlessTree;
-import com.yunfengsi.E_Book.BookList;
-import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.More.Fortune;
-import com.yunfengsi.More.Meditation;
 import com.yunfengsi.NianFo.NianFo;
-import com.yunfengsi.Push.mReceiver;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -63,6 +57,7 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
     private static final int HuoDong = 2;
     private static final int GongYang = 3;
     private static final int ZhuXue = 4;
+    private static final int  PINGLUN=5;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter adapter;
@@ -113,6 +108,7 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
                 }
             }
         }, recyclerView);
+        adapter.disableLoadMoreIfNotFullPage();
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
 
             @Override
@@ -120,37 +116,37 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
                 Intent intent = new Intent();
                 HashMap<String, String> map = adapter.getData().get(position);
                 if (map.get("type") != null) {
-                    switch (map.get("type")) {
-                        case mReceiver.ZIXUN:
+                    switch (Integer.valueOf(map.get("type"))) {
+                        case ZiXun:
                             intent.setClass(MessageCenter.this, ZiXun_Detail.class);
                             break;
-                        case mReceiver.HUODong:
+                        case HuoDong:
                             intent.setClass(MessageCenter.this, activity_Detail.class);
                             break;
-                        case mReceiver.GOngyang:
+                        case GongYang:
                             intent.setClass(MessageCenter.this, XuanzheActivity.class);
                             break;
-                        case mReceiver.GONGXIU:
+                        case ZhuXue:
                             intent.setClass(MessageCenter.this, NianFo.class);
                             break;
-                        case mReceiver.BaoMing:
-                            intent.setClass(MessageCenter.this, Mine_activity_list.class);
-                            break;
-                        case mReceiver.Pinglun:
+//                        case mReceiver.BaoMing:
+//                            intent.setClass(MessageCenter.this, Mine_activity_list.class);
+//                            break;
+                        case PINGLUN:
                             intent.setClass(MessageCenter.this, PingLunActivity.class);
                             break;
-                        case mReceiver.QiYuan:
-                            intent.setClass(MessageCenter.this, BlessTree.class);
-                            break;
-                        case mReceiver.Fojin:
-                            intent.setClass(MessageCenter.this, BookList.class);
-                            break;
-                        case mReceiver.Bushi:
-                            intent.setClass(MessageCenter.this, Fortune.class);
-                            break;
-                        case mReceiver.ZuoChan:
-                            intent.setClass(MessageCenter.this, Meditation.class);
-                            break;
+//                        case mReceiver.QiYuan:
+//                            intent.setClass(MessageCenter.this, BlessTree.class);
+//                            break;
+//                        case mReceiver.Fojin:
+//                            intent.setClass(MessageCenter.this, BookList.class);
+//                            break;
+//                        case mReceiver.Bushi:
+//                            intent.setClass(MessageCenter.this, Fortune.class);
+//                            break;
+//                        case mReceiver.ZuoChan:
+//                            intent.setClass(MessageCenter.this, Meditation.class);
+//                            break;
 
 
                     }
@@ -192,43 +188,43 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
             if (map.get("type") != null) {
-                switch (map.get("type")) {
-                    case mReceiver.ZIXUN:
+                switch (Integer.valueOf(map.get("type"))) {
+                    case ZiXun:
                         holder.setText(R.id.title, "图文");
                         break;
-                    case mReceiver.HUODong:
+                    case HuoDong:
                         holder.setText(R.id.title, "活动");
                         break;
-                    case mReceiver.GOngyang:
+                    case GongYang:
                         holder.setText(R.id.title, "供养");
                         break;
-                    case mReceiver.ZHONGCHou:
+                    case ZhuXue:
                         holder.setText(R.id.title, "助学");
                         break;
-                    case mReceiver.GONGXIU:
-                        holder.setText(R.id.title, "共修");
-                        break;
-                    case mReceiver.BaoMing:
-                        holder.setText(R.id.title, "报名结果");
-                        break;
-                    case mReceiver.TongZhi:
-                        holder.setText(R.id.title, "通知");
-                        break;
-                    case mReceiver.Pinglun:
+//                    case mReceiver.GONGXIU:
+//                        holder.setText(R.id.title, "共修");
+//                        break;
+//                    case mReceiver.BaoMing:
+//                        holder.setText(R.id.title, "报名结果");
+//                        break;
+//                    case mReceiver.TongZhi:
+//                        holder.setText(R.id.title, "通知");
+//                        break;
+                    case PINGLUN:
                         holder.setText(R.id.title, "评论");
                         break;
-                    case mReceiver.QiYuan:
-                        holder.setText(R.id.title, "祈愿树");
-                        break;
-                    case mReceiver.Fojin:
-                        holder.setText(R.id.title, "佛经");
-                        break;
-                    case mReceiver.Bushi:
-                        holder.setText(R.id.title, "卜事");
-                        break;
-                    case mReceiver.ZuoChan:
-                        holder.setText(R.id.title, "坐禅");
-                        break;
+//                    case mReceiver.QiYuan:
+//                        holder.setText(R.id.title, "祈愿树");
+//                        break;
+//                    case mReceiver.Fojin:
+//                        holder.setText(R.id.title, "佛经");
+//                        break;
+//                    case mReceiver.Bushi:
+//                        holder.setText(R.id.title, "卜事");
+//                        break;
+//                    case mReceiver.ZuoChan:
+//                        holder.setText(R.id.title, "坐禅");
+//                        break;
                 }
             }
             holder.setText(R.id.content, mApplication.ST(map.get("contents")))

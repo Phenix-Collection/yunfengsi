@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/shu"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="10dp"
+            android:id="@+id/back"
+            android:src="@drawable/back"
+            android:background="@drawable/back_sel"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:textSize="20dp"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"/>
+
+        <com.ruffian.library.RTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:id="@+id/history"
+            app:text_color_normal="@color/white"
+            android:textSize="16dp"
+            app:text_color_pressed="#e6e6e6"
+            android:text="记录"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <com.moxun.tagcloudlib.view.TagCloudView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:autoScrollMode="uniform"
+        android:layout_marginTop="110dp"
+
+
+        app:scrollSpeed="6.0"
+        app:radiusPercent="0.6"
+
+        android:id="@+id/tree_view"/>
+
+
+    <com.yunfengsi.View.AutoPollRecyclerView
+        android:id="@+id/recycle"
+        android:layout_width="match_parent"
+        android:background="#aaffffff"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="140dp">
+
+    </com.yunfengsi.View.AutoPollRecyclerView>
+
+
+    <com.ruffian.library.RTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/xuyuan"
+        android:text="去祈愿"
+        app:text_color_normal="@color/black"
+        android:textSize="20dp"
+        android:gravity="center"
+        app:corner_radius="3dp"
+        android:layout_gravity="bottom"
+        app:background_normal="@color/white"
+        app:background_pressed="#f0f0f0"
+        android:layout_margin="10dp"/>
+
+
+
+
+
+
+
+
+
+</FrameLayout>

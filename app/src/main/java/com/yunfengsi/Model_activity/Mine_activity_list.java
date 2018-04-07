@@ -61,7 +61,7 @@ import okhttp3.Response;
 /**
  * Created by Administrator on 2016/10/11.
  */
-public class Mine_activity_list extends AppCompatActivity implements LoadMoreListView.OnLoadMore, View.OnClickListener, AMapLocationListener ,SwipeRefreshLayout.OnRefreshListener{
+public class Mine_activity_list extends AppCompatActivity implements LoadMoreListView.OnLoadMore, View.OnClickListener, AMapLocationListener, SwipeRefreshLayout.OnRefreshListener {
     private ImageView back;
     private TextView title;
     private LoadMoreListView listView;
@@ -86,7 +86,7 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fund_people_list);
         initView();
-        swip= (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
         swip.setColorSchemeResources(R.color.main_color);
         swip.setOnRefreshListener(this);
         swip.post(new Runnable() {
@@ -96,7 +96,6 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
                 getData();
             }
         });
-
 
 
         getLocation();
@@ -165,8 +164,8 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
                     JSONObject js = new JSONObject();
                     js.put("user_id", PreferenceUtil.getUserIncetance(Mine_activity_list.this).getString("user_id", ""));
                     js.put("m_id", Constants.M_id);
-                    ApisSeUtil.M m=ApisSeUtil.i(js);
-                    LogUtil.e("我的活动列表：：；"+js);
+                    ApisSeUtil.M m = ApisSeUtil.i(js);
+                    LogUtil.e("我的活动列表：：；" + js);
                     String data = OkGo.post(Constants.mine_activity)
                             .params("key", m.K())
                             .params("msg", m.M())
@@ -182,7 +181,7 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
                                     if (adapter == null) {
                                         adapter = new mAdapter(Mine_activity_list.this, list1);
                                         listView.setAdapter(adapter);
-                                    }else{
+                                    } else {
                                         adapter.addList(list1);
                                         adapter.notifyDataSetChanged();
                                     }
@@ -335,17 +334,21 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
                 holder.sign.setVisibility(View.GONE);
             } else if ("2".equals(list.get(position).get("status"))) {
                 holder.money.setText(mApplication.ST("已通过"));
-                if(map.get("act_time")!=null&&!map.get("act_time").equals("")){
-                    long startTime = TimeUtils.dataOne(map.get("act_time"));
-
-                    if (System.currentTimeMillis() < startTime) {
-                        holder.sign.setVisibility(View.VISIBLE);
+                if (!map.get("longitude").equals("") && !map.get("latitude").equals("")) {
+                    if (map.get("act_time") != null && !map.get("act_time").equals("")) {
+                        long startTime = TimeUtils.dataOne(map.get("act_time"));
+                        if (System.currentTimeMillis() < startTime) {
+                            holder.sign.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.sign.setVisibility(View.GONE);
+                        }
                     } else {
                         holder.sign.setVisibility(View.GONE);
                     }
-                }else{
+                } else {
                     holder.sign.setVisibility(View.GONE);
                 }
+
 
             } else {
                 holder.money.setText("");
@@ -364,19 +367,20 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
             holder.sign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    if(!map.get("longitude").equals("")&&!map.get("latitude").equals("")){
+                    if (!map.get("longitude").equals("") && !map.get("latitude").equals("")) {
                         DPoint defaultPoint = new DPoint(Double.valueOf(map.get("latitude")), Double.valueOf(map.get("longitude")));
-                        DPoint mPoint = new DPoint(lat,longt);
-                        int  distance = ((int) CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
-                        LogUtil.e("默认金纬度：：；"+map.get("longitude")+"     "+map.get("latitude"));
-                        LogUtil.e("测量金纬度：：；"+longt+"     "+lat);
-                        LogUtil.e("定位距离：：：" + distance+"     "+CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
-                        if(distance>500){
-                           ToastUtil.showToastShort("当前位置已超出云峰寺签到范围");
-                           return;
+                        DPoint mPoint = new DPoint(lat, longt);
+                        int distance = ((int) CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
+                        LogUtil.e("默认金纬度：：；" + map.get("longitude") + "     " + map.get("latitude"));
+                        LogUtil.e("测量金纬度：：；" + longt + "     " + lat);
+                        LogUtil.e("定位距离：：：" + distance + "     " + CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
+                        if (distance > 500) {
+                            ToastUtil.showToastShort("当前位置已超出云峰寺签到范围");
+                            return;
                         }
+                        postSign(view);
                     }
-                    postSign(view);
+
                 }
 
                 private void postSign(final View view) {
@@ -441,7 +445,7 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
         if (requestCode == 666 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             LogUtil.e("获取权限成功，开始定位");
             getLocation();
-        }else{
+        } else {
             ToastUtil.showToastShort("无定位权限将无法进行活动签到");
         }
     }

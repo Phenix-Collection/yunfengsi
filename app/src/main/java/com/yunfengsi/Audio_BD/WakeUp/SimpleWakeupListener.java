@@ -433,6 +433,11 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
                 text=OK;
                 Intent i2=new Intent(context,BookList.class);
                 context.startActivity(i2);
+            }else if(result.contains("大藏经")){
+                text=OK;
+                Intent i2=new Intent(context,BookList.class);
+                i2.putExtra("type",2);
+                context.startActivity(i2);
             }else if(result.contains("活动")||result.contains("报名")){
                 text=OK;
                 ((MainActivity) context).pager.setCurrentItem(1);

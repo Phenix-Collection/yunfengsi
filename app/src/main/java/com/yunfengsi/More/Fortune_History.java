@@ -184,7 +184,7 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
                                     if (list.size() < 10) {
                                         ToastUtil.showToastShort(mApplication.ST("灵签记录加载完毕"), Gravity.BOTTOM);
                                         endPage = page;
-                                        adapter.loadMoreEnd();
+                                        adapter.loadMoreEnd(false);
                                         adapter.addData(list);
                                     } else {
                                         adapter.addData(list);
