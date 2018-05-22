@@ -159,7 +159,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
             holder.tip.setText(ss);
 
         }
-        // TODO: 2017/8/30  助念点击后修改
+//        // TODO: 2017/8/30  助念点击后修改
         if (map.get("head") != null && !map.get("head").equals("")) {
             list1 = AnalyticalJSON.getList_zj(list.get(position).get("head"));
             if (list1 != null && list1.size() != 0) {
@@ -302,6 +302,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                             public void run() {
                                 try {
                                     JSONObject js = new JSONObject();
+                                    js.put("m_id", Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("gongke_id", (String) fohao.getTag());
                                     js.put("num", num.getText().toString());

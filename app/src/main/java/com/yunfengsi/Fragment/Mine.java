@@ -83,8 +83,12 @@ import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
+import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.YunDou.MyQuan;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
+import com.yunfengsi.YunDou.YunDouHome;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -185,6 +189,16 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 HashMap<String, Object> map = mineManager.getMaps().get(position);
 
                 switch (map.get(mineManager.text).toString()) {
+                    case "我的云豆":
+                        if (new LoginUtil().checkLogin(getActivity())) {
+                            startActivity(new Intent(getActivity(), YunDouHome.class));
+                        }
+                        break;
+                    case "我的福利":
+                        if (new LoginUtil().checkLogin(getActivity())) {
+                            startActivity(new Intent(getActivity(), MyQuan.class));
+                        }
+                        break;
                     case "祈愿树":
                         if (new LoginUtil().checkLogin(getActivity())) {
                             startActivity(new Intent(getActivity(), BlessTree.class));
@@ -516,10 +530,13 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         final JSONObject js = new JSONObject();
         try {
             js.put("m_id", Constants.M_id);
+            js.put("type", "1");
+            js.put("phonename", SystemUtil.getSystemModel());
             js.put("user_id", PreferenceUtil.getUserIncetance(getActivity()).getString("user_id", ""));
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        LogUtil.e("我的：：：；个人信息：："+js);
         final ApisSeUtil.M m = ApisSeUtil.i(js);
         new Thread(new Runnable() {
             @Override
@@ -556,6 +573,9 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                         }
                                         if (!"".equals(map.get("sex"))) {
                                             ed.putString("sex", map.get("sex"));
+                                        }
+                                        if(!"0".equals(map.get("yundousum"))){
+                                            YunDouAwardDialog.show(getActivity(),"每日登录",map.get("yundousum"));
                                         }
                                         if (!"".equals(map.get("signature"))) {
                                             ed.putString("signature", map.get("signature"));
@@ -804,6 +824,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 try {
                     JSONObject js = new JSONObject();
                     js.put("user_id", uid);
+                    js.put("m_id", Constants.M_id);
                     Response response = OkGo.post(Constants.uploadHead_IP).tag(TAG)
                             .params("head", file).params("key", ApisSeUtil.getKey())
                             .params("msg", ApisSeUtil.getMsg(js)).execute();
@@ -1076,12 +1097,14 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
             }
         });
         Window window = dialog.getWindow();
-        window.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        window.setGravity(Gravity.BOTTOM);
+        window.getDecorView().setPadding(0,0,0,0);
         window.setWindowAnimations(R.style.dialogWindowAnim);
         window.setBackgroundDrawableResource(R.color.vifrification);
         WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = screenWidth;
-        wl.y = screenHeight;
+        wl.width=getActivity().getResources().getDisplayMetrics().widthPixels;
+        wl.height=WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(wl);
         dialog.show();
     }

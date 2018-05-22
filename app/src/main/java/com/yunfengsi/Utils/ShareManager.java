@@ -102,7 +102,16 @@ public class ShareManager {
             return;
         }
         ShareAction action = new ShareAction(context);
-        final UMWeb umWeb = (UMWeb) umObject;
+        String url=umObject.toUrl();//
+        LogUtil.e("包名：："+activity.getPackageName());
+        if(!url.contains(activity.getPackageName())){//当分享地址为下载地址时 不加uid
+            url+="/uid/"+PreferenceUtil.getUserId(context);
+        }
+        LogUtil.e("分享地址：："+url);
+        final UMWeb umWeb =new UMWeb(url);
+        umWeb.setTitle(umObject.getTitle());
+        umWeb.setDescription(umObject.getDescription());
+        umWeb.setThumb(umObject.getThumbImage());
         action.setDisplayList(share_list)
                 .addButton("umeng_socialize_clip_link", "umeng_socialize_clip_link", "umeng_socialize_copyurl", "umeng_socialize_copyurl")
                 .setShareboardclickCallback(new ShareBoardlistener() {

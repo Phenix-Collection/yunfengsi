@@ -45,13 +45,22 @@ public class ImageUtil {
      * 4.  * @param resId
      * 5.  * @return
      * 6.  6Mb降低到1.4Mb  6/1.4~~4   时间平均缩短20ms   但生成的bitmap不能用于构建convas
+     *
+     * 发现问题  无法销毁
      */
+//    public static Bitmap readBitMap(Context context, int resId) {
+//        BitmapFactory.Options opt = new BitmapFactory.Options();
+//        opt.inPreferredConfig = Bitmap.Config.RGB_565;//使用索引位图  indexed bitmap  每像素1字节  是正常argb-8888的4分之1
+//        //获取资源图片
+//        InputStream is = context.getResources().openRawResource(resId);
+//        return BitmapFactory.decodeStream(is, null, opt);
+//    }
+
     public static Bitmap readBitMap(Context context, int resId) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Bitmap.Config.RGB_565;//使用索引位图  indexed bitmap  每像素1字节  是正常argb-8888的4分之1
-        //获取资源图片
-        InputStream is = context.getResources().openRawResource(resId);
-        return BitmapFactory.decodeStream(is, null, opt);
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        return BitmapFactory.decodeResource(context.getResources(),resId,opt);
     }
 
     public static Bitmap getImageThumbnail(String imagePath, int width,

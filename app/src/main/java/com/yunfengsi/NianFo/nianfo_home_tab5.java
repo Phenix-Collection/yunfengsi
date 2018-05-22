@@ -22,8 +22,8 @@ import com.lzy.okgo.OkGo;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.nianfo_home_chanhui_adapter;
-import com.yunfengsi.Login;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.Login;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -38,6 +38,7 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.DiffuseView;
 import com.yunfengsi.View.LoadMoreListView;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +71,7 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.nianfo_home_chanhui);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
         editText= (EditText) findViewById(R.id.nianfo_home_chanhui_content);
         diffuseView= (DiffuseView) findViewById(R.id.audio);
         ibdRcognize=new IBDRcognizeImpl(this);
@@ -124,11 +125,17 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
     protected void onDestroy() {
         super.onDestroy();
         OkGo.getInstance().cancelTag(TAG);
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
     }
 
     private void initData() {
-
+        if(!Network.HttpTest(this)){
+            swip.setRefreshing(false);
+            findViewById(R.id.tip).setVisibility(View.VISIBLE);
+            return;
+        }else{
+            findViewById(R.id.tip).setVisibility(View.GONE);
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -137,6 +144,7 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
                     final TextView t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
                     JSONObject js=new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("page", page);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -169,10 +177,11 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
 
                                         } else {
                                             adapter.list.addAll(list);
-                                            adapter.notifyDataSetChanged();
+
                                             for(HashMap map:list){
                                                 adapter.sba.add(true);
                                             }
+                                            adapter.notifyDataSetChanged();
                                             if (endPage.equals(page)) {
                                                 p.setVisibility(View.GONE);
                                                 t.setText(mApplication.ST("没有更多数据了"));
@@ -251,10 +260,15 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
         Intent intent;
         switch (v.getId()){
             case R.id.Share:
-                UMWeb umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.ytl.qianyishenghao");
-                umWeb.setTitle("千亿圣号App");
-                umWeb.setDescription("快来千亿圣号共修吧");
-                umWeb.setThumb(new UMImage(this,R.drawable.indra));
+                UMWeb umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
+                umWeb.setTitle("云峰寺App");
+                umWeb.setDescription(
+                        "雅安云峰寺佛教信息一手掌握（自由发布资讯）\n" +
+                                "雅安云峰寺寺院活动一键报名（轻松管理信众）\n" +
+                                "雅安云峰寺各类供养一步到位（方便在线支付）\n" +
+                                "雅安云峰寺佛教用品线上流通（在线运营商城）\n" +
+                                "雅安云峰寺功课普皆回向十方（打造同修社群）");
+                umWeb.setThumb(new UMImage(this,R.drawable.indra_share));
                 new ShareManager().shareWeb(umWeb,this);
                 break;
             case R.id.nianfo_chanhui_back:
@@ -289,6 +303,7 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
                         try {
                             JSONObject js=new JSONObject();
                             try {
+                                js.put("m_id", Constants.M_id);
                                 js.put("user_id", sp.getString("user_id", ""));
                                 js.put("contents", editText.getText().toString());
                             } catch (JSONException e) {
@@ -300,6 +315,9 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
                                 Log.w(TAG, "run: data1-=-="+data1 );
                                 HashMap<String ,String >map1=AnalyticalJSON.getHashMap(data1);
                                 if(map1!=null&&map1.get("code").equals("000")){
+                                    if(!"0".equals(map1.get("yundousum"))){
+                                        YunDouAwardDialog.show(nianfo_home_tab5.this,"每日忏悔",map1.get("yundousum"));
+                                    }
                                     HashMap<String ,String > map=new HashMap<>();
                                     map.put("user_image",sp.getString("head_url",""));
                                     map.put("pet_name",sp.getString("pet_name",""));

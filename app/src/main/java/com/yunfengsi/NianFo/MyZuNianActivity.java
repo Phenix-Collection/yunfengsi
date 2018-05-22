@@ -145,6 +145,7 @@ public class MyZuNianActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     JSONObject js=new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("reciting_id", getIntent().getStringExtra("id"));
                     } catch (JSONException e) {
                         e.printStackTrace();

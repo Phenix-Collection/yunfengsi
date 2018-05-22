@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         app:indicator_width="10dp"
         app:indicator_height="5dp"
+        app:banner_default_image="@color/transparent"
         app:indicator_drawable_selected="@drawable/shape_selected_circle"
         app:indicator_drawable_unselected="@drawable/shape_unselected_circle"
         android:layout_height="200dp">

@@ -1,17 +1,24 @@
 package com.yunfengsi.Model_activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -34,6 +42,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.yunfengsi.R;
+import com.yunfengsi.Setting.GanyuActivity;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -54,6 +63,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -61,7 +71,7 @@ import okhttp3.Response;
 /**
  * Created by Administrator on 2016/10/11.
  */
-public class Mine_activity_list extends AppCompatActivity implements LoadMoreListView.OnLoadMore, View.OnClickListener, AMapLocationListener, SwipeRefreshLayout.OnRefreshListener {
+public class Mine_activity_list extends AndroidPopupActivity implements LoadMoreListView.OnLoadMore, View.OnClickListener, AMapLocationListener, SwipeRefreshLayout.OnRefreshListener {
     private ImageView back;
     private TextView title;
     private LoadMoreListView listView;
@@ -132,7 +142,9 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mlocationClient.unRegisterLocationListener(this);
         mlocationClient.stopLocation();
+
     }
 
     /**
@@ -217,6 +229,16 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
         back.setOnClickListener(this);
         title = (TextView) findViewById(R.id.title_title);
         title.setText(mApplication.ST("我的活动"));
+        ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("修行经历"));
+        ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.handle_right)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Mine_activity_list.this,ActivityHistory.class));
+            }
+        });
+
+
 
         listView = (LoadMoreListView) findViewById(R.id.fund_people_list);
         listView.setLoadMoreListen(this);
@@ -270,6 +292,11 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
     @Override
     public void onRefresh() {
         getData();
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+
     }
 
     public class mAdapter extends BaseAdapter {
@@ -357,8 +384,8 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
                 holder.sign.setText("签到");
                 holder.sign.setEnabled(true);
             } else {
-                holder.sign.setText("已签到");
-                holder.sign.setEnabled(false);
+                holder.sign.setText("查看详情");
+                holder.sign.setEnabled(true);
             }
             holder.time.setText(mApplication.ST(TimeUtils.getTrueTimeStr(list.get(position).get("time"))));
             holder.name.setText(mApplication.ST(list.get(position).get("title")));
@@ -367,23 +394,31 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
             holder.sign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    if (!map.get("longitude").equals("") && !map.get("latitude").equals("")) {
-                        DPoint defaultPoint = new DPoint(Double.valueOf(map.get("latitude")), Double.valueOf(map.get("longitude")));
-                        DPoint mPoint = new DPoint(lat, longt);
-                        int distance = ((int) CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
-                        LogUtil.e("默认金纬度：：；" + map.get("longitude") + "     " + map.get("latitude"));
-                        LogUtil.e("测量金纬度：：；" + longt + "     " + lat);
-                        LogUtil.e("定位距离：：：" + distance + "     " + CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
-                        if (distance > 500) {
-                            ToastUtil.showToastShort("当前位置已超出云峰寺签到范围");
-                            return;
+                    TextView textView= (TextView) view;
+                    if(textView.getText()!=null){
+                        if("签到".equals(textView.getText().toString())){
+                            if (!map.get("longitude").equals("") && !map.get("latitude").equals("")) {
+                                DPoint defaultPoint = new DPoint(Double.valueOf(map.get("latitude")), Double.valueOf(map.get("longitude")));
+                                DPoint mPoint = new DPoint(lat, longt);
+                                int distance = ((int) CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
+                                LogUtil.e("默认金纬度：：；" + map.get("longitude") + "     " + map.get("latitude"));
+                                LogUtil.e("测量金纬度：：；" + longt + "     " + lat);
+                                LogUtil.e("定位距离：：：" + distance + "     " + CoordinateConverter.calculateLineDistance(defaultPoint, mPoint));
+                                if (distance > 500) {
+                                    ToastUtil.showToastShort("当前位置已超出云峰寺签到范围");
+                                    return;
+                                }
+                                postSign(view,map);
+                            }
+                        }else if("查看详情".equals(textView.getText().toString())){
+                            showDetailDialog(Mine_activity_list.this,map.get("bednum"),map.get("roomnum"));
                         }
-                        postSign(view);
                     }
+
 
                 }
 
-                private void postSign(final View view) {
+                private void postSign(final View view, HashMap<String, String> map) {
                     JSONObject js = new JSONObject();
                     try {
                         js.put("m_id", Constants.M_id);
@@ -403,12 +438,13 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
                                     if (map != null) {
                                         if ("000".equals(map.get("code"))) {
                                             ToastUtil.showToastShort("签到成功");
-                                            ((TextView) view).setText("已签到");
-                                            view.setEnabled(false);
+                                            ((TextView) view).setText("查看详情");
+                                            showDetailDialog(Mine_activity_list.this,map.get("bednum"),map.get("roomnum"));
+                                            view.setEnabled(true);
                                         } else if ("002".equals(map.get("code"))) {
-                                            ((TextView) view).setText("已签到");
+                                            ((TextView) view).setText("查看详情");
                                             ToastUtil.showToastShort("您已经签过到了");
-                                            view.setEnabled(false);
+                                            view.setEnabled(true);
                                         }
                                     }
                                 }
@@ -428,6 +464,42 @@ public class Mine_activity_list extends AppCompatActivity implements LoadMoreLis
                 }
             });
             return view;
+        }
+
+        private void showDetailDialog(final Activity activity,String bednum,String roomnum) {
+
+            AlertDialog.Builder builder=new AlertDialog.Builder(activity);
+            SpannableStringBuilder ss;
+            if(bednum.equals("")||roomnum.equals("")){
+                ss=new SpannableStringBuilder("暂未分配住宿，请稍后查看");
+            }else{
+                ss=new SpannableStringBuilder("您已被分配到 "+roomnum+bednum+" 住宿\n\n");
+                String deafualt= "如对住宿有特殊要求需要修改请联系客服更改床位";
+                ss.append(deafualt);
+                ss.setSpan(new ForegroundColorSpan(Color.RED),ss.length()-deafualt.length(),ss.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                ss.setSpan(new ForegroundColorSpan(ContextCompat.getColor(activity,R.color.main_color)),7,7+roomnum.length()+bednum.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                ss.setSpan(new AbsoluteSizeSpan(DimenUtils.dip2px(activity,14)),ss.length()-deafualt.length()-1,ss.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            }
+
+            AlertDialog dialog=builder.setMessage(ss)
+            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).setNegativeButton("联系客服", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    startActivity(new Intent(activity, GanyuActivity.class));
+                }
+            }).create();
+            dialog.show();
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.RED);
+            ((TextView) dialog.getDelegate().findViewById(android.R.id.message)).setTextSize(18);
+
+
         }
 
         class viewHolder {

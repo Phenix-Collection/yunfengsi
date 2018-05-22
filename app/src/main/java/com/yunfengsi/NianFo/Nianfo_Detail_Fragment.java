@@ -96,6 +96,7 @@ public class Nianfo_Detail_Fragment extends Fragment implements OnClickListener 
                 try {
                     JSONObject js=new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("page",page);
                     } catch (JSONException e) {
                         e.printStackTrace();

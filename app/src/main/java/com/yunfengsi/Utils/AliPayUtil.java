@@ -9,12 +9,18 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Model_zhongchou.Fund_Share;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 import com.yunfengsi.ZhiFuShare;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 import static com.yunfengsi.Utils.UpPayUtil.extra;
 
@@ -136,7 +142,9 @@ public class AliPayUtil {
                                                         Intent intent1 = new Intent(context, ZhiFuShare.class);
                                                         intent1.putExtra("stu_id", mApplication.sut_id);
                                                         context.startActivity(intent1);
+                                                        postYundouGY(context);
                                                     } else if (type.equals("5")) {//慈善
+                                                        postYundouZX(context);
                                                         Intent intent = new Intent("Mine");
                                                         intent.putExtra("level", true);
                                                         context.sendBroadcast(intent);
@@ -212,7 +220,68 @@ public class AliPayUtil {
         }).start();
 
     }
+    public static void postYundouGY(final Activity context) {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+            js.put("user_id", PreferenceUtil.getUserId(mApplication.getInstance()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtil.e("每日供养   回调确认：：" + js);
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(Constants.GY_YUNDOU).params("key", m.K())
+                .params("msg", m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject js = new JSONObject(s);
+                            if (js != null) {
+                                if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
+                                    YunDouAwardDialog.show(context,"每日供养",js.getString("yundousum"));
+                                }
 
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                });
+    }
+    public static void postYundouZX(final Activity context) {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+            js.put("user_id", PreferenceUtil.getUserId(mApplication.getInstance()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtil.e("每日助学   回调确认：：" + js);
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(Constants.ZX_YUNDOU).params("key", m.K())
+                .params("msg", m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject js = new JSONObject(s);
+                            if (js != null) {
+                                if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
+                                    YunDouAwardDialog.show(context,"每日助学",js.getString("yundousum"));
+                                }
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                });
+    }
     /**
      * create the order info. 创建订单信息
      */

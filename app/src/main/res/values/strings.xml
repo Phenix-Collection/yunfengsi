@@ -3,7 +3,7 @@
     <!--颜色-->
 
     <color name="huise">#9b9b9b</color>
-    <color name="light_huise">#e1eeee</color>
+    <color name="light_huise">#e1e1e1</color>
 
     <color name="textOnImg_bg">#22000000</color>
 
@@ -18,6 +18,8 @@
     <!--</integer-array>-->
 
     <string-array name="mine_text">
+        <item>我的云豆</item>
+        <item>我的福利</item>
         <item>祈愿树</item>
         <item>佛经</item>
         <item>卜事</item>

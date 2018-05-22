@@ -3,10 +3,15 @@ package com.yunfengsi.BlessTree;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -21,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
@@ -38,14 +45,15 @@ import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
-import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.AutoPollRecyclerView;
 import com.yunfengsi.View.ScrollSpeedLinearLayoutManger;
+import com.yunfengsi.View.mItemDecoration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,12 +73,12 @@ import okhttp3.Response;
 
 public class BlessTree extends AppCompatActivity implements View.OnClickListener {
     private ImageView back;
-    private TextView title, history;
-    private RTextView txt_xuyuan;
-    private TagCloudView tagCloudView;
-    private AutoPollRecyclerView recyclerView;
-    private TreeAdapter adapter;
-    private MessageAdapter messageAdapter;
+    private TextView  title, history;
+    private RTextView                          txt_xuyuan;
+    private TagCloudView                       tagCloudView;
+    private AutoPollRecyclerView               recyclerView;
+    private TreeAdapter                        adapter;
+    private MessageAdapter                     messageAdapter;
     private ArrayList<HashMap<String, String>> list;
 
     @Override
@@ -99,6 +107,7 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
     }
 
     private void init() {
+        mApplication.getInstance().addActivity(this);
         back = (ImageView) findViewById(R.id.back);
         history = (TextView) findViewById(R.id.history);
         RTextView txt_xuyuan = (RTextView) findViewById(R.id.xuyuan);
@@ -113,7 +122,7 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
         recyclerView = (AutoPollRecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new ScrollSpeedLinearLayoutManger(this));
         messageAdapter = new MessageAdapter(list);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new mItemDecoration(this));
         recyclerView.setAdapter(messageAdapter);
 
 
@@ -127,6 +136,12 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
     }
 
     private void getContents() {
+        if (!Network.HttpTest(this)) {
+            recyclerView.setVisibility(View.GONE);
+            return;
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
         JSONObject js = new JSONObject();
         try {
             js.put("m_id", Constants.M_id);
@@ -179,6 +194,10 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
 
                 break;
             case R.id.xuyuan:
+                if (!Network.HttpTest(this)) {
+                    return;
+                }
+
                 View view = LayoutInflater.from(this).inflate(R.layout.bless_dialog, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setView(view);
@@ -281,20 +300,41 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
             recyclerView.stop();
         }
         super.onDestroy();
-
+        mApplication.getInstance().romoveActivity(this);
     }
 
-    public class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
-
+    public class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
+        private Drawable place;
         public MessageAdapter(List<HashMap<String, String>> data) {
             super(R.layout.item_tree_message, data);
+            place= ContextCompat.getDrawable(BlessTree.this,R.drawable.placeholder_c6c6c6);
+            place.setBounds(0,0,DimenUtils.dip2px(BlessTree.this,30),DimenUtils.dip2px(BlessTree.this,30));
         }
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
+            final RTextView rt =holder.getView(R.id.name);
+            Glide.with(BlessTree.this).load(map.get("user_image"))
+                    .asBitmap()
+                    .override(DimenUtils.dip2px(BlessTree.this,30)
+                    ,DimenUtils.dip2px(BlessTree.this,30))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            RoundedBitmapDrawable rbd= RoundedBitmapDrawableFactory.create(getResources(),resource);
+                            rbd.setCircular(true);
+                            rt.setIconNormal(rbd);
+                        }
+
+                        @Override
+                        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                            super.onLoadFailed(e, errorDrawable);
+                            rt.setIconNormal(place);
+                        }
+                    });
             holder.setText(R.id.name, map.get("pet_name"))
-                    .setText(R.id.def, mApplication.ST("许了一个愿望"))
-                    .setText(R.id.time, TimeUtils.getTrueTimeStr(map.get("time")));
+                    .setText(R.id.def, mApplication.ST("许下一个愿望"));
+//                    .setText(R.id.time, TimeUtils.getTrueTimeStr(map.get("time")));
         }
 
         @Override
@@ -322,16 +362,16 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
         }
 
         @Override
-        public View getView(Context context, final int position, ViewGroup parent) {
+        public View getView(final Context context, final int position, ViewGroup parent) {
             ImageView imageView = new ImageView(context);
             Glide.with(context).load(R.drawable.zhufu).override(DimenUtils.dip2px(context, 30), DimenUtils.dip2px(context, 25))
                     .into(imageView);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (list != null) {
+                    if (BlessTree.this.list != null) {
                         int count = BlessTree.this.list.size();
-                        int i = new Random().nextInt(count);
+                        int i     = new Random().nextInt(count);
                         LogUtil.e("count::;" + count + " iiiii:::" + i);
                         AlertDialog.Builder builder = new AlertDialog.Builder(BlessTree.this);
                         builder.setMessage(mApplication.ST(BlessTree.this.list.get(i).get("content")))
@@ -342,7 +382,12 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
                                     }
                                 }).create().show();
                     } else {
-                        ToastUtil.showToastShort("暂无人祈愿");
+                        if (!Network.HttpTest(context)) {
+                            ToastUtil.showToastShort("网络连接异常，请稍后重试");
+                        } else {
+                            ToastUtil.showToastShort("暂无人祈愿");
+                        }
+
                     }
                 }
             });

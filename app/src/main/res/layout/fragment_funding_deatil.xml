@@ -46,7 +46,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/pinglun" />
+                android:id="@+id/pinglun_image" />
 
             <TextView
                 android:id="@+id/pltv"
@@ -76,7 +76,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/fenxiangb" />
+                android:id="@+id/fenxiang_image" />
 
             <TextView
                 android:id="@+id/fxtv"

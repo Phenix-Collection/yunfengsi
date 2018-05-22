@@ -11,9 +11,9 @@ public class Constants {
    public static final String Help="https://indrah.cn/yfs.php/Index/help" ;
 
     //服务器测试域名
-//    public static final String host_Ip = "http://yintolo.net";
+    public static final String host_Ip = "http://yintolo.net";
     //    //服务器域名
-    public static  final String host_Ip="https://indrah.cn";
+//    public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo = "/api.php/EncryptApi/";
     public static final String iiiiii = "/api.php/SecretApi/";
@@ -480,4 +480,46 @@ public class Constants {
     public static final String DaZang_Search= host_Ip + iiiiii + "Dzjquery";
     //经书纠错接口
     public static final String JiuCuo= host_Ip + iiiiii + "Ebookadd";
+
+    //修行经历列表接口
+    public static final String Practice= host_Ip + iiiiii + "Practice";
+    //云豆界面接口
+    public static final String YunDouHome= host_Ip + iiiiii + "Yundou";
+    //云豆列表接口
+    public static final String YunDouList= host_Ip + iiiiii + "Yundoulist";
+
+    //兑换中心列表接口
+    public static final String ExchangeList= host_Ip + iiiiii + "Welfarelist";
+    //兑换中心列表标题接口
+    public static final String ExchangeListTitles= host_Ip + iiiiii + "Welfaretype";
+
+    //券详情兑换接口
+    public static final String Exchange= host_Ip + iiiiii + "Welfarebuy";
+    //我的券接口
+    public static final String MyWelfare= host_Ip + iiiiii + "Mywelfare";
+
+
+    //每日供养回调接口
+    public static final String GY_YUNDOU= host_Ip + iiiiii + "Yundougy";
+
+    //每日助学回调接口
+    public static final String ZX_YUNDOU= host_Ip + iiiiii + "Yundouzx";
+
+
+
+    //统一收藏接口
+    public static final String Collect= host_Ip + iiiiii + "Collect";
+
+    //收藏列表接口
+    public static final String Collect_List= host_Ip + iiiiii + "Collectlist";
+
+    //收藏搜索接口
+    public static final String Collect_Search_List= host_Ip + iiiiii + "Collectquery";
+
+    //云豆排行接口
+    public static final String Yundou_PaiHang_List= host_Ip + iiiiii + "Yundouph";
+
+
+    //祈福，排位券使用接口
+    public static final String Quan_Use= host_Ip + iiiiii + "Welfareuse";
 }

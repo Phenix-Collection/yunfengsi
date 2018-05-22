@@ -119,9 +119,9 @@ public class TimeUtils {
      */
     @SuppressLint("SimpleDateFormat")
     public static String formatTimeShort(Context context, long when) {
-        String formatStr = "HH:mm";
-        SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
-        String temp = sdf.format(when);
+        String           formatStr = "HH:mm";
+        SimpleDateFormat sdf       = new SimpleDateFormat(formatStr);
+        String           temp      = sdf.format(when);
         if (temp != null && temp.length() == 5 && temp.substring(0, 1).equals("0")) {
             temp = temp.substring(1);
         }
@@ -156,55 +156,45 @@ public class TimeUtils {
 
         String formatStr;
         if (then.year != now.year) {
-            formatStr = "yyyy年M月d日 H:mm:ss";
+            formatStr = "yyyy年M月d日 HH:mm:ss";
         } else if (then.yearDay != now.yearDay) {
             // If it is from a different day than today, show only the date.
             if (now.yearDay - then.yearDay == 1) {
-                formatStr = "昨天 H:mm";
+                formatStr = "昨天 HH:mm";
             } else if (now.yearDay - then.yearDay == 2) {
-                formatStr = "前天 H:mm";
+                formatStr = "前天 HH:mm";
             } else {
-                formatStr = "M月d日 H:mm";
+                formatStr = "M月d日 HH:mm";
             }
         } else {
             // Otherwise, if the message is from today, show the time.
+
             if (now.hour != then.hour) {
-                formatStr = (now.hour - then.hour) + "小时前";
+                if ((then.hour == 23 && now.hour == 0) || (then.hour + 1 == now.hour)) {
+                    if (then.minute> now.minute) {//相邻一小时内 未超过一小时时间
+                        formatStr = (now.minute + 60 - then.minute) + "分钟前";
+                    } else {
+                        formatStr = "1小时前";
+                    }
+                } else {
+                    formatStr = (now.hour - then.hour) + "小时前";
+                }
             } else if (now.minute != then.minute) {
                 formatStr = (now.minute - then.minute) + "分钟前";
             } else {
                 formatStr = "刚刚";
             }
-//            if(then.hour<6){
-//                if(then.hour==0){
-//                    formatStr="凌晨 HH:mm";
-//                }else{
-//                    formatStr="凌晨 H:mm";
-//                }
-//            }else if(then.hour>=6&&then.hour<12){
-//                formatStr="上午 H:mm";
-//            }else if(then.hour==12){
-//                formatStr="中午 H:mm";
-//            }else if(then.hour>=13&&then.hour<18){
-//                formatStr="下午 H:mm";
-//            }else {
-//                formatStr="晚上 H:mm";
-//            }
         }
-
-//        if (then.year == now.year && then.yearDay == now.yearDay) {
-//            return context.getString(R.string.date_today);
-//        } else if ((then.year == now.year) && ((now.yearDay - then.yearDay) == 1)) {
-//            return context.getString(R.string.date_yesterday);
-//        } else {
-        SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
-        String temp = sdf.format(when);
+        SimpleDateFormat sdf  = new SimpleDateFormat(formatStr);
+        String           temp = sdf.format(when);
         if (temp != null && temp.length() == 5 && temp.substring(0, 1).equals("0")) {
             temp = temp.substring(1);
         }
+
+
 //        temp
         return temp;
-//        }
+
     }
 
     /**

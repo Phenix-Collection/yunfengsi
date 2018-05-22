@@ -20,6 +20,7 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.ToastUtil;
+import com.yunfengsi.Utils.Verification;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,18 +44,20 @@ public class ItemManager extends AppCompatActivity {
     private static final String TEXT_KEY = "text";
     private static final String IMAGE_KEY = "image";
     private static final String[] DEFAULT_NAME = {"共修", "收藏", "活动", "佛经"};
-    private static final int[] DEFAULT_IMAGE = {R.raw.gongxiu, R.raw.shoucang_justforleft, R.raw.mine_activity, R.raw.jinshu};
+    private static final int[] DEFAULT_IMAGE = {R.raw.gongxiu,R.raw.shoucang_justforleft, R.raw.mine_activity, R.raw.jinshu};
 
 
-    private static final String[] ALL_NAME = {"卜事", "坐禅", "会员中心", "功德", "通知", "功课", "投稿", "祈愿树"};
-    private static final int[] ALL_IMAGE = {R.raw.qian_icon, R.raw.meditation, R.raw.huiyuan, R.raw.gongke, R.raw.tongzhi_normal,
+    private static final String[] ALL_NAME = {"我的云豆","我的福利","卜事", "坐禅", "会员中心", "功德", "通知", "功课", "投稿", "祈愿树"};
+    private static final int[] ALL_IMAGE = {R.raw.yundou,R.raw.fuli,R.raw.qian_icon, R.raw.meditation, R.raw.huiyuan, R.raw.zhifu_justforleft, R.raw.tongzhi_normal,
             R.raw.gongke, R.raw.tougao_mine, R.raw.qiyuan};
 
 
     private static final String MINE = "1";//已有应用
     private static final String OTHER = "2";//其他应用
     public static final String CaCheName = "cache_HomePage";
-
+    public static final String CaCheVersion = "cache_HomePage_Version";
+    private int mFlags;
+    private static int FLAG_FORCE_DEAFAULT =0x00000001;//强行使用默认配置
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +92,16 @@ public class ItemManager extends AppCompatActivity {
         otherItems.setLayoutManager(new GridLayoutManager(this, 4));
 
         LogUtil.e("获取设置缓存：：；" + FileUtils.getStorageMapEntities(this, CaCheName + PreferenceUtil.getUserId(this)));
+        String version= Verification.getAppVersionName(this);
+        if(PreferenceUtil.getSettingIncetance(this).getString(ItemManager.CaCheVersion,"").equals(version)){
+            //同一版本才允许缓存，不同版本清空缓存
+
+        }else{
+            mFlags |= FLAG_FORCE_DEAFAULT;//添加强行默认配置标志
+        }
         //没有缓存
-        if (FileUtils.getStorageMapEntities(this, CaCheName + PreferenceUtil.getUserId(this)) == null) {
+        if (FileUtils.getStorageMapEntities(this, CaCheName + PreferenceUtil.getUserId(this)) == null
+                ||((mFlags & FLAG_FORCE_DEAFAULT)==FLAG_FORCE_DEAFAULT)) {
             myList = new ArrayList<>();
             otherList = new ArrayList<>();
             boolean isContinue = false;
@@ -198,10 +209,10 @@ public class ItemManager extends AppCompatActivity {
                             LogUtil.e("动画期间连续点击 ，异常捕捉");
                         }
                     } else if (type.equals(OTHER)) {
-                        if (myList.size() == 7) {
-                            ToastUtil.showToastShort("最多选择7个应用显示到首页");
-                            return;
-                        }
+//                        if (myList.size() == 7) {
+//                            ToastUtil.showToastShort("最多选择7个应用显示到首页");
+//                            return;
+//                        }
                         try {
                             getData().remove(holder.getAdapterPosition());
                             notifyItemRemoved(holder.getAdapterPosition());

@@ -60,7 +60,7 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ganyu);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         wangzhan = (TextView) findViewById(R.id.guanfangwangzhan);
         qq = (TextView) findViewById(R.id.QQqun);
@@ -71,7 +71,7 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
         ((TextView) findViewById(R.id.dianhua)).setText(mApplication.ST("热线电话"));
         ((TextView) findViewById(R.id.email)).setText(mApplication.ST("客服邮箱"));
         ((TextView) findViewById(R.id.wechat)).setText(mApplication.ST("客服微信"));
-        ((TextView) findViewById(R.id.banquan)).setText(mApplication.ST("Copyright 2016-2017 成都因陀罗网络科技有限公司 版权所有"));
+        ((TextView) findViewById(R.id.banquan)).setText(mApplication.ST("Copyright 2016-2018 成都因陀罗网络科技有限公司 版权所有"));
         ((ImageView) findViewById(R.id.logo)).setImageBitmap(ImageUtil.readBitMap(this, R.drawable.indra));
         gengxin = (TextView) findViewById(R.id.gengxin);
         pingfen = (TextView) findViewById(R.id.pingfen);
@@ -381,7 +381,7 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
     protected void onDestroy() {
         OkGo.getInstance().cancelTag(TAG);
         super.onDestroy();
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
     }
 
     /*

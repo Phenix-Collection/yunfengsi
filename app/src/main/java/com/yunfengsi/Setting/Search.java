@@ -47,6 +47,7 @@ import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.NumUtils;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
@@ -80,36 +81,36 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
             case R.id.search_zixun://图文分类
                 resetStatus();
                 zixun.setSelected(true);
-                zixun.setTextColor(ContextCompat.getColor(this,R.color.main_color));
+                zixun.setTextColor(ContextCompat.getColor(this, R.color.main_color));
                 type = "news";
-                if(!"".equals(input.getText().toString())){
+                if (!"".equals(input.getText().toString())) {
                     getData();
                 }
                 break;
             case R.id.search_huodong://活动分类
                 resetStatus();
                 huodong.setSelected(true);
-                huodong.setTextColor(ContextCompat.getColor(this,R.color.main_color));
+                huodong.setTextColor(ContextCompat.getColor(this, R.color.main_color));
                 type = "activity";
-                if(!"".equals(input.getText().toString())){
+                if (!"".equals(input.getText().toString())) {
                     getData();
                 }
                 break;
             case R.id.search_gongyang://供养分类
                 resetStatus();
                 gongyang.setSelected(true);
-                gongyang.setTextColor(ContextCompat.getColor(this,R.color.main_color));
+                gongyang.setTextColor(ContextCompat.getColor(this, R.color.main_color));
                 type = "shop";
-                if(!"".equals(input.getText().toString())){
+                if (!"".equals(input.getText().toString())) {
                     getData();
                 }
                 break;
             case R.id.search_cishan://助学分类
                 resetStatus();
                 zhongchou.setSelected(true);
-                zhongchou.setTextColor(ContextCompat.getColor(this,R.color.main_color));
+                zhongchou.setTextColor(ContextCompat.getColor(this, R.color.main_color));
                 type = "cfg";
-                if(!"".equals(input.getText().toString())){
+                if (!"".equals(input.getText().toString())) {
                     getData();
                 }
                 break;
@@ -122,7 +123,9 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
      * 搜索获取数据并保存搜索记录
      */
     private void getData() {
-
+        if (!Network.HttpTest(Search.this)) {
+            return;
+        }
         if (input.getText().toString().equals("")) {
             Toast.makeText(Search.this, "请输入关键字", Toast.LENGTH_SHORT).show();
             return;
@@ -195,24 +198,25 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 
     private listAdapter adapter;
     private static final String TAG = "Search";
-    private String url = Constants.News_Search_Ip;//搜索的接口地址
+    private              String url = Constants.News_Search_Ip;//搜索的接口地址
     private ImageView back;
-    private EditText input;
-    private TextView sousuo, zixun, huodong, gongyang, zhongchou, removeAll;
-    private ListView listView;
-    private GridView grid;
-    private List<String> gridList;
+    private EditText  input;
+    private TextView  sousuo, zixun, huodong, gongyang, zhongchou, removeAll;
+    private ListView                      listView;
+    private GridView                      grid;
+    private List<String>                  gridList;
     private List<HashMap<String, String>> listList;
-    private String type;//搜索类别标示
-    private ProgressBar p;
-    private DiffuseView diffuseView;
-    private IBDRcognizeImpl ibdRcognize;
+    private String                        type;//搜索类别标示
+    private ProgressBar                   p;
+    private DiffuseView                   diffuseView;
+    private IBDRcognizeImpl               ibdRcognize;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.search);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
         initView();
 //        loadHistroy();
     }
@@ -244,12 +248,12 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         p = (ProgressBar) findViewById(R.id.search_loading);
         input = (EditText) findViewById(R.id.search_edit);//搜索输入框
         input.setHint(mApplication.ST("请输入关键字"));
-        String message=getIntent().getStringExtra("text");
-        if(message!=null){
+        String message = getIntent().getStringExtra("text");
+        if (message != null) {
             input.setText(message);
         }
-        diffuseView= (DiffuseView) findViewById(R.id.audio);
-        ibdRcognize=new IBDRcognizeImpl(this);
+        diffuseView = (DiffuseView) findViewById(R.id.audio);
+        ibdRcognize = new IBDRcognizeImpl(this);
         ibdRcognize.setEventListener(new EventListener() {
             @Override
             public void onEvent(String name, String params, byte[] data, int offset, int length) {
@@ -264,7 +268,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 //                                return;
 //                            }
 //                        }
-                        if(params.contains("final_result")){
+                        if (params.contains("final_result")) {
                             try {
                                 JSONObject js = new JSONObject(params);
                                 if (input != null) {
@@ -307,9 +311,10 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-
-                        diffuseView.start();
-                        ibdRcognize.start();
+                        if (Network.HttpTest(Search.this)) {
+                            diffuseView.start();
+                            ibdRcognize.start();
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
                         diffuseView.stop();
@@ -366,7 +371,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
      */
     static class gridAdapter extends BaseAdapter {
         private List<String> list1;
-        private Context context;
+        private Context      context;
 
         public gridAdapter(Context context, List<String> list) {
             super();
@@ -406,12 +411,12 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
      * 搜索结果适配器
      */
     private class listAdapter extends BaseAdapter {
-        public List<HashMap<String, String>> list;
-        private Context context;
+        public  List<HashMap<String, String>> list;
+        private Context                       context;
 
         private LayoutInflater inflater;
-        private int screenWidth;
-        private Drawable ctr, like, comment;
+        private int            screenWidth;
+        private Drawable       ctr, like, comment;
 
         public listAdapter(Context context, List<HashMap<String, String>> list1) {
             super();
@@ -454,7 +459,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         public int getItemViewType(int position) {
             if (url.equals(Constants.News_Search_Ip)) {
 
-                    return 0;
+                return 0;
 
             } else if (url.equals(Constants.GY_Search_Ip)) {
                 return 2;
@@ -508,15 +513,14 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                             }
                         });
 
-                if(map.get("title").contains(input.getText().toString().trim())){
-                    int dex=map.get("title").indexOf(input.getText().toString().trim());
-                    SpannableString title=new SpannableString(mApplication.ST(map.get("title")));
-                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (map.get("title").contains(input.getText().toString().trim())) {
+                    int             dex   = map.get("title").indexOf(input.getText().toString().trim());
+                    SpannableString title = new SpannableString(mApplication.ST(map.get("title")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED), dex, dex + input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.title.setText(title);
-                }else{
+                } else {
                     holder.title.setText(mApplication.ST(map.get("title")));
                 }
-
 
 
                 String time = map.get("time");
@@ -557,12 +561,12 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                         setDrawable(rbd);
                     }
                 });
-                if(map.get("title").contains(input.getText().toString().trim())){
-                    int dex=map.get("title").indexOf(input.getText().toString().trim());
-                    SpannableString title=new SpannableString(mApplication.ST(map.get("title")));
-                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (map.get("title").contains(input.getText().toString().trim())) {
+                    int             dex   = map.get("title").indexOf(input.getText().toString().trim());
+                    SpannableString title = new SpannableString(mApplication.ST(map.get("title")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED), dex, dex + input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder2.title.setText(title);
-                }else{
+                } else {
                     holder2.title.setText(mApplication.ST(map.get("title")));
                 }
                 holder2.title.setTag(map.get("id"));
@@ -588,12 +592,12 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 Glide.with(context).load(map.get("image")).override(screenWidth / 5, screenWidth / 5).centerCrop().into(holder.image);
                 holder.user.setText(mApplication.ST(map.get("product")));
 
-                if(map.get("type1").contains(input.getText().toString().trim())){
-                    int dex=map.get("type1").indexOf(input.getText().toString().trim());
-                    SpannableString title=new SpannableString(mApplication.ST(map.get("type1")));
-                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (map.get("type1").contains(input.getText().toString().trim())) {
+                    int             dex   = map.get("type1").indexOf(input.getText().toString().trim());
+                    SpannableString title = new SpannableString(mApplication.ST(map.get("type1")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED), dex, dex + input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.title.setText(title);
-                }else{
+                } else {
                     holder.title.setText(mApplication.ST(map.get("type1")));
                 }
 //                holder.title.setText(mApplication.ST(map.get("type1")));
@@ -616,21 +620,21 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 holder.type.setText(mApplication.ST("助学"));
                 holder.type.setTag(map.get("id"));
                 holder.user.setText(mApplication.ST("参与人数：" + map.get("cy_people")));
-                if(map.get("title").contains(input.getText().toString().trim())){
-                    int dex=map.get("title").indexOf(input.getText().toString().trim());
-                    SpannableString title=new SpannableString(mApplication.ST(map.get("title")));
-                    title.setSpan(new ForegroundColorSpan(Color.RED),dex,dex+input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if (map.get("title").contains(input.getText().toString().trim())) {
+                    int             dex   = map.get("title").indexOf(input.getText().toString().trim());
+                    SpannableString title = new SpannableString(mApplication.ST(map.get("title")));
+                    title.setSpan(new ForegroundColorSpan(Color.RED), dex, dex + input.getText().toString().trim().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     holder.title.setText(title);
-                }else{
+                } else {
                     holder.title.setText(mApplication.ST(map.get("title")));
                 }
-                final ImageView img=holder.image;
+                final ImageView img = holder.image;
                 Glide.with(context).load(map.get("image"))
-                        .asBitmap().override(DimenUtils.dip2px(Search.this,120),DimenUtils.dip2px(Search.this,90)).centerCrop()
+                        .asBitmap().override(DimenUtils.dip2px(Search.this, 120), DimenUtils.dip2px(Search.this, 90)).centerCrop()
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                RoundedBitmapDrawable rbd=RoundedBitmapDrawableFactory.create(getResources(),resource);
+                                RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
                                 rbd.setCornerRadius(5);
                                 img.setImageDrawable(rbd);
                             }
@@ -644,28 +648,28 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 
         class ViewHolder {
             ImageView image;
-            TextView title, user, time, type;
+            TextView  title, user, time, type;
         }
 
         class ViewHolder0 {
-            ImageView img;
-            TextView title;
-            TextView likes;
-            TextView comments;
-            TextView time;
-            TextView user;
-            TextView ctr;
-            TextView type;
-            TextView abs;
+            ImageView   img;
+            TextView    title;
+            TextView    likes;
+            TextView    comments;
+            TextView    time;
+            TextView    user;
+            TextView    ctr;
+            TextView    type;
+            TextView    abs;
             //        JCVideoPlayerStandard player;
             FrameLayout stub;
         }
 
         class Holder2 {
-            TextView title;
-            TextView content;
-            TextView time;
-            TextView peopleNum;
+            TextView  title;
+            TextView  content;
+            TextView  time;
+            TextView  peopleNum;
             ImageView imageView;
         }
     }
@@ -676,7 +680,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 //        IOUtil.setData(this,TAG,"history",gridList);
         ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(input.getWindowToken(), 0);
         super.onDestroy();
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
 
     }
 

@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="@dimen/dp_40"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    >
+    android:paddingRight="10dp">
 
-    <TextView
+    <com.ruffian.library.RTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:layout_gravity="center_vertical"
+       android:layout_centerVertical="true"
         android:textColor="@color/black"
+        android:minWidth="100dp"
+        android:layout_marginRight="20dp"
+        app:icon_direction="left"
+        app:icon_width="30dp"
+        app:icon_height="30dp"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
         android:id="@+id/name"/>
     <TextView
         android:textSize="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:id="@+id/def"/>
 
     <TextView
         android:textSize="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
+        android:layout_alignParentRight="true"
         android:textColor="@color/black"
+        android:visibility="gone"
         android:id="@+id/time"/>
-</FrameLayout>
+</RelativeLayout>

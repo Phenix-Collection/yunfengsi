@@ -35,7 +35,6 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
-import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDecoration;
 
@@ -205,7 +204,6 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
                                 } else if (isLoadMore) {
                                     isLoadMore = false;
                                     if (list.size() < 10) {
-                                        ToastUtil.showToastShort(mApplication.ST("摇签记录加载完毕"), Gravity.BOTTOM);
                                         endPage = page;
                                         adapter.addData(list);
                                         adapter.loadMoreEnd(false);
@@ -216,7 +214,11 @@ public class Meditation_History extends AppCompatActivity implements SwipeRefres
 
                                 }
                             }
-
+                            if(adapter.getData().size()==0){
+                                findViewById(R.id.title_image2).setVisibility(View.GONE);
+                            }else{
+                                findViewById(R.id.title_image2).setVisibility(View.VISIBLE);
+                            }
                         }
 
                         @Override

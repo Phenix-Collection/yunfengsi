@@ -76,7 +76,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/placeholder_grey" />
+                     />
 
                 <TextView
                     android:id="@+id/xuanzhe_name"
@@ -337,9 +337,9 @@
             android:background="@drawable/back_sel"
             android:orientation="horizontal">
             <ImageView
+                android:id="@+id/pinglun_image"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/pinglun"
                 android:layout_marginRight="10dp"
                 />
             <TextView
@@ -365,9 +365,9 @@
             android:background="@drawable/back_sel"
             android:orientation="horizontal">
             <ImageView
+                android:id="@+id/fenxiang_image"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
-                android:src="@drawable/fenxiangb"
                 android:layout_marginRight="10dp"
                 />
             <TextView

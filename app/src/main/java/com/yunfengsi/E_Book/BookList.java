@@ -52,6 +52,7 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.ToastUtil;
+import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.BookRecyclerView;
 import com.yunfengsi.View.MyGridView;
 import com.yunfengsi.View.mItemDecoration;
@@ -101,6 +102,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+        mApplication.getInstance().addActivity(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         edit=findViewById(R.id.search_edit);
         search=findViewById(R.id.search);
@@ -1087,6 +1089,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
             FileUtils.saveStorage2SDCard(this, ((ArrayList<HashMap<String, Object>>) adapter.getData()), TAG);
         }
         OkGo.getInstance().cancelTag(this);
+        mApplication.getInstance().romoveActivity(this);
     }
 
     /**

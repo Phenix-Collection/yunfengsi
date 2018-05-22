@@ -15,7 +15,9 @@ import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
+import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.mApplication;
 
 import org.json.JSONException;
@@ -130,13 +132,18 @@ public class AnquanActivity extends AppCompatActivity implements View.OnClickLis
                 try {
                     JSONObject js=new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("user_id", sp.getString("user_id", ""));
+                        js.put("type","1");
+                        js.put("phonename", SystemUtil.getSystemModel());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    LogUtil.e("关于我们：：个人信息：："+js);
+                    ApisSeUtil.M m=ApisSeUtil.i(js);
                     data1 = OkGo.post(Constants.User_Info_Ip)
-                            .params("key", ApisSeUtil.getKey())
-                            .params("msg",ApisSeUtil.getMsg(js)).execute().body().string();
+                            .params("key", m.K())
+                            .params("msg",m.M()).execute().body().string();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

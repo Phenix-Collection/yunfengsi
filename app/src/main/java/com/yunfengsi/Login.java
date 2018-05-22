@@ -48,6 +48,7 @@ import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
 
@@ -91,7 +92,7 @@ public class Login extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login1);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-        mApplication.getInstance().login = this;
+
         initView();
 
     }
@@ -272,9 +273,12 @@ public class Login extends AppCompatActivity implements OnClickListener {
                     try {
                         js.put("user_id", sp.getString("user_id", ""));
                         js.put("m_id", Constants.M_id);
+                        js.put("type", "1");
+                        js.put("phonename", SystemUtil.getSystemModel());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    LogUtil.e("登录：：：：个人信息：："+js);
                     ApisSeUtil.M m = ApisSeUtil.i(js);
                     data1 = OkGo.post(Constants.User_Info_Ip).params("key", m.K())
                             .params("msg", m.M()).execute()

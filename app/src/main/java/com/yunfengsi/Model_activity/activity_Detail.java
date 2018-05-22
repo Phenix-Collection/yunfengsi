@@ -10,7 +10,6 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -30,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
@@ -47,6 +47,7 @@ import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.Login;
+import com.yunfengsi.Managers.CollectManager;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -68,6 +69,7 @@ import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
 import com.yunfengsi.YaoYue.Activity_YaoYue;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 import com.yunfengsi.ZhiFuShare;
 import com.yunfengsi.user_Info_First;
 
@@ -80,6 +82,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -88,7 +91,7 @@ import okhttp3.Response;
 /**
  * Created by Administrator on 2016/10/7.
  */
-public class activity_Detail extends AppCompatActivity implements View.OnClickListener, PL_List_Adapter.onHuifuListener {
+public class activity_Detail extends AndroidPopupActivity implements View.OnClickListener, PL_List_Adapter.onHuifuListener {
     private ImageView back, rightImg, shoucang, dianzanImg;
     private TextView dianzanText, title, fabuTime, faqidanwei, huodongdidian, huodongTime, peopleNum, Tobaoming, content, FaSong;
     private EditText PLText;
@@ -108,7 +111,6 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
     private SharedPreferences sp;
     private InputMethodManager imm;
     private TextView tv;//评论的头部
-    private boolean needTochange;//判断是否需要通知其他页面改变
 
     private ShareAction action;
     private boolean isPLing = false;
@@ -159,6 +161,10 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
         yue.setOnClickListener(this);
         PLText = (EditText) findViewById(R.id.activity_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+                .into((ImageView) findViewById(R.id.pinglun_image));
+        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+                .into((ImageView) findViewById(R.id.fenxiang_image));
         toggle = (ImageView) findViewById(R.id.toggle_audio_word);
         audio = (TextView) findViewById(R.id.audio_button);
         toggle.setOnClickListener(new View.OnClickListener() {
@@ -322,6 +328,9 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
 //        FaSong.setOnClickListener(this);
 //        shoucang.setOnClickListener(this);
 
+
+
+
     }
 
     @Override
@@ -343,11 +352,8 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
             if (thread.isAlive()) thread.interrupt();
         }
 
-        OkGo.getInstance().cancelTag(TAG);
-        if (needTochange) {
-            Intent intent = new Intent("Mine_SC");
-            sendBroadcast(intent);
-        }
+        OkGo.getInstance().cancelTag(this);
+
         super.onDestroy();
         UMShareAPI.get(this).release();
 //        ShareManager.release();
@@ -365,6 +371,7 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                 try {
                     JSONObject js = new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("act_id", Id);
                         js.put("page", page);
                     } catch (JSONException e) {
@@ -446,7 +453,10 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
             tip.setVisibility(View.VISIBLE);
             return;
         }
-        ProgressUtil.show(this, "", mApplication.ST("正在加载...."));
+        if(Id==null||Id.equals("")){
+            return;
+        }
+//        ProgressUtil.show(this, "", mApplication.ST("正在加载...."));
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -495,6 +505,8 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                         rightImg.setOnClickListener(activity_Detail.this);
                                         FaSong.setOnClickListener(activity_Detail.this);
                                         shoucang.setOnClickListener(activity_Detail.this);
+
+
                                         title.setText(mApplication.ST(map.get("title")));//标题
                                         fabuTime.setText(mApplication.ST("发布时间: " + TimeUtils.getTrueTimeStr(map.get("time"))));//发布时间
                                         setUrlToImage(map);//保存图片地址并加载,显示小圆点
@@ -512,11 +524,23 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                         if ((TimeUtils.dataOne(endTime) - System.currentTimeMillis()) <= 0) {
                                             Tobaoming.setText(mApplication.ST("已结束"));
                                             Tobaoming.setEnabled(false);
+                                            if(getIntent().getStringExtra("wel_id")!=null){
+                                                ToastUtil.showToastShort("该活动已结束");
+                                            }
                                         } else {
                                             if (!PreferenceUtil.getUserId(activity_Detail.this).equals("")) {
                                                 if ("000".equals(totalMap.get("code"))) {
                                                     Tobaoming.setText(mApplication.ST("已报名"));
                                                     Tobaoming.setEnabled(false);
+                                                    if(getIntent().getStringExtra("wel_id")!=null){
+                                                        //绑定福利券
+                                                        BaoMing();
+                                                    }
+                                                }else{
+                                                    // TODO: 2018/4/23 使用券进入详情页  直接模拟点击报名
+                                                    if(getIntent().getStringExtra("wel_id")!=null){
+                                                        Tobaoming.performClick();
+                                                    }
                                                 }
                                             }
 
@@ -583,6 +607,13 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                             });
                         }
                     });
+                }finally {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ProgressUtil.dismiss();
+                        }
+                    });
                 }
             }
         });
@@ -634,6 +665,11 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        if(!"0".equals(hashMap.get("yundousum"))){
+                                            YunDouAwardDialog.show(activity_Detail.this,"每日评论",hashMap.get("yundousum"));
+                                        }else{
+                                            ToastUtil.showToastShort(mApplication.ST("添加评论成功"));
+                                        }
                                         final HashMap<String, String> map = new HashMap<>();
                                         String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
                                         final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
@@ -672,7 +708,6 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                         imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                                         ((TextView) findViewById(R.id.p1)).setText(mApplication.ST("评论 " + (firstNum + 1)));
                                         overlay.setVisibility(View.GONE);
-                                        Toast.makeText(activity_Detail.this, mApplication.ST("添加评论成功"), Toast.LENGTH_SHORT).show();
                                         ProgressUtil.dismiss();
                                     }
                                 });
@@ -728,6 +763,9 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                     public void run() {
                                         if (currentLayout.getVisibility() == View.GONE) {
                                             currentLayout.setVisibility(View.VISIBLE);
+                                        }
+                                        if(!"0".equals(hashMap.get("yundousum"))){
+                                            YunDouAwardDialog.show(activity_Detail.this,"每日评论",hashMap.get("yundousum"));
                                         }
                                         TextView textView = new TextView(activity_Detail.this);
                                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -818,8 +856,12 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
         } else {
             JSONObject js = new JSONObject();
             try {
+                js.put("m_id", Constants.M_id);
                 js.put("act_id", Id);
                 js.put("user_id", sp.getString("user_id", ""));
+                if (getIntent().getStringExtra("wel_id")!=null){
+                    js.put("wel",getIntent().getStringExtra("wel_id"));
+                }
                 if(isNeedToChooseTime&&!startTime.equals("")&&!endTime.equals("")){
                     js.put("start_time",startTime);
                     js.put("end_time",endTime);
@@ -870,19 +912,41 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                         if ("000".equals(map.get("code"))) {
                                             ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已成功报名"));
                                             view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#40d976"));
+                                            ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
                                             Tobaoming.setText(mApplication.ST("已报名"));
                                             Tobaoming.setEnabled(false);
+                                            d.show();
+                                            if (getIntent().getStringExtra("wel_id")!=null){
+                                                d.dismiss();
+                                                ToastUtil.showToastShort("该福利券已使用成功");
+                                                setResult(666);
+                                                finish();
+                                            }
 
                                         } else if ("003".equals(map.get("code"))) {
-                                            ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已经报名过了哟~"));
-                                            view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#e75e5e"));
+                                            if (getIntent().getStringExtra("wel_id")!=null&&map.get("type")!=null){//绑定兑换券
+                                                if(map.get("type").equals("000")){
+                                                    ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("福利券使用成功"));
+                                                }else if(map.get("type").equals("001")){
+                                                    ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("福利券使用失败"));
+                                                }
+                                                ((TextView) view.findViewById(R.id.phone)).setText("");
+                                            }else{
+                                                ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
+                                                ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已经报名过了哟~"));
+                                            }
+                                            view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#40d976"));
                                             Tobaoming.setText(mApplication.ST("已报名"));
                                             Tobaoming.setEnabled(false);
 
+                                        }else if("005".equals(map.get("code"))){
+                                            ToastUtil.showToastShort("使用兑换券失败，兑换券已使用或已转赠");
+                                            setResult(666);
+                                            finish();
                                         }
-                                        ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
+                                        ProgressUtil.dismiss();
 
-                                        d.show();
+
                                     }
                                 });
 
@@ -966,6 +1030,7 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                             try {
                                 JSONObject js = new JSONObject();
                                 try {
+                                    js.put("m_id", Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("act_id", Id);
                                 } catch (JSONException e) {
@@ -975,11 +1040,14 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                                         .params("msg", ApisSeUtil.getMsg(js))
                                         .execute().body().string();
                                 if (!data.equals("")) {
-                                    HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
+                                    final HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
                                     if (map != null && map.get("code").equals("000")) {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(map.get("yundousum"))){
+                                                    YunDouAwardDialog.show(activity_Detail.this,"每日点赞",map.get("yundousum"));
+                                                }
                                                 dianzanText.setText((Integer.valueOf(dianzanText.getText().toString()) + 1) + "");
                                                 dianzanText.setTextColor(getResources().getColor(R.color.main_color));
                                                 dianzanImg.setImageResource(R.drawable.dianzan1);
@@ -1085,56 +1153,8 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(activity_Detail.this, mApplication.ST("请检查网络连接"), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject js = new JSONObject();
-                            try {
-                                js.put("act_id", Id);
-                                js.put("user_id", sp.getString("user_id", ""));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            String data = OkGo.post(Constants.Activity_Shoucang_IP)
-                                    .params("key", ApisSeUtil.getKey())
-                                    .params("msg", ApisSeUtil.getMsg(js))
-                                    .execute().body().string();
-                            if (!data.equals("")) {
-                                if (AnalyticalJSON.getHashMap(data) != null && "000".equals(AnalyticalJSON.getHashMap(data).get("code"))) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(activity_Detail.this, mApplication.ST("添加收藏成功"), Toast.LENGTH_SHORT).show();
-                                            v.setSelected(true);
-                                            needTochange = true;
+                CollectManager.doCollect(activity_Detail.this,Id,"2",shoucang);
 
-                                        }
-                                    });
-                                } else if (AnalyticalJSON.getHashMap(data) != null && "002".equals(AnalyticalJSON.getHashMap(data).get("code"))) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(activity_Detail.this, mApplication.ST("已取消收藏"), Toast.LENGTH_SHORT).show();
-                                            v.setSelected(false);
-                                            needTochange = true;
-
-                                        }
-                                    });
-                                } else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(activity_Detail.this, mApplication.ST("服务器异常"), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
                 break;
         }
     }
@@ -1257,5 +1277,11 @@ public class activity_Detail extends AppCompatActivity implements View.OnClickLi
 
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         PLText.requestFocus();
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+        Id=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
+        LoadData();
     }
 }

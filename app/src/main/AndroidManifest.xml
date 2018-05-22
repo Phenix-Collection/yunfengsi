@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.yunfengsi">
 
+    <!--设置壁纸权限-->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <!--设置壁纸权限-->
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.READ_LOGS" />
@@ -80,7 +87,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
     <application
-        android:name=".Utils.mApplication"
+        android:name=".Sophix.SophixStubApplication"
         android:allowBackup="true"
         android:icon="@drawable/indra"
         android:label="@string/app_name"
@@ -101,15 +108,14 @@
             </intent-filter>
         </activity>
 
-
         <provider
-            android:authorities="${applicationId}.fileProvider"
             android:name="android.support.v4.content.FileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
         <!-- <receiver android:name=".Managers.SMSBroadcastReceiver"> -->
         <!-- <intent-filter android:priority="1000"> -->
@@ -185,6 +191,9 @@
             android:name=".NianFo.HuiXiang"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".YunDou.YunDou_History"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Photo.PhotoActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".EnterShortCut">
@@ -220,6 +229,7 @@
         <activity
             android:name=".ZiXun_Detail"
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
@@ -340,6 +350,13 @@
         <activity
             android:name=".Setting.Activity_ShouCang"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.Activity_ShouCang_Result"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".YunDou.yundou_paihang"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".Fragment.Mine_GYQD"
             android:screenOrientation="portrait" />
@@ -701,9 +718,67 @@
             android:value="0d18e3faec6b822d78d93c3ed278830e">
             //开发者申请的key</meta-data>
 
-        <activity android:name=".E_Book.BookList" />
-        <activity android:name=".E_Book.IRead" />
-        <activity android:name=".E_Book.DaZangSearch"></activity>
+        <activity
+            android:name=".E_Book.BookList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".E_Book.IRead"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".E_Book.DaZangSearch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Model_activity.ActivityHistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".YunDou.YunDouHome"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".YunDou.DuiHuan"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".YunDou.QuanDetail"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".YunDou.MyQuan"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".YunDou.QiFu_PaiWei_Detail"
+            android:screenOrientation="portrait"></activity>
+
+
+        <!--sophix-->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="23563120-1" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="339e68587037f5704df3189cf4174b22" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCXIzBDRhfQPcFUCracKtyFmhG2VT7KZlMt3aYvOfzJgWWlb7QEY7ABwlWMvgYfV224PEWeWJP8NdmKHGfJQQbb61IM3PAACWcUy9BlzXjuMBPILWe3Hfnd3SHGOx7ddAQQVKvg9Keuw/QDXaVEWMyxXrnu8DfhGuC7WIsMeD/xRsZmlg7yT/NV1bCR+XAlbmHcRf6hYu3//JjUaI3i+chNMiFo0Y9ZzttPvdhJ7HHi7TIzwUzWVvsG8c7eks7JhcCL4zumE8VL+pPWujX/a2wWWynbMlmx4Jsn6/0ozJuRC9qRvenOtVKfDyWcanOinfb0YsUyNWXeQKgxJMenvl1rAgMBAAECggEAE45aEFphenCDM3yvZEWngyIMaKtfFJFo8eZcOoAmVWyI2n85q9e6Tn/20d9Eq4mEiPJDj9mmTFwradODGmdvm8U3OLLd2yNcUzSMIqATpb5S0PQPF4KpcivK0vuTYtRAMlzCYLlHeTWhvU3AtLdIxSqcpG4wzM/NhHBQjayBmZZ7UNKbeam9uqnbh8/X0xYOX1EjORUBtkAEKiLXNIX/HUwOkaaGX0d3Hq3dglBqfKy6MGRtUFFO7FvT2314MaCZpv8N1j969AAYjKHx2/gIyStWiHnp1hZsP6drPE7YFF1n13RHDZ6VNDPbeybgKCzaqlmY0CgYVOUYz5uwl9qcAQKBgQDluqYkHFPuFwFJsGVX6MMARom9WXDVfNUQzB7z5pHlBN0djq9O53Li3jKSdQCADTIXi3o9X95ViHhb1h05QKIUI4YY+9QebsmgaexHZiZdnMMmqEcvu+oyIiOkvS5oHVGf5bI0aESeZcHaXi+I5REBTeBKw05tWeMNwxDPYM18sQKBgQCoa8IkbX6yCICnEoDI7vendd70p9FoWodWdT0ApYwBIVpz+07uKIXMyU2PumsTQEKgDrgn9BkIGa6TLKVKsa4zbHK5sJvfRaw5j798q1NnUGmm08Aa/LeMGXnEgQyuCr8shI4rMxHycv2a+JqyQYFIB3fBoCSKeshrb2QlF0RS2wKBgBHEvwb5/e/jbaESeLQ096g0zICNw3Fvx1cWQqqgwdYR6zxXBe43bqZng0faruA4pRA3JIxMtvispoqL5BTCkAa4vK2ABOcZsJSsvK7FEuCYuGtsBp2Fjla0V0dtroI1ClQwwvjUu8H4oubN9CVFemw8ZsXBl3ZTxoEQ/mLb3OjxAoGBAII1BRw6lse3MRd5g51Uupx50UwebhQaYSVjcC0Oz6WUDqU6NjSDmaXQP6mNuvhgJuItXwxsd+m+SSw5SPTtVzskbbHHq0o7SEIcMzOEFO/7yCKU9KEonhKvI2fbSV1Iq7IULQGS8x4Y7p4f8yE66WMxetF0KKvy7v24WZkfWtAfAoGATyu/TY+g9N5FsDNiGgQjeuM/OT4vFgJfGac6WCu9/ZNaIKWAJVKzRlhSG8lhkRMVOwJEo2g7xB8dLEzi/6wfg9Ws2SSDEP0IH1Pcgwixj7qbO1/FfzgHZGGc0lGwtgGKtv1JIIcm/lVej/VjlYwnb1M5koQ7vnNdVMyuobbePzw=" />
+
+        <!--sophix-->
+
+
+
+
+                <!--deamon-->
+
+
+
+        <activity
+            android:name=".Deamon.OnePixelActivity"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:finishOnTaskLaunch="false"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation"
+            android:theme="@style/YFS_Deamon_Style"
+            android:process=":yfs"></activity>
+
     </application>
 
 </manifest>

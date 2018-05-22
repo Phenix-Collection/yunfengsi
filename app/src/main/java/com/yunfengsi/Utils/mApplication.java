@@ -22,18 +22,20 @@ import com.alibaba.sdk.android.push.register.HuaWeiRegister;
 import com.alibaba.sdk.android.push.register.MiPushRegister;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.spreada.utils.chinese.ZHConverter;
+import com.squareup.leakcanary.LeakCanary;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
-import com.yunfengsi.Login;
 import com.yunfengsi.R;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -51,9 +53,8 @@ public class mApplication extends Application {
     public static String title = "";
     public static String type = "";
     //    public   ShareBoardConfig config;//分享面板配置
-    private boolean Debug = true;
+    private boolean Debug = false;
     public static boolean isChina = true;
-    public Login login;
 
     //    public static String gg_url="",gg_image="";//首页广告弹窗 背景图  ggimage   跳转链接  ggurl
     public static boolean changeIcon = false;//是否切换图标
@@ -61,12 +62,16 @@ public class mApplication extends Application {
 
     public static final String alias1 = "com.yunfengsi.Splash";
     public static final String alias2 = "com.yunfengsi.Splash1";
-    public static HashMap<Class, Activity> activityHashMap = new HashMap<>();
+    public HashMap<Class, WeakReference<Activity>> activityHashMap = new HashMap<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+//        String curProcess=SystemUtil.getProcessName(this, Process.myPid());
+//        LogUtil.e("当前进程：：："+curProcess);
+//        if(!getPackageName().equals(curProcess)){//如果当前进程不是主进程，则return ，防止二次初始化
+//            return;
+//        }
         application = this;
         //Glide
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
@@ -75,7 +80,7 @@ public class mApplication extends Application {
         gb.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
         gb.setMemoryCache(new LruResourceCache(caheM));
 
-//        gb.setBitmapPool(new LruBitmapPool(caheM));
+        gb.setBitmapPool(new LruBitmapPool(caheM));
         //Glide
 
 
@@ -142,6 +147,12 @@ public class mApplication extends Application {
             StrictMode.setVmPolicy(builder.build());
             builder.detectFileUriExposure();
         }
+
+
+        if(LeakCanary.isInAnalyzerProcess(this)&&!Debug){
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     public static mApplication getInstance() {
@@ -206,22 +217,25 @@ public class mApplication extends Application {
         });
     }
 
-    public static void closeAllActivities() {
-        Iterator<Activity> iterActivity = activityHashMap.values().iterator();
+    public  void closeAllActivities() {
+        Iterator<WeakReference<Activity>> iterActivity = activityHashMap.values().iterator();
         while (iterActivity.hasNext()) {
-            iterActivity.next().finish();
+            iterActivity.next().get().finish();
         }
         activityHashMap.clear();
     }
 
-    public static void addActivity(Activity activity) {
-        activityHashMap.put(activity.getClass(), activity);
+    public  void addActivity(Activity activity) {
+        LogUtil.e("添加页面：；"+activity.getClass().getName());
+        activityHashMap.put(activity.getClass(), new WeakReference<Activity>(activity));
     }
 
-    public static void romoveActivity(Activity activity) {
-        if (activityHashMap.containsValue(activity)) {
+    public  void romoveActivity(Activity activity) {
+        if (activityHashMap.containsKey(activity.getClass())) {
+            LogUtil.e("移除页面：；"+activity.getClass().getName());
             activityHashMap.remove(activity.getClass());
             if (activity != null) {
+                LogUtil.e("销毁页面：；"+activity.getClass().getName());
                 activity.finish();
             }
 

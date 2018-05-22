@@ -30,7 +30,7 @@ public class gerenshezhi extends BaseSTActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerenshezhi);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
         StatusBarCompat.compat(this, ContextCompat.getColor(this,R.color.main_color));
         aCache=ACache.get(this);
         sp=getSharedPreferences("user",MODE_PRIVATE);
@@ -48,7 +48,7 @@ public class gerenshezhi extends BaseSTActivity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
     }
 
     @Override

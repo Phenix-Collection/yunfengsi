@@ -45,10 +45,11 @@
 
 
     <RelativeLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="40dp"
-        android:background="@drawable/meditation_bg_jpg">
+        >
 
 
         <com.ruffian.library.RTextView
@@ -57,7 +58,7 @@
             android:layout_height="100dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="开始坐禅"
             android:textSize="18dp"
@@ -75,13 +76,11 @@
             android:layout_height="80dp"
             android:layout_above="@+id/meditation_key"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/yanwu"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="18dp"
-            android:visibility="gone" />
+           />
 
     </RelativeLayout>
 

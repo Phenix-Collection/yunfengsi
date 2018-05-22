@@ -65,7 +65,6 @@ import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.FileUtils;
-import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.Network;
@@ -74,11 +73,14 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
+import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
 import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mItemDeraction;
 import com.yunfengsi.XuanzheActivity;
+import com.yunfengsi.YunDou.MyQuan;
+import com.yunfengsi.YunDou.YunDouHome;
 import com.yunfengsi.ZhiFuShare;
 import com.yunfengsi.ZiXun_Detail;
 
@@ -158,6 +160,13 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.home_page, container, false);
+        initView(inflater);
+
+        return rootView;
+
+    }
+
+    private void initView(LayoutInflater inflater) {
         EventBus.getDefault().register(this);//注册事件管理器
         head = (LinearLayout) inflater.inflate(R.layout.head_homepage, null);
         items = (RecyclerView) head.findViewById(R.id.items);
@@ -323,6 +332,16 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 TextView textView = (TextView) view.findViewById(R.id.text);
                 LogUtil.e("首页item点击：：：" + textView.getTag());
                 switch (textView.getTag().toString()) {
+                    case "我的云豆":
+                        if (new LoginUtil().checkLogin(getActivity())) {
+                            startActivity(new Intent(getActivity(), YunDouHome.class));
+                        }
+                        break;
+                    case "我的福利":
+                        if (new LoginUtil().checkLogin(getActivity())) {
+                            startActivity(new Intent(getActivity(), MyQuan.class));
+                        }
+                        break;
                     case "功课":
                         ((Mine) ((MainActivity) getActivity()).list.get(4)).openGongke();
                         break;
@@ -444,7 +463,8 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         LinearLayout more = head.findViewById(R.id.more);
         more.setOnClickListener(this);
         ((TextView) more.findViewById(R.id.text)).setText("更多");
-        ((ImageView) more.findViewById(R.id.image)).setImageBitmap(ImageUtil.readBitMap(getActivity(), R.raw.more));
+        Glide.with(getActivity()).load(R.raw.more).override(DimenUtils.dip2px(getActivity(),30),DimenUtils.dip2px(getActivity(),30))
+                .into( ((ImageView) more.findViewById(R.id.image)));
         TextView textView = new TextView(getActivity());
         ViewGroup.LayoutParams vl = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         textView.setLayoutParams(vl);
@@ -493,12 +513,12 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                         intent.putExtra("active_url", active);
                     }
                 }
-                if (null != view.findViewById(R.id.zixun_item_sourse)) {
-                    String active = view.findViewById(R.id.zixun_item_sourse).getTag().toString();
-                    if (!active.equals("")) {
-                        intent.putExtra("active_url", active);
-                    }
-                }
+//                if (null != view.findViewById(R.id.zixun_item_sourse)) {
+//                    String active = view.findViewById(R.id.zixun_item_sourse).getTag().toString();
+//                    if (!active.equals("")) {
+//                        intent.putExtra("active_url", active);
+//                    }
+//                }
 
                 startActivity(intent);
             }
@@ -508,13 +528,11 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         recyclerView.setAdapter(adapter);
 
         onRefresh();
-
-        return rootView;
-
     }
 
     @Override
     public void onRefresh() {
+
         isRefresh = true;
         page = 1;
         endPage = -1;
@@ -522,12 +540,17 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         getZiXun();
         getHuodong();
         adapter.setEnableLoadMore(true);
-        swip.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swip.setRefreshing(false);
-            }
-        }, 2000);
+        if(Network.HttpTest(getActivity())){
+            swip.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    swip.setRefreshing(false);
+                }
+            }, 2000);
+        }else{
+            swip.setRefreshing(false);
+        }
+
     }
 
     private class HomeAdapter extends BaseMultiItemQuickAdapter<OrignalEntity, BaseViewHolder> {
@@ -590,7 +613,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                         JCVideoPlayer.releaseAllVideos();
                         if (((FrameLayout) holder.getView(R.id.zixun_video_stub)).getChildAt(0) instanceof JCVideoPlayerStandard) {
                             JCVideoPlayerStandard jc0 = (JCVideoPlayerStandard) ((FrameLayout) holder.getView(R.id.zixun_video_stub)).getChildAt(0);
-                            Glide.with(getActivity()).load(bean.getImage()).override(screenwidth - DimenUtils.dip2px(getActivity(), 10), (screenwidth - DimenUtils.dip2px(getActivity(), 10)) / 2)
+                            Glide.with(getActivity()).load(bean.getImage()).override(screenwidth - DimenUtils.dip2px(getActivity(), 30), (screenwidth - DimenUtils.dip2px(getActivity(), 30)) / 2)
                                     .centerCrop().into(jc0.thumbImageView);
                             jc0.setUp(bean.getVideoUrl(), bean.getTitle());
                             jc0.titleTextView.setVisibility(View.GONE);
@@ -879,7 +902,23 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
     }
 
     private void getCacheOrDefaultItems() {
-        if (FileUtils.getStorageMapEntities(getActivity(), CACHE_NAME + PreferenceUtil.getUserId(getActivity())) == null) {
+        String version= Verification.getAppVersionName(getActivity());
+        if(PreferenceUtil.getSettingIncetance(getActivity()).getString(ItemManager.CaCheVersion,"").equals(version)){//同一版本才允许缓存，不同版本清空缓存
+            if (FileUtils.getStorageMapEntities(getActivity(), CACHE_NAME + PreferenceUtil.getUserId(getActivity())) == null) {
+                LogUtil.e("首页默认设置");
+                itemList = new ArrayList<>();
+                for (int i = 0; i < DEFAULT_NAME.length; i++) {
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put(TEXT_KEY, DEFAULT_NAME[i]);
+                    map.put(IMAGE_KEY, DEFAULT_IMAGE[i]);
+                    itemList.add(map);
+                }
+
+            } else {
+                LogUtil.e("首页获取缓存设置");
+                itemList = FileUtils.getStorageMapEntities(getActivity(), CACHE_NAME + PreferenceUtil.getUserId(getActivity()));
+            }
+        }else{//不同版本
             LogUtil.e("首页默认设置");
             itemList = new ArrayList<>();
             for (int i = 0; i < DEFAULT_NAME.length; i++) {
@@ -888,20 +927,15 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 map.put(IMAGE_KEY, DEFAULT_IMAGE[i]);
                 itemList.add(map);
             }
-
-        } else {
-            LogUtil.e("首页获取缓存设置");
-            itemList = FileUtils.getStorageMapEntities(getActivity(), CACHE_NAME + PreferenceUtil.getUserId(getActivity()));
-//            HashMap<String, Object> more = new HashMap<>();
-//            more.put(TEXT_KEY, "更多");
-//            more.put(IMAGE_KEY, R.raw.more);
-//            itemList.add(more);
-
         }
+
+
+
     }
 
     private void initAnimator() {
         if (valueAnimator == null) {
+            LogUtil.e("首页不存在动画对象");
             valueAnimator = ValueAnimator.ofFloat(10);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -914,6 +948,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
             valueAnimator.setRepeatMode(ValueAnimator.REVERSE);
             valueAnimator.start();
         } else {
+            LogUtil.e("首页已经有动画对象了");
             if (!valueAnimator.isStarted()) {
                 valueAnimator.start();
             }
@@ -993,6 +1028,8 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 });
                 break;
             case R.id.more:
+//                MDialogFragment  dialogFragment=new MDialogFragment();
+//                dialogFragment.show(getChildFragmentManager(),"test");
                 if (new LoginUtil().checkLogin(getActivity())) {
                     startActivity(new Intent(getActivity(), ItemManager.class));
                 }
@@ -1068,6 +1105,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
     @Override
     public void onDestroy() {
         super.onDestroy();
+        PreferenceUtil.getSettingIncetance(getActivity()).edit().putString(ItemManager.CaCheVersion,Verification.getAppVersionName(getActivity())).apply();
         saveLists();
         EventBus.getDefault().unregister(this);
     }
@@ -1093,7 +1131,9 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         super.onPause();
         if (valueAnimator != null) {
             valueAnimator.cancel();
-            valueAnimator = null;
+        }
+        if(banner!=null){
+            banner.releaseBanner();
         }
     }
 
@@ -1102,6 +1142,8 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         super.onResume();
         Glide.with(this).load(R.drawable.small_head).skipMemoryCache(true).fitCenter().into((ImageView) rootView.findViewById(R.id.audio_tip));
         initAnimator();
-
+        if(banner!=null){
+            banner.startAutoPlay();
+        }
     }
 }

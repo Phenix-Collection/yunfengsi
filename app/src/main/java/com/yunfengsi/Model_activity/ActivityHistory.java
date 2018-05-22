@@ -1,7 +1,7 @@
-package com.yunfengsi.More;
+package com.yunfengsi.Model_activity;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,14 +20,19 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.MD5Utls;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
+import com.yunfengsi.Utils.ProgressUtil;
+import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
@@ -48,13 +53,13 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 
-public class Fortune_History extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ActivityHistory extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter adapter;
-    private int pageSize = 10;
+    private int pageSize = 20;
     private int page = 1;
     private int endPage = -1;
     private boolean isLoadMore = false;
@@ -66,13 +71,39 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.message_center);
 
-
+//        findViewById(R.id.title_image2).setVisibility(View.GONE);
+//        ((ImageView) findViewById(R.id.title_image2)).setImageBitmap(ImageUtil.readBitMap(this, R.drawable.fenxiang2));
+//        findViewById(R.id.title_image2).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                UMWeb  umWeb = new UMWeb(Constants.FX_host_Ip + "wish" + "/id/"  + map.get("id") + "/st/" + (mApplication.isChina ? "s" : "t"));
+//                umWeb.setTitle(mApplication.ST("祈愿功德回向"));
+//                umWeb.setDescription(mApplication.ST("一叶一菩提，一花一世界；爱出者爱返，福往者福来"));
+//                umWeb.setThumb(new UMImage(Bless_History.this, R.drawable.indra_share));
+//                new ShareManager().shareWeb(umWeb,Bless_History.this);
+//            }
+//        });
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("灵签记录"));
+        ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("修行经历"));
         ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+        ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("分享"));
+        ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.handle_right)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String md5 = MD5Utls.stringToMD5(Constants.safeKey);
+                String m1 = md5.substring(0, 16);
+                String m2 = md5.substring(16, md5.length());
+                UMWeb umWeb = new UMWeb(Constants.FX_host_Ip + "practice" + "/id/" + m1 +PreferenceUtil.getUserId(ActivityHistory.this) + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
+                umWeb.setTitle(mApplication.ST(PreferenceUtil.getUserIncetance(ActivityHistory.this).getString("pet_name","")+"  正在这里修行"));
+                umWeb.setThumb(new UMImage(ActivityHistory.this, R.drawable.indra_share));
+                umWeb.setDescription("这是我的修行经历，快来看看吧");
+                new ShareManager().shareWeb(umWeb,ActivityHistory.this);
             }
         });
         swip = (SwipeRefreshLayout) findViewById(R.id.swip);
@@ -83,10 +114,9 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDecoration(this));
 
-        adapter = new MessageAdapter(this,new ArrayList<HashMap<String, String>>());
-//        adapter.openLoadMore(pageSize, true);
+        adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());
 
-
+        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -97,18 +127,7 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
                     getHistory();
                 }
             }
-        },recyclerView);
-        adapter.disableLoadMoreIfNotFullPage();
-        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent=new Intent(Fortune_History.this,Fortune_Detail.class);
-                intent.putExtra("map", ((HashMap) view.getTag()));
-                startActivity(intent);
-            }
-        });
+        }, recyclerView);
 
         recyclerView.setAdapter(adapter);
 
@@ -117,7 +136,8 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
         textView.setCompoundDrawablePadding(DimenUtils.dip2px(this, 10));
-        textView.setText(mApplication.ST("暂无灵签记录"));
+        textView.setText(mApplication.ST("暂无修行经历\n\n快去报名参加活动吧"));
+        adapter.setFooterViewAsFlow(true);
 
 
         textView.setGravity(Gravity.CENTER);
@@ -134,20 +154,52 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ProgressUtil.dismiss();
+    }
 
+    private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
+        private Context context;
 
-    private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
-
-        public MessageAdapter(Context context,@Nullable List<HashMap<String, String>> data) {
+        public MessageAdapter(Context context, List<HashMap<String, String>> data) {
             super(R.layout.item_fortune_history, data);
+            this.context = context;
         }
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            holder.setText(R.id.msg,mApplication.ST(map.get("title")))
-                    .setText(R.id.title,mApplication.ST(map.get("num")))
+            ((TextView) holder.getView(R.id.title)).setTextSize(18);
+            holder.setText(R.id.title, mApplication.ST(map.get("title")))
                     .setText(R.id.time, mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))));
-            holder.itemView.setTag(map);
+            holder.setGone(R.id.msg, false);
+            ((TextView) holder.getView(R.id.title)).setTypeface(Typeface.MONOSPACE);
+//            LogUtil.e("当前下标：："+holder.getAdapterPosition());
+//            switch (holder.getAdapterPosition()%5){
+//                case 0:
+//                    ((TextView) holder.getView(R.id.title)).setTypeface(Typeface.MONOSPACE);
+//                    ((TextView) holder.getView(R.id.title)).append("南 无 阿 弥 陀 佛   等宽字体");
+//                    break;
+//                case 1:
+//                    ((TextView) holder.getView(R.id.title)).setTypeface(Typeface.DEFAULT);
+//                    ((TextView) holder.getView(R.id.title)).append("南 无 阿 弥 陀 佛   默认字体");
+//                    break;
+//                case 2:
+//                    ((TextView) holder.getView(R.id.title)).setTypeface(Typeface.DEFAULT_BOLD);
+//                    ((TextView) holder.getView(R.id.title)).append("南无阿弥陀佛   默认粗体");
+//                    break;
+//                case 3:
+//                    ((TextView) holder.getView(R.id.title)).setTypeface(Typeface.SANS_SERIF);
+//                    ((TextView) holder.getView(R.id.title)).append("南无阿弥陀佛   SANS_SERIF体");
+//                    break;
+//                case 4:
+//                    ((TextView) holder.getView(R.id.title)).setTypeface(Typeface.SERIF);
+//                    ((TextView) holder.getView(R.id.title)).append("南无阿弥陀佛   SERIF体");
+//                    break;
+//            }
+
+
 
         }
     }
@@ -163,8 +215,8 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
                 e.printStackTrace();
             }
             ApisSeUtil.M m = ApisSeUtil.i(js);
-            LogUtil.e("获取摇签记录：：" + js);
-            OkGo.post(Constants.FortuneHistory)
+            LogUtil.e("获取修行经历：：" + js);
+            OkGo.post(Constants.Practice)
                     .tag(this)
                     .params("key", m.K())
                     .params("msg", m.M())
@@ -175,22 +227,28 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
                             final ArrayList<HashMap<String, String>> list = AnalyticalJSON.getList_zj(AnalyticalJSON.getHashMap(s).get("msg"));
                             if (list != null) {
                                 if (isRefresh) {
+
                                     adapter.setNewData(list);
                                     isRefresh = false;
                                     swip.setRefreshing(false);
+
                                 } else if (isLoadMore) {
                                     isLoadMore = false;
-                                    if (list.size() < 10) {
+                                    if (list.size() < pageSize) {
                                         endPage = page;
+                                        adapter.addData(list);
                                         adapter.loadMoreEnd(false);
-                                        adapter.addData(list);
                                     } else {
-                                        adapter.addData(list);
                                         adapter.loadMoreComplete();
+                                        adapter.addData(list);
                                     }
                                 }
                             }
-
+                            if(adapter.getData().size()==0){
+                                findViewById(R.id.handle_right).setVisibility(View.GONE);
+                            }else{
+                                findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+                            }
                         }
 
                         @Override
@@ -215,6 +273,5 @@ public class Fortune_History extends AppCompatActivity implements SwipeRefreshLa
         isRefresh = true;
         adapter.setEnableLoadMore(true);
         getHistory();
-        swip.setRefreshing(false);
     }
 }

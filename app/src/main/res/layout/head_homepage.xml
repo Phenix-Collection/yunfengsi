@@ -11,6 +11,7 @@
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:banner_default_image="@color/transparent"
         app:delay_time="5000">
 
     </com.youth.banner.Banner>

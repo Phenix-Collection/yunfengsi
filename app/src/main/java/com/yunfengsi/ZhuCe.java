@@ -43,6 +43,7 @@ import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
@@ -292,11 +293,15 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
                     try {
                         js.put("user_id", sp.getString("user_id", ""));
                         js.put("m_id", Constants.M_id);
+                        js.put("type", "1");
+                        js.put("phonename", SystemUtil.getSystemModel());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    LogUtil.e("注册：：：个人信息："+js);
                     ApisSeUtil.M m = ApisSeUtil.i(js);
-                    data1 = OkGo.post(Constants.User_Info_Ip).params("key", m.K())
+                    data1 = OkGo.post(Constants.User_Info_Ip)
+                            .params("key", m.K())
                             .params("msg", m.M()).execute()
                             .body().string();
                     LogUtil.e("个人信息数据为：" + data1);
@@ -488,6 +493,9 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
                 startActivityForResult(intent,000);
                 break;
             case R.id.zhuce_phone://手机号注册
+                if(!Network.HttpTest(ZhuCe.this)){
+                    return;
+                }
                 v.setSelected(true);
                 ((TextView) v).setTextColor(Color.WHITE);
                 tvEmail.setTextColor(Color.GRAY);
@@ -523,6 +531,9 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
             
                 break;
             case R.id.Zhuce_getMid://获取验证码
+                if(!Network.HttpTest(ZhuCe.this)){
+                    return;
+                }
                 if (phonenum.getText().toString().equals("")) {
                     Toast.makeText(ZhuCe.this, mApplication.ST("请输入手机号码") , Toast.LENGTH_SHORT).show();
                     return;

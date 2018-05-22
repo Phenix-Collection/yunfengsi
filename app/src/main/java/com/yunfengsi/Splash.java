@@ -1,6 +1,5 @@
 package com.yunfengsi;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -188,81 +187,24 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                     .asBitmap().
                     skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .override(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)
+//                    .override(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)
                     .fitCenter().into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                     if (image != null) {
+                        mAD=resource;
                         image.setImageBitmap(resource);
-                        ObjectAnimator oa = ObjectAnimator.ofFloat(image, "alpha", 0f, 1f).setDuration(1000);
-                        oa.start();
+//                        ObjectAnimator oa = ObjectAnimator.ofFloat(image, "alpha", 0f, 1f).setDuration(1000);
+//                        oa.start();
                         type.setVisibility(View.VISIBLE);
                         image.setOnClickListener(Splash.this);
                         image.setTag(detail);
                     }
                 }
             });
+
         }
 
-//        try {
-//            y = new URL(url);
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//            e.printStackTrace();
-//            Log.w(TAG, "getBitmapForAD:广告页 错误" + e.toString());
-//        }
-//        if (!(url).equals(acache.getAsString("ad_str"))) {//新广告页
-//            final BitmapFactory.Options bfo = new BitmapFactory.Options();
-//            bfo.inPreferredConfig = Bitmap.Config.RGB_565;
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    InputStream in = null;
-//                    try {
-//                        in = y.openStream();
-//                    } catch (IOException e) {
-//                        Log.w(TAG, "getBitmapForAD:广告页 错误" + e.toString());
-//                        e.printStackTrace();
-//                    }
-//                    final Bitmap b = BitmapFactory.decodeStream(in, null, bfo);
-//                    if(b!=null){
-//                        Log.w(TAG, "onResourceReady: 广告页bitmap大小————》" + b.getRowBytes() * b.getHeight());
-//                        acache.put(("ad_str"), url, ACache.TIME_DAY);
-//                        acache.put(("ad_bmp"), b, ACache.TIME_HOUR);
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (image != null) {
-//                                    image.setImageBitmap(b);
-//                                    type.setVisibility(View.VISIBLE);
-//                                    image.setOnClickListener(Splash.this);
-//                                    image.setTag(detail);
-//                                }
-//                            }
-//                        });
-//                    }
-//                    try {
-//                        if (in != null)
-//                            in.close();
-//                    } catch (IOException e) {
-//                        Log.w(TAG, "getBitmapForAD:广告页 错误" + e.toString());
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            }).start();
-//        } else {//缓存广告页
-//            Bitmap b = acache.getAsBitmap("ad_bmp");
-//            if (b != null && image != null) {
-//                image.setImageBitmap(b);
-//                image.setOnClickListener(Splash.this);
-//                image.setTag(detail);
-//                type.setVisibility(View.VISIBLE);
-//            } else {
-//                acache.put("ad_str", "");
-//                getBitmapForAD(url, detail);//重新加载图片并缓存
-//            }
-//        }
 
 
     }
@@ -316,7 +258,8 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 public Object instantiateItem(ViewGroup container, int position) {
                     ImageView img = new ImageView(Splash.this);
                     img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    img.setImageBitmap(ImageUtil.readBitMap(Splash.this, images[position]));
+                    Bitmap bitmap=ImageUtil.readBitMap(Splash.this, images[position]);
+                    img.setImageBitmap(bitmap);
                     container.addView(img);
                     return img;
                 }
@@ -330,7 +273,10 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
             ViewStub viewStubstart = (ViewStub) findViewById(R.id.view_stub_start);
             View view = viewStubstart.inflate();
             image = (ImageView) view.findViewById(R.id.splash_image);
-            image.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.start));
+            Bitmap bitmap=ImageUtil.readBitMap(this, R.drawable.start);
+            Log.e(TAG, "onCreate: 计算内存：："+(bitmap.getWidth()*bitmap.getHeight()*2/1000)+"KB   实际内存：："+bitmap.getAllocationByteCount()/1000+"KB     "+bitmap.getByteCount()
+                    +"  宽高：：："+bitmap.getWidth()+"   "+bitmap.getHeight());
+            image.setImageBitmap(bitmap);
             image.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -405,6 +351,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
         if (mAD != null && !mAD.isRecycled()) {
             mAD.recycle();
             mAD = null;
+            System.gc();
         }
         pagerAdapter = null;
         pager = null;
@@ -433,6 +380,10 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 if (cdt != null) {
                     cdt.cancel();
                     cdt = null;
+                }
+                if(image!=null){
+                    LogUtil.e("销毁bitmap");
+                    image.destroyDrawingCache();
                 }
 //                if (new LoginUtil().checkLogin(this)) {
 //                    //TODO：动画等耗时操作结束后再调用checkYYB(),一般写在starActivity前即可
@@ -479,6 +430,9 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 //                    });
 
 //                }
+
+
+
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
                 finish();

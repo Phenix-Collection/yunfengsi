@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -43,6 +44,7 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
@@ -141,7 +143,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        r.setBackgroundDrawable(new BitmapDrawable(resource));
+                        r.setBackground(new BitmapDrawable(resource));
                     }
                 });
         findViewById(R.id.jiatingzhuzhi).setOnClickListener(changeClickListener);
@@ -544,8 +546,10 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                 try {
                     JSONObject js = new JSONObject();
                     js.put("user_id", uid);
+                    js.put("m_id",Constants.M_id);
                     Response response = OkGo.post(Constants.uploadHead_IP).tag(TAG)
-                            .params("head", file).params("key", ApisSeUtil.getKey())
+                            .params("head", file)
+                            .params("key", ApisSeUtil.getKey())
                             .params("msg", ApisSeUtil.getMsg(js)).execute();
                     String data1 = response.body().string();
 
@@ -612,12 +616,16 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                     try {
                         js.put("user_id", sp.getString("user_id", ""));
                         js.put("m_id", Constants.M_id);
+                        js.put("type", "1");
+                        js.put("phonename", SystemUtil.getSystemModel());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    LogUtil.e("个人资料：：个人信息：："+js);
+                    ApisSeUtil.M m=ApisSeUtil.i(js);
                     data1 = OkGo.post(Constants.User_Info_Ip)
-                            .params("key", ApisSeUtil.getKey())
-                            .params("msg", ApisSeUtil.getMsg(js)).execute()
+                            .params("key", m.K())
+                            .params("msg", m.M()).execute()
                             .body().string();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -717,11 +725,12 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
             }
         });
         Window window = dialog.getWindow();
+        window.getDecorView().setPadding(0,0,0,0);
+        window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.dialogWindowAnim);
         window.setBackgroundDrawableResource(R.color.vifrification);
         WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = screenWidth;
-        wl.y = getResources().getDisplayMetrics().heightPixels;
+        wl.width = screenWidth;
         window.setAttributes(wl);
         dialog.show();
     }

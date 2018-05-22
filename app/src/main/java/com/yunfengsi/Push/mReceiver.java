@@ -21,6 +21,8 @@ import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.ZiXun_Detail;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +57,12 @@ public class mReceiver
 
         super.onNotification(context, s, s1, map);
         LogUtil.e("onNotificationOpened: 通知收到" + s + "    " + s1 + "  数据" + map);
+
+        String type=AnalyticalJSON.getHashMap(map.get("msg")).get("type");
+        LogUtil.e("type:::"+type);
+        if(Pinglun.equals(type)||TongZhi.equals(type)){
+            EventBus.getDefault().post(new MainActivity.NoticeEvent());
+        }
     }
 
 

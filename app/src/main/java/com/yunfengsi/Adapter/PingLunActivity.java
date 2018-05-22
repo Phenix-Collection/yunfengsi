@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
@@ -29,14 +29,17 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import okhttp3.Call;
@@ -45,7 +48,7 @@ import okhttp3.Response;
 /**
  * Created by Administrator on 2016/12/28.
  */
-public class PingLunActivity extends AppCompatActivity implements View.OnClickListener {
+public class PingLunActivity extends AndroidPopupActivity implements View.OnClickListener {
     private static final String TAG = "PingLunActivity";
     private ImageView back;
     private TextView title;
@@ -104,6 +107,11 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(!"0".equals(hashMap.get("yundousum"))){
+                                                YunDouAwardDialog.show(PingLunActivity.this,"每日评论",hashMap.get("yundousum"));
+                                            }else{
+                                                ToastUtil.showToastShort(mApplication.ST("添加回复成功"));
+                                            }
                                             final HashMap<String, String> map = new HashMap<>();
                                             String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
                                             final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
@@ -139,7 +147,6 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
                                             v.setEnabled(true);
                                             PLText.setText("");
                                             imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
-                                            Toast.makeText(PingLunActivity.this, mApplication.ST("添加回复成功"), Toast.LENGTH_SHORT).show();
                                             ProgressUtil.dismiss();
                                         }
                                     });
@@ -185,11 +192,14 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
                                     .params("msg", m.M())
                                     .execute().body().string();
                             if (!data1.equals("")) {
-                                HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);
+                                final HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);
                                 if (map != null && map.get("code").equals("000")) {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(!"0".equals(map.get("yundousum"))){
+                                                YunDouAwardDialog.show(PingLunActivity.this,"每日点赞",map.get("yundousum"));
+                                            }
                                             ((TextView) v).setCompoundDrawables(null, null, dianzan1, null);
                                             String d = (Integer.valueOf(dianzanNum.getText().toString()) + 1) + "";
                                             dianzanNum.setText(d);
@@ -341,8 +351,12 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
             ProgressUtil.dismiss();
             return;
         }
+        if(pLId==null||pLId.equals("")){
+            return;
+        }
         JSONObject js=new JSONObject();
         try {
+            js.put("m_id", Constants.M_id);
             js.put("page", page);
             js.put("comment_id", pLId);
         } catch (JSONException e) {
@@ -437,5 +451,12 @@ public class PingLunActivity extends AppCompatActivity implements View.OnClickLi
 
 
         });
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+        pLId=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
+        getHead();
+        getData();
     }
 }

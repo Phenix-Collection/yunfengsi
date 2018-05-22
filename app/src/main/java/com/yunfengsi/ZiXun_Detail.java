@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -23,6 +22,8 @@ import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
@@ -35,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -47,6 +49,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.Managers.CollectManager;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Setting.JuBaoActivity;
@@ -61,7 +64,6 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.MD5Utls;
 import com.yunfengsi.Utils.Network;
-import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.QrUtils;
 import com.yunfengsi.Utils.ScaleImageUtil;
@@ -74,6 +76,7 @@ import com.yunfengsi.View.mAudioManager;
 import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mPLlistview;
 import com.yunfengsi.View.myWebView;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,6 +85,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
@@ -91,7 +95,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
  */
 //其中 mLinkKey即后台mLink服务对应的mLink Key。
 //@MLinkRouter(keys={"zixun_detail"})
-public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, PL_List_Adapter.onHuifuListener {
+public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListener, PL_List_Adapter.onHuifuListener {
     private static final String TAG = "Newsd";
     private ImageView back;
     private TextView title, time, user, fasong, plNum;
@@ -196,11 +200,16 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
     }
 
     private void initView() {
+        id = getIntent().getStringExtra("id");
         tip = (ImageView) findViewById(R.id.tip);
         tip.setOnClickListener(this);
 
         PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+        .into((ImageView) findViewById(R.id.pinglun_image));
+        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+                .into((ImageView) findViewById(R.id.fenxiang_image));
         toggle = (ImageView) findViewById(R.id.toggle_audio_word);
         audio = (TextView) findViewById(R.id.audio_button);
         toggle.setOnClickListener(new OnClickListener() {
@@ -372,30 +381,30 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
         JavascriptInterface js = new JavascriptInterface(this);
         content.addJavascriptInterface(js, "addUrl");
         content.addJavascriptInterface(js, "imagelistener");
-//        content.setOnLongClickListener(new myWebView.onLongClickListener() {
-//            @Override
-//            public void onLongClcik(String imgUrl) {
-//                Glide.with(ZiXun_Detail.this).load(imgUrl).asBitmap().skipMemoryCache(true).override(400, 400).into(new SimpleTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                        Result result = QrUtils.handleQRCodeFormBitmap(resource);
-//                        if (result == null) {
-//                            LogUtil.w("onResourceReady: 不是二维码   " + result);
-//                        } else {
-//                            LogUtil.w("onResourceReady: 是二维码   " + result);
-//                            if (result.getText().toString().startsWith("http")) {
-//                                Uri uri = Uri.parse(result.getText().toString());
-//                                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                                intent.setData(uri);
-//                                startActivity(intent);
-//                            } else {
-//                                Toast.makeText(ZiXun_Detail.this, mApplication.ST("无法识别,请确认当前页面是否有二维码图片"), Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
+        content.setOnLongClickListener(new myWebView.onLongClickListener() {
+            @Override
+            public void onLongClcik(String imgUrl) {
+                Glide.with(ZiXun_Detail.this).load(imgUrl).asBitmap().skipMemoryCache(true).override(400, 400).into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        Result result = QrUtils.handleQRCodeFormBitmap(resource);
+                        if (result == null) {
+                            LogUtil.w("onResourceReady: 不是二维码   " + result);
+                        } else {
+                            LogUtil.w("onResourceReady: 是二维码   " + result);
+                            if (result.getText().toString().startsWith("http")) {
+                                Uri uri = Uri.parse(result.getText().toString());
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(uri);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(ZiXun_Detail.this, mApplication.ST("无法识别,请确认当前页面是否有二维码图片"), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+            }
+        });
 
         PlListVIew = (mPLlistview) findViewById(R.id.zixun_Detail_PL_listview);
         PlListVIew.footer.setOnClickListener(new OnClickListener() {
@@ -554,6 +563,14 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
 //
     }
 
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+
+        id=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
+        LogUtil.e("资讯辅助通道启动"+map);
+        LoadData();
+    }
+
     public class JavascriptInterface {
         private Context context;
 
@@ -626,56 +643,58 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                     Toast.makeText(ZiXun_Detail.this, mApplication.ST("请检查网络连接"), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject js = new JSONObject();
-                            try {
-                                js.put("user_id", sp.getString("user_id", ""));
-                                js.put("newsid", id);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            String data = OkGo.post(Constants.News_SC_Ip)
-                                    .params("key", ApisSeUtil.getKey())
-                                    .params("msg", ApisSeUtil.getMsg(js))
-                                    .execute().body().string();
-                            if (!data.equals("")) {
-                                if (AnalyticalJSON.getHashMap(data).get("code").equals("000")) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("添加收藏成功"), Toast.LENGTH_SHORT).show();
-                                            v.setSelected(true);
-                                            needTochange = true;
-
-                                        }
-                                    });
-                                } else if (AnalyticalJSON.getHashMap(data).get("code").equals("002")) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("已取消收藏"), Toast.LENGTH_SHORT).show();
-                                            v.setSelected(false);
-                                            needTochange = true;
-
-                                        }
-                                    });
-                                } else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("服务器异常"), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                CollectManager.doCollect(ZiXun_Detail.this,id,"1",v);
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            JSONObject js = new JSONObject();
+//                            try {
+//                                js.put("m_id", Constants.M_id);
+//                                js.put("user_id", sp.getString("user_id", ""));
+//                                js.put("newsid", id);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                            String data = OkGo.post(Constants.News_SC_Ip)
+//                                    .params("key", ApisSeUtil.getKey())
+//                                    .params("msg", ApisSeUtil.getMsg(js))
+//                                    .execute().body().string();
+//                            if (!data.equals("")) {
+//                                if (AnalyticalJSON.getHashMap(data).get("code").equals("000")) {
+//                                    runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("添加收藏成功"), Toast.LENGTH_SHORT).show();
+//                                            v.setSelected(true);
+//                                            needTochange = true;
+//
+//                                        }
+//                                    });
+//                                } else if (AnalyticalJSON.getHashMap(data).get("code").equals("002")) {
+//                                    runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("已取消收藏"), Toast.LENGTH_SHORT).show();
+//                                            v.setSelected(false);
+//                                            needTochange = true;
+//
+//                                        }
+//                                    });
+//                                } else {
+//                                    runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("服务器异常"), Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                                }
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }).start();
                 break;
 
             case R.id.zixun_detail_fenxiang2://底部分享
@@ -698,6 +717,7 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                             try {
                                 JSONObject js = new JSONObject();
                                 try {
+                                    js.put("m_id",Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("news_id", id);
                                 } catch (JSONException e) {
@@ -712,6 +732,9 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(map.get("yundousum"))){
+                                                    YunDouAwardDialog.show(ZiXun_Detail.this,"每日点赞",map.get("yundousum"));
+                                                }
                                                 dianzanText.setText((Integer.valueOf(dianzanText.getText().toString()) + 1) + "");
                                                 dianzanImg.setImageResource(R.drawable.dianzan1);
                                                 dianzanText.setTextColor(getResources().getColor(R.color.main_color));
@@ -774,9 +797,10 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+                                ApisSeUtil.M m=ApisSeUtil.i(js);
                                 final String data = OkGo.post(Constants.News_PL_add_IP)
-                                        .params("key", ApisSeUtil.getKey())
-                                        .params("msg", ApisSeUtil.getMsg(js)).execute().body().string();
+                                        .params("key", m.K())
+                                        .params("msg",m.M()).execute().body().string();
                                 if (data != null & !data.equals("")) {
                                     Log.i(TAG, "run:      data------>" + data);
                                     final HashMap<String, String> hashMap = AnalyticalJSON.getHashMap(data);
@@ -784,6 +808,11 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(hashMap.get("yundousum"))){
+                                                    YunDouAwardDialog.show(ZiXun_Detail.this,"每日评论",hashMap.get("yundousum"));
+                                                }else{
+                                                    ToastUtil.showToastShort(mApplication.ST("添加评论成功"));
+                                                }
                                                 final HashMap<String, String> map = new HashMap<>();
                                                 String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
                                                 final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
@@ -824,7 +853,7 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                                                 PLText.setText("");
                                                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                                                 overlay.setVisibility(View.GONE);
-                                                Toast.makeText(ZiXun_Detail.this, mApplication.ST("添加评论成功"), Toast.LENGTH_SHORT).show();
+
                                                 ProgressUtil.dismiss();
                                             }
                                         });
@@ -869,6 +898,9 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(hashMap.get("yundousum"))){
+                                                    YunDouAwardDialog.show(ZiXun_Detail.this,"每日评论",hashMap.get("yundousum"));
+                                                }
                                                 if (currentLayout.getVisibility() == View.GONE) {
                                                     currentLayout.setVisibility(View.VISIBLE);
                                                 }
@@ -937,10 +969,9 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
             tip.setVisibility(View.VISIBLE);
             return;
         }
-        id = getIntent().getStringExtra("id");
-        ProgressUtil.show(this, null, mApplication.ST("正在加载...."));
 
-        if (!id.equals("") && id != null) {
+        if ( id != null &&!id.equals("")) {
+            ProgressUtil.show(this, null, mApplication.ST("正在加载...."));
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -962,6 +993,7 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                             }
                         });
                     }
+                    LogUtil.e("图文详情：：；"+id);
                     if (data1 != null && !data1.equals("")) {
                         if ("null".equals(data1)) {
                             runOnUiThread(new Runnable() {
@@ -1071,7 +1103,7 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
     private void initActivity() {
         if (!"".equals(FirstMap.get("active"))) {
             tv_activity.setVisibility(View.VISIBLE);
-            String active = FirstMap.get("active");
+            final String active = FirstMap.get("active");
             LogUtil.e("活动参数：；" + active);
             if (active.contains("?")) {
                 int index = active.lastIndexOf("?");
@@ -1091,23 +1123,26 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent();
-                            switch (type) {
-                                case "活动":
-                                    intent.setClass(ZiXun_Detail.this, activity_Detail.class);
-                                    intent.putExtra("id", id);
-                                    break;
-                                case "供养":
-                                    intent.setClass(ZiXun_Detail.this, XuanzheActivity.class);
-                                    intent.putExtra("id", id);
-                                    break;
-                                case "助学":
-                                    intent.setClass(ZiXun_Detail.this, FundingDetailActivity.class);
-                                    intent.putExtra("id", id);
-                                    break;
 
+                            if(active.contains("activityd")||active.contains("Activityd")){//跳转到活动
+                                intent.setClass(ZiXun_Detail.this, activity_Detail.class);
+                                intent.putExtra("id", id);
+                            }else if(active.contains("newsd")||active.contains("Newsd")){//跳转到另一个资讯详情
+                                intent.setClass(ZiXun_Detail.this, ZiXun_Detail.class);
+                                intent.putExtra("id", id);
+                            }else if(active.contains("shopd")||active.contains("Shopd")){
+                                intent.setClass(ZiXun_Detail.this, XuanzheActivity.class);
+                                intent.putExtra("id", id);
+                            }else if(active.contains("Crowdfundingd")||active.contains("crowdfundingd")){
+                                intent.setClass(ZiXun_Detail.this, FundingDetailActivity.class);
+                                intent.putExtra("id", id);
+                            }
+                            try {
+                                startActivity(intent);
+                            }catch (Exception e){
+                                ToastUtil.showToastShort("跳转失败，请稍后尝试");
                             }
 
-                            startActivity(intent);
                         }
                     });
                 } else {
@@ -1208,22 +1243,29 @@ public class ZiXun_Detail extends AppCompatActivity implements OnClickListener, 
     }
 
 
-    @Override
-    public void onBackPressed() {
-        if (PreferenceUtil.getUserIncetance(this).getString("user_id", "").equals("")) {
 
-        }
-        super.onBackPressed();
-    }
 
     @Override
     protected void onDestroy() {
+        if( content!=null) {
 
+            // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
+            // destory()
+            ViewParent parent = content.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(content);
+            }
+
+            content.stopLoading();
+            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+            content.getSettings().setJavaScriptEnabled(false);
+            content.clearHistory();
+            content.clearView();
+            content.removeAllViews();
+            content.destroy();
+
+        }
         super.onDestroy();
-
-        content.removeAllViews();
-        content.destroy();
-        content = null;
         OkGo.getInstance().cancelTag(TAG);
         JCVideoPlayer.releaseAllVideos();
         UMShareAPI.get(this).release();

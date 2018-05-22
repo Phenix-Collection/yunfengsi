@@ -85,9 +85,11 @@ import com.yunfengsi.Utils.QrUtils;
 import com.yunfengsi.Utils.ScaleImageUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.TimeUtils;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDecoration;
 import com.yunfengsi.View.myWebView;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 import com.yunfengsi.ZhiFuShare;
 
 import org.json.JSONArray;
@@ -110,7 +112,7 @@ import static android.view.View.VISIBLE;
  * <p/>
  * 众筹项目详情 Fragment
  */
-public class FundingDetailFragment extends Fragment implements View.OnClickListener,
+public class FundingDetailFragment extends android.app.Fragment implements View.OnClickListener,
         HttpHelper.HttpUtilHelperCallback, PL_List_Adapter.onHuifuListener {
     private String page = "1";
     private String endPage = "";
@@ -151,7 +153,7 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
 
     private ArrayList<String> imageUrlList = new ArrayList<>();
     private String currentFee;
-    private String fundId;
+    public String fundId;
 
 
     //评论收藏底部
@@ -232,6 +234,11 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
 
         PLText = (EditText) view.findViewById(R.id.fund_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
+        ImageView pinglun_image = view.findViewById(R.id.pinglun_image);
+        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(getActivity(),25),DimenUtils.dip2px(getActivity(),25))
+                .into(pinglun_image);
+        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(getActivity(),25),DimenUtils.dip2px(getActivity(),25))
+                .into((ImageView) (view.findViewById(R.id.fenxiang_image)));
         toggle = (ImageView) view.findViewById(R.id.toggle_audio_word);
         audio = (TextView) view.findViewById(R.id.audio_button);
         toggle.setOnClickListener(new View.OnClickListener() {
@@ -574,9 +581,10 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
 
         if (!TextUtils.isEmpty(fundId)) {
             getFundingDetail(fundId);
+            getFundingComments(fundId);
         }
 
-        getFundingComments(fundId);
+
 
     }
 
@@ -602,7 +610,7 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
      *
      * @param fundId
      */
-    private void getFundingDetail(final String fundId) {
+    public void getFundingDetail(final String fundId) {
         //传参数
         List<String> key_list = new ArrayList<>();
         key_list.add("m_id");
@@ -626,17 +634,19 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
      *
      * @param fundId
      */
-    private void getFundingComments(String fundId) {
+    public void getFundingComments(String fundId) {
         //传参数
         List<String> key_list = new ArrayList<>();
         key_list.add("page");
         key_list.add("cfg_id");
+        key_list.add("m_id");
 
         List<String> value_list = new ArrayList<>();
         // value_list.add(Constants.SAFE_KEY);
         //value_list.add(Constants.USER_ID_TEST);
         value_list.add(page);
         value_list.add(fundId);
+        value_list.add(Constants.M_id);
 
         httpHelper.postData(Constants.FUNDING_DETAIL_COMMENTS, key_list, value_list, GET_FUND_COMMENTS);
     }
@@ -667,6 +677,7 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                             try {
                                 JSONObject js = new JSONObject();
                                 try {
+                                    js.put("m_id", Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("cfg_id", fundId);
                                 } catch (JSONException e) {
@@ -681,6 +692,9 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(map.get("yundousum"))){
+                                                    YunDouAwardDialog.show(getActivity(),"每日点赞",map.get("yundousum"));
+                                                }
                                                 dianzanText.setText((Integer.valueOf(dianzanText.getText().toString()) + 1) + "");
                                                 tv_support_count.setText(mApplication.ST(Integer.valueOf(dianzanText.getText().toString()) + "人赞过"));
                                                 dianzanImg.setImageResource(R.drawable.dianzan1);
@@ -773,6 +787,11 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(hashMap.get("yundousum"))){
+                                                    YunDouAwardDialog.show(getActivity(),"每日评论",hashMap.get("yundousum"));
+                                                }else{
+                                                    ToastUtil.showToastShort(mApplication.ST("添加评论成功"));
+                                                }
                                                 final HashMap<String, String> map = new HashMap<>();
                                                 String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
                                                 final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
@@ -803,7 +822,6 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                                                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                                                 overlay.setVisibility(View.GONE);
 
-                                                Toast.makeText(mApplication.getInstance(), mApplication.ST("添加评论成功"), Toast.LENGTH_SHORT).show();
                                                 ProgressUtil.dismiss();
                                             }
                                         });
@@ -859,6 +877,9 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                                             public void run() {
                                                 if (currentLayout.getVisibility() == View.GONE) {
                                                     currentLayout.setVisibility(View.VISIBLE);
+                                                }
+                                                if(!"0".equals(hashMap.get("yundousum"))){
+                                                    YunDouAwardDialog.show(getActivity(),"每日评论",hashMap.get("yundousum"));
                                                 }
                                                 TextView textView = new TextView(getActivity());
                                                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -1389,6 +1410,12 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .override(screenwidth / 10, screenwidth / 10)
                     .into(head);
+            head.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ScaleImageUtil.openBigIagmeMode((Activity) context,bean.get("user_image"));
+                }
+            });
 
             if (bean.get("id") == null) {
                 Dznum.setTag("");
@@ -1432,6 +1459,7 @@ public class FundingDetailFragment extends Fragment implements View.OnClickListe
                             try {
                                 JSONObject js = new JSONObject();
                                 try {
+                                    js.put("m_id", Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("comment_id", v.getTag().toString());
                                 } catch (JSONException e) {

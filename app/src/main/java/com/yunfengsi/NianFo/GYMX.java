@@ -137,6 +137,7 @@ public class GYMX extends AppCompatActivity implements View.OnClickListener {
                 try {
                     JSONObject js=new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("user_id", sp.getString("user_id", ""));
                     } catch (JSONException e) {
                         e.printStackTrace();

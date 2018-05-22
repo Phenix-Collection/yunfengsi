@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.umeng.socialize.ShareAction;
@@ -49,9 +50,10 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
-import com.yunfengsi.Utils.UpPayUtil;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,8 +62,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, PL_List_Adapter.onHuifuListener {
+public class XuanzheActivity extends AndroidPopupActivity implements View.OnClickListener, PL_List_Adapter.onHuifuListener {
     private TextView tvqian;
     private TextView tvmoney1;
     private TextView tvmoney2;
@@ -129,6 +132,10 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
 
         PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
         PLText.setHint(mApplication.ST("您的留言(300字以内)"));
+        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+                .into((ImageView) findViewById(R.id.pinglun_image));
+        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+                .into((ImageView) findViewById(R.id.fenxiang_image));
         toggle = (ImageView) findViewById(R.id.toggle_audio_word);
         audio = (TextView) findViewById(R.id.audio_button);
         toggle.setOnClickListener(new View.OnClickListener() {
@@ -304,6 +311,7 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
                 try {
                     JSONObject js = new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("shop_id", id);
                         js.put("page", page);
                     } catch (JSONException e) {
@@ -403,6 +411,9 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
         if (!Network.HttpTest(this)) {
             tip.setImageBitmap(ImageUtil.readBitMap(this,R.drawable.load_neterror));
             tip.setVisibility(View.VISIBLE);
+            return;
+        }
+        if(id==null||id.equals("")){
             return;
         }
         ProgressUtil.show(this,"","正在加载");
@@ -568,6 +579,11 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(hashMap.get("yundousum"))){
+                                                    YunDouAwardDialog.show(XuanzheActivity.this,"每日评论",hashMap.get("yundousum"));
+                                                }else{
+                                                    ToastUtil.showToastShort(mApplication.ST("添加评论成功"));
+                                                }
                                                 final HashMap<String, String> map = new HashMap<>();
                                                 String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
                                                 final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
@@ -607,7 +623,6 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
                                                 int firstnum=Integer.valueOf(XuanzheActivity.this.map.get("shop_comment"));
                                                 ((TextView) findViewById(R.id.pinglun1)).setText(mApplication.ST("评论 "+(firstnum+1)));
                                                 overlay.setVisibility(View.GONE);
-                                                Toast.makeText(XuanzheActivity.this, mApplication.ST("添加评论成功"), Toast.LENGTH_SHORT).show();
                                                 ProgressUtil.dismiss();
                                             }
                                         });
@@ -653,6 +668,9 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
                                             public void run() {
                                                 if (currentLayout.getVisibility() == View.GONE) {
                                                     currentLayout.setVisibility(View.VISIBLE);
+                                                }
+                                                if(!"0".equals(hashMap.get("yundousum"))){
+                                                    YunDouAwardDialog.show(XuanzheActivity.this,"每日评论",hashMap.get("yundousum"));
                                                 }
                                                 TextView textView = new TextView(XuanzheActivity.this);
                                                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -843,5 +861,11 @@ public class XuanzheActivity extends UpPayUtil implements View.OnClickListener, 
 
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+        id=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
+        getData();
     }
 }

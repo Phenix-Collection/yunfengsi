@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".YunDou.YunDouHome">
+
+
+    <include layout="@layout/title_default"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@color/main_color"
+                android:orientation="vertical">
+
+                <com.ruffian.library.RTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/yundouNum"
+                    android:textSize="32dp"
+                    android:textColor="@color/white"
+                    android:text="0"
+                    android:textStyle="bold"
+                    app:icon_direction="right"
+                    app:icon_height="30dp"
+                    app:icon_src_normal="@drawable/yundou_white"
+                    app:icon_width="30dp"
+                    android:drawablePadding="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"/>
+
+
+                <com.ruffian.library.RTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/yundouHistory"
+                    android:textSize="18dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_gravity="center_horizontal"
+                    app:text_color_pressed="@color/light_huise"
+                    app:text_color_normal="@color/white"
+                    app:border_color_normal="@color/white"
+                    app:border_color_pressed="@color/light_huise"
+                    app:border_width_normal="1dp"
+                    app:corner_radius="100dp"
+                    android:layout_marginTop="20dp"/>
+
+                <com.ruffian.library.RTextView
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:id="@+id/paihangbang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16dp"
+                    app:text_color_normal="@color/white"
+                    app:text_color_pressed="#b6b6b6"
+                    android:text="排行榜"/>
+
+            </LinearLayout>
+
+
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/info">
+
+            </WebView>
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+
+</merge>

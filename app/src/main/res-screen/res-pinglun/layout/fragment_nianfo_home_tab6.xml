@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,8 +43,9 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/nianfo_1_swip"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="130dp"
+       android:layout_marginTop="40dp">
 
         <com.yunfengsi.View.LoadMoreListView
             android:id="@+id/nianfo_home_tab1_listview"
@@ -57,15 +59,13 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1.5px"
-        android:background="#cccccc" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:paddingTop="5dp"
+            android:layout_gravity="bottom"
             android:background="#f6f6f6"
             >
 
@@ -177,8 +177,27 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5px"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="130dp"
+        android:background="#cccccc" />
 
+    <com.ruffian.library.RTextView
+        android:id="@+id/tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:icon_src_normal="@drawable/load_nothing"
+        app:icon_width="100dp"
+        app:icon_height="100dp"
+        app:icon_direction="top"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:text="请检查网络连接"/>
 
-
-
-</LinearLayout>
+</merge>

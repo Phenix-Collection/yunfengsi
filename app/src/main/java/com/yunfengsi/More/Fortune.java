@@ -38,6 +38,7 @@ import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,13 +68,18 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     private int cancelCount = 0;
     private boolean isDisplay = false;//是否正在显示签
     private boolean isRegist = false;//是否注册加速度传感器
+    private boolean isAutoIng=false;//是否正在自动摇签
     private int streamid;//音效流
     private int limit = 14;
 
     @Override
     protected void onDestroy() {
+        qian.destroyDrawingCache();
+        qian_small.destroyDrawingCache();
+        qiantong.destroyDrawingCache();
+        findViewById(R.id.root).destroyDrawingCache();
         super.onDestroy();
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
     }
 
     @Override
@@ -81,7 +87,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fortune);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
         back = (ImageView) findViewById(R.id.back);
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("卜事"));
         back.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +135,9 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     protected void onResume() {
         super.onResume();
         ProgressUtil.dismiss();
+        if(isRegist){
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
 //    @Override
@@ -142,6 +151,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         super.onStop();
         ProgressUtil.dismiss();
         sensorManager.unregisterListener(this);
+
     }
 
     @Override
@@ -153,8 +163,8 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     // TODO: 2018/1/29 传感器回调
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (isDisplay) {
-            LogUtil.e("正在显示签");
+        if (isDisplay||isAutoIng) {
+            LogUtil.e("正在显示签或者正在自动摇签阶段");
             return;
         }
         //获取传感器类型
@@ -163,6 +173,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         float[] values = event.values;
         //如果传感器类型为加速度传感器，则判断是否为摇一摇
         if (sensorType == Sensor.TYPE_ACCELEROMETER) {
+            LogUtil.i("摇一摇");
             if (Build.VERSION.SDK_INT >= 21) {
                 limit = 11;
             } else {
@@ -233,7 +244,10 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
                         if (map != null) {
                             auto.setEnabled(true);
                             if ("000".equals(map.get("code"))) {
+                                if(!"0".equals(map.get("yundousum"))){
 
+                                    YunDouAwardDialog.show(Fortune.this,"每日一签",map.get("yundousum"));
+                                }
                             } else if ("002".equals(map.get("code"))) {
                                 ToastUtil.showToastShort("您今天已经抽过签了");
                             }
@@ -259,6 +273,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
                             }
 
 
+
                         }
                     }
 
@@ -272,6 +287,9 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
                     public void onAfter(String s, Exception e) {
                         super.onAfter(s, e);
                         ProgressUtil.dismiss();
+                        if(isAutoIng){
+                            isAutoIng=false;
+                        }
                     }
 
                     @Override
@@ -282,6 +300,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
                             ToastUtil.showToastShort("请求超时，请重新摇签");
                             findViewById(R.id.qiantongContainer).setVisibility(View.GONE);
                         }
+
                     }
                 });
     }
@@ -322,6 +341,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
                 break;
 
             case R.id.autoFortune:
+                isAutoIng=true;
                 view.setEnabled(false);
                 streamid = soundPool.play(soundId, 0.8f, 0.8f, 10, 3, 1.0f);
                 view.postDelayed(new Runnable() {

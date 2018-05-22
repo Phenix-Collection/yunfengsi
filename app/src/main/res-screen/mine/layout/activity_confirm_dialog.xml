@@ -8,6 +8,7 @@
     <WebView
         android:id="@+id/web"
         android:layout_width="match_parent"
+        android:scrollbars="none"
         android:layout_height="match_parent"
         android:layout_marginBottom="41dp">
 
@@ -25,25 +26,22 @@
         android:id="@+id/cancle"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/line"
-        android:layout_gravity="bottom"
         android:background="@drawable/back_sel"
         android:gravity="center"
-        android:text=""
+        android:text="不同意"
         android:textSize="16dp"
+        android:textColor="@color/black"
         android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/baoming"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/line"
-        android:layout_gravity="bottom|right"
-        android:layout_toRightOf="@+id/cancle"
         android:background="@drawable/back_sel"
         android:gravity="center"
         android:text="报名"
         android:textSize="16dp"
+        android:textColor="@color/black"
         android:layout_weight="1"/>
     </LinearLayout>
 

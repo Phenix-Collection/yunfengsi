@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.bumptech.glide.Glide;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.media.UMImage;
@@ -41,8 +41,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-public class NianFo extends AppCompatActivity implements View.OnClickListener {
+public class NianFo extends AndroidPopupActivity implements View.OnClickListener {
     private ListView mgridview;
 //    private ViewPager viewPager;//轮播
 //    private LinearLayout PointLayou;//轮播图圆点layout
@@ -76,7 +77,7 @@ public class NianFo extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.nianfo);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
 //        SMS=getIntent().getStringExtra("sms");
 //        ((TextView) findViewById(R.id.title)).setText(mApplication.ST("共修"));
         //轮播
@@ -168,7 +169,12 @@ public class NianFo extends AppCompatActivity implements View.OnClickListener {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+
     }
 
     static class mAdapter extends BaseAdapter {

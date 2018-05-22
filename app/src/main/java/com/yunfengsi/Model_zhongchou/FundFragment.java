@@ -126,7 +126,12 @@ public class FundFragment extends BaseSTFragement implements View.OnClickListene
                         time.schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                getHeadLine();
+                                swip.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getHeadLine();
+                                    }
+                                });
                             }
                         },0, 30000);
                     }

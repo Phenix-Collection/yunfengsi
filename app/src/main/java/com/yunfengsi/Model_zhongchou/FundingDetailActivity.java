@@ -2,38 +2,31 @@ package com.yunfengsi.Model_zhongchou;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.umeng.socialize.UMShareAPI;
+import com.yunfengsi.Managers.CollectManager;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
-import com.yunfengsi.Utils.ApisSeUtil;
-import com.yunfengsi.Utils.Constants;
+import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.Network;
-import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
-import com.yunfengsi.Utils.UpPayUtil;
 import com.yunfengsi.Utils.mApplication;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
+import java.util.Map;
 
 /**
  * 众筹详情
  */
-public class FundingDetailActivity extends UpPayUtil implements View.OnClickListener{
-    private FragmentManager manager;
-    private FragmentTransaction transaction;
-    private FundingDetailFragment fragment;
+public class FundingDetailActivity extends AndroidPopupActivity implements View.OnClickListener{
+    private android.app.FragmentManager     manager;
+    private android.app.FragmentTransaction transaction;
+    private FundingDetailFragment           fragment;
 
     /**
      * 顶部栏
@@ -83,14 +76,9 @@ public class FundingDetailActivity extends UpPayUtil implements View.OnClickList
         //tv_launch_fund.setOnClickListener(this);
         img_titlebar_back.setOnClickListener(this);
 
-        line_first_show = (LinearLayout) findViewById(R.id.line_first_show);
 //        img_love = (ImageView) findViewById(R.id.img_love);
 //        btn_support = (Button) findViewById(R.id.btn_support);
 
-        line_second_show = (LinearLayout) findViewById(R.id.line_second_show);
-        img_weixin = (ImageView) findViewById(R.id.img_weixin);
-        img_qq = (ImageView) findViewById(R.id.img_qq);
-        img_weibo = (ImageView) findViewById(R.id.img_weibo);
         shoucang = (ImageView)findViewById(R.id.fund_detail_shoucang);
          shoucang.setOnClickListener(this);
 //
@@ -104,7 +92,7 @@ public class FundingDetailActivity extends UpPayUtil implements View.OnClickList
 //        img_weibo.setOnClickListener(this);
 //        btn_support.setOnClickListener(this);
 
-        manager = getSupportFragmentManager();
+        manager = getFragmentManager();
         transaction = manager.beginTransaction();
 
         fragment = new FundingDetailFragment();
@@ -146,64 +134,25 @@ public class FundingDetailActivity extends UpPayUtil implements View.OnClickList
                 finish();
                 break;
             case R.id.fund_detail_shoucang:
-                v.setEnabled(false);
-
-                if (!Network.HttpTest(mApplication.getInstance())) {
-                    Toast.makeText(mApplication.getInstance(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                if(!new LoginUtil().checkLogin(this)){
                     return;
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject js=new JSONObject();
-                            try {
-                                js.put("user_id", PreferenceUtil.getUserIncetance(FundingDetailActivity.this).getString("user_id", ""));
-                                js.put("cfg_id", getIntent().getStringExtra("id"));
-                                js.put("m_id", Constants.M_id);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            String data = OkGo.post(Constants.FUNDING_DETAIL_Shoucang).params("key", Constants.safeKey)
-                                    .params("key", ApisSeUtil.getKey())
-                                    .params("msg",ApisSeUtil.getMsg(js)).execute().body().string();
-                            if (!data.equals("")) {
-                                if (AnalyticalJSON.getHashMap(data) != null && "000".equals(AnalyticalJSON.getHashMap(data).get("code"))) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(mApplication.getInstance(), "添加收藏成功", Toast.LENGTH_SHORT).show();
-                                            v.setEnabled(true);
-                                            ((ImageView) v).setImageResource(R.drawable.shoucang_press);
+                if (!Network.HttpTest(mApplication.getInstance())) {
+                    return;
+                }
+                CollectManager.doCollect(this,getIntent().getStringExtra("id"),"4",shoucang);
 
-                                        }
-                                    });
-                                } else if (AnalyticalJSON.getHashMap(data) != null && "002".equals(AnalyticalJSON.getHashMap(data).get("code"))) {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(mApplication.getInstance(), "已取消收藏", Toast.LENGTH_SHORT).show();
-                                            v.setEnabled(true);
-                                            ((ImageView) v).setImageResource(R.drawable.shoucang_normal);
-
-
-                                        }
-                                    });
-                                } else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(mApplication.getInstance(), "服务器异常", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
                 break;
         }
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+        fragment.fundId=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
+        if (!TextUtils.isEmpty( fragment.fundId)) {
+            fragment.getFundingDetail(fragment.fundId);
+            fragment.getFundingComments(fragment.fundId);
+        }
+
     }
 }

@@ -30,7 +30,7 @@
         <attr name="numColumns" format="integer" />
         <attr name="itemMargin" format="dimension" />
     </declare-styleable>
-    <declare-styleable name="RedRainViewStyle">
+    <declare-styleable name="RedRainView">
         <attr name="count" format="integer"/>
         <attr name="speed" format="integer"/>
         <attr name="maxSize" format="float"/>

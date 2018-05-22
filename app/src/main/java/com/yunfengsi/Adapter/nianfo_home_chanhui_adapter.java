@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -157,6 +156,7 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
                         public void run() {
                             try {
                                 JSONObject js = new JSONObject();
+                                js.put("m_id", Constants.M_id);
                                 js.put("chanhui_id", tip.getTag().toString());
                                 js.put("user_id", sp.getString("user_id", ""));
                                 String data1 = OkGo.post(Constants.nianfo_home_chanhui_Dianzan_Ip)
@@ -250,7 +250,6 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
 //            holder.swipeview.quickClose();
 //        }
         holder.text_delete.setVisibility(View.GONE);
-        LogUtil.e("删除被影藏后的高：：："+holder.text_delete.getHeight()+"\nrelativelayout::"+ ((RelativeLayout) holder.content.getParent()).getHeight());
 //        holder.swipeview.setSwipeEnable(false);
         if (getItemViewType(position) == 1) {
             holder.dianzan.setText(mApplication.ST("邀请同修来随喜"));
@@ -261,7 +260,6 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
 //                }}
 //                ((SwipeMenuLayout) view).quickClose();
                 holder.text_delete.setVisibility(View.VISIBLE);
-                LogUtil.e("删除被显示后的高：：："+holder.text_delete.getHeight());
             } else {
                 view.setBackgroundColor(Color.parseColor("#ffffff"));
             }

@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.AlarmClock;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -48,6 +50,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
+import com.taobao.sophix.SophixManager;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -57,6 +60,7 @@ import com.yunfengsi.Adapter.myHomePagerAdapter;
 import com.yunfengsi.Audio_BD.WakeUp.IWakeupListener;
 import com.yunfengsi.Audio_BD.WakeUp.MyWakeup;
 import com.yunfengsi.Audio_BD.WakeUp.SimpleWakeupListener;
+import com.yunfengsi.Deamon.KeepLiveWakeLockReceiver;
 import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.HomePage;
 import com.yunfengsi.Fragment.Mine;
@@ -70,7 +74,6 @@ import com.yunfengsi.NianFo.NianFo;
 import com.yunfengsi.Push.mReceiver;
 import com.yunfengsi.Setting.PhoneCheck;
 import com.yunfengsi.Setting.Search;
-import com.yunfengsi.SideListview.Contact;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -88,14 +91,19 @@ import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import okhttp3.Call;
@@ -108,40 +116,49 @@ import static com.yunfengsi.Utils.mApplication.alias2;
 
 public class MainActivity extends UpPayUtil {
     private static final String TAG = "MainActivity";
-    private ImageView back;
-    private TextView title;
-    public ViewPager pager;
-    public TabLayout tabLayout;
+    private ImageView          back;
+    private TextView           title;
+    public  ViewPager          pager;
+    public  TabLayout          tabLayout;
     private myHomePagerAdapter adapter;
-    private SharedPreferences sp;
-    public List<Fragment> list;
-    private ImageView add;
-    private PopupWindow pp;//加号弹出窗口
-    private SHARE_MEDIA[] share_list;
-    private ShareAction action;
-    private AlertDialog backDialog;
-    private String appUrl;
-    private String jishuSupprot = "";
-    private String share = "";
-    public String SMS = "";
-    private Uri contactData;
+    private SharedPreferences  sp;
+    public  List<Fragment>     list;
+    private ImageView          add;
+    private PopupWindow        pp;//加号弹出窗口
+    private SHARE_MEDIA[]      share_list;
+    private ShareAction        action;
+    private AlertDialog        backDialog;
+    private String             appUrl;
+    private String jishuSupprot = null;
+    private String share        = null;
+    public  String SMS          = null;
+    private Uri   contactData;
     private UMWeb umWeb;
     private boolean needExit = false;
-    public static MainActivity activity;
-    public ImageView notice;
-    private android.support.v7.app.AlertDialog dialog;
-    private SimpleWakeupListener iWakeupListener;//语音唤醒
-    public MyWakeup myWakeup;
+    public static MainActivity                       activity;
+    public        ImageView                          notice;
+    private       android.support.v7.app.AlertDialog dialog;
+    private       SimpleWakeupListener               iWakeupListener;//语音唤醒
+    public        MyWakeup                           myWakeup;
 
+    KeepLiveWakeLockReceiver receiver1;//开锁屏监听
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_main);
+        EventBus.getDefault().register(this);
         IntentFilter intentFilter = new IntentFilter("st");
+
         registerReceiver(receiver, intentFilter);
 
+       receiver1=new KeepLiveWakeLockReceiver();
+        IntentFilter intentFilter1=new IntentFilter();
+        intentFilter1.addAction(Intent.ACTION_SCREEN_OFF);
+        intentFilter1.addAction(Intent.ACTION_SCREEN_ON);
+        registerReceiver(receiver1,intentFilter1);
         initView();
 
         checkUpdate();
@@ -152,13 +169,17 @@ public class MainActivity extends UpPayUtil {
 
         initAudio();
         changeSystemVolume();//修改媒体音量  80%
+        // TODO: 2018/5/10 拉取热更新补丁
+        SophixManager.getInstance().queryAndLoadNewPatch();
+
+
 
     }
 
     // TODO: 2018/2/2 媒体音量调至8成
     private void changeSystemVolume() {
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int          maxVolume    = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume * 8 / 10, 0);
 
     }
@@ -208,6 +229,8 @@ public class MainActivity extends UpPayUtil {
 
     }
 
+    private Bitmap adBitmap;
+
     // TODO: 2017/12/5 弹出广告弹窗
     private void showAdDialog() {
         JSONObject js = new JSONObject();
@@ -226,10 +249,10 @@ public class MainActivity extends UpPayUtil {
                         if (map != null) {
                             if ("2".equals(map.get("act_start"))) {
                                 if (!"".equals(map.get("gg_image"))) {
-                                    android.support.v7.app.AlertDialog.Builder b = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
-                                    View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.main_ad_dialog, null);
-                                    ImageView cancle = (ImageView) view.findViewById(R.id.cancle);
-                                    final ImageView image = (ImageView) view.findViewById(R.id.main_ad_image);
+                                    android.support.v7.app.AlertDialog.Builder b      = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
+                                    View                                       view   = LayoutInflater.from(MainActivity.this).inflate(R.layout.main_ad_dialog, null);
+                                    ImageView                                  cancle = (ImageView) view.findViewById(R.id.cancle);
+                                    final ImageView                            image  = (ImageView) view.findViewById(R.id.main_ad_image);
                                     b.setView(view);
                                     dialog = b.create();
                                     cancle.setOnClickListener(new View.OnClickListener() {
@@ -238,11 +261,23 @@ public class MainActivity extends UpPayUtil {
                                             dialog.dismiss();
                                         }
                                     });
+
+                                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialog) {
+                                            if (adBitmap != null) {
+                                                adBitmap.recycle();
+                                                adBitmap = null;
+                                                System.gc();
+                                            }
+                                            image.destroyDrawingCache();
+                                        }
+                                    });
                                     //点击广告页
                                     image.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
-                                            String url = map.get("gg_url");
+                                            String url    = map.get("gg_url");
                                             Intent intent = new Intent();
                                             if (url != null && !url.equals("")) {
                                                 if (url.contains("yfs.php") && url.contains("red")) {
@@ -260,12 +295,12 @@ public class MainActivity extends UpPayUtil {
                                                 }
                                                 if (!url.equals("") && url.contains("yfs.php")) {
                                                     if (url.contains("?")) {
-                                                        int index = url.lastIndexOf("?");
-                                                        String arg = url.substring(index + 1, url.length());
+                                                        int    index = url.lastIndexOf("?");
+                                                        String arg   = url.substring(index + 1, url.length());
                                                         LogUtil.e("截取后的参数字段：" + arg);
                                                         if (arg.contains("&")) {
-                                                            String[] args = arg.split("&");
-                                                            final String id = args[0].substring(args[0].lastIndexOf("=") + 1);
+                                                            String[]     args = arg.split("&");
+                                                            final String id   = args[0].substring(args[0].lastIndexOf("=") + 1);
                                                             final String type = args[1].substring(args[1].lastIndexOf("=") + 1);
                                                             LogUtil.e("字段信息：  id::" + id + "  type::" + type);
 
@@ -317,11 +352,12 @@ public class MainActivity extends UpPayUtil {
                                             .into(new SimpleTarget<Bitmap>() {
                                                 @Override
                                                 public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                                                    adBitmap = resource;
                                                     RoundedBitmapDrawable tbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
                                                     tbd.setCornerRadius(15);
                                                     image.setImageDrawable(tbd);
-                                                    Window window = dialog.getWindow();
-                                                    WindowManager.LayoutParams wl = window.getAttributes();
+                                                    Window                     window = dialog.getWindow();
+                                                    WindowManager.LayoutParams wl     = window.getAttributes();
                                                     window.getDecorView().setPadding(0, 0, 0, 0);
                                                     wl.gravity = Gravity.CENTER;
                                                     wl.width = getResources().getDisplayMetrics().widthPixels * 7 / 10;
@@ -406,8 +442,10 @@ public class MainActivity extends UpPayUtil {
     protected void onDestroy() {
         super.onDestroy();
         LogUtil.e("主页销毁");
+        EventBus.getDefault().unregister(this);
         UMShareAPI.get(this).release();
         unregisterReceiver(receiver);
+        unregisterReceiver(receiver1);
         if (myWakeup != null) {
             myWakeup.release();
         }
@@ -486,6 +524,28 @@ public class MainActivity extends UpPayUtil {
 
 
     /*
+     通知到达事件
+     */
+    public static class NoticeEvent {
+
+    }
+
+    /*
+       通知到达事件 触发
+
+       */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNoticeArrived(NoticeEvent event) {
+
+        LogUtil.e("改变notice图标");
+        if(notice!=null){
+            notice.setSelected(true);
+        }
+
+    }
+
+
+    /*
      检查更新
      */
     private void checkUpdate() {
@@ -505,7 +565,7 @@ public class MainActivity extends UpPayUtil {
                     if (!TextUtils.isEmpty(data)) {
                         final HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
                         if (map != null) {
-                            String code = map.get("app_code");
+                            String       code    = map.get("app_code");
                             final String appname = map.get("app_name");
                             appUrl = map.get("app_url");
                             share = map.get("share");
@@ -593,7 +653,7 @@ public class MainActivity extends UpPayUtil {
         list = new ArrayList<>();
 
 //        Fragment f = new ZiXun();
-        Fragment f = new HomePage();
+        Fragment f  = new HomePage();
         Fragment f1 = new activity_fragment();
         Fragment f2 = new GongYangActivity();
         Fragment f3 = new FundFragment();
@@ -666,7 +726,7 @@ public class MainActivity extends UpPayUtil {
             @Override
             public void onClick(View view) {
 //                Verification.setPermission(new File(Environment.getExternalStorageDirectory(), "yunfengsi2.0.0.apk").getPath());
-                Verification.installApk(MainActivity.this, "yunfengsi2.0.0.apk");
+//                Verification.installApk(MainActivity.this, "yunfengsi2.0.0.apk");
             }
         });
     }
@@ -674,8 +734,8 @@ public class MainActivity extends UpPayUtil {
     //更新进度框
     private void showDialog(final String appname, final String appUrl, String content) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final AlertDialog dialog = builder.create();
-        final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.update_alet_layout, null);
+        final AlertDialog   dialog  = builder.create();
+        final View          view    = LayoutInflater.from(getApplicationContext()).inflate(R.layout.update_alet_layout, null);
         ((TextView) view.findViewById(R.id.version_update_title)).setText(ST("检测到新版本：" + appname.substring(Constants.NAME_CHAR_NUM, appname.length() - 4)));
         final TextView textView = (TextView) view.findViewById(R.id.version_update_content);
         textView.setText(ST(content.equals("") ? "是否需要更新？" : content));
@@ -816,7 +876,7 @@ public class MainActivity extends UpPayUtil {
         layout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri content_url;
+                Uri    content_url;
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 if (sp.getString("user_id", "").equals("")) {
@@ -847,6 +907,7 @@ public class MainActivity extends UpPayUtil {
             public void onClick(View v) {
 //                QpayUtil.openQQPay(MainActivity.this,"52","fdsfljdk","100","1","4");
                 createShortCut();
+
                 pp.dismiss();
             }
         });
@@ -855,10 +916,10 @@ public class MainActivity extends UpPayUtil {
         layout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri content_url;
+                Uri    content_url;
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                if (jishuSupprot.equals("")) {
+                if (jishuSupprot==null||"".equals(jishuSupprot)) {
                     content_url = Uri.parse("http://www.indranet.cn");
                 } else {
                     content_url = Uri.parse(jishuSupprot);
@@ -875,7 +936,12 @@ public class MainActivity extends UpPayUtil {
         layout4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                umWeb = new UMWeb("".equals(share) ? appUrl : share);
+                if(share==null||appUrl==null){
+                    umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
+                }else{
+                    umWeb = new UMWeb("".equals(share) ? appUrl : share);
+                }
+
                 umWeb.setThumb(new UMImage(mApplication.getInstance(), R.drawable.indra_share));
                 umWeb.setTitle(getResources().getString(R.string.app_name) + "App");
                 umWeb.setDescription(
@@ -896,10 +962,31 @@ public class MainActivity extends UpPayUtil {
         layout5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Intent alarms = new Intent(AlarmClock.ACTION_SET_ALARM);
+                int hour=new Random().nextInt(24);
+                int minute=new Random().nextInt(60);
+                Intent alarms = new Intent(AlarmClock.ACTION_SET_ALARM);
+                alarms.putExtra(AlarmClock.EXTRA_MESSAGE,"该起来打坐啦");
+                alarms.putExtra(AlarmClock.EXTRA_HOUR,hour);
+                alarms.putExtra(AlarmClock.EXTRA_MINUTES,minute);
+                ArrayList<Integer> list=new ArrayList<>();
+                list.add(Calendar.MONDAY);
+                list.add(Calendar.TUESDAY);
+                list.add(Calendar.WEDNESDAY);
+                list.add(Calendar.THURSDAY);
+                list.add(Calendar.FRIDAY);
+                list.add(Calendar.SATURDAY);
+//                list.add(Calendar.SUNDAY);
+               alarms.putExtra(AlarmClock.EXTRA_DAYS, list);
+                if(alarms.resolveActivity(getPackageManager())!=null){
+                    startActivity(alarms);
 
-                Intent i = new Intent(MainActivity.this, Contact.class);
-                i.putExtra("sms", ("".equals(SMS) ? sp.getString("sms", "") : SMS));
-                startActivity(i);
+                }
+
+//                Intent i = new Intent(MainActivity.this, Contact.class);
+//                i.putExtra("sms", ((SMS==null||"".equals(SMS)) ? sp.getString("sms", mApplication.ST("快来云峰寺共修吧,点击http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi下载")) : SMS));
+//                startActivity(i);
+
                 pp.dismiss();
 
 

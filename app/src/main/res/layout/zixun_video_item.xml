@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:background="@drawable/layout_bg_sel"
     xmlns:tools="http://schemas.android.com/tools"
     >
 

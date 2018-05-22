@@ -35,6 +35,7 @@ import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.NumUtils;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
@@ -43,6 +44,7 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.LoadMoreListView;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,7 +80,7 @@ public class nianfo_home_tab2 extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fragment_nianfo_home_tab1);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
         listView = (LoadMoreListView) findViewById(R.id.nianfo_home_tab1_listview);
         listView.setLoadMoreListen(this);
         swip= (SwipeRefreshLayout) findViewById(R.id.nianfo_1_swip);
@@ -121,7 +123,13 @@ public class nianfo_home_tab2 extends AppCompatActivity implements View.OnClickL
 
     private void loadData() {
         if (!isLoaded) {
-
+            if(!Network.HttpTest(this)){
+                swip.setRefreshing(false);
+                findViewById(R.id.tip).setVisibility(View.VISIBLE);
+                return;
+            }else{
+                findViewById(R.id.tip).setVisibility(View.GONE);
+            }
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -130,6 +138,7 @@ public class nianfo_home_tab2 extends AppCompatActivity implements View.OnClickL
                         final ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
                         JSONObject js=new JSONObject();
                         try {
+                            js.put("m_id", Constants.M_id);
                             js.put("page", page);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -234,10 +243,15 @@ public class nianfo_home_tab2 extends AppCompatActivity implements View.OnClickL
     public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.Share:
-                UMWeb umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.ytl.qianyishenghao");
-                umWeb.setTitle("千亿圣号App");
-                umWeb.setDescription("快来千亿圣号共修吧");
-                umWeb.setThumb(new UMImage(this,R.drawable.indra));
+                UMWeb umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
+                umWeb.setTitle("云峰寺App");
+                umWeb.setDescription(
+                        "雅安云峰寺佛教信息一手掌握（自由发布资讯）\n" +
+                                "雅安云峰寺寺院活动一键报名（轻松管理信众）\n" +
+                                "雅安云峰寺各类供养一步到位（方便在线支付）\n" +
+                                "雅安云峰寺佛教用品线上流通（在线运营商城）\n" +
+                                "雅安云峰寺功课普皆回向十方（打造同修社群）");
+                umWeb.setThumb(new UMImage(this,R.drawable.indra_share));
                 new ShareManager().shareWeb(umWeb,this);
                 break;
             case R.id.nianfo_home_back:
@@ -290,6 +304,7 @@ public class nianfo_home_tab2 extends AppCompatActivity implements View.OnClickL
                             try {
                                 JSONObject js=new JSONObject();
                                 try {
+                                    js.put("m_id", Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("gongke_id", type.getTag().toString());
                                     js.put("num", num.getText().toString());
@@ -305,6 +320,9 @@ public class nianfo_home_tab2 extends AppCompatActivity implements View.OnClickL
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                if(!"0".equals(m.get("yundousum"))){
+                                                    YunDouAwardDialog.show(nianfo_home_tab2.this,"每日诵经",m.get("yundousum"));
+                                                }
                                                 ProgressUtil.dismiss();
                                                 HashMap<String, String> map = new HashMap<>();
                                                 map.put("ls_time", TimeUtils.getStrTime(System.currentTimeMillis() + ""));
@@ -358,7 +376,7 @@ public class nianfo_home_tab2 extends AppCompatActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         OkGo.getInstance().cancelTag(TAG);
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
     }
     @Override
     public void onRefresh() {

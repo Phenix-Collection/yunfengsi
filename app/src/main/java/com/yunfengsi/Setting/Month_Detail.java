@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -48,7 +50,7 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.month_detail);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
         ((TextView) findViewById(R.id.reload)).setText(mApplication.ST("刷新"));
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("感谢信"));
         ((TextView) findViewById(R.id.share)).setText(mApplication.ST("分享"));
@@ -99,8 +101,26 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
+        if( webView!=null) {
+
+            // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
+            // destory()
+            ViewParent parent = webView.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(webView);
+            }
+
+            webView.stopLoading();
+            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+            webView.getSettings().setJavaScriptEnabled(false);
+            webView.clearHistory();
+            webView.clearView();
+            webView.removeAllViews();
+            webView.destroy();
+
+        }
         super.onDestroy();
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
     }
 
     @Override

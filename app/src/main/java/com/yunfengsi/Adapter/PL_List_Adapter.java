@@ -32,9 +32,11 @@ import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LoginUtil;
+import com.yunfengsi.Utils.ScaleImageUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.XuanzheActivity;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 import com.yunfengsi.ZiXun_Detail;
 
 import org.json.JSONException;
@@ -151,6 +153,7 @@ public class PL_List_Adapter extends BaseAdapter {
                 case "1":
                     holder.level.setVisibility(View.VISIBLE);
                     Glide.with(context).load(R.drawable.gif1).asGif()
+                            .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .override(DimenUtils.dip2px(context, 25), DimenUtils.dip2px(context, 25))
                             .fitCenter().into(holder.level);
@@ -158,6 +161,7 @@ public class PL_List_Adapter extends BaseAdapter {
                 case "2":
                     holder.level.setVisibility(View.VISIBLE);
                     Glide.with(context).load(R.drawable.gif2).asGif()
+                            .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .override(DimenUtils.dip2px(context, 25), DimenUtils.dip2px(context, 25))
                             .fitCenter().into(holder.level);
@@ -166,6 +170,7 @@ public class PL_List_Adapter extends BaseAdapter {
                 case "4":
                     holder.level.setVisibility(View.VISIBLE);
                     Glide.with(context).load(R.drawable.gif3).asGif()
+                            .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .override(DimenUtils.dip2px(context, 25), DimenUtils.dip2px(context, 25))
                             .fitCenter().into(holder.level);
@@ -224,9 +229,16 @@ public class PL_List_Adapter extends BaseAdapter {
 
         Glide.with(context).load(bean.get("user_image"))
                 .asBitmap()
+                .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .override(screenwidth / 10, screenwidth / 10)
                 .into(holder.head);
+        holder.head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScaleImageUtil.openBigIagmeMode((Activity) context,bean.get("user_image"));
+            }
+        });
         if (bean.get("id") == null) {
             holder.DZnum.setTag("");
         } else {
@@ -269,6 +281,7 @@ public class PL_List_Adapter extends BaseAdapter {
                         try {
                             JSONObject js=new JSONObject();
                             try {
+                                js.put("m_id",Constants.M_id);
                                 js.put("user_id", sp.getString("user_id", ""));
                                 js.put("comment_id", v.getTag().toString());
                             } catch (JSONException e) {
@@ -279,13 +292,16 @@ public class PL_List_Adapter extends BaseAdapter {
                                     .params("msg", ApisSeUtil.getMsg(js))
                                     .execute().body().string();
                             if (!data1.equals("")) {
-                                final View childat = parent.getChildAt(position - ((ListView) parent).getFirstVisiblePosition());
-                                final TextView dznum = (TextView) childat.findViewById(R.id.Pl_item_DianZan_num);
-                                HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);
+                                final View                    childat = parent.getChildAt(position - ((ListView) parent).getFirstVisiblePosition());
+                                final TextView                dznum   = (TextView) childat.findViewById(R.id.Pl_item_DianZan_num);
+                                final HashMap<String, String> map     = AnalyticalJSON.getHashMap(data1);
                                 if (map != null && map.get("code").equals("000")) {
                                     ((Activity) context).runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            if(!"0".equals(map.get("yundousum"))){
+                                                YunDouAwardDialog.show(((Activity) context),"每日点赞",map.get("yundousum"));
+                                            }
                                             ((TextView) v).setCompoundDrawables(null, null, dianzan1, null);
                                             if (dznum != null) {
                                                 ((Activity) context).runOnUiThread(new Runnable() {

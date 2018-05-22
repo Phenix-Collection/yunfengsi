@@ -45,21 +45,21 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLayout.OnRefreshListener {
-    private GridView mlistview;
+    private GridView                      mlistview;
     private List<HashMap<String, String>> list;
-    private Hoder hoder;
-    private SwipeRefreshLayout swip;
-    private boolean isRefresh;
-    private String page = "1";
-    private String endPage = "";
+    private Hoder                         hoder;
+    private SwipeRefreshLayout            swip;
+    private boolean                       isRefresh;
+    private String  page      = "1";
+    private String  endPage   = "";
     private boolean isFirstIn = true;
     private View view;
     private static final String TAG = "shopd";
 
-    private ImageView tip;
+    private ImageView     tip;
     private mHeadLineView headLineView;
     Timer time = new Timer();
-    private BaseAdapter myadapter = new BaseAdapter() {
+    private BaseAdapter                     myadapter           = new BaseAdapter() {
         @Override
         public int getCount() {
             return list.size();
@@ -104,10 +104,10 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             if (i != list.size()) {
-                Intent intent = new Intent(getActivity(), XuanzheActivity.class);
-                TextView title = (TextView) view.findViewById(R.id.list_itme_name);
-                TextView money = (TextView) view.findViewById(R.id.list_itme_qian);
-                ImageView image = (ImageView) view.findViewById(R.id.list_itme_imageview);
+                Intent    intent = new Intent(getActivity(), XuanzheActivity.class);
+                TextView  title  = (TextView) view.findViewById(R.id.list_itme_name);
+                TextView  money  = (TextView) view.findViewById(R.id.list_itme_qian);
+                ImageView image  = (ImageView) view.findViewById(R.id.list_itme_imageview);
                 intent.putExtra("id", title.getTag().toString());
                 intent.putExtra("title", title.getText().toString());
                 intent.putExtra("money", money.getText().toString());
@@ -149,9 +149,14 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
                             time.schedule(new TimerTask() {
                                 @Override
                                 public void run() {
-                                    getHeadLine();
+                                    swip.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getHeadLine();
+                                        }
+                                    });
                                 }
-                            }, 0,30000);
+                            }, 0, 30000);
                         }
                     }
                 });
@@ -197,8 +202,9 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
     public void onDestroyView() {
         super.onDestroyView();
         time.cancel();
-        time=null;
+        time = null;
     }
+
     /*
           获取最新消息
        */
@@ -219,7 +225,7 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
                             ArrayList<HashMap<String, String>> list = AnalyticalJSON.getList_zj(s);
-                            LogUtil.e("供养最新消息::::"+list);
+                            LogUtil.e("供养最新消息::::" + list);
                             if (list != null) {
                                 headLineView.onDataArrival(list, mHeadLineView.GONGYANG);
                             }
@@ -227,6 +233,7 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
                     });
         }
     }
+
     private void getData() {
 //        if(!Network.HttpTest(mApplication.getInstance())){
 //            Toast.makeText(mApplication.getInstance(), "网络连接失败，请下拉刷新", Toast.LENGTH_SHORT).show();
@@ -239,7 +246,7 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
             @Override
             public void run() {
                 try {
-                    JSONObject js=new JSONObject();
+                    JSONObject js = new JSONObject();
                     try {
                         js.put("m_id", Constants.M_id);
                         js.put("page", page);
@@ -359,8 +366,8 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
 
     static class Hoder {
         AvatarImageView imageview;
-        TextView tvtitle;
-        TextView tvmoney;
+        TextView        tvtitle;
+        TextView        tvmoney;
 
     }
 }

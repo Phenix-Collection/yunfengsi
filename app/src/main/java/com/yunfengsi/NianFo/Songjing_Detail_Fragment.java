@@ -97,6 +97,7 @@ public class Songjing_Detail_Fragment extends Fragment implements View.OnClickLi
                 try {
                     JSONObject js=new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("page",page);
                     } catch (JSONException e) {
                         e.printStackTrace();

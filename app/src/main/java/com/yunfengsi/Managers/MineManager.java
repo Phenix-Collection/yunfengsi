@@ -78,6 +78,8 @@ public class MineManager {
             String text[] = mApplication.getInstance().getResources().getStringArray(R.array.mine_text);
             int img[] = new int[]
                     {
+                            R.raw.yundou,
+                            R.raw.fuli,
                             R.raw.qiyuan,
                             R.raw.jinshu,
                             R.raw.qian_icon,

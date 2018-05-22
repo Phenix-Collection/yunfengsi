@@ -13,14 +13,10 @@ public class Network {
             NetworkInfo networkinfo = con.getActiveNetworkInfo();
             if (networkinfo == null || !networkinfo.isAvailable()) {
                 // 无网络
-                ToastUtil.showToastShort("请检查网络");
+                ToastUtil.showToastShort("网络连接异常，请检查网络");
                 http = false;
             }
-            boolean wifi = con.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-                    .isConnectedOrConnecting();
-            if (!wifi) {
-                // WIFI 不可用
-            }
+
         }
         return http;
     }

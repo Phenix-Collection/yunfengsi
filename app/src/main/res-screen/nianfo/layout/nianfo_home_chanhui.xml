@@ -115,5 +115,20 @@
            />
     </RelativeLayout>
 
+    <com.ruffian.library.RTextView
+        android:id="@+id/tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:icon_src_normal="@drawable/load_nothing"
+        app:icon_width="100dp"
+        app:icon_height="100dp"
+        app:icon_direction="top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        android:text="请检查网络连接"/>
 
 </com.zhy.android.percent.support.PercentRelativeLayout>

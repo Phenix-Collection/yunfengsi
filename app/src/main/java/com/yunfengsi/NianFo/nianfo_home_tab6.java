@@ -174,6 +174,13 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
 
     private void loadData() {
 //        ProgressUtil.show(this,"","正在加载");
+        if(!Network.HttpTest(this)){
+            swip.setRefreshing(false);
+            findViewById(R.id.tip).setVisibility(View.VISIBLE);
+            return;
+        }else{
+            findViewById(R.id.tip).setVisibility(View.GONE);
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -284,6 +291,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
 
                     JSONObject js = new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("page", "1");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -398,11 +406,16 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
     public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.Share:
-                UMWeb umWeb = new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.ytl.qianyishenghao");
-                umWeb.setTitle("千亿圣号App");
-                umWeb.setDescription("快来千亿圣号共修吧");
-                umWeb.setThumb(new UMImage(this, R.drawable.indra));
-                new ShareManager().shareWeb(umWeb, this);
+                UMWeb umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
+                umWeb.setTitle("云峰寺App");
+                umWeb.setDescription(
+                        "雅安云峰寺佛教信息一手掌握（自由发布资讯）\n" +
+                                "雅安云峰寺寺院活动一键报名（轻松管理信众）\n" +
+                                "雅安云峰寺各类供养一步到位（方便在线支付）\n" +
+                                "雅安云峰寺佛教用品线上流通（在线运营商城）\n" +
+                                "雅安云峰寺功课普皆回向十方（打造同修社群）");
+                umWeb.setThumb(new UMImage(this,R.drawable.indra_share));
+                new ShareManager().shareWeb(umWeb,this);
                 break;
             case R.id.nianfo_home_back:
                 finish();

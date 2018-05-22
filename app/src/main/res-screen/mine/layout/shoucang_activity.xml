@@ -1,29 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/title_default"/>
 
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e8e8e8"
+
+        android:padding="8dp"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:id="@+id/search_edit"
+            android:hint="请输入关键词搜索"
+            android:textSize="16dp"
+
+            android:paddingLeft="10dp"
+            android:background="@drawable/edittext_background"
+            />
+
+        <com.ruffian.library.RTextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/search"
+            app:text_color_normal="@color/black"
+            app:text_color_pressed="#d6d6d6"
+            android:text="搜索"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:padding="10dp"/>
+
+    </LinearLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="96dp"
         android:id="@+id/swip">
-        <ListView
+        <com.yunfengsi.View.LoadMoreListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/shoucang_listview"
             android:dividerHeight="1px">
 
-        </ListView>
+        </com.yunfengsi.View.LoadMoreListView>
     </android.support.v4.widget.SwipeRefreshLayout>
     <ImageView
+        android:layout_gravity="center"
         android:id="@+id/shoucang_tip"
         android:layout_width="wrap_content"
+        android:scaleType="fitCenter"
         android:layout_height="wrap_content"
-        android:background="@drawable/tip_bg"
-        android:src="@mipmap/loaddata_failture"
-        android:padding="10dp"
-        android:visibility="gone" />
-</LinearLayout>
+        android:src="@drawable/load_nothing"
+         />
+</merge>

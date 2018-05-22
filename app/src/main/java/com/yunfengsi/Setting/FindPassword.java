@@ -23,6 +23,7 @@ import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
@@ -178,6 +179,7 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent,000);
                 break;
             case R.id.zhuce_phone://手机号注册
+
                 v.setSelected(true);
                 ((TextView) v).setTextColor(Color.WHITE);
                 tvEmail.setTextColor(Color.GRAY);
@@ -213,7 +215,9 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
                 phoneNum.setHint(mApplication.ST("邮箱地址"));
                 break;
             case R.id.login_wangjimima_getMid:
-
+                if(!Network.HttpTest(FindPassword.this)){
+                    return;
+                }
 //                if (!Verification.isMobileNO(phoneNum.getText().toString())) {
 //                    Toast.makeText(FindPassword.this, mApplication.ST("请输入正确的手机号码"), Toast.LENGTH_SHORT).show();
 //                    return;
@@ -299,6 +303,9 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
                 }).start();
                 break;
             case R.id.login_wangjimima_submit:
+                if(!Network.HttpTest(FindPassword.this)){
+                    return;
+                }
                 if ("".equals(phoneNum.getText().toString().trim())) {
                     if (isPhone) {
                         Toast.makeText(FindPassword.this, mApplication.ST("请输入手机号码"), Toast.LENGTH_SHORT).show();

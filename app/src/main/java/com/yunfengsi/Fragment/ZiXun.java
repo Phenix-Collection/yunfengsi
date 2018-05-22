@@ -139,12 +139,12 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
                             intent.putExtra("active_url", active);
                         }
                     }
-                    if (null != view.findViewById(R.id.zixun_item_sourse)) {
-                        String active = view.findViewById(R.id.zixun_item_sourse).getTag().toString();
-                        if (!active.equals("")) {
-                            intent.putExtra("active_url", active);
-                        }
-                    }
+//                    if (null != view.findViewById(R.id.zixun_item_sourse)) {
+//                        String active = view.findViewById(R.id.zixun_item_sourse).getTag().toString();
+//                        if (!active.equals("")) {
+//                            intent.putExtra("active_url", active);
+//                        }
+//                    }
 
                     startActivity(intent);
                 }

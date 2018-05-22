@@ -39,6 +39,8 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.WakeLockUtil;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.YunDou.MyQuan;
+import com.yunfengsi.YunDou.YunDouHome;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +52,7 @@ import java.util.HashMap;
  * Created by fujiayi on 2017/6/21.
  */
 
-public class SimpleWakeupListener implements IWakeupListener ,EventListener {
+public class SimpleWakeupListener implements IWakeupListener, EventListener {
 //    private InitConfig initConfig;//语音合成参数
     // TtsMode.MIX; 离在线融合，在线优先； TtsMode.ONLINE 纯在线； 没有纯离线
 //    protected TtsMode ttsMode = TtsMode.MIX;
@@ -59,29 +61,30 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
     // assets目录下bd_etts_common_speech_m15_mand_eng_high_am-mix_v3.0.0_20170505.dat为离线男声模型；
     // assets目录下bd_etts_common_speech_f7_mand_eng_high_am-mix_v3.0.0_20170512.dat为离线女声模型
 //    protected String offlineVoice = OfflineResource.VOICE_DUXY;
-    private Activity context;
-//    public NonBlockSyntherizer syntherizer;
-   private IBDRcognizeImpl ibdRcognize;
-   private static  final String DefaultAnswer="你好";
-   private static  final String OK="好的";
-   private static  final String OhNo="不好意思，师父没听懂你的意思";
-    private String text=DefaultAnswer;
-    private boolean isRecognize=false;
-    private boolean isWakeUp=false;
+    private Activity        context;
+    //    public NonBlockSyntherizer syntherizer;
+    private IBDRcognizeImpl ibdRcognize;
+    private static final String  DefaultAnswer = "你好";
+    private static final String  OK            = "好的";
+    private static final String  OhNo          = "不好意思，师父没听懂你的意思";
+    private              String  text          = DefaultAnswer;
+    private              boolean isRecognize   = false;
+    private              boolean isWakeUp      = false;
 
-    private SoundPool soundPool;
-    private MediaPlayer mediaPlayer;
-    private HashMap<String,Integer > soundMaps;
-    private android.os.Handler handler=new android.os.Handler();
+    private SoundPool                soundPool;
+    private MediaPlayer              mediaPlayer;
+    private HashMap<String, Integer> soundMaps;
+    private android.os.Handler handler = new android.os.Handler();
+
     public SimpleWakeupListener(Activity context) {
         super();
-        this.context=context;
+        this.context = context;
 //        initConfig=new InitConfig("10558348","tBBGe3A1UVuX5zZI96LFjwU0"
 //        ,"cFOyGpcCy3TMvcfinvDIOclAGXNakQx3"
 //        ,ttsMode,getParams(),speechSynthesizer);
 //        syntherizer=new NonBlockSyntherizer(context,initConfig);
         initPermission();
-        ibdRcognize=new IBDRcognizeImpl(context);
+        ibdRcognize = new IBDRcognizeImpl(context);
         ibdRcognize.setEventListener(this);
         ibdRcognize.setTimeOut(3);
 //        soundPool=new SoundPool(3, AudioManager.STREAM_MUSIC,0);
@@ -92,18 +95,20 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
 
 
     }
-    private void openRecognize(){
-       ibdRcognize.start();
-       isRecognize=true;
+
+    private void openRecognize() {
+        ibdRcognize.start();
+        isRecognize = true;
     }
 
 
     private static final String TAG = "SimpleWakeupListener";
+
     @Override
     public void onSuccess(String word, WakeUpResult result) {
-        isWakeUp=true;
-        text=DefaultAnswer;
-        LogUtil.e("唤醒成功，唤醒词：" + word+"    语音回复：："+text);
+        isWakeUp = true;
+        text = DefaultAnswer;
+        LogUtil.e("唤醒成功，唤醒词：" + word + "    语音回复：：" + text);
         ibdRcognize.cancel();
 //        soundPool.play(soundMaps.get(text),1.0f,1.0f,10,0,1.0f);
 //        if(!isRecognize){
@@ -114,15 +119,15 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
 //                }
 //            },1000);
 //        }
-        if(mediaPlayer!=null){
+        if (mediaPlayer != null) {
 
-            if(mediaPlayer.isPlaying()){
+            if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
             mediaPlayer.reset();
 
         }
-        mediaPlayer=MediaPlayer.create(context,R.raw.amituofo);
+        mediaPlayer = MediaPlayer.create(context, R.raw.amituofo);
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -136,17 +141,17 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
 
     @Override
     public void onStop() {
-        LogUtil.e( "唤醒词识别结束：");
+        LogUtil.e("唤醒词识别结束：");
     }
 
     @Override
     public void onError(int errorCode, String errorMessge, WakeUpResult result) {
-        LogUtil.e("唤醒错误："+ errorCode +";错误消息："+errorMessge +"; 原始返回"+ result.getOrigalJson());
+        LogUtil.e("唤醒错误：" + errorCode + ";错误消息：" + errorMessge + "; 原始返回" + result.getOrigalJson());
     }
 
     @Override
     public void onASrAudio(byte[] data, int offset, int length) {
-        LogUtil.e("audio data： "+data.length);
+        LogUtil.e("audio data： " + data.length);
     }
 
 
@@ -191,9 +196,6 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
 //            LogUtil.e("错误"+speechError.description);
 //        }
 //    };
-
-
-
 
 
     /**
@@ -298,7 +300,6 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
 //        int result = syntherizer.loadModel(offlineResource.getModelFilename(), offlineResource.getTextFilename());
 //        checkResult(result, "loadModel");
 //    }
-
     private void checkResult(int result, String method) {
         if (result != 0) {
             LogUtil.e("error code :" + result + " method:" + method + ", 错误码文档:http://yuyin.baidu.com/docs/tts/122 ");
@@ -365,10 +366,10 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
         switch (name) {
             case SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL://临时结果
 
-                if(params.contains("final_result")){
+                if (params.contains("final_result")) {
                     try {
                         JSONObject js = new JSONObject(params);
-                        result=js.getJSONArray("results_recognition").getString(0);
+                        result = js.getJSONArray("results_recognition").getString(0);
                         LogUtil.e(":唤醒后识别结果：：：" + result);
 
                         checkKeys(result);
@@ -380,8 +381,8 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
 
                 break;
             case SpeechConstant.CALLBACK_EVENT_ASR_FINISH://本次识别结束
-                isRecognize=false;
-                LogUtil.e("唤醒后语音识别finish    "+isRecognize);
+                isRecognize = false;
+                LogUtil.e("唤醒后语音识别finish    " + isRecognize);
 
                 break;
             case SpeechConstant.CALLBACK_EVENT_ASR_READY://识别引擎就绪
@@ -396,155 +397,157 @@ public class SimpleWakeupListener implements IWakeupListener ,EventListener {
     }
 
     private void checkKeys(String result) {
-        if(result!=null){
-            if(result.contains("师父师父")||result.contains("师傅师傅")||result.contains("师傅师父")||
-                    result.contains("师父师傅")||result.contains("师父师夫")){
-                if(!isRecognize){
+        if (result != null) {
+            if (result.contains("师父师父") || result.contains("师傅师傅") || result.contains("师傅师父") ||
+                    result.contains("师父师傅") || result.contains("师父师夫")) {
+                if (!isRecognize) {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             openRecognize();
                         }
-                    },1000);
+                    }, 1000);
                 }
                 return;
             }
-            if(result.contains("共修")){
-                text=OK;
+            if (result.contains("共修")) {
+                text = OK;
                 context.startActivity(new Intent(context, NianFo.class));
 
-            }else if(result.contains("搜索")){
-                text=OK;
-                Intent intent=new Intent(context,Search.class);
-                intent.putExtra("text",result.substring(result.indexOf("搜索")+2));
+            } else if (result.contains("搜索")) {
+                text = OK;
+                Intent intent = new Intent(context, Search.class);
+                intent.putExtra("text", result.substring(result.indexOf("搜索") + 2));
                 context.startActivity(intent);
-            }else if(result.contains("设置")){
-                text=OK;
-                context.startActivity(new Intent(context,gerenshezhi.class));
-            }else if(result.contains("客服")){
-                text=OK;
-                Intent i2=new Intent(context,GanyuActivity.class);
+            } else if (result.contains("设置")) {
+                text = OK;
+                context.startActivity(new Intent(context, gerenshezhi.class));
+            } else if (result.contains("客服")) {
+                text = OK;
+                Intent i2 = new Intent(context, GanyuActivity.class);
                 context.startActivity(i2);
-            }else if(result.contains("祈愿树")||result.contains("许愿")||result.contains("祈愿")){
-                text=OK;
-                Intent i2=new Intent(context,BlessTree.class);
+            } else if (result.contains("祈愿树") || result.contains("许愿") || result.contains("祈愿")) {
+                text = OK;
+                Intent i2 = new Intent(context, BlessTree.class);
                 context.startActivity(i2);
-            }else if(result.contains("电子书")||result.contains("佛经")||result.contains("经书")){
-                text=OK;
-                Intent i2=new Intent(context,BookList.class);
+            } else if (result.contains("电子书") || result.contains("佛经") || result.contains("经书")) {
+                text = OK;
+                Intent i2 = new Intent(context, BookList.class);
                 context.startActivity(i2);
-            }else if(result.contains("大藏经")){
-                text=OK;
-                Intent i2=new Intent(context,BookList.class);
-                i2.putExtra("type",2);
+            } else if (result.contains("大藏经")) {
+                text = OK;
+                Intent i2 = new Intent(context, BookList.class);
+                i2.putExtra("type", 2);
                 context.startActivity(i2);
-            }else if(result.contains("活动")||result.contains("报名")){
-                text=OK;
+            } else if (result.contains("活动") || result.contains("报名")) {
+                text = OK;
                 ((MainActivity) context).pager.setCurrentItem(1);
-                Intent i2=new Intent(context,MainActivity.class);
+                Intent i2 = new Intent(context, MainActivity.class);
                 i2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);//设置不要刷新将要跳到的界面
                 i2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//它可以关掉所要到的界面中间的activity
                 context.startActivity(i2);
-                mApplication.closeAllActivities();
-            }else if(result.contains("供养")){
-                text=OK;
+                mApplication.getInstance().closeAllActivities();
+            } else if (result.contains("供养")) {
+                text = OK;
                 ((MainActivity) context).pager.setCurrentItem(2);
-                Intent i2=new Intent(context,MainActivity.class);
+                Intent i2 = new Intent(context, MainActivity.class);
                 i2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);//设置不要刷新将要跳到的界面
                 i2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//它可以关掉所要到的界面中间的activity
                 context.startActivity(i2);
-                mApplication.closeAllActivities();
-            }else if(result.contains("助学")){
-                text=OK;
+                mApplication.getInstance().closeAllActivities();
+            } else if (result.contains("助学")) {
+                text = OK;
                 ((MainActivity) context).pager.setCurrentItem(3);
-                Intent i2=new Intent(context,MainActivity.class);
+                Intent i2 = new Intent(context, MainActivity.class);
                 i2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);//设置不要刷新将要跳到的界面
                 i2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//它可以关掉所要到的界面中间的activity
                 context.startActivity(i2);
-                mApplication.closeAllActivities();
-            }else if(result.contains("收藏")){
-                if(new LoginUtil().checkLogin(context)){
-                    text=OK;
-                    context.startActivity(new Intent(context,Activity_ShouCang.class));
+                mApplication.getInstance().closeAllActivities();
+            } else if (result.contains("收藏")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, Activity_ShouCang.class));
                 }
-            }else if(result.contains("念佛")){
-                text=OK;
-                context.startActivity(new Intent(context,nianfo_home_tab1.class));
-            } else if(result.contains("诵经")){
-                text=OK;
-                context.startActivity(new Intent(context,nianfo_home_tab2.class));
-            }else if(result.contains("持咒")){
-                text=OK;
-                context.startActivity(new Intent(context,nianfo_home_tab3.class));
-            }else if(result.contains("助念")){
-                text=OK;
-                context.startActivity(new Intent(context,nianfo_home_tab4.class));
-            }else if(result.contains("忏悔")){
-                text=OK;
-                context.startActivity(new Intent(context,nianfo_home_tab5.class));
-            }else if(result.contains("发愿")){
-                text=OK;
-                context.startActivity(new Intent(context,nianfo_home_tab6.class));
-            }else if(result.contains("坐禅")||result.contains("禅修")||result.contains("打坐")||result.contains("静坐")){
-                text=OK;
-                context.startActivity(new Intent(context,Meditation.class));
-            }else if(result.contains("通知")){
-                if(new LoginUtil().checkLogin(context)){
-                    text=OK;
-                    context.startActivity(new Intent(context,MessageCenter.class));
+            } else if (result.contains("云豆") || result.contains("我的云豆")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, YunDouHome.class));
                 }
-            }else if(result.contains("会员")){
-                if(new LoginUtil().checkLogin(context)){
-                    text=OK;
-                    context.startActivity(new Intent(context,Mine_HuiYuan.class));
+            } else if (result.contains("福利") || result.contains("我的福利") || result.contains("福利券")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, MyQuan.class));
                 }
-            }else if(result.contains("投稿")){
-                if(new LoginUtil().checkLogin(context)){
-                    text=OK;
-                    context.startActivity(new Intent(context,TouGao.class));
+            } else if (result.contains("念佛")) {
+                text = OK;
+                context.startActivity(new Intent(context, nianfo_home_tab1.class));
+            } else if (result.contains("诵经")) {
+                text = OK;
+                context.startActivity(new Intent(context, nianfo_home_tab2.class));
+            } else if (result.contains("持咒")) {
+                text = OK;
+                context.startActivity(new Intent(context, nianfo_home_tab3.class));
+            } else if (result.contains("助念")) {
+                text = OK;
+                context.startActivity(new Intent(context, nianfo_home_tab4.class));
+            } else if (result.contains("忏悔")) {
+                text = OK;
+                context.startActivity(new Intent(context, nianfo_home_tab5.class));
+            } else if (result.contains("发愿")) {
+                text = OK;
+                context.startActivity(new Intent(context, nianfo_home_tab6.class));
+            } else if (result.contains("坐禅") || result.contains("禅修") || result.contains("打坐") || result.contains("静坐")) {
+                text = OK;
+                context.startActivity(new Intent(context, Meditation.class));
+            } else if (result.contains("通知")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, MessageCenter.class));
                 }
-            }else if(result.contains("签到")||result.contains("我的活动")||result.contains("活动审核结果")){
-                if(new LoginUtil().checkLogin(context)){
-                    text=OK;
-                    context.startActivity(new Intent(context,Mine_activity_list.class));
+            } else if (result.contains("会员")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, Mine_HuiYuan.class));
                 }
-            }else if(result.contains("感谢信")){
-                if(new LoginUtil().checkLogin(context)){
-                    text=OK;
-                    context.startActivity(new Intent(context,Month_Detail.class));
+            } else if (result.contains("投稿")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, TouGao.class));
                 }
-            }else if(result.contains("抽签")||result.contains("运势")||result.contains("每日一签")||result.contains("卜事")
-                    ||result.contains("算命")||result.contains("卜卦")||result.contains("解梦")||result.contains("算卦")){
-                if(new LoginUtil().checkLogin(context)){
-                    text=OK;
-                    context.startActivity(new Intent(context,Fortune.class));
+            } else if (result.contains("签到") || result.contains("我的活动") || result.contains("活动审核结果")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, Mine_activity_list.class));
                 }
-            }else {
-                text=OhNo;
+            } else if (result.contains("感谢信")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, Month_Detail.class));
+                }
+            } else if (result.contains("抽签") || result.contains("运势") || result.contains("每日一签") || result.contains("卜事")
+                    || result.contains("算命") || result.contains("卜卦") || result.contains("解梦") || result.contains("算卦")) {
+                if (new LoginUtil().checkLogin(context)) {
+                    text = OK;
+                    context.startActivity(new Intent(context, Fortune.class));
+                }
+            } else {
+                text = OhNo;
             }
             ibdRcognize.stop();
-//            soundPool.play(soundMaps.get(text),1.0f,1.0f,10,0,1.0f);
-            if(mediaPlayer.isPlaying()){
+            if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
             mediaPlayer.reset();
-            if(text.equals(OhNo)){
 
-                mediaPlayer=MediaPlayer.create(context,R.raw.ohno);
+            if (text.equals(OhNo)) {
+                mediaPlayer = MediaPlayer.create(context, R.raw.ohno);
                 mediaPlayer.start();
-            }else{
+            } else {
+                //如果语音命中    界面跳转 唤醒屏幕   解锁键盘  语音回复
                 WakeLockUtil.wakeUpAndUnlock();
-                mediaPlayer=MediaPlayer.create(context,R.raw.ok);
+                mediaPlayer = MediaPlayer.create(context, R.raw.ok);
                 mediaPlayer.start();
             }
-//            if(text.equals(OhNo)){
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        openRecognize();
-//                    }
-//                },1000);
-//            }
 
         }
     }

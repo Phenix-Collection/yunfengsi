@@ -47,6 +47,6 @@
         android:paddingLeft="10dp"
         android:visibility="gone"
         app:text_color_normal="@color/white"
-        app:text_color_pressed="@color/wordhuise"
+        app:text_color_pressed="@color/light_huise"
         />
 </RelativeLayout>

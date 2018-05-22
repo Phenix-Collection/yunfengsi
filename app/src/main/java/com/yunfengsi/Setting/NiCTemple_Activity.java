@@ -128,6 +128,7 @@ private TextView mtvtitle;
                 try {
                     JSONObject js=new JSONObject();
                     try {
+                        js.put("m_id", Constants.M_id);
                         js.put("user_id",sp.getString("user_id",""));
                         js.put("pet_name", word);
                     } catch (JSONException e) {

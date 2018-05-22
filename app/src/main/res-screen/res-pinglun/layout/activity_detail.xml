@@ -35,7 +35,7 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:padding="8dp"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:src="@drawable/shoucang_selector" />
     </RelativeLayout>
 
@@ -293,7 +293,7 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/pinglun"
+                android:id="@+id/pinglun_image"
                 android:layout_marginRight="10dp"
                 />
             <TextView
@@ -321,8 +321,8 @@
             <ImageView
                 android:layout_width="23dp"
                 android:layout_height="23dp"
-                android:src="@drawable/fenxiangb"
                 android:layout_marginRight="10dp"
+                android:id="@+id/fenxiang_image"
                 />
             <TextView
                 android:id="@+id/fxtv"

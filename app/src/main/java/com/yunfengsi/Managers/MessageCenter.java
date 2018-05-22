@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,11 +14,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Adapter.PingLunActivity;
+import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.NianFo.NianFo;
 import com.yunfengsi.R;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -51,13 +53,14 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 
-public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int ZiXun = 1;
     private static final int HuoDong = 2;
     private static final int GongYang = 3;
     private static final int ZhuXue = 4;
     private static final int  PINGLUN=5;
+    private static final int  MineHuodong=6;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter adapter;
@@ -70,7 +73,7 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mApplication.romoveActivity(this);
+        mApplication.getInstance().romoveActivity(this);
     }
 
     @Override
@@ -78,7 +81,7 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.message_center);
-        mApplication.addActivity(this);
+        mApplication.getInstance().addActivity(this);
 
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("通知中心");
@@ -129,9 +132,9 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
                         case ZhuXue:
                             intent.setClass(MessageCenter.this, NianFo.class);
                             break;
-//                        case mReceiver.BaoMing:
-//                            intent.setClass(MessageCenter.this, Mine_activity_list.class);
-//                            break;
+                        case MineHuodong:
+                            intent.setClass(MessageCenter.this, Mine_activity_list.class);
+                            break;
                         case PINGLUN:
                             intent.setClass(MessageCenter.this, PingLunActivity.class);
                             break;
@@ -172,6 +175,11 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
                 onRefresh();
             }
         });
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+        LogUtil.e("通知中心 辅助弹窗打开");
     }
 
     private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
@@ -298,6 +306,5 @@ public class MessageCenter extends AppCompatActivity implements SwipeRefreshLayo
         isRefresh = true;
         adapter.setEnableLoadMore(true);
         getNotice();
-        swip.setRefreshing(false);
     }
 }

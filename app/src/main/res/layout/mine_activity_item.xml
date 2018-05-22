@@ -1,66 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
     android:background="@drawable/layout_bg_sel"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:padding="8dp">
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="90dp"
         android:id="@+id/fund_list_item_head"
-        />
+        android:layout_width="120dp"
+        android:layout_height="90dp" />
+
     <TextView
         android:id="@+id/fund_list_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:text="名"
+        android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/signact"
-        android:textColor="@color/black"
         android:layout_toRightOf="@+id/fund_list_item_head"
-        android:layout_marginLeft="10dp"/>
+        android:text="名"
+        android:textColor="@color/black"
+        android:textSize="15dp" />
+
     <TextView
         android:id="@+id/fund_list_item_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:text="元"
         android:textColor="@color/main_color"
-        android:textSize="15dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:layout_gravity="center"
-        />
+        android:textSize="15dp" />
+
     <TextView
         android:id="@+id/fund_list_item_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:text="time"
-        android:layout_marginLeft="10dp"
         android:layout_alignBottom="@+id/fund_list_item_head"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/fund_list_item_head"
-        />
+        android:text="time"
+        android:textSize="13sp" />
 
     <com.ruffian.library.RTextView
         android:id="@+id/signact"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/activity_detail_baoming"
-        app:text_color_normal="@color/white"
-        app:text_color_unable="@color/white"
-        app:background_unable="@color/grey"
+        android:focusable="false"
+        android:gravity="center"
+        android:minWidth="60dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="签到"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         app:background_normal="@color/main_color"
         app:background_pressed="#90ff6000"
+        app:background_unable="@color/grey"
         app:corner_radius="3dp"
-        android:focusable="false"
-        android:text="签到"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
+        app:text_color_normal="@color/white"
+        app:text_color_unable="@color/white" />
+
+
+
+
 </RelativeLayout>

@@ -51,13 +51,13 @@ public class RedRainView extends View {
     public RedRainView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RedRainViewStyle);
-        count = typedArray.getInt(R.styleable.RedRainViewStyle_count, 20);
-        speed = typedArray.getInt(R.styleable.RedRainViewStyle_speed, 100);
-        minSize = typedArray.getFloat(R.styleable.RedRainViewStyle_minSize, 0.7f);
-        maxSize = typedArray.getFloat(R.styleable.RedRainViewStyle_maxSize, 1.2f);
-        mustRealRed = typedArray.getBoolean(R.styleable.RedRainViewStyle_mustRealRed, false);
-        reSelectable = typedArray.getBoolean(R.styleable.RedRainViewStyle_reSelectable, false);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RedRainView);
+        count = typedArray.getInt(R.styleable.RedRainView_count, 20);
+        speed = typedArray.getInt(R.styleable.RedRainView_speed, 100);
+        minSize = typedArray.getFloat(R.styleable.RedRainView_minSize, 0.7f);
+        maxSize = typedArray.getFloat(R.styleable.RedRainView_maxSize, 1.2f);
+        mustRealRed = typedArray.getBoolean(R.styleable.RedRainView_mustRealRed, false);
+        reSelectable = typedArray.getBoolean(R.styleable.RedRainView_reSelectable, false);
         typedArray.recycle();
         init();
     }
