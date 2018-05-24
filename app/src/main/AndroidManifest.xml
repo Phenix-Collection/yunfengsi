@@ -349,6 +349,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.Activity_ShouCang"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.Activity_ShouCang_Result"
@@ -365,6 +366,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TouGao.TouGao"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".TouGao.Photo.PhotoPicker"
@@ -745,6 +747,10 @@
 
         <activity
             android:name=".YunDou.QiFu_PaiWei_Detail"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".WallPager.WallPapaerHome"
             android:screenOrientation="portrait"></activity>
 
 

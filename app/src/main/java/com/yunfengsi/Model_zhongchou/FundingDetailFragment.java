@@ -821,7 +821,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                                                 PLText.setText("");
                                                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                                                 overlay.setVisibility(View.GONE);
-
+                                                PlListVIew.smoothScrollToPosition(ad.getHeaderLayoutCount());
                                                 ProgressUtil.dismiss();
                                             }
                                         });

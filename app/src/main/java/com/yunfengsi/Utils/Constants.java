@@ -522,4 +522,8 @@ public class Constants {
 
     //祈福，排位券使用接口
     public static final String Quan_Use= host_Ip + iiiiii + "Welfareuse";
+
+
+    //众筹列表换一换接口
+    public static final String Fund_Change= host_Ip + oooooo + "Zhongchouhyh";
 }

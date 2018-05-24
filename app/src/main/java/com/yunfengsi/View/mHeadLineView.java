@@ -85,14 +85,12 @@ public class mHeadLineView extends LinearLayout {
             TextView tv1 = (TextView) child.findViewById(R.id.title1);
             HashMap<String, String> map1 = list.get(j);
             if (type == FUND) {
-                LogUtil.e("助学头条1：："+map1);
                 ((TextView) child.findViewById(R.id.tag1)).setText(map1.get("pet_name").trim());
                 SpannableString ss1=new SpannableString(" 献出爱心 "+ NumUtils.subZeroAndDot(map1.get("money")) + " 元");
                 ss1.setSpan(new ForegroundColorSpan(Color.RED),6,6+NumUtils.subZeroAndDot(map1.get("money")).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tv1.setText(ss1);
                 child.findViewById(R.id.layout1).setTag(map1.get("shop_id"));
             } else if (type == GONGYANG) {
-                LogUtil.e("第一行：：：第"+j+"     "+map1.get("pet_name")+"      "+map1.get("sut_title")+"    "+map1.get("money"));
                 ((TextView) child.findViewById(R.id.tag1)).setText(map1.get("pet_name").trim());
                 SpannableString ss1=new SpannableString(" "+map1.get("sut_title")+" "+ NumUtils.subZeroAndDot(map1.get("money")) + " 元");
                 ss1.setSpan(new ForegroundColorSpan(Color.RED),map1.get("sut_title").length()+2,map1.get("sut_title").length()+2+NumUtils.subZeroAndDot(map1.get("money")).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -104,14 +102,12 @@ public class mHeadLineView extends LinearLayout {
             if (list.size() > j + 1) {
                 HashMap<String, String> map2 = list.get(j + 1);
                 if (type == FUND) {
-                    LogUtil.e("助学头条2：："+map2);
                     ((TextView) child.findViewById(R.id.tag2)).setText(map2.get("pet_name").trim());
                     SpannableString ss2=new SpannableString(" 献出爱心 "+ NumUtils.subZeroAndDot(map2.get("money")) + " 元");
                     ss2.setSpan(new ForegroundColorSpan(Color.RED),6,6+NumUtils.subZeroAndDot(map2.get("money")).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     tv2.setText(ss2);
                     child.findViewById(R.id.layout2).setTag(map2.get("shop_id"));
                 } else if (type == GONGYANG) {
-                    LogUtil.e("第2行：：：第"+(j+1)+"     "+map2.get("pet_name")+"      "+map2.get("sut_title")+"    "+map2.get("money"));
                     ((TextView) child.findViewById(R.id.tag2)).setText(map2.get("pet_name").trim());
                     SpannableString ss2=new SpannableString(" "+map2.get("sut_title")+" "+ NumUtils.subZeroAndDot(map2.get("money")) + " 元");
                     ss2.setSpan(new ForegroundColorSpan(Color.RED),map2.get("sut_title").length()+2,2+map2.get("sut_title").length()+NumUtils.subZeroAndDot(map2.get("money")).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

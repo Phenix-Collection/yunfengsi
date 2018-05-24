@@ -80,6 +80,33 @@ public class FundFragment extends BaseSTFragement implements View.OnClickListene
                 });
             }
         });
+        view.findViewById(R.id.change).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject js=new JSONObject();
+                try {
+                    js.put("m_id",Constants.M_id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ApisSeUtil.M m=ApisSeUtil.i(js);
+                LogUtil.e("众筹换一换：："+js);
+                OkGo.post(Constants.Fund_Change).params("key",m.K())
+                        .params("msg",m.M())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                list = AnalyticalJSON.getList(s, "crowdfunding");
+                                if(list!=null){
+                                    listView.smoothScrollToPosition(0);
+                                    adapter.setList(list);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+
+            }
+        });
         return view;
     }
 
@@ -107,11 +134,17 @@ public class FundFragment extends BaseSTFragement implements View.OnClickListene
      *
      * @param view
      */
-    private void initView(View view) {
+    private void initView(final View view) {
         swip = (SwipeRefreshLayout) view.findViewById(R.id.fund_swip);
         listView = (LoadMoreListView) view.findViewById(R.id.fund_listview);
         swip.setOnRefreshListener(this);
         listView.setLoadMoreListen(this);
+        listView.footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.findViewById(R.id.change).performClick();
+            }
+        });
         t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
         p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
         swip.setColorSchemeResources(R.color.main_color);
@@ -327,14 +360,17 @@ public class FundFragment extends BaseSTFragement implements View.OnClickListene
      */
     @Override
     public void loadMore() {
-        if (!endPage.equals(page)) {
-            page = String.valueOf(Integer.parseInt(page) + 1);
-        } else {
-            p.setVisibility(View.GONE);
-            t.setText(mApplication.ST("没有更多数据了"));
-            return;
-        }
-        getData();
+        p.setVisibility(View.GONE);
+        t.setText(mApplication.ST("换一换"));
+        return;
+//        if (!endPage.equals(page)) {
+//            page = String.valueOf(Integer.parseInt(page) + 1);
+//        } else {
+//            p.setVisibility(View.GONE);
+//            t.setText(mApplication.ST("没有更多数据了"));
+//            return;
+//        }
+//        getData();
     }
 
     /**

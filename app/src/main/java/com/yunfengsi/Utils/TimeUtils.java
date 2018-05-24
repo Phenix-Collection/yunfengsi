@@ -6,6 +6,7 @@ import android.text.format.Time;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -14,7 +15,13 @@ import java.util.Locale;
  * Created by Administrator on 2016/6/7.
  */
 public class TimeUtils {
-    private static final String TAG = "TimeUtils";
+    private static final String TAG      = "TimeUtils";
+    private static final char   YEAR[]   = {'零', '一', '二', '三', '四', '五', '六', '七', '八', '九'};
+    private static final String MONETH[] = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"};
+    private static final String DAY[]    = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"
+            , "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四"
+            , "二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一"
+    };
 
     /**
      * 时间戳转为年月日，时分秒
@@ -33,6 +40,58 @@ public class TimeUtils {
         return re_StrTime;
     }
 
+    /**
+     * @param formatedTime 传入2018年10月10日 格式的时间
+     * @return 二零一八年十月十日
+     */
+    public static String getChinneseTime(String formatedTime) {
+        StringBuilder time  = new StringBuilder();
+        char[]        chars = formatedTime.toCharArray();
+
+        ArrayList<String> li     = new ArrayList<>();
+        int               length = chars.length;
+        for (int i = 0; i < length; i++) {
+            li.add(String.valueOf(chars[i]));
+        }
+        int nian = li.indexOf("年");
+        int yue  = li.indexOf("月");
+        int day  = li.indexOf("日");
+        for (int i = 0; i < length; i++) {
+            int n;
+            if (i < nian) {
+                n = Integer.valueOf(li.get(i));
+                time.append(YEAR[n]);
+            } else if (i == nian) {
+                time.append("年");
+            } else if (i > nian && i < yue) {
+                if (yue - nian == 2) {
+                    n = Integer.valueOf(li.get(i));
+                } else {
+                    if (i == yue - 1) {
+                        continue;
+                    }
+                    n = Integer.valueOf(li.get(i) + li.get(i + 1));
+                }
+                time.append(MONETH[n - 1]);
+            } else if (i == yue) {
+                time.append("月");
+            } else if (i > yue && i < day) {
+                if(day-yue==2){
+                    n = Integer.valueOf(li.get(i));
+                }else{
+                    if (i == day - 1) {
+                        continue;
+                    }
+                    n = Integer.valueOf(li.get(i) + li.get(i + 1));
+                }
+
+                time.append(DAY[n - 1]);
+            } else if (i == day) {
+                time.append("日");
+            }
+        }
+        return time.toString();
+    }
 
     //活动报名时间使用
     public static String getYMDTime(Date cc_time, boolean isStart) {
@@ -171,7 +230,7 @@ public class TimeUtils {
 
             if (now.hour != then.hour) {
                 if ((then.hour == 23 && now.hour == 0) || (then.hour + 1 == now.hour)) {
-                    if (then.minute> now.minute) {//相邻一小时内 未超过一小时时间
+                    if (then.minute > now.minute) {//相邻一小时内 未超过一小时时间
                         formatStr = (now.minute + 60 - then.minute) + "分钟前";
                     } else {
                         formatStr = "1小时前";
