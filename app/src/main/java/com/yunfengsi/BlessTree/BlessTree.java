@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,6 +60,7 @@ import com.yunfengsi.View.mItemDecoration;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -401,12 +404,21 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
 
         @Override
         public int getPopularity(int position) {
-            return 20;
+            return 5;
         }
 
         @Override
         public void onThemeColorChanged(View view, int themeColor) {
-//            LogUtil.e("颜色变化"+themeColor);
+
+
+            ColorMatrix colorMatrix=new ColorMatrix();
+//            float i=new Random().nextFloat();
+//            float i=0.5f;
+            colorMatrix.setScale(Color.red(themeColor/0xff)/255f,Color.green(themeColor/0xff)/255f,Color.blue(themeColor/0xff)/255f,1);
+
+            ((ImageView) view).setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+            BigInteger bigInteger=new BigInteger(String.valueOf(themeColor),16);
+            LogUtil.e("颜色变化"+themeColor+"  蓝色：："+(themeColor/0xff)+"  值  "+Color.blue(themeColor/0xff)+"    16进制数：："+0xff);
 //            ImageView imageView = (ImageView) view;
 //            PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(themeColor,
 //                    PorterDuff.Mode.SRC_ATOP);
