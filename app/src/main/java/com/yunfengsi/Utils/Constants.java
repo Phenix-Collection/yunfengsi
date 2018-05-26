@@ -524,6 +524,10 @@ public class Constants {
     public static final String Quan_Use= host_Ip + iiiiii + "Welfareuse";
 
 
+    //壁纸列表接口
+    public static final String WallPaperList= host_Ip + iiiiii + "Wallpaper";
+
+
     //众筹列表换一换接口
     public static final String Fund_Change= host_Ip + oooooo + "Zhongchouhyh";
 }

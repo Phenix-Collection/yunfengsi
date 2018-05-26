@@ -80,6 +80,7 @@ public class MineManager {
                     {
                             R.raw.yundou,
                             R.raw.fuli,
+                            R.raw.icon_wallpager,
                             R.raw.qiyuan,
                             R.raw.jinshu,
                             R.raw.qian_icon,

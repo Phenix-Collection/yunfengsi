@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="#f5f5f5"
+    android:divider="@drawable/mdivider"
+    android:orientation="vertical"
+    android:showDividers="beginning|middle|end">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="请选择坐禅时间"/>
+
+
+
+    <TextView
+        android:id="@+id/one"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:gravity="center"
+        android:text="15分钟"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/two"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:gravity="center"
+        android:text="30分钟"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/three"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:gravity="center"
+        android:text="45分钟"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/four"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:gravity="center"
+        android:text="60分钟"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <TextView
+        android:id="@+id/cancle"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/gray"
+        android:textSize="18dp" />
+</LinearLayout>
+
+

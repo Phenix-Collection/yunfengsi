@@ -142,6 +142,7 @@ public class MainActivity extends UpPayUtil {
     public        MyWakeup                           myWakeup;
 
     KeepLiveWakeLockReceiver receiver1;//开锁屏监听
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,11 +155,16 @@ public class MainActivity extends UpPayUtil {
 
         registerReceiver(receiver, intentFilter);
 
-       receiver1=new KeepLiveWakeLockReceiver();
-        IntentFilter intentFilter1=new IntentFilter();
+
+        //注册屏幕亮、灭监听
+        receiver1 = new KeepLiveWakeLockReceiver();
+        IntentFilter intentFilter1 = new IntentFilter();
         intentFilter1.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter1.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(receiver1,intentFilter1);
+        registerReceiver(receiver1, intentFilter1);
+
+
+
         initView();
 
         checkUpdate();
@@ -171,7 +177,6 @@ public class MainActivity extends UpPayUtil {
         changeSystemVolume();//修改媒体音量  80%
         // TODO: 2018/5/10 拉取热更新补丁
         SophixManager.getInstance().queryAndLoadNewPatch();
-
 
 
     }
@@ -538,7 +543,7 @@ public class MainActivity extends UpPayUtil {
     public void onNoticeArrived(NoticeEvent event) {
 
         LogUtil.e("改变notice图标");
-        if(notice!=null){
+        if (notice != null) {
             notice.setSelected(true);
         }
 
@@ -919,7 +924,7 @@ public class MainActivity extends UpPayUtil {
                 Uri    content_url;
                 Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                if (jishuSupprot==null||"".equals(jishuSupprot)) {
+                if (jishuSupprot == null || "".equals(jishuSupprot)) {
                     content_url = Uri.parse("http://www.indranet.cn");
                 } else {
                     content_url = Uri.parse(jishuSupprot);
@@ -936,9 +941,9 @@ public class MainActivity extends UpPayUtil {
         layout4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(share==null||appUrl==null){
-                    umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
-                }else{
+                if (share == null || appUrl == null) {
+                    umWeb = new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
+                } else {
                     umWeb = new UMWeb("".equals(share) ? appUrl : share);
                 }
 
@@ -963,13 +968,13 @@ public class MainActivity extends UpPayUtil {
             @Override
             public void onClick(View v) {
 //                Intent alarms = new Intent(AlarmClock.ACTION_SET_ALARM);
-                int hour=new Random().nextInt(24);
-                int minute=new Random().nextInt(60);
+                int    hour   = new Random().nextInt(24);
+                int    minute = new Random().nextInt(60);
                 Intent alarms = new Intent(AlarmClock.ACTION_SET_ALARM);
-                alarms.putExtra(AlarmClock.EXTRA_MESSAGE,"该起来打坐啦");
-                alarms.putExtra(AlarmClock.EXTRA_HOUR,hour);
-                alarms.putExtra(AlarmClock.EXTRA_MINUTES,minute);
-                ArrayList<Integer> list=new ArrayList<>();
+                alarms.putExtra(AlarmClock.EXTRA_MESSAGE, "该起来打坐啦");
+                alarms.putExtra(AlarmClock.EXTRA_HOUR, hour);
+                alarms.putExtra(AlarmClock.EXTRA_MINUTES, minute);
+                ArrayList<Integer> list = new ArrayList<>();
                 list.add(Calendar.MONDAY);
                 list.add(Calendar.TUESDAY);
                 list.add(Calendar.WEDNESDAY);
@@ -977,8 +982,8 @@ public class MainActivity extends UpPayUtil {
                 list.add(Calendar.FRIDAY);
                 list.add(Calendar.SATURDAY);
 //                list.add(Calendar.SUNDAY);
-               alarms.putExtra(AlarmClock.EXTRA_DAYS, list);
-                if(alarms.resolveActivity(getPackageManager())!=null){
+                alarms.putExtra(AlarmClock.EXTRA_DAYS, list);
+                if (alarms.resolveActivity(getPackageManager()) != null) {
                     startActivity(alarms);
 
                 }

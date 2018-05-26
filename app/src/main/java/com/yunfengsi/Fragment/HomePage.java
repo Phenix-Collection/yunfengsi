@@ -78,6 +78,7 @@ import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
 import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mItemDeraction;
+import com.yunfengsi.WallPager.WallPapaerHome;
 import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.YunDou.MyQuan;
 import com.yunfengsi.YunDou.YunDouHome;
@@ -332,6 +333,9 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 TextView textView = (TextView) view.findViewById(R.id.text);
                 LogUtil.e("首页item点击：：：" + textView.getTag());
                 switch (textView.getTag().toString()) {
+                    case "壁纸":
+                        startActivity(new Intent(getActivity(), WallPapaerHome.class));
+                        break;
                     case "我的云豆":
                         if (new LoginUtil().checkLogin(getActivity())) {
                             startActivity(new Intent(getActivity(), YunDouHome.class));
@@ -935,7 +939,6 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
 
     private void initAnimator() {
         if (valueAnimator == null) {
-            LogUtil.e("首页不存在动画对象");
             valueAnimator = ValueAnimator.ofFloat(10);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -948,7 +951,6 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
             valueAnimator.setRepeatMode(ValueAnimator.REVERSE);
             valueAnimator.start();
         } else {
-            LogUtil.e("首页已经有动画对象了");
             if (!valueAnimator.isStarted()) {
                 valueAnimator.start();
             }

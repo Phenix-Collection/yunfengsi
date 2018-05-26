@@ -783,7 +783,9 @@
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation"
             android:theme="@style/YFS_Deamon_Style"
-            android:process=":yfs"></activity>
+            android:process=":yfs">
+
+        </activity>
 
     </application>
 

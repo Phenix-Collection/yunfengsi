@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="提示"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="确定使用此福利吗？此福利也可转赠给其他佛友哦~"
+        android:gravity="center"
+        android:textSize="14dp"
+        android:textColor="@color/black"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/mdivider"/>
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/use"
+        android:textSize="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="立即使用"
+        app:text_color_normal="#378BD2"
+        app:text_color_pressed="#3753d2"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/mdivider"/>
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/share"
+        android:textSize="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="转赠佛友"
+        app:text_color_normal="#378BD2"
+        app:text_color_pressed="#3753d2"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/mdivider"/>
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/cancel"
+        android:textSize="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:text="取消"
+        app:text_color_normal="#378BD2"
+        app:text_color_pressed="#3753d2"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/mdivider"/>
+</LinearLayout>

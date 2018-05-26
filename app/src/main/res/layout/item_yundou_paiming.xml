@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/level"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:background_normal="#b6b6b6"
+        app:corner_radius="20dp"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/white"
+        />
+    
+    <com.ruffian.library.RTextView
+        android:id="@+id/user"
+        android:layout_marginLeft="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/wordblack"
+        app:icon_height="50dp"
+        app:icon_width="50dp"
+        app:icon_direction="left"
+        android:gravity="center_vertical"
+        android:drawablePadding="5dp"
+        />
+    <com.ruffian.library.RTextView
+        android:id="@+id/num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/main_color"
+        app:icon_height="30dp"
+        app:icon_width="30dp"
+        android:layout_gravity="right|center_vertical"
+        app:icon_direction="right"
+        app:icon_src_normal="@raw/yundou"
+        android:gravity="center_vertical"
+        android:drawablePadding="3dp"
+        />
+</FrameLayout>

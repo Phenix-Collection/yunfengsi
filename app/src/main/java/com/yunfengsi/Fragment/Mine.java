@@ -86,6 +86,7 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.WallPager.WallPapaerHome;
 import com.yunfengsi.YunDou.MyQuan;
 import com.yunfengsi.YunDou.YunDouAwardDialog;
 import com.yunfengsi.YunDou.YunDouHome;
@@ -113,25 +114,25 @@ import okhttp3.Response;
  * Created by Administrator on 2016/5/31.
  */
 public class Mine extends BaseSTFragement implements View.OnClickListener {
-    private static final String TAG = "Mine";
-    private static final int CHOOSEPICTUE = 2;//相册
-    private static final int TAKEPICTURE = 1;//相机
+    private static final String TAG          = "Mine";
+    private static final int    CHOOSEPICTUE = 2;//相册
+    private static final int    TAKEPICTURE  = 1;//相机
 
     private Uri pictureUri = null;
-    private AlertDialog dialog;
-    public ImageView head;
-    public SharedPreferences sp;
-    public ACache aCache;
-    private int screenWidth;
-    public String path;
-    private File Headfile;
-    private int screenHeight;
+    private AlertDialog       dialog;
+    public  ImageView         head;
+    public  SharedPreferences sp;
+    public  ACache            aCache;
+    private int               screenWidth;
+    public  String            path;
+    private File              Headfile;
+    private int               screenHeight;
     //    private TextView tab2, tab3;
 //    private ViewPager viewpager;
 //    private FragmentManager fm;
 //    private List<Fragment> list;
-    private TextView qiehuanzhanghao;
-    private TextView petname, sign;
+    private TextView          qiehuanzhanghao;
+    private TextView          petname, sign;
     private LinearLayout geren, shoucang, tougao, zhifu, bangzhu, huodong;
 
 
@@ -140,18 +141,18 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     private LinearLayout lythree;
     private LinearLayout lyfour;
     private LinearLayout lyfive;
-    private ImageView Msg;
-    private TextView tvone;
-    private TextView tvtwo;
-    private TextView tvthree;
-    private TextView tvfour;
-    private TextView tvfive, tv6;
+    private ImageView    Msg;
+    private TextView     tvone;
+    private TextView     tvtwo;
+    private TextView     tvthree;
+    private TextView     tvfour;
+    private TextView     tvfive, tv6;
 
-    private MineManager mineManager;
+    private MineManager  mineManager;
     private RecyclerView recyclerView;
     private Intent intent = new Intent();
     private ImageView level;
-    private boolean isAgreeed = false;//是否同意隐私政策
+    private boolean           isAgreeed    = false;//是否同意隐私政策
     private BroadcastReceiver userReseiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -169,7 +170,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.mine, container, false);
+        View         v            = inflater.inflate(R.layout.mine, container, false);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(TAG);
         getActivity().registerReceiver(userReseiver, intentFilter);
@@ -189,6 +190,11 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 HashMap<String, Object> map = mineManager.getMaps().get(position);
 
                 switch (map.get(mineManager.text).toString()) {
+                    case "壁纸":
+
+                        startActivity(new Intent(getActivity(), WallPapaerHome.class));
+
+                        break;
                     case "我的云豆":
                         if (new LoginUtil().checkLogin(getActivity())) {
                             startActivity(new Intent(getActivity(), YunDouHome.class));
@@ -206,7 +212,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                         break;
                     case "佛经":
 //                        if (new LoginUtil().checkLogin(getActivity())) {
-                            startActivity(new Intent(getActivity(), BookList.class));
+                        startActivity(new Intent(getActivity(), BookList.class));
 //                        }
                         break;
                     case "卜事":
@@ -400,7 +406,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         tvfive.setOnClickListener(Mine.this);
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
-        final AlertDialog d = b.create();
+        final AlertDialog   d = b.create();
         d.setView(vi);
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -536,7 +542,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        LogUtil.e("我的：：：；个人信息：："+js);
+        LogUtil.e("我的：：：；个人信息：：" + js);
         final ApisSeUtil.M m = ApisSeUtil.i(js);
         new Thread(new Runnable() {
             @Override
@@ -548,8 +554,8 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                             .execute().body().string();
 
                     if (!TextUtils.isEmpty(data)) {
-                        final HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
-                        final SharedPreferences.Editor ed = sp.edit();
+                        final HashMap<String, String>  map = AnalyticalJSON.getHashMap(data);
+                        final SharedPreferences.Editor ed  = sp.edit();
                         if (handler != null) {
                             handler.post(new Runnable() {
                                 @Override
@@ -574,8 +580,8 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                         if (!"".equals(map.get("sex"))) {
                                             ed.putString("sex", map.get("sex"));
                                         }
-                                        if(!"0".equals(map.get("yundousum"))){
-                                            YunDouAwardDialog.show(getActivity(),"每日登录",map.get("yundousum"));
+                                        if (!"0".equals(map.get("yundousum"))) {
+                                            YunDouAwardDialog.show(getActivity(), "每日登录", map.get("yundousum"));
                                         }
                                         if (!"".equals(map.get("signature"))) {
                                             ed.putString("signature", map.get("signature"));
@@ -601,7 +607,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                             if (map.get("time") != null && !map.get("time").equals("")) {
 
                                                 long endTime = TimeUtils.dataOne(map.get("time"));
-                                                long t = TimeUtils.getAddMonthDate(1);
+                                                long t       = TimeUtils.getAddMonthDate(1);
                                                 if (endTime - t <= 0) {
                                                     ((MainActivity) getActivity()).tabLayout.getTabAt(4)
                                                             .getCustomView().findViewById(R.id.badge)
@@ -672,9 +678,9 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                     @Override
                                     public void run() {
                                         if (map != null) {
-                                            View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_confirm_dialog, null);
-                                            final WebView web = (WebView) view.findViewById(R.id.web);
-                                            TextView cancle = (TextView) view.findViewById(R.id.cancle);
+                                            View          view   = LayoutInflater.from(getActivity()).inflate(R.layout.activity_confirm_dialog, null);
+                                            final WebView web    = (WebView) view.findViewById(R.id.web);
+                                            TextView      cancle = (TextView) view.findViewById(R.id.cancle);
                                             cancle.setText(mApplication.ST("不同意"));
                                             final TextView baoming = (TextView) view.findViewById(R.id.baoming);
                                             baoming.setEnabled(false);
@@ -834,8 +840,8 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                         HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);
                         if (map != null && null != map.get("code")) {
                             if ("000".equals(map.get("code"))) {
-                                SharedPreferences.Editor ed = sp.edit();
-                                String url = map.get("head");
+                                SharedPreferences.Editor ed  = sp.edit();
+                                String                   url = map.get("head");
                                 if (url != null) {
                                     ed.putString("head_url", url);
                                     ed.apply();
@@ -1044,7 +1050,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     //选择照片或照相
     private void choosePic() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        View view = LayoutInflater.from(mApplication.getInstance()).inflate(R.layout.dialog_album_camera, null);
+        View                view    = LayoutInflater.from(mApplication.getInstance()).inflate(R.layout.dialog_album_camera, null);
         view.findViewById(R.id.photograph).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1066,7 +1072,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int permissionCheck = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    int permissionCheck  = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     int permissionCheck1 = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS);
                     int permissionCheck2 = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE);
                     if (permissionCheck
@@ -1099,12 +1105,12 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         Window window = dialog.getWindow();
 
         window.setGravity(Gravity.BOTTOM);
-        window.getDecorView().setPadding(0,0,0,0);
+        window.getDecorView().setPadding(0, 0, 0, 0);
         window.setWindowAnimations(R.style.dialogWindowAnim);
         window.setBackgroundDrawableResource(R.color.vifrification);
         WindowManager.LayoutParams wl = window.getAttributes();
-        wl.width=getActivity().getResources().getDisplayMetrics().widthPixels;
-        wl.height=WindowManager.LayoutParams.WRAP_CONTENT;
+        wl.width = getActivity().getResources().getDisplayMetrics().widthPixels;
+        wl.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(wl);
         dialog.show();
     }
@@ -1139,8 +1145,8 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 Locale.CHINA);
         // Standard Intent action that can be sent to have the camera
         // application capture an image and return it.
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        ContentValues attrs = new ContentValues();
+        Intent        takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues attrs             = new ContentValues();
         attrs.put(MediaStore.Images.Media.DISPLAY_NAME,
                 dateFormat.format(new Date(System.currentTimeMillis())));// 添加照片名字
         attrs.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");// 图片类型

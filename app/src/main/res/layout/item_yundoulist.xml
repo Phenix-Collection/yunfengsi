@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:padding="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textSize="16dp"
+        tools:text="信用卡换看"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/wordhuise"
+        android:layout_below="@+id/title"
+        tools:text="2018-04-10"
+
+        />
+    <TextView
+        tools:text="+10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/num"
+        android:textSize="16dp"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/black"/>
+
+</RelativeLayout>
