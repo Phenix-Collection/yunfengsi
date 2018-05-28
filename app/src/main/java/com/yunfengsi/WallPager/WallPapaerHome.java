@@ -1,18 +1,27 @@
 package com.yunfengsi.WallPager;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.yunfengsi.R;
+import com.yunfengsi.Utils.DimenUtils;
+import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.View.UsefulImageView;
 
 import java.util.ArrayList;
 
@@ -30,6 +39,10 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
+
+
+
+
         setContentView(R.layout.wall_page_home);
         tabLayout=findViewById(R.id.tab);
         viewPager=findViewById(R.id.viewpager);
@@ -49,7 +62,19 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager,true);
 
+        Glide.with(this).load(PreferenceUtil.getUserIncetance(this).getString("head_url",""))
+                .asBitmap()
+                .override(DimenUtils.dip2px(this,40),DimenUtils.dip2px(this,40))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        RoundedBitmapDrawable rbd= RoundedBitmapDrawableFactory.create(getResources(),resource);
+                        rbd.setCircular(true);
+                        ((ImageView) findViewById(R.id.userImage)).setImageDrawable(rbd);
+                    }
+                });
         findViewById(R.id.userImage).setOnClickListener(this);
+        ((UsefulImageView) findViewById(R.id.userImage)).isCircle(true);
     }
 
     @Override

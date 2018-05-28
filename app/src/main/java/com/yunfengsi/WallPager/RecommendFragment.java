@@ -1,11 +1,14 @@
 package com.yunfengsi.WallPager;
 
+import android.app.ActivityOptions;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,13 +97,20 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, HashMap<String, String> item) {
+        protected void convert(final BaseViewHolder helper, final HashMap<String, String> item) {
             Glide.with(getActivity()).load(item.get("image"))
                     .into((ImageView) helper.getView(R.id.image));
             helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if(Build.VERSION.SDK_INT>=21){
+                        ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                                Pair.create(v, getString(R.string.wallPaper_ShareName))
+                        ,Pair.create((((WallPapaerHome) getActivity()).findViewById(R.id.userImage)),getString(R.string.wallPaper_User_Head_ShareName)));
+                        IWallPaperManager.goToWallPaperDetailWithAnim(getActivity(),options.toBundle(),item.get("image"));
+                    }else{
+                        IWallPaperManager.goToWallPaperDetailNormal(getActivity(),item.get("image"));
+                    }
                 }
             });
         }

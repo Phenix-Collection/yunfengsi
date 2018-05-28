@@ -7,6 +7,10 @@
 
     <color name="textOnImg_bg">#22000000</color>
 
+
+    <string name="wallPaper_ShareName">wallpaper</string>
+    <string name="wallPaper_User_Head_ShareName">wallpaper_User_Head</string>
+
     <!--<integer-array name="mine_image">-->
     <!--<item>@mipmap/shoucang_justforleft</item>-->
     <!--<item>@mipmap/shoucang_justforleft</item>-->
