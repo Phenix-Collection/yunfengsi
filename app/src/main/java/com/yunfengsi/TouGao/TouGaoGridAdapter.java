@@ -38,12 +38,12 @@ public class TouGaoGridAdapter extends BaseAdapter {
     private oncCancleListener oncCancleListener;
     private boolean flag;
     private boolean TG = false;
-
+    private int allowChooseNum=3;//默认为3   选择的最大数量
     public void setTG(boolean flag) {
         this.TG = flag;
     }
 
-    public TouGaoGridAdapter(Activity context, ArrayList<String> mImgs, boolean needChange) {
+    public TouGaoGridAdapter(Activity context, ArrayList<String> mImgs, boolean needChange,int Max) {
         super();
         weakReference = new WeakReference<Activity>(context);
         this.context = weakReference.get();
@@ -51,6 +51,7 @@ public class TouGaoGridAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         dp70 = DimenUtils.dip2px(context, 70);
         this.flag = needChange;
+        allowChooseNum=Max;
     }
 
     public void setOncCancleListener(oncCancleListener listener) {
@@ -136,6 +137,7 @@ public class TouGaoGridAdapter extends BaseAdapter {
                     int i = mImgs.size() - 1;//已经选择的图片数量
                     Intent intent = new Intent(context, PhotoPicker.class);
                     intent.putExtra("num", i);
+                    intent.putExtra("max",allowChooseNum);
                     context.startActivityForResult(intent, 000);
                 } else {
                     //大图模式

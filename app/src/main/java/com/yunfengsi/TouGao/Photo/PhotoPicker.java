@@ -84,6 +84,8 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
         }
     };
 
+    private int allowChooseNum=3;//允许被选择的最大数量，默认为3
+
     /**
      * 初始化展示文件夹的popupWindw
      */
@@ -131,7 +133,7 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
                 return false;
             }
         }));//获取该文件夹下所有文件的名字
-        mAdapter = new ImageGridAdapter(PhotoPicker.this, mImgs, mImgDir.getAbsolutePath(), hasSelectedPicSize);//实例化适配器
+        mAdapter = new ImageGridAdapter(PhotoPicker.this, mImgs, mImgDir.getAbsolutePath(), hasSelectedPicSize,allowChooseNum);//实例化适配器
         mAdapter.setOnSelectedListener(this);//添加选择事件的回调接口
         mAdapter.setOnCuptureListener(this);//添加图片回调接口
         Grid.setAdapter(mAdapter);
@@ -151,7 +153,7 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
                     hasSelectedPicSize++;
                     mAdapter.setHasSelectedSize(hasSelectedPicSize);
                     mAbsolutePaths.add(path);
-                    fasong.setText("完成" + hasSelectedPicSize + "/3");
+                    fasong.setText("完成" + hasSelectedPicSize + "/"+allowChooseNum);
                 }else{
                     Toast.makeText(PhotoPicker.this, "拍摄失败，请重新尝试", Toast.LENGTH_SHORT).show();
                 }
@@ -163,7 +165,7 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
                     mAdapter.mSelectedImages.add(cupturePath);
                     mAdapter.setHasSelectedSize(hasSelectedPicSize);
                     mAbsolutePaths=mAdapter.mSelectedImages;
-                    fasong.setText("完成" + (hasSelectedPicSize+mAbsolutePaths.size()) + "/3");
+                    fasong.setText("完成" + (hasSelectedPicSize+mAbsolutePaths.size()) + "/"+allowChooseNum);
                    LogUtil.w("onActivityResult: 拍摄成功，拿到地址：图片文件大小："+new File(cupturePath).length()+"   路径："+cupturePath );
                     showPreImageView();//拍照预览
                 }
@@ -371,6 +373,7 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
 
 
     private void initView() {
+        allowChooseNum=getIntent().getIntExtra("max",3);
         back = (ImageView) findViewById(R.id.photo_picker_back);
         fasong = (TextView) findViewById(R.id.photo_picker_fasong);
         chooseFile = (TextView) findViewById(R.id.photo_picker_choose_file);
@@ -383,7 +386,7 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
         chooseFile.setOnClickListener(this);
 
         hasSelectedPicSize = getIntent().getIntExtra("num", 0);
-        fasong.setText("完成" + hasSelectedPicSize + "/3");
+        fasong.setText("完成" + hasSelectedPicSize + "/"+allowChooseNum);
     }
 
     @Override
@@ -406,7 +409,7 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onSelected(ArrayList<String> mSelectedImages) {
         int size = mSelectedImages.size();
-        fasong.setText("完成" + (hasSelectedPicSize + size) + "/3");
+        fasong.setText("完成" + (hasSelectedPicSize + size) + "/"+allowChooseNum);
         mAbsolutePaths = mSelectedImages;
     }
 

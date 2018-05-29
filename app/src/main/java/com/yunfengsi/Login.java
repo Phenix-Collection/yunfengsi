@@ -206,9 +206,11 @@ public class Login extends AppCompatActivity implements OnClickListener {
                             js.put("password", password.getText().toString());
                             js.put("type", type);
                             js.put("m_id", Constants.M_id);
+                            ApisSeUtil.M m=ApisSeUtil.i(js);
+                            LogUtil.e("登录：："+js);
                             response = OkGo.post(Constants.Login_Ip).tag(TAG)
-                                    .params("key", ApisSeUtil.getKey())
-                                    .params("msg", ApisSeUtil.getMsg(js)).execute();
+                                    .params("key",m.K())
+                                    .params("msg", m.M()).execute();
                             String data1 = response.body().string();
                             if (!data1.equals("")) {
                                 final HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);//解析登录返回信息

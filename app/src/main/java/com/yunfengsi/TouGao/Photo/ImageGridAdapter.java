@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.PreferenceUtil;
+import com.yunfengsi.Utils.ScaleImageUtil;
 import com.yunfengsi.Utils.mApplication;
 
 import java.io.File;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.yunfengsi.Managers.MineManager.text;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -51,7 +54,7 @@ public class ImageGridAdapter extends BaseAdapter {
     private onSelectedListener onselectedlistener;
     private int hasSelectedSize;
     private onCuptureListener onCuptureListener;
-
+    private int allowChooseNum=3;//最大能选择的数量  默认3
     public void setOnSelectedListener(onSelectedListener listener) {
         this.onselectedlistener = listener;
     }
@@ -60,7 +63,7 @@ public class ImageGridAdapter extends BaseAdapter {
         this.onCuptureListener = listener;
     }
 
-    public ImageGridAdapter(Context context, List<String> mDatas, String dirPath, int hasSelectedSize) {
+    public ImageGridAdapter(Context context, List<String> mDatas, String dirPath, int hasSelectedSize,int Max) {
         super();
         w = new WeakReference<Context>(context);
         mShowImages.add(0, "add");
@@ -70,6 +73,7 @@ public class ImageGridAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         mScreenWidth = context.getResources().getDisplayMetrics().widthPixels;
         this.hasSelectedSize = hasSelectedSize;
+        this.allowChooseNum=Max;
     }
 
     public void setDatas(List<String> datas) {
@@ -157,10 +161,10 @@ public class ImageGridAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Log.w(TAG, "onClick: 准备拍照");
-                    if (hasSelectedSize + mSelectedImages.size() < 3) {
+                    if (hasSelectedSize + mSelectedImages.size() < allowChooseNum) {
                         chooseCamera();
                     } else {
-                        Toast.makeText(context, "最多能够上传3张图片", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "最多能够上传"+allowChooseNum+"张图片", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -186,8 +190,8 @@ public class ImageGridAdapter extends BaseAdapter {
 
                     ImageView img = (ImageView) ((FrameLayout) v.getParent()).findViewById(R.id.photo_picker_item_imageView);
                     if (!mSelectedImages.contains(path)) {
-                        if (hasSelectedSize + mSelectedImages.size() >= 3) {
-                            Toast.makeText(context, "最多能够上传3张图片", Toast.LENGTH_SHORT).show();
+                        if (hasSelectedSize + mSelectedImages.size() >= allowChooseNum) {
+                            Toast.makeText(context, "最多能够上传"+allowChooseNum+"张图片", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         mSelectedImages.add(path);
@@ -206,7 +210,7 @@ public class ImageGridAdapter extends BaseAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.w(TAG, "onClick: 进入大图界面");
+                    ScaleImageUtil.openBigIagmeMode((Activity) context,path);
                 }
             });
         }

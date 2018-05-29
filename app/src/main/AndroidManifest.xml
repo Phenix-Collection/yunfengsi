@@ -759,6 +759,16 @@
           ></activity>
 
 
+
+
+
+
+        <activity
+            android:name=".WallPager.WallPaperUpload"
+            android:screenOrientation="portrait"
+            ></activity>
+
+
         <!--sophix-->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"

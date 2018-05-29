@@ -101,7 +101,7 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
     private boolean isGrante = false;
 
     private boolean isCommited = false;
-
+    private int allowChooseNum=3;
     @Override
     protected void onDestroy() {
         mImages.clear();
@@ -170,7 +170,7 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
 
         grid = (GridView) findViewById(R.id.tougao_grid);
         mImages.add("add");
-        adpter = new TouGaoGridAdapter(this, mImages, true);
+        adpter = new TouGaoGridAdapter(this, mImages, true,allowChooseNum);
         adpter.setOncCancleListener(this);
         grid.setAdapter(adpter);
 
@@ -672,8 +672,8 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
         } else if (resultCode == 111) {
             ArrayList<String> list = data.getStringArrayListExtra("array");
             if (list != null) {
-                if (mImages.size() < 3) {
-                    if (((mImages.size() - 1) + list.size() < 3)) {
+                if (mImages.size() < allowChooseNum) {
+                    if (((mImages.size() - 1) + list.size() < allowChooseNum)) {
                         if (mImages.size() > 1) {
                             mImages.addAll(mImages.size() - 1, list);
                         } else {
@@ -882,7 +882,7 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
      */
     @Override
     public void onCancle(int positon) {
-        if (mImages.size() == 3 && !mImages.get(mImages.size() - 1).equals("add")) {
+        if (mImages.size() == allowChooseNum && !mImages.get(mImages.size() - 1).equals("add")) {
             Log.w(TAG, "onCancle: mimages" + mImages.toString());
             Log.w(TAG, "onCancle: fsdfsd");
             mImages.add("add");
