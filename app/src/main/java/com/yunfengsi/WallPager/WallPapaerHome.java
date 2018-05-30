@@ -1,5 +1,6 @@
 package com.yunfengsi.WallPager;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -79,7 +80,11 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.userImage:
+                startActivity(new Intent(this,WallPaperUserHome.class));
+                break;
+        }
     }
 
 

@@ -169,7 +169,6 @@ public class ImageUtil {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bit.compress(Bitmap.CompressFormat.JPEG, 90, bos);
         byte[] bytes = bos.toByteArray();
-
         return bytes;
 //        "data:image/jpeg;base64,"+(Base64.encodeToString(bytes, Base64.DEFAULT))
     }

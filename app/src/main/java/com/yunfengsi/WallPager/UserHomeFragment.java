@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -26,7 +27,6 @@ import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
-import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
 
 import org.json.JSONException;
@@ -42,8 +42,11 @@ import okhttp3.Response;
 /**
  * 作者：因陀罗网 on 2018/5/26 11:15
  * 公司：成都因陀罗网络科技有限公司
+ *
+ *
+ * 壁纸用户中心统一fragment
  */
-public class RecommendFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private View                  view;
     private SwipeRefreshLayout    swipeRefreshLayout;
     private RecyclerView          recyclerView;
@@ -99,11 +102,10 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
 
 
     private class RecommendPagerAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
-        int singleWidth;
+
         public RecommendPagerAdapter(@Nullable List<HashMap<String, String>> data) {
-            super(R.layout.item_wallpager_recommend, data);
-            singleWidth=(getResources().getDisplayMetrics().widthPixels- DimenUtils.dip2px(getActivity(),42))/3;
-            LogUtil.e("单一宽度：："+singleWidth);
+            super(R.layout.item_wallpager_userhome, data);
+
         }
 
         @Override
@@ -111,13 +113,10 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
 
             Glide.with(getActivity()).load(item.get("image"))
 //                    .skipMemoryCache(true)
-                    .asBitmap()
-                    .override(singleWidth, (singleWidth<<4)/9)
-                    .into(new SimpleTarget<Bitmap>() {
+                    .into(new SimpleTarget<GlideDrawable>() {
                         @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            ((ImageView) helper.getView(R.id.image)).setImageBitmap(resource);
-                            LogUtil.e("图片内存：："+resource.getByteCount()+" 宽高：："+resource.getWidth()+"   "+resource.getHeight());
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            ((ImageView) helper.getView(R.id.image)).setImageDrawable(resource);
                         }
                     });
             helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {

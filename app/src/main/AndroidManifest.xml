@@ -758,6 +758,11 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
           ></activity>
 
+        <activity
+            android:name=".WallPager.WallPaperUserHome"
+            android:screenOrientation="portrait"
+            ></activity>
+
 
         <!--sophix-->
         <meta-data

@@ -10,12 +10,12 @@
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="40dp">
 
         <ImageView
             android:id="@+id/back"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/back_sel"
             android:padding="10dp"
             android:src="@drawable/back" />

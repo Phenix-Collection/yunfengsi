@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <View
+        android:id="@+id/back_head"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/back_sel"
+        android:padding="10dp"
+        android:src="@drawable/back" />
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/back_head"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/back_head" />
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="上传"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/back_head"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/back_head"
+        app:text_color_normal="@color/white"
+        app:text_color_pressed="#bbbbbb" />
+
+
+    <ImageView
+        android:id="@+id/back_user"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:adjustViewBounds="true"
+        android:foreground="#60000000"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mine_banner"
+        app:layout_constraintTop_toBottomOf="@+id/back_head" />
+
+    <cn.carbs.android.avatarimageview.library.AvatarImageView
+        android:id="@+id/head"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/def"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/back_user" />
+
+
+    <TextView
+        android:id="@+id/pet_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/head"
+        tools:text="啊哈哈哈哈哈" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:tabIndicatorColor="@color/main_color"
+        app:tabSelectedTextColor="@color/main_color"
+        app:tabTextColor="@color/black"
+        app:tabBackground="@null"
+
+        app:layout_constraintTop_toBottomOf="@+id/back_user">
+
+    </android.support.design.widget.TabLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab">
+
+    </android.support.v4.view.ViewPager>
+
+</android.support.constraint.ConstraintLayout>

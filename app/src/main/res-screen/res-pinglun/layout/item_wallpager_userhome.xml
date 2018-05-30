@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="7dp">
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:transitionName="@string/wallPaper_ShareName"
+        tools:src="@drawable/shu" />
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/status"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        tools:text="哈哈爱了就爱垃圾"
+        android:gravity="center"
+        app:text_color_normal="@color/white"
+        android:textSize="14dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        />
+</FrameLayout>

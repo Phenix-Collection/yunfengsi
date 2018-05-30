@@ -60,7 +60,6 @@ import com.yunfengsi.View.mItemDecoration;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -412,22 +411,15 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
 
 
             ColorMatrix colorMatrix=new ColorMatrix();
-//            float i=new Random().nextFloat();
-//            float i=0.5f;
-            colorMatrix.setScale(Color.red(themeColor/0xff)/255f,Color.green(themeColor/0xff)/255f,Color.blue(themeColor/0xff)/255f,1);
+
+            float red=Math.max(0.7f,(Color.red(themeColor/0xff)/255f));
+            float blue=Math.max(0.7f,(Color.blue(themeColor/0xff)/255f));
+            float green=Math.max(0.7f,(Color.green(themeColor/0xff)/255f));
+            colorMatrix.setScale(red,blue,green,1);
 
             ((ImageView) view).setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-            BigInteger bigInteger=new BigInteger(String.valueOf(themeColor),16);
-            LogUtil.e("颜色变化"+themeColor+"  蓝色：："+(themeColor/0xff)+"  值  "+Color.blue(themeColor/0xff)+"    16进制数：："+0xff);
-//            ImageView imageView = (ImageView) view;
-//            PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(themeColor,
-//                    PorterDuff.Mode.SRC_ATOP);
-//            if (imageView == null) {
-//                return;
-//            }
-//            if(imageView.getDrawable()!=null){
-//                imageView.getDrawable().setColorFilter(porterDuffColorFilter);
-//            }
+//            BigInteger bigInteger=new BigInteger(String.valueOf(themeColor),16);
+//            LogUtil.e("颜色变化"+themeColor+"  透明度：："+(themeColor/0xff)+"  值  "+Color.alpha(themeColor/0xff)+"    16进制数：："+0xff);
 
         }
     }

@@ -1,6 +1,7 @@
 package com.yunfengsi.WallPager;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ import uk.co.senab.photoview.PhotoView;
  * 作者：因陀罗网 on 2018/5/28 14:53
  * 公司：成都因陀罗网络科技有限公司
  */
-public class WallPaperDetail extends AppCompatActivity {
+public class WallPaperDetail extends AppCompatActivity implements View.OnClickListener {
     private PhotoView photoView;
 
     private RTextView like, user, download, comment, collect, encourage;
@@ -58,10 +59,49 @@ public class WallPaperDetail extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= 21) {
             ViewCompat.setTransitionName(findViewById(R.id.paper), getString(R.string.wallPaper_ShareName));
-            ViewCompat.setTransitionName(findViewById(R.id.user), getString(R.string.wallPaper_User_Head_ShareName));
+
         }
 
         photoView = findViewById(R.id.paper);
+        byte[] b      = getIntent().getByteArrayExtra("photoBytes");
+        Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+        photoView.setImageBitmap(bitmap);
+//        Glide.with(this).load(getIntent().getStringExtra("image"))
+//                .asBitmap().into(photoView);
+
+        like = findViewById(R.id.like);
+        user = findViewById(R.id.user);
+        download = findViewById(R.id.download);
+        comment = findViewById(R.id.comment);
+        collect = findViewById(R.id.collect);
+        encourage = findViewById(R.id.encourage);
+
+
+//        Glide.with(this).load(getIntent().getStringExtra("url"))
+//                .into(photoView);
+        Glide.with(this).load(PreferenceUtil.getUserIncetance(this).getString("head_url", ""))
+                .asBitmap()
+                .override(DimenUtils.dip2px(this, 40), DimenUtils.dip2px(this, 40))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
+                        rbd.setCircular(true);
+                        user.setIconNormal(rbd);
+                    }
+                });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        findViewById(R.id.back).setOnClickListener(this);
+        like.setOnClickListener(this);
+        download.setOnClickListener(this);
+        comment.setOnClickListener(this);
+        collect.setOnClickListener(this);
+        encourage.setOnClickListener(this);
+
         photoView.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -88,28 +128,24 @@ public class WallPaperDetail extends AppCompatActivity {
                 return true;
             }
         });
-        like = findViewById(R.id.like);
-        user = findViewById(R.id.user);
+    }
 
-//        Glide.with(this).load(getIntent().getStringExtra("image"))
-//                .asBitmap().skipMemoryCache(true).thumbnail(0.1f).into(new SimpleTarget<Bitmap>() {
-//            @Override
-//            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                photoView.setImageBitmap(resource);
-//            }
-//        });
-        Glide.with(this).load(R.drawable.start)
-                .asBitmap().skipMemoryCache(true).thumbnail(0.1f).into(photoView);
-        Glide.with(this).load(PreferenceUtil.getUserIncetance(this).getString("head_url", ""))
-                .asBitmap()
-                .override(DimenUtils.dip2px(this, 40), DimenUtils.dip2px(this, 40))
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
-                        rbd.setCircular(true);
-                        user.setIconNormal(rbd);
-                    }
-                });
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.like:
+                break;
+            case R.id.download:
+                break;
+            case R.id.comment:
+                break;
+            case R.id.collect:
+                break;
+            case R.id.encourage:
+                break;
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.yunfengsi.WallPager;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,14 +19,24 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.R;
-import com.yunfengsi.Setting.Search;
+import com.yunfengsi.Utils.AnalyticalJSON;
+import com.yunfengsi.Utils.ApisSeUtil;
+import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.View.mItemDecoration;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * 作者：因陀罗网 on 2017/9/9 05:15
@@ -40,7 +49,6 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
     private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private fenleiAdapter      adapter;
-    private FrameLayout        search;
 
     @Nullable
     @Override
@@ -52,14 +60,6 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
     }
 
     private void initView(View view) {
-        search = (FrameLayout) view.findViewById(R.id.search_layout);
-        search.setOnClickListener(this);
-
-        Drawable d    = ContextCompat.getDrawable(getActivity(), R.drawable.search);
-        int      dp25 = DimenUtils.dip2px(getActivity(), 20);
-        d.setBounds(0, 0, dp25, dp25);
-
-        ((TextView) view.findViewById(R.id.search)).setCompoundDrawables(d, null, null, null);
 
         swip = (SwipeRefreshLayout) view.findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
@@ -96,7 +96,7 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
         d1.setBounds(0, 0, DimenUtils.dip2px(getActivity(), 150), DimenUtils.dip2px(getActivity(), 150) * d1.getIntrinsicHeight() / d1.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d1, null, null);
         textView.setCompoundDrawablePadding(DimenUtils.dip2px(getActivity(), 10));
-        textView.setText("暂无商品分类");
+        textView.setText("暂无壁纸分类");
         textView.setGravity(Gravity.CENTER);
         ViewGroup.MarginLayoutParams vl = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         vl.topMargin = DimenUtils.dip2px(getActivity(), 140);
@@ -120,47 +120,36 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
      * 获取数据
      */
     private void getTitles() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    JSONObject js = new JSONObject();
-//                    try {
-//                        js.put("m_id", Constants.M_id);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    ApisSeUtil.M m = ApisSeUtil.i(js);
-//                    final String data = OkHttpUtils.post(Constants.Order_type)
-//                            .params("key", m.K())
-//                            .params("msg", m.M()).execute().body().string();
-//                    if (view != null) {
-//                        view.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (!TextUtils.isEmpty(data)) {
-//                                    LogUtil.e("run: data_______>" + data);
-//                                    List<HashMap<String, String>> list1 = AnalyticalJSON.getList_zj(data);
-//                                    if (list1 != null) {
-//                                        adapter.setNewData(list1);
-//                                    }
-//
-//                                }
-//                                swip.setRefreshing(false);
-//                            }
-//                        });
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            swip.setRefreshing(false);
-//                        }
-//                    });
-//                }
-//            }
-//        }).start();
+        JSONObject js=new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApisSeUtil.M m=ApisSeUtil.i(js);
+        OkGo.post(Constants.WallPaperTypeList)
+                .params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        HashMap<String,String > map= AnalyticalJSON.getHashMap(s);
+                        if(map!=null){
+                            ArrayList<HashMap<String,String >> list=AnalyticalJSON.getList_zj(map.get("msg"));
+                            if(list!=null){
+                                adapter.setNewData(list);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onAfter(String s, Exception e) {
+                        super.onAfter(s, e);
+                        swip.setRefreshing(false);
+                    }
+                });
+
     }
 
     @Override
@@ -173,10 +162,6 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.search_layout://跳转到搜索界面
-                Intent intent = new Intent(getActivity(), Search.class);
-                startActivity(intent);
-                break;
 
             case R.id.all://所有商品
                 break;
