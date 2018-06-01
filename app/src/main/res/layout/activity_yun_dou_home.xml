@@ -51,6 +51,7 @@
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
+                    tools:text="云豆记录"
                     android:layout_gravity="center_horizontal"
                     app:text_color_pressed="@color/light_huise"
                     app:text_color_normal="@color/white"
@@ -69,6 +70,13 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:textSize="16dp"
+
+                    app:border_color_normal="@color/white"
+                    app:border_color_pressed="@color/light_huise"
+                    app:border_width_normal="1dp"
+                    app:corner_radius="100dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     app:text_color_normal="@color/white"
                     app:text_color_pressed="#b6b6b6"
                     android:text="排行榜"/>

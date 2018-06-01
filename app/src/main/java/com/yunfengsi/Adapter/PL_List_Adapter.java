@@ -236,7 +236,7 @@ public class PL_List_Adapter extends BaseAdapter {
         holder.head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScaleImageUtil.openBigIagmeMode((Activity) context,bean.get("user_image"));
+                ScaleImageUtil.openBigIagmeMode((Activity) context,bean.get("user_image"),true);
             }
         });
         if (bean.get("id") == null) {

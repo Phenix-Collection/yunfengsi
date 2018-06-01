@@ -2,6 +2,7 @@ package com.yunfengsi.Adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +90,7 @@ public class Mine_SC_adapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.user.setText(mApplication.ST(map.get("title")));
-        holder.title.setText(mApplication.ST(map.get("abstract")));
+
         holder.time.setText(TimeUtils.getTrueTimeStr(map.get("time")));
         holder.type.setTag(map.get("collect_id"));
         Glide.with(context).load(map.get("image")).override(screenWidth * 3 / 10, screenWidth * 6 / 25).centerCrop().into(holder.image);
@@ -97,10 +98,13 @@ public class Mine_SC_adapter extends BaseAdapter {
         holder.delete.setTag(R.id.sut_type, map.get("collect_id"));
         holder.delete.setTag(R.id.position, position);
         if (map.get("type").equals("1")) {
+            holder.title.setText(mApplication.ST(map.get("abstract")));
             holder.type.setText(mApplication.ST("图文"));
         } else if (map.get("type").equals("2")) {
+            holder.title.setText(mApplication.ST(map.get("abstract")));
             holder.type.setText(mApplication.ST("活动"));
         } else if (map.get("type").equals("4")) {
+            holder.title.setText(mApplication.ST(Html.fromHtml(map.get("abstract")).toString()));
             holder.type.setText(mApplication.ST("助学"));
         }
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {

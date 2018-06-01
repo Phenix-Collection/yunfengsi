@@ -290,7 +290,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
             @Override
             public void OnBannerClick(int position) {
                 if (imageList != null) {
-                    ScaleImageUtil.openBigIagmeMode(activity_Detail.this, imageList, position);
+                    ScaleImageUtil.openBigIagmeMode(activity_Detail.this, imageList, position,true);
                     LogUtil.e("大图浏览:::" + imageList);
                 }
             }

@@ -8,6 +8,8 @@
 
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/paper"
+        android:visibility="invisible"
+        android:background="#444444"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,6 +25,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/back_sel"
         android:padding="10dp"
+        android:visibility="invisible"
         android:src="@drawable/cancle_white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +41,7 @@
         android:src="@drawable/more"
         android:rotation="90"
         android:padding="10dp"
+        android:visibility="invisible"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#f0000000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.ruffian.library.RTextView
@@ -60,39 +65,42 @@
         app:icon_height="16dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:visibility="invisible"
         app:icon_src_normal="@drawable/download"
         android:layout_marginRight="10dp"
         app:icon_width="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/comment"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        app:text_color_normal="@color/white"
-        app:text_color_pressed="#888888" />
-
-    <com.ruffian.library.RTextView
-        android:id="@+id/comment"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:drawablePadding="2dp"
-        android:gravity="center"
-        android:text="评论"
-        android:textSize="15dp"
-        app:icon_direction="left"
-        android:layout_marginRight="5dp"
-        app:icon_height="16dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:icon_src_normal="@drawable/comment_wall_paper"
-        app:icon_width="16dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/download"
         app:layout_constraintRight_toLeftOf="@+id/collect"
         app:layout_constraintVertical_chainStyle="spread_inside"
         app:text_color_normal="@color/white"
-        app:text_color_pressed="#888888" />
+        app:text_color_pressed="#888888"
+        app:text_color_unable="#888888"/>
+
+    <!--<com.ruffian.library.RTextView-->
+        <!--android:id="@+id/comment"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:drawablePadding="2dp"-->
+        <!--android:gravity="center"-->
+        <!--android:text="评论"-->
+        <!--android:textSize="15dp"-->
+        <!--app:icon_direction="left"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--app:icon_height="16dp"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:visibility="invisible"-->
+        <!--app:icon_src_normal="@drawable/comment_wall_paper"-->
+        <!--app:icon_width="16dp"-->
+
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/download"-->
+        <!--app:layout_constraintRight_toLeftOf="@+id/collect"-->
+        <!--app:layout_constraintVertical_chainStyle="spread_inside"-->
+        <!--app:text_color_normal="@color/white"-->
+        <!--app:text_color_pressed="#888888" />-->
 
     <com.ruffian.library.RTextView
         android:id="@+id/collect"
@@ -104,17 +112,19 @@
         android:textSize="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:visibility="invisible"
         app:icon_direction="left"
         android:layout_marginLeft="5dp"
         app:icon_height="16dp"
         app:icon_src_normal="@drawable/collect_wall_paper"
         app:icon_width="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/comment"
+        app:layout_constraintLeft_toRightOf="@+id/download"
         app:layout_constraintRight_toLeftOf="@+id/encourage"
         app:layout_constraintVertical_chainStyle="spread_inside"
         app:text_color_normal="@color/white"
-        app:text_color_pressed="#888888" />
+        app:text_color_pressed="#888888"
+        app:text_color_unable="#888888"/>
 
     <com.ruffian.library.RTextView
         android:id="@+id/encourage"
@@ -122,7 +132,8 @@
         android:layout_height="40dp"
         android:drawablePadding="2dp"
         android:gravity="center"
-        android:text="鼓励"
+        android:text="设置"
+        android:visibility="invisible"
         android:textSize="15dp"
         app:icon_direction="left"
         android:layout_marginLeft="10dp"
@@ -133,6 +144,28 @@
         app:icon_width="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/collect"
+        app:layout_constraintRight_toLeftOf="@+id/delete"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:text_color_normal="@color/white"
+        app:text_color_pressed="#888888" />
+    <com.ruffian.library.RTextView
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:drawablePadding="2dp"
+        android:gravity="center"
+        android:text="删除"
+        android:visibility="invisible"
+        android:textSize="15dp"
+        app:icon_direction="left"
+        android:layout_marginLeft="10dp"
+        app:icon_height="16dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:icon_src_normal="@drawable/delete_wallpaper"
+        app:icon_width="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/encourage"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside"
         app:text_color_normal="@color/white"
@@ -144,6 +177,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#aa444444"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/place_black" />
 
 
@@ -155,13 +189,14 @@
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:textSize="16dp"
+        android:visibility="invisible"
         android:transitionName="@string/wallPaper_User_Head_ShareName"
         app:icon_direction="left"
         app:icon_height="40dp"
         app:icon_width="40dp"
         app:layout_constraintBottom_toBottomOf="@+id/user_place"
         app:text_color_normal="@color/white"
-        android:text="哈哈哈" />
+         />
 
 
     <com.ruffian.library.RTextView
@@ -174,8 +209,9 @@
         android:paddingRight="10dp"
         android:textSize="12dp"
         app:icon_direction="top"
+        android:visibility="invisible"
         app:icon_height="30dp"
-        app:icon_src_normal="@drawable/dianzan"
+        app:icon_src_normal="@drawable/white_like"
         app:icon_width="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/user_place"
         app:layout_constraintRight_toRightOf="parent"

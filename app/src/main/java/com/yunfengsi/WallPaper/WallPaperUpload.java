@@ -1,11 +1,10 @@
-package com.yunfengsi.WallPager;
+package com.yunfengsi.WallPaper;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -14,11 +13,9 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.HttpParams;
-import com.lzy.okgo.request.BaseRequest;
 import com.yunfengsi.R;
-import com.yunfengsi.TouGao.TouGao;
 import com.yunfengsi.TouGao.TouGaoGridAdapter;
-import com.yunfengsi.Utils.Api;
+import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.FileUtils;
@@ -27,13 +24,14 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
-import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.Utils.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -76,7 +74,7 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         switch (view.getId()){
             case R.id.back:
                 finish();
@@ -84,6 +82,7 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
 
             case R.id.upload:
                 // TODO: 2018/5/29 上传
+                view.setEnabled(false);
                 JSONObject js=new JSONObject();
                 HttpParams httpParams=new HttpParams();
                 try {
@@ -96,6 +95,8 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
                 ApisSeUtil.M m=ApisSeUtil.i(js);
                 httpParams.put("key",m.K());
                 httpParams.put("msg",m.M());
+                ProgressUtil.show(WallPaperUpload.this,"","正在上传...");
+                ProgressUtil.canCancelAble(false);
                 for (int i = 0; i < mImages.size(); i++) {
                     if (mImages.get(i).equals("add")) {
                         continue;
@@ -113,22 +114,26 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(String s, Call call, Response response) {
+                                HashMap<String ,String > map= AnalyticalJSON.getHashMap(s);
+                                if(map!=null){
+                                    if("000".equals(map.get("code"))){
+                                        ToastUtil.showToastShort("壁纸上传成功，请等待审核");
+                                        setResult(999);
+                                        finish();
 
+                                    }
+                                }
                             }
 
-                            @Override
-                            public void onBefore(BaseRequest request) {
-                                super.onBefore(request);
-                                ProgressUtil.show(WallPaperUpload.this,"","正在上传...");
-                                ProgressUtil.canCancelAble(false);
-                            }
 
                             @Override
                             public void onAfter(String s, Exception e) {
                                 super.onAfter(s, e);
+                                view.setEnabled(true);
                                 ProgressUtil.dismiss();
                                 ProgressUtil.canCancelAble(true);
                             }
+
                         });
                 break;
         }

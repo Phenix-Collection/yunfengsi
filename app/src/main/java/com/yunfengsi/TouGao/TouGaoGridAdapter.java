@@ -141,7 +141,7 @@ public class TouGaoGridAdapter extends BaseAdapter {
                     context.startActivityForResult(intent, 000);
                 } else {
                     //大图模式
-                    ScaleImageUtil.openBigIagmeMode(context,mImgs,position);
+                    ScaleImageUtil.openBigIagmeMode(context,mImgs,position,true);
                 }
             }
         });

@@ -47,8 +47,8 @@ public class ItemManager extends AppCompatActivity {
     private static final int[] DEFAULT_IMAGE = {R.raw.gongxiu,R.raw.shoucang_justforleft, R.raw.mine_activity, R.raw.jinshu};
 
 
-    private static final String[] ALL_NAME = {"我的云豆","我的福利","壁纸","卜事", "坐禅", "会员中心", "功德", "通知", "功课", "投稿", "祈愿树"};
-    private static final int[] ALL_IMAGE = {R.raw.yundou,R.raw.fuli,R.raw.icon_wallpager,R.raw.qian_icon, R.raw.meditation, R.raw.huiyuan, R.raw.zhifu_justforleft, R.raw.tongzhi_normal,
+    private static final String[] ALL_NAME = {"壁纸","我的云豆","我的福利","卜事", "坐禅", "会员中心", "功德", "通知", "功课", "投稿", "祈愿树"};
+    private static final int[] ALL_IMAGE = {R.raw.icon_wallpager,R.raw.yundou,R.raw.fuli,R.raw.qian_icon, R.raw.meditation, R.raw.huiyuan, R.raw.zhifu_justforleft, R.raw.tongzhi_normal,
             R.raw.gongke, R.raw.tougao_mine, R.raw.qiyuan};
 
 

@@ -31,8 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.yunfengsi.Managers.MineManager.text;
-
 /**
  * Created by Administrator on 2016/10/20.
  */
@@ -210,7 +208,7 @@ public class ImageGridAdapter extends BaseAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ScaleImageUtil.openBigIagmeMode((Activity) context,path);
+                    ScaleImageUtil.openBigIagmeMode((Activity) context,path,true);
                 }
             });
         }

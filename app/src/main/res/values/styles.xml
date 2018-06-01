@@ -3,9 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -158,7 +156,7 @@
     </style>
 
 
-    <style name="YFS_Deamon_Style">
+    <style name="YFS_Deamon_Style" parent="AppTheme">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
@@ -170,7 +168,16 @@
         <item name="android:windowNoDisplay">false</item>
     </style>
 
+    <style name="ITransition" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
+    <style name="NormalFullScreen" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+    </style>
     <style name="ITabLayout" >
         <item name="android:textSize">18dp</item>
     </style>

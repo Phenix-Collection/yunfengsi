@@ -20,6 +20,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Adapter.PingLunActivity;
+import com.yunfengsi.Fragment.Mine_GYQD;
 import com.yunfengsi.Model_activity.Mine_activity_list;
 import com.yunfengsi.Model_activity.activity_Detail;
 import com.yunfengsi.NianFo.NianFo;
@@ -34,6 +35,7 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.WallPaper.WallPaperUserHome;
 import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.ZiXun_Detail;
 
@@ -55,20 +57,23 @@ import okhttp3.Response;
 
 public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int ZiXun = 1;
-    private static final int HuoDong = 2;
-    private static final int GongYang = 3;
-    private static final int ZhuXue = 4;
-    private static final int  PINGLUN=5;
-    private static final int  MineHuodong=6;
-    private RecyclerView recyclerView;
+    private static final int ZiXun             = 1;
+    private static final int HuoDong           = 2;
+    private static final int GongYang          = 3;
+    private static final int ZhuXue            = 4;
+    private static final int PINGLUN           = 5;
+    private static final int MineHuodong       = 6;
+    private static final int GongYangPay       = 7;
+    private static final int ZhuXuePay         = 8;
+    private static final int WallPaperVerified = 9;
+    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
-    private MessageAdapter adapter;
-    private int pageSize = 10;
-    private int page = 1;
-    private int endPage = -1;
+    private MessageAdapter     adapter;
+    private int     pageSize   = 10;
+    private int     page       = 1;
+    private int     endPage    = -1;
     private boolean isLoadMore = false;
-    private boolean isRefresh = false;
+    private boolean isRefresh  = false;
 
     @Override
     protected void onDestroy() {
@@ -116,8 +121,8 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
 
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int position) {
-                Intent intent = new Intent();
-                HashMap<String, String> map = adapter.getData().get(position);
+                Intent                  intent = new Intent();
+                HashMap<String, String> map    = adapter.getData().get(position);
                 if (map.get("type") != null) {
                     switch (Integer.valueOf(map.get("type"))) {
                         case ZiXun:
@@ -138,6 +143,15 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                         case PINGLUN:
                             intent.setClass(MessageCenter.this, PingLunActivity.class);
                             break;
+                        case ZhuXuePay:
+                        case GongYangPay:
+                            intent.setClass(MessageCenter.this, Mine_GYQD.class);
+                            break;
+                        case WallPaperVerified:
+                            intent.setClass(MessageCenter.this, WallPaperUserHome.class);
+                            intent.putExtra("mine", true);
+
+                            break;
 //                        case mReceiver.QiYuan:
 //                            intent.setClass(MessageCenter.this, BlessTree.class);
 //                            break;
@@ -153,6 +167,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
 
 
                     }
+
                     intent.putExtra("id", map.get("type_id"));
                     startActivity(intent);
                 }
@@ -160,9 +175,9 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
         });
         recyclerView.setAdapter(adapter);
 
-        View empty = LayoutInflater.from(this).inflate(R.layout.empty_layout, null);
+        View     empty    = LayoutInflater.from(this).inflate(R.layout.empty_layout, null);
         TextView textView = empty.findViewById(R.id.empty);
-        Drawable d = ContextCompat.getDrawable(this, R.drawable.load_nothing);
+        Drawable d        = ContextCompat.getDrawable(this, R.drawable.load_nothing);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
         textView.setText(mApplication.ST("暂无通知"));
@@ -184,7 +199,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
 
     private static class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
         Drawable next;
-        int dp30;
+        int      dp30;
 
         public MessageAdapter(Context context, List<HashMap<String, String>> data) {
             super(R.layout.item_message_center, data);
@@ -208,6 +223,16 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                         break;
                     case ZhuXue:
                         holder.setText(R.id.title, "助学");
+                        break;
+
+                    case GongYangPay:
+                        holder.setText(R.id.title, "供养支付");
+                        break;
+                    case ZhuXuePay:
+                        holder.setText(R.id.title, "助学支付");
+                        break;
+                    case WallPaperVerified:
+                        holder.setText(R.id.title, "壁纸审核结果");
                         break;
 //                    case mReceiver.GONGXIU:
 //                        holder.setText(R.id.title, "共修");

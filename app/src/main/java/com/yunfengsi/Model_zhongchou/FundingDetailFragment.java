@@ -328,7 +328,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
             @Override
             public void OnBannerClick(int position) {
                 if (imageUrlList != null) {
-                    ScaleImageUtil.openBigIagmeMode(getActivity(), imageUrlList, position);
+                    ScaleImageUtil.openBigIagmeMode(getActivity(), imageUrlList, position,true);
                 }
             }
         });
@@ -1413,7 +1413,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
             head.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ScaleImageUtil.openBigIagmeMode((Activity) context,bean.get("user_image"));
+                    ScaleImageUtil.openBigIagmeMode((Activity) context,bean.get("user_image"),true);
                 }
             });
 

@@ -1,4 +1,4 @@
-package com.yunfengsi.WallPager;
+package com.yunfengsi.WallPaper;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,8 +20,11 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.DimenUtils;
+import com.yunfengsi.Utils.LoginUtil;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.UsefulImageView;
 
 import java.util.ArrayList;
@@ -31,23 +34,23 @@ import java.util.ArrayList;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class WallPapaerHome extends AppCompatActivity implements View.OnClickListener {
-    private TabLayout tabLayout;
-    private ImageView back;
-    private ViewPager viewPager;
+    private TabLayout            tabLayout;
+    private ImageView            back;
+    private ViewPager            viewPager;
     private WallPaperPageAdapter adapter;
-    private ArrayList<Fragment> list;
+    private ArrayList<Fragment>  list;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-
-
+        mApplication.getInstance().addActivity(this);
 
 
         setContentView(R.layout.wall_page_home);
-        tabLayout=findViewById(R.id.tab);
-        viewPager=findViewById(R.id.viewpager);
-        back=findViewById(R.id.back);
+        tabLayout = findViewById(R.id.tab);
+        viewPager = findViewById(R.id.viewpager);
+        back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,44 +58,59 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        list=new ArrayList<>();
+        list = new ArrayList<>();
         list.add(new RecommendFragment());
         list.add(new WallPagerClassification());
 
-        adapter=new WallPaperPageAdapter(getSupportFragmentManager(),list);
+        adapter = new WallPaperPageAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager,true);
+        tabLayout.setupWithViewPager(viewPager, true);
 
-        Glide.with(this).load(PreferenceUtil.getUserIncetance(this).getString("head_url",""))
-                .asBitmap()
-                .override(DimenUtils.dip2px(this,40),DimenUtils.dip2px(this,40))
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        RoundedBitmapDrawable rbd= RoundedBitmapDrawableFactory.create(getResources(),resource);
-                        rbd.setCircular(true);
-                        ((ImageView) findViewById(R.id.userImage)).setImageDrawable(rbd);
-                    }
-                });
+        if (!PreferenceUtil.getUserId(this).equals("")) {
+            Glide.with(this).load(PreferenceUtil.getUserIncetance(this).getString("head_url", ""))
+                    .asBitmap()
+                    .override(DimenUtils.dip2px(this, 40), DimenUtils.dip2px(this, 40))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
+                            rbd.setCircular(true);
+                            ((ImageView) findViewById(R.id.userImage)).setImageDrawable(rbd);
+                        }
+                    });
+        }
+
         findViewById(R.id.userImage).setOnClickListener(this);
         ((UsefulImageView) findViewById(R.id.userImage)).isCircle(true);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.userImage:
-                startActivity(new Intent(this,WallPaperUserHome.class));
+                if (new LoginUtil().checkLogin(this)) {
+                    if(Network.HttpTest(WallPapaerHome.this)){
+                        startActivity(new Intent(this, WallPaperUserHome.class));
+                    }
+
+                }
                 break;
         }
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mApplication.getInstance().romoveActivity(this);
+    }
+
     private class WallPaperPageAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> list;
-        public WallPaperPageAdapter(FragmentManager fm,ArrayList<Fragment> fragments) {
+
+        public WallPaperPageAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
             super(fm);
-            this.list=fragments;
+            this.list = fragments;
         }
 
         @Override
@@ -107,9 +125,9 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position==0){
+            if (position == 0) {
                 return "推荐";
-            }else if(position==1){
+            } else if (position == 1) {
                 return "分类";
             }
             return super.getPageTitle(position);

@@ -6,12 +6,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Process;
 import android.os.StrictMode;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +31,11 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.spreada.utils.chinese.ZHConverter;
-import com.squareup.leakcanary.LeakCanary;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
+import com.yunfengsi.Deamon.OnePixelActivity;
 import com.yunfengsi.R;
 
 import java.lang.ref.WeakReference;
@@ -47,86 +50,98 @@ public class mApplication extends Application {
     private int caheM;
     private static final String TAG = "mApplication";
     private static mApplication application;
+    private static mApplication mainApplication;
     //当前交易的订单id
-    public static String sut_id = "";
-    public static String id = "";
-    public static String title = "";
-    public static String type = "";
+    public static String  sut_id  = "";
+    public static String  id      = "";
+    public static String  title   = "";
+    public static String  type    = "";
     //    public   ShareBoardConfig config;//分享面板配置
-    private boolean Debug = false;
+    public static boolean Debug   = true;
     public static boolean isChina = true;
 
     //    public static String gg_url="",gg_image="";//首页广告弹窗 背景图  ggimage   跳转链接  ggurl
     public static boolean changeIcon = false;//是否切换图标
     public static ComponentName componentName;//入口名称
 
-    public static final String alias1 = "com.yunfengsi.Splash";
-    public static final String alias2 = "com.yunfengsi.Splash1";
-    public HashMap<Class, WeakReference<Activity>> activityHashMap = new HashMap<>();
+    public static final String                                  alias1          = "com.yunfengsi.Splash";
+    public static final String                                  alias2          = "com.yunfengsi.Splash1";
+    public              HashMap<Class, WeakReference<Activity>> activityHashMap = new HashMap<>();
+
+
+    public OnePixelActivity onePixelActivity;//守护activity,存在于主进程中
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-//        String curProcess=SystemUtil.getProcessName(this, Process.myPid());
-//        LogUtil.e("当前进程：：："+curProcess);
-//        if(!getPackageName().equals(curProcess)){//如果当前进程不是主进程，则return ，防止二次初始化
-//            return;
-//        }
-        application = this;
-        //Glide
-        int maxMemory = (int) Runtime.getRuntime().maxMemory();
-        caheM = maxMemory / 8;
-        GlideBuilder gb = new GlideBuilder(this);
-        gb.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
-        gb.setMemoryCache(new LruResourceCache(caheM));
-
-        gb.setBitmapPool(new LruBitmapPool(caheM));
-        //Glide
+        String curProcess = SystemUtil.getProcessName(this, Process.myPid());
+        LogUtil.e("当前进程：：：" + curProcess + "    包名：：：" + getPackageName());
 
 
-        HttpHeaders headers = new HttpHeaders();
-        //所有的 header 都 不支持 中文
+        if (getPackageName().equals(curProcess)) {//如果当前进程是主进程，才初始化图片和网络，分享框架
+            //Glide
+            int maxMemory = (int) Runtime.getRuntime().maxMemory();
+            caheM = maxMemory / 8;
+            GlideBuilder gb = new GlideBuilder(this);
+            gb.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
+            gb.setMemoryCache(new LruResourceCache(caheM));
 
-        HttpParams params = new HttpParams();
-        //所有的 params 都 支持 中文
+            gb.setBitmapPool(new LruBitmapPool(caheM));
+            //Glide
 
 
-        //必须调用初始化
-        OkGo.init(this);
-        //以下都不是必须的，根据需要自行选择
-        OkGo.getInstance()//
+            HttpHeaders headers = new HttpHeaders();
+            //所有的 header 都 不支持 中文
 
-                .debug("OkGo", Level.SEVERE, Debug)
-                //是否打开调试
-                .setConnectTimeout(OkGo.DEFAULT_MILLISECONDS)               //全局的连接超时时间
-                .setReadTimeOut(OkGo.DEFAULT_MILLISECONDS)                  //全局的读取超时时间
-                .setWriteTimeOut(OkGo.DEFAULT_MILLISECONDS)                 //全局的写入超时时间
-                //.setCookieStore(new MemoryCookieStore())                           //cookie使用内存缓存（app退出后，cookie消失）
+            HttpParams params = new HttpParams();
+            //所有的 params 都 支持 中文
+
+
+            //必须调用初始化
+            OkGo.init(this);
+            //以下都不是必须的，根据需要自行选择
+            OkGo.getInstance()//
+
+                    .debug("OkGo", Debug ? Level.SEVERE : Level.OFF, Debug)
+                    //是否打开调试
+                    .setConnectTimeout(10000)               //全局的连接超时时间
+                    .setReadTimeOut(10000)                  //全局的读取超时时间
+                    .setWriteTimeOut(10000)                 //全局的写入超时时间
+                    //.setCookieStore(new MemoryCookieStore())                           //cookie使用内存缓存（app退出后，cookie消失）
 //                .setCookieStore(new PersistentCookieStore())                    //cookie持久化存储，如果cookie不过期，则一直有效
-                .addCommonHeaders(headers)                                         //设置全局公共头
-                .addCommonParams(params);
+                    .addCommonHeaders(headers)                                         //设置全局公共头
+                    .addCommonParams(params);
 
-        UMShareAPI.get(this);//初始化友盟
-        PlatformConfig.setWeixin("wxd33fe2dd9a8d2b6b", "5c43f64262abc1e2f0b18434afff7919");
+            UMShareAPI.get(this);//初始化友盟
+            PlatformConfig.setWeixin("wxd33fe2dd9a8d2b6b", "5c43f64262abc1e2f0b18434afff7919");
 //        PlatformConfig.setWeixin("wx7f8b711548c749fb","6159914840766b002a4542c899c9fba3");//公众号数据  测试
-        PlatformConfig.setQQZone("1105643311", "QPle8NDkjehWHPx8");
-        PlatformConfig.setSinaWeibo("2018815414", "9bc9e490e67fe21e177b69eed248cb4f", "https://api.weibo.com/oauth2/default.html");//
-        PlatformConfig.setTwitter("Z9vhrsa91vvyahIKTDffPxuY7", "w0OsXsQ9N4DUIdfL6uAlFbI5ZdQ1m4MUAHsjMUSVH7mTXm2pl2");//
+            PlatformConfig.setQQZone("1105643311", "QPle8NDkjehWHPx8");
+            PlatformConfig.setSinaWeibo("2018815414", "9bc9e490e67fe21e177b69eed248cb4f", "https://api.weibo.com/oauth2/default.html");//
+            PlatformConfig.setTwitter("Z9vhrsa91vvyahIKTDffPxuY7", "w0OsXsQ9N4DUIdfL6uAlFbI5ZdQ1m4MUAHsjMUSVH7mTXm2pl2");//
 
 //        config = new ShareBoardConfig();
 //        config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_BOTTOM);
 //        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_CIRCULAR);
 //        config.setCancelButtonVisibility(true);
-        Config.DEBUG = Debug;
-        com.umeng.socialize.utils.Log.LOG = Debug;
-        UMShareConfig config = new UMShareConfig();
-        config.isOpenShareEditActivity(true);
+            Config.DEBUG = Debug;
+            com.umeng.socialize.utils.Log.LOG = Debug;
+            UMShareConfig config = new UMShareConfig();
+            config.isOpenShareEditActivity(true);
 
-        UMShareAPI.get(this).setShareConfig(config);
-        isChina = PreferenceUtil.getSettingIncetance(this).getBoolean("isChina", true);
+            UMShareAPI.get(this).setShareConfig(config);
+            isChina = PreferenceUtil.getSettingIncetance(this).getBoolean("isChina", true);
 
-//        Intent intent = new Intent(this, GohnsonService.class);
-//        startService(intent);
+            mainApplication=this;
+        }
+
+        /**
+         *
+         * 以下为守护进程重新实例化时需要重新初始化的代码
+         *
+         * 推送
+         */
+        application = this;
 
 
         //初始化阿里云推送
@@ -134,29 +149,37 @@ public class mApplication extends Application {
 
         // 注册方法会自动判断是否支持小米系统推送，如不支持会跳过注册。
         MiPushRegister.register(this, "2882303761517517038", "5341751749038");
-// 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
+        // 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
         HuaWeiRegister.register(this);
 
-//       if(LeakCanary.isInAnalyzerProcess(this)){
-//           return;
-//       }
-//       LeakCanary.install(this);
 
-        if (Build.VERSION.SDK_INT >23) {
+        if (Build.VERSION.SDK_INT > 23) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
             builder.detectFileUriExposure();
         }
 
 
-        if(LeakCanary.isInAnalyzerProcess(this)&&!Debug){
-            return;
-        }
-        LeakCanary.install(this);
+//        if(LeakCanary.isInAnalyzerProcess(this)&&!Debug){
+//            return;
+//        }
+//        LeakCanary.install(this);
     }
 
+    /**
+     * 获取当前进程对象
+     * @return
+     */
     public static mApplication getInstance() {
         return application;
+    }
+
+    /**
+     * 获取主进程对象
+     * @return
+     */
+    public static mApplication getMainInstance() {
+        return mainApplication;
     }
 
     /**
@@ -217,7 +240,7 @@ public class mApplication extends Application {
         });
     }
 
-    public  void closeAllActivities() {
+    public void closeAllActivities() {
         Iterator<WeakReference<Activity>> iterActivity = activityHashMap.values().iterator();
         while (iterActivity.hasNext()) {
             iterActivity.next().get().finish();
@@ -225,34 +248,50 @@ public class mApplication extends Application {
         activityHashMap.clear();
     }
 
-    public  void addActivity(Activity activity) {
-        LogUtil.e("添加页面：；"+activity.getClass().getName());
+    public void addActivity(Activity activity) {
+        LogUtil.e("添加页面：；" + activity.getClass().getName());
         activityHashMap.put(activity.getClass(), new WeakReference<Activity>(activity));
     }
 
-    public  void romoveActivity(Activity activity) {
+    public void romoveActivity(Activity activity) {
         if (activityHashMap.containsKey(activity.getClass())) {
-            LogUtil.e("移除页面：；"+activity.getClass().getName());
+            LogUtil.e("移除页面：；" + activity.getClass().getName());
             activityHashMap.remove(activity.getClass());
             if (activity != null) {
-                LogUtil.e("销毁页面：；"+activity.getClass().getName());
+                LogUtil.e("销毁页面：；" + activity.getClass().getName());
                 activity.finish();
             }
 
         }
     }
 
+    public static View getEmptyView(Context context, int marginTopDp, String tip) {
+        TextView textView = new TextView(context);
+        Drawable d        = ContextCompat.getDrawable(context, R.drawable.load_nothing);
+        d.setBounds(0, 0, DimenUtils.dip2px(context, 150), DimenUtils.dip2px(context, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
+        textView.setCompoundDrawables(null, d, null, null);
+        textView.setCompoundDrawablePadding(DimenUtils.dip2px(context, 5));
+        textView.setText(mApplication.ST(tip));
+
+
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        ViewGroup.LayoutParams vl = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        textView.setLayoutParams(vl);
+        textView.setPadding(0, DimenUtils.dip2px(context, marginTopDp), 0, 0);
+        return textView;
+    }
 
     public static void openPayLayout(final Activity context, final String allmoney, final String attachId, final String title, final String num, final String type, final String extra) {// TODO: 2016/12/20 打开支付窗口
 
 
-        AlertDialog.Builder b = new AlertDialog.Builder(context);
-        final AlertDialog alertDialog = b.create();
-        View view = LayoutInflater.from(context).inflate(R.layout.pay_bottom_layout, null);
-        Drawable drawable = context.getResources().getDrawable(R.drawable.pay_wc);
-        Drawable drawable1 = context.getResources().getDrawable(R.drawable.pay_qq);
-        Drawable drawable2 = context.getResources().getDrawable(R.drawable.pay_up);
-        Drawable drawable3 = context.getResources().getDrawable(R.drawable.pay_ali);
+        AlertDialog.Builder b           = new AlertDialog.Builder(context);
+        final AlertDialog   alertDialog = b.create();
+        View                view        = LayoutInflater.from(context).inflate(R.layout.pay_bottom_layout, null);
+        Drawable            drawable    = context.getResources().getDrawable(R.drawable.pay_wc);
+        Drawable            drawable1   = context.getResources().getDrawable(R.drawable.pay_qq);
+        Drawable            drawable2   = context.getResources().getDrawable(R.drawable.pay_up);
+        Drawable            drawable3   = context.getResources().getDrawable(R.drawable.pay_ali);
         drawable.setBounds(0, 0, DimenUtils.dip2px(context, 35), DimenUtils.dip2px(context, 35));
         drawable1.setBounds(0, 0, DimenUtils.dip2px(context, 35), DimenUtils.dip2px(context, 35));
         drawable2.setBounds(0, 0, DimenUtils.dip2px(context, 35), DimenUtils.dip2px(context, 35));

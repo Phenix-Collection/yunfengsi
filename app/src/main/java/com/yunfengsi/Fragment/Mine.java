@@ -86,7 +86,7 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.WallPager.WallPapaerHome;
+import com.yunfengsi.WallPaper.WallPapaerHome;
 import com.yunfengsi.YunDou.MyQuan;
 import com.yunfengsi.YunDou.YunDouAwardDialog;
 import com.yunfengsi.YunDou.YunDouHome;

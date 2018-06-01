@@ -581,7 +581,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
         @android.webkit.JavascriptInterface
         public void openImage(String img) {
             if (arrayList != null) {
-                ScaleImageUtil.openBigIagmeMode(ZiXun_Detail.this, arrayList, arrayList.indexOf(img));
+                ScaleImageUtil.openBigIagmeMode(ZiXun_Detail.this, arrayList, arrayList.indexOf(img),true);
                 LogUtil.e("openImage: 网页图片地址" + img + "页码：" + arrayList.indexOf(img));
             }
 

@@ -274,8 +274,6 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
             View view = viewStubstart.inflate();
             image = (ImageView) view.findViewById(R.id.splash_image);
             Bitmap bitmap=ImageUtil.readBitMap(this, R.drawable.start);
-            Log.e(TAG, "onCreate: 计算内存：："+(bitmap.getWidth()*bitmap.getHeight()*2/1000)+"KB   实际内存：："+bitmap.getAllocationByteCount()/1000+"KB     "+bitmap.getByteCount()
-                    +"  宽高：：："+bitmap.getWidth()+"   "+bitmap.getHeight());
             image.setImageBitmap(bitmap);
             image.postDelayed(new Runnable() {
                 @Override

@@ -83,7 +83,9 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         num = (TextView) findViewById(R.id.num);
         choose = (ImageView) findViewById(R.id.choose);
         choose.setOnClickListener(this);
-
+        if(!getIntent().getBooleanExtra("download",true)) {
+            choose.setVisibility(View.GONE);
+        }
         paths = new ArrayList<>();
 
 //        paths.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497" +
@@ -108,7 +110,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onPageSelected(int pos) {
                 position.setText((pos + 1) + "");
-                if (paths.get(pos).endsWith("gif")) {
+                if (paths.get(pos).endsWith("gif")||!getIntent().getBooleanExtra("download",true)) {
                     choose.setVisibility(View.GONE);
                 } else {
                     choose.setVisibility(View.VISIBLE);

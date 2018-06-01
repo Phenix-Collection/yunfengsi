@@ -8,7 +8,7 @@ import java.util.Locale;
  * Created by Administrator on 2016/12/13.
  */
 public class LogUtil {
-    private static boolean isDebug=true;
+    private static boolean isDebug=mApplication.Debug;
 
     public static void setIsDebug(boolean isDebug) {
         LogUtil.isDebug = isDebug;

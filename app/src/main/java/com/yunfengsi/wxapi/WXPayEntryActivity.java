@@ -10,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -20,22 +18,13 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yunfengsi.Model_zhongchou.Fund_Share;
 import com.yunfengsi.R;
-import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
-import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.YunDou.YunDouAwardDialog;
 import com.yunfengsi.ZhiFuShare;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.ref.WeakReference;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * Created by Administrator on 2016/7/15.
@@ -83,10 +72,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
                     Intent intent1 = new Intent(this, ZhiFuShare.class);
                     intent1.putExtra("stu_id", mApplication.sut_id);
                     startActivity(intent1);
-                    postYundouGY();
+
                     finish();
                 } else if ("5".equals(mApplication.type)) {//慈善
-                    postYundouZX();
                     Intent intent = new Intent("Mine");
                     intent.putExtra("level", true);
                     sendBroadcast(intent);
@@ -109,68 +97,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
 
     }
 
-    public void postYundouGY() {
-        JSONObject js = new JSONObject();
-        try {
-            js.put("m_id", Constants.M_id);
-            js.put("user_id", PreferenceUtil.getUserId(this));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        LogUtil.e("每日供养   回调确认：：" + js);
-        ApisSeUtil.M m = ApisSeUtil.i(js);
-        OkGo.post(Constants.GY_YUNDOU).params("key", m.K())
-                .params("msg", m.M())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject js = new JSONObject(s);
-                            if (js != null) {
-                                if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
-                                    YunDouAwardDialog.show(WXPayEntryActivity.this,"每日供养",js.getString("yundousum"));
-                                }
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
 
-                    }
-                });
-    }
-    public void postYundouZX() {
-        JSONObject js = new JSONObject();
-        try {
-            js.put("m_id", Constants.M_id);
-            js.put("user_id", PreferenceUtil.getUserId(this));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        LogUtil.e("每日助学   回调确认：：" + js);
-        ApisSeUtil.M m = ApisSeUtil.i(js);
-        OkGo.post(Constants.ZX_YUNDOU).params("key", m.K())
-                .params("msg", m.M())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
-                        try {
-                            JSONObject js = new JSONObject(s);
-                            if (js != null) {
-                                if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
-                                    YunDouAwardDialog.show(WXPayEntryActivity.this,"每日助学",js.getString("yundousum"));
-                                }
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                });
-    }
 
     @Override
     public void onClick(View v) {

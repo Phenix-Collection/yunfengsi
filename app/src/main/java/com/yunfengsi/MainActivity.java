@@ -18,7 +18,6 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.provider.AlarmClock;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -34,6 +33,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -74,6 +75,7 @@ import com.yunfengsi.NianFo.NianFo;
 import com.yunfengsi.Push.mReceiver;
 import com.yunfengsi.Setting.PhoneCheck;
 import com.yunfengsi.Setting.Search;
+import com.yunfengsi.SideListview.Contact;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -86,6 +88,7 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.UpPayUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
@@ -99,11 +102,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import okhttp3.Call;
@@ -162,7 +163,6 @@ public class MainActivity extends UpPayUtil {
         intentFilter1.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter1.addAction(Intent.ACTION_SCREEN_ON);
         registerReceiver(receiver1, intentFilter1);
-
 
 
         initView();
@@ -815,6 +815,7 @@ public class MainActivity extends UpPayUtil {
         JCVideoPlayer.releaseAllVideos();
         mAudioManager.release();
         ProgressUtil.dismiss();
+        Glide.get(this).clearMemory();
 
 //      changeLauncher(changeIcon);
 
@@ -877,8 +878,75 @@ public class MainActivity extends UpPayUtil {
 
 
     private void initPopupWindow(View v) {
+        LinearLayout layout_info = (LinearLayout) v.findViewById(R.id.layout_info);
+        layout_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pp.dismiss();
+                JSONObject js = new JSONObject();
+                try {
+                    js.put("m_id", Constants.M_id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+                LogUtil.e("获取关于云峰寺：：" + js);
+                ApisSeUtil.M m = ApisSeUtil.i(js);
+                OkGo.post(Constants.AboutApp)
+                        .params("key", m.K())
+                        .params("msg", m.M())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
+                                if (map != null && !map.get("aboutapp").equals("")) {
+                                    View          view   = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_confirm_dialog, null);
+                                    final WebView web    = (WebView) view.findViewById(R.id.web);
+                                    TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                                    cancle.setText(mApplication.ST("确定"));
+                                    final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                                    baoming.setEnabled(false);
+                                    baoming.setVisibility(View.GONE);
+
+                                    web.loadDataWithBaseURL("", map.get("aboutapp")
+                                            , "text/html", "UTF-8", null);
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                    builder.setView(view);
+
+                                    final AlertDialog dialog = builder.create();
+                                    cancle.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            web.destroy();
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    builder.setCancelable(false);
+                                    web.setWebViewClient(new WebViewClient() {
+                                        @Override
+                                        public void onPageFinished(WebView view, String url) {
+                                            super.onPageFinished(view, url);
+                                            dialog.show();
+                                        }
+                                    });
+
+
+                                } else {
+                                    ToastUtil.showToastShort("暂无云峰寺简介");
+                                }
+//
+                            }
+
+
+                        });
+
+            }
+        });
         LinearLayout layout1 = (LinearLayout) v.findViewById(R.id.layout1);
-        layout1.setOnClickListener(new View.OnClickListener() {
+        layout1.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 Uri    content_url;
@@ -907,7 +975,9 @@ public class MainActivity extends UpPayUtil {
             }
         });
         LinearLayout layout2 = (LinearLayout) v.findViewById(R.id.layout2);
-        layout2.setOnClickListener(new View.OnClickListener() {
+        layout2.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
 //                QpayUtil.openQQPay(MainActivity.this,"52","fdsfljdk","100","1","4");
@@ -917,8 +987,12 @@ public class MainActivity extends UpPayUtil {
             }
         });
         LinearLayout layout3 = (LinearLayout) v.findViewById(R.id.layout3);
-        ((TextView) layout3.findViewById(R.id.jishuzhichi)).setText(ST("技术支持"));
-        layout3.setOnClickListener(new View.OnClickListener() {
+        ((TextView) layout3.findViewById(R.id.jishuzhichi)).
+
+                setText(ST("技术支持"));
+        layout3.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 Uri    content_url;
@@ -937,8 +1011,12 @@ public class MainActivity extends UpPayUtil {
             }
         });
         LinearLayout layout4 = (LinearLayout) v.findViewById(R.id.layout4);
-        ((TextView) layout4.findViewById(R.id.fenxiang)).setText(ST("分享"));
-        layout4.setOnClickListener(new View.OnClickListener() {
+        ((TextView) layout4.findViewById(R.id.fenxiang)).
+
+                setText(ST("分享"));
+        layout4.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 if (share == null || appUrl == null) {
@@ -963,34 +1041,39 @@ public class MainActivity extends UpPayUtil {
             }
         });
         LinearLayout layout5 = (LinearLayout) v.findViewById(R.id.layout5);
-        ((TextView) layout5.findViewById(R.id.invite)).setText(ST("邀请好友"));
-        layout5.setOnClickListener(new View.OnClickListener() {
+        ((TextView) layout5.findViewById(R.id.invite)).
+
+                setText(ST("邀请好友"));
+        layout5.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
 //                Intent alarms = new Intent(AlarmClock.ACTION_SET_ALARM);
-                int    hour   = new Random().nextInt(24);
-                int    minute = new Random().nextInt(60);
-                Intent alarms = new Intent(AlarmClock.ACTION_SET_ALARM);
-                alarms.putExtra(AlarmClock.EXTRA_MESSAGE, "该起来打坐啦");
-                alarms.putExtra(AlarmClock.EXTRA_HOUR, hour);
-                alarms.putExtra(AlarmClock.EXTRA_MINUTES, minute);
-                ArrayList<Integer> list = new ArrayList<>();
-                list.add(Calendar.MONDAY);
-                list.add(Calendar.TUESDAY);
-                list.add(Calendar.WEDNESDAY);
-                list.add(Calendar.THURSDAY);
-                list.add(Calendar.FRIDAY);
-                list.add(Calendar.SATURDAY);
-//                list.add(Calendar.SUNDAY);
-                alarms.putExtra(AlarmClock.EXTRA_DAYS, list);
-                if (alarms.resolveActivity(getPackageManager()) != null) {
-                    startActivity(alarms);
+//                int    hour   = new Random().nextInt(24);
+//                int    minute = new Random().nextInt(60);
+//                Intent alarms = new Intent(AlarmClock.ACTION_SET_ALARM);
+//                alarms.putExtra(AlarmClock.EXTRA_MESSAGE, "该起来打坐啦");
+//                alarms.putExtra(AlarmClock.EXTRA_HOUR, hour);
+//                alarms.putExtra(AlarmClock.EXTRA_MINUTES, minute);
+//                ArrayList<Integer> list = new ArrayList<>();
+//                list.add(Calendar.MONDAY);
+//                list.add(Calendar.TUESDAY);
+//                list.add(Calendar.WEDNESDAY);
+//                list.add(Calendar.THURSDAY);
+//                list.add(Calendar.FRIDAY);
+//                list.add(Calendar.SATURDAY);
+////                list.add(Calendar.SUNDAY);
+//                alarms.putExtra(AlarmClock.EXTRA_DAYS, list);
+//                if (alarms.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(alarms);
+//
+//                }
 
-                }
 
-//                Intent i = new Intent(MainActivity.this, Contact.class);
-//                i.putExtra("sms", ((SMS==null||"".equals(SMS)) ? sp.getString("sms", mApplication.ST("快来云峰寺共修吧,点击http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi下载")) : SMS));
-//                startActivity(i);
+                Intent i = new Intent(MainActivity.this, Contact.class);
+                i.putExtra("sms", ((SMS == null || "".equals(SMS)) ? sp.getString("sms", mApplication.ST("快来云峰寺共修吧,点击http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi下载")) : SMS));
+                startActivity(i);
 
                 pp.dismiss();
 

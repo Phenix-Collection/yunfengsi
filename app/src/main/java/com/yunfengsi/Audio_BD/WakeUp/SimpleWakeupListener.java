@@ -39,8 +39,12 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.WakeLockUtil;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.WallPaper.WallPapaerHome;
+import com.yunfengsi.WallPaper.WallPaperUpload;
+import com.yunfengsi.YunDou.DuiHuan;
 import com.yunfengsi.YunDou.MyQuan;
 import com.yunfengsi.YunDou.YunDouHome;
+import com.yunfengsi.YunDou.yundou_paihang;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -422,6 +426,21 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
             } else if (result.contains("设置")) {
                 text = OK;
                 context.startActivity(new Intent(context, gerenshezhi.class));
+            }else if (result.contains("排行榜")) {
+                text = OK;
+                context.startActivity(new Intent(context, yundou_paihang.class));
+            } else if (result.contains("祈福券")||result.contains("牌位券")) {
+                text = OK;
+                context.startActivity(new Intent(context, DuiHuan.class));
+            } else if (result.contains("壁纸")) {
+                text = OK;
+                context.startActivity(new Intent(context, WallPapaerHome.class));
+            } else if (result.contains("上传壁纸")) {
+                text = OK;
+                context.startActivity(new Intent(context, WallPaperUpload.class));
+            } else if (result.contains("我的壁纸") || result.contains("管理壁纸")) {
+                text = OK;
+                context.startActivity(new Intent(context, WallPapaerHome.class));
             } else if (result.contains("客服")) {
                 text = OK;
                 Intent i2 = new Intent(context, GanyuActivity.class);
@@ -439,7 +458,7 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
                 Intent i2 = new Intent(context, BookList.class);
                 i2.putExtra("type", 2);
                 context.startActivity(i2);
-            } else if (result.contains("活动") || result.contains("报名")) {
+            } else if (result.contains("活动") || result.contains("报名")||result.contains("短期出家")) {
                 text = OK;
                 ((MainActivity) context).pager.setCurrentItem(1);
                 Intent i2 = new Intent(context, MainActivity.class);

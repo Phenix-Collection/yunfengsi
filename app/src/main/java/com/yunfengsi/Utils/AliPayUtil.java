@@ -36,11 +36,11 @@ public class AliPayUtil {
     /**
      * 支付宝账户登录授权业务：入参pid值
      */
-    public static final String PID = "2088421250002880";
+    public static final String PID     = "2088421250002880";
     // 商户PID
     public static final String PARTNER = "2088421250002880";
     // 商户收款账号
-    public static final String SELLER = "2088421250002880";
+    public static final String SELLER  = "2088421250002880";
 
     public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAITtvqWq1IejHA4LFd9yAHKFiNt+MZ+Zo7BV2l44ZLNBt4mLhEUrnPklL3rcOIqM57ViUVgNGC5kOHvexJS94pqkBWcbPhDsNHztiZirSKXs0ipW41oTosMuoxpQYrdaFbt5FNmBszRZDc0QRNnBXL6ypWdyiPcscf4piWa1DnWpAgMBAAECgYA/h0P69wa1gC2TRJcCgABYuxrqE4hxx0KkrpM7PmZaCUlHEgd3610M8UmcxQy8opTGaiOIGlH5MeqQwKlgkNNv9hqwgu8RRy00CBZjgLj3xaYhhTRI0b9Nj6EESrWLfEwPTTznilYN0lHV52FImKRllFD4+vee7ew5OHuQ1aIcAQJBAL1j3093ciiawXNgDbVAwzGA/6jQ8zjFECIivGQHITnQ/Gih0LpP/9Es097ReeGVYGwDTD1Veyma8J6ASgMTaYECQQCzrkBfGOJOquDkjWi87WhrYbdujsjrZEW86XpUA7hwfH4O/BBL4+tJHiqCh5I9SoJW5NLVJF1KeIJ5f0XUmpApAkBVSYmB1s+A+5gMZgAmVKDSRT5cfqRZN105khz2isNqrvNMBzrg/C++ugo7eGgDr2o5mg6WPE13gf/D0RADbJWBAkAHVuXQPJ754acADvqpRPVP9ZTdkj2Ix/bFSbAygFhnV956VDeCMhQpT28jF9CUale6nuwxwqOA6D1EIzvB/HJJAkBD7Yu8Y/7j+hs+rZQROfRtPYWQtgPtGOcbdOLYF/+RsKk9k7gNnLQ31DmxOfwIw3o93lydZzS8ae+CgdAatcl2";
     //废弃私钥
@@ -65,8 +65,8 @@ public class AliPayUtil {
         }
 
 
-        Uri uri = Uri.parse("alipays://platformapi/startApp");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        Uri           uri           = Uri.parse("alipays://platformapi/startApp");
+        Intent        intent        = new Intent(Intent.ACTION_VIEW, uri);
         ComponentName componentName = intent.resolveActivity(context.getPackageManager());
         if (componentName == null) {
             ToastUtil.showToastShort("请安装支付宝软件");
@@ -142,9 +142,7 @@ public class AliPayUtil {
                                                         Intent intent1 = new Intent(context, ZhiFuShare.class);
                                                         intent1.putExtra("stu_id", mApplication.sut_id);
                                                         context.startActivity(intent1);
-                                                        postYundouGY(context);
                                                     } else if (type.equals("5")) {//慈善
-                                                        postYundouZX(context);
                                                         Intent intent = new Intent("Mine");
                                                         intent.putExtra("level", true);
                                                         context.sendBroadcast(intent);
@@ -220,6 +218,7 @@ public class AliPayUtil {
         }).start();
 
     }
+
     public static void postYundouGY(final Activity context) {
         JSONObject js = new JSONObject();
         try {
@@ -239,7 +238,7 @@ public class AliPayUtil {
                             JSONObject js = new JSONObject(s);
                             if (js != null) {
                                 if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
-                                    YunDouAwardDialog.show(context,"每日供养",js.getString("yundousum"));
+                                    YunDouAwardDialog.show(context, "每日供养", js.getString("yundousum"));
                                 }
 
                             }
@@ -251,6 +250,7 @@ public class AliPayUtil {
                     }
                 });
     }
+
     public static void postYundouZX(final Activity context) {
         JSONObject js = new JSONObject();
         try {
@@ -270,7 +270,7 @@ public class AliPayUtil {
                             JSONObject js = new JSONObject(s);
                             if (js != null) {
                                 if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
-                                    YunDouAwardDialog.show(context,"每日助学",js.getString("yundousum"));
+                                    YunDouAwardDialog.show(context, "每日助学", js.getString("yundousum"));
                                 }
 
                             }
@@ -282,6 +282,7 @@ public class AliPayUtil {
                     }
                 });
     }
+
     /**
      * create the order info. 创建订单信息
      */

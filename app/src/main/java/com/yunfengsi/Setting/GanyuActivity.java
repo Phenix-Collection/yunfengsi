@@ -212,18 +212,7 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
                             final TextView baoming = (TextView) view.findViewById(R.id.baoming);
                             baoming.setEnabled(false);
                             baoming.setVisibility(View.GONE);
-//                            final CountDownTimer cdt = new CountDownTimer(10000, 1000) {
-//                                @Override
-//                                public void onTick(long millisUntilFinished) {
-//                                    baoming.setText(mApplication.ST("请阅读报名须知(" + millisUntilFinished / 1000 + "秒)"));
-//                                }
-//
-//                                @Override
-//                                public void onFinish() {
-//                                    baoming.setText(mApplication.ST("同意"));
-//                                    baoming.setEnabled(true);
-//                                }
-//                            };
+
                             web.loadDataWithBaseURL("", prol
                                     , "text/html", "UTF-8", null);
 

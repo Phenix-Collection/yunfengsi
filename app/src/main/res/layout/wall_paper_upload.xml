@@ -71,7 +71,7 @@
         android:id="@+id/tip"
         android:textSize="12dp"
         android:textColor="@color/wordhuise"
-        android:text="(必选,最多9张)"
+        android:text="(必选,最多9张，建议图片宽高比为9:16)"
         android:background="@null"
         app:layout_constraintBaseline_toBaselineOf="@+id/txt_image"
         app:layout_constraintLeft_toRightOf="@+id/txt_image"

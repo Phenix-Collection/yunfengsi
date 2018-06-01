@@ -1,24 +1,17 @@
-package com.yunfengsi.WallPager;
+package com.yunfengsi.WallPaper;
 
-import android.app.ActivityOptions;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
@@ -27,7 +20,9 @@ import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
+import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.mApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,20 +37,18 @@ import okhttp3.Response;
 /**
  * 作者：因陀罗网 on 2018/5/26 11:15
  * 公司：成都因陀罗网络科技有限公司
- *
- *
- * 壁纸用户中心统一fragment
  */
-public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class RecommendFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private View                  view;
     private SwipeRefreshLayout    swipeRefreshLayout;
     private RecyclerView          recyclerView;
     private RecommendPagerAdapter adapter;
-    private int pageSize = 9;
-    private int page = 1;
-    private int endPage = -1;
+    private int     pageSize   = 9;
+    private int     page       = 1;
+    private int     endPage    = -1;
     private boolean isLoadMore = false;
-    private boolean isRefresh = false;
+    private boolean isRefresh  = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,15 +60,11 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         recyclerView = view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-//        StaggeredGridLayoutManager layoutManager=new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-//        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-//        recyclerView.setLayoutManager(layoutManager);
-
 
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         adapter = new RecommendPagerAdapter(list);
-//        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        adapter.setEmptyView(mApplication.getEmptyView(getActivity(), 180, "暂无壁纸"));
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -96,69 +85,65 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
                 swipeRefreshLayout.setRefreshing(true);
             }
         });
+
         return view;
 
     }
 
 
     private class RecommendPagerAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
+        int singleWidth;
 
         public RecommendPagerAdapter(@Nullable List<HashMap<String, String>> data) {
-            super(R.layout.item_wallpager_userhome, data);
-
+            super(R.layout.item_wallpager_recommend, data);
+            singleWidth = (getResources().getDisplayMetrics().widthPixels - DimenUtils.dip2px(getActivity(), 24)) / 3;
+            LogUtil.e("单一宽度：：" + singleWidth);
         }
 
         @Override
         protected void convert(final BaseViewHolder helper, final HashMap<String, String> item) {
 
             Glide.with(getActivity()).load(item.get("image"))
-//                    .skipMemoryCache(true)
-                    .into(new SimpleTarget<GlideDrawable>() {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            ((ImageView) helper.getView(R.id.image)).setImageDrawable(resource);
-                        }
-                    });
+                    .asBitmap()
+                    .override(singleWidth, (singleWidth << 4) / 9)
+                    .centerCrop()
+                    .into(((ImageView) helper.getView(R.id.image)));
             helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    ImageView imageView= (ImageView) v;
-                    imageView.setDrawingCacheEnabled(true);
-                    imageView.buildDrawingCache(true);
-                    Bitmap bitmap=imageView.getDrawingCache();
-                    if(Build.VERSION.SDK_INT>=21){
-                        ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                                Pair.create(v, getString(R.string.wallPaper_ShareName)));
-
-                        IWallPaperManager.goToWallPaperDetailWithAnim(getActivity(),options.toBundle(),bitmap,item);
-                    }else{
-                        IWallPaperManager.goToWallPaperDetailNormal(getActivity(),bitmap,item);
-                    }
-                    imageView.setDrawingCacheEnabled(false);
+                    IWallPaperManager.goToWallPaperDetailCompat(getActivity(), item, item.get("id"), v, false, false);
                 }
             });
         }
     }
 
     private void getWallPapers() {
-        JSONObject js=new JSONObject();
+        JSONObject js  = new JSONObject();
+        String     url = Constants.WallPaperList;
         try {
             js.put("m_id", Constants.M_id);
-            js.put("page",page);
+            js.put("page", page);
+            if (getArguments() != null && getArguments().getString("classfy") != null) {
+
+                js.put("type_id", getArguments().getString("classfy"));
+                LogUtil.e("获取分类壁纸列表" + js);
+                url = Constants.WallPaperTypeListClassfied;
+            } else {
+                LogUtil.e("获取壁纸列表" + js);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        LogUtil.e("获取壁纸列表"+js);
-        ApisSeUtil.M m=ApisSeUtil.i(js);
-        OkGo.post(Constants.WallPaperList).tag(this)
-                .params("key",m.K())
-                .params("msg",m.M())
+
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(url).tag(this)
+                .params("key", m.K())
+                .params("msg", m.M())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        HashMap<String,String > map=AnalyticalJSON.getHashMap(s);
-                        if(map!=null){
+                        HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
+                        if (map != null) {
                             final ArrayList<HashMap<String, String>> list = AnalyticalJSON.getList_zj(map.get("msg"));
                             if (list != null) {
                                 if (isRefresh) {
@@ -201,4 +186,6 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onPause();
         Glide.get(getActivity()).clearMemory();
     }
+
+
 }

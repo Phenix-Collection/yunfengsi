@@ -23,9 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
@@ -37,8 +39,15 @@ import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.Utils.photoUtil;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -314,6 +323,7 @@ public class ZhiFuShare extends AppCompatActivity {
                 webView.post(new Runnable() {
                     @Override
                     public void run() {
+                        postYundouGY();
                         new ShareManager().shareWeb(umWeb, ZhiFuShare.this);
                     }
                 });
@@ -350,7 +360,37 @@ public class ZhiFuShare extends AppCompatActivity {
 
         }
     }
+    public void postYundouGY() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+            js.put("user_id", PreferenceUtil.getUserId(this));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtil.e("每日供养   回调确认：：" + js);
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(Constants.GY_YUNDOU).params("key", m.K())
+                .params("msg", m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject js = new JSONObject(s);
+                            if (js != null) {
+                                if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
+                                    YunDouAwardDialog.show(ZhiFuShare.this,"每日供养",js.getString("yundousum"));
+                                }
 
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                });
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -11,9 +11,9 @@ public class Constants {
     public static final String Help = "https://indrah.cn/yfs.php/Index/help";
 
     //服务器测试域名
-    public static final String host_Ip       = "http://yintolo.net";
+//    public static final String host_Ip       = "http://yintolo.net";
     //    //服务器域名
-//    public static  final String host_Ip="https://indrah.cn";
+    public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo        = "/api.php/EncryptApi/";
     public static final String iiiiii        = "/api.php/SecretApi/";
@@ -560,6 +560,12 @@ public class Constants {
     public static final String WallPaperDetail = host_Ip + iiiiii + "Wallpaperd";
 
 
+
+
+
     //众筹列表换一换接口
     public static final String Fund_Change = host_Ip + oooooo + "Zhongchouhyh";
+
+    //关于云峰寺接口
+    public static final String AboutApp = host_Ip + oooooo + "Aboutapp";
 }

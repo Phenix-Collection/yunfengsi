@@ -27,9 +27,9 @@ import java.util.List;
  */
 
 public class MineManager {
-    public static final String img = "mine_image";
-    public static final String text = "mine_text";
-    public static final String CACHE_NAME = "mine_cache";
+    public static final String img          = "mine_image";
+    public static final String text         = "mine_text";
+    public static final String CACHE_NAME   = "mine_cache";
     public static final String CACHE_VERSON = "cache_verson";
 
 
@@ -38,8 +38,8 @@ public class MineManager {
     private ArrayList<HashMap<String, Object>> maps;
 
     private Mine_GridAdapter adapter;
-    private RecyclerView recyclerView;
-    private Context context;
+    private RecyclerView     recyclerView;
+    private Context          context;
 
 //    public ArrayList<Integer> getImageList() {
 //        return imageList;
@@ -78,9 +78,10 @@ public class MineManager {
             String text[] = mApplication.getInstance().getResources().getStringArray(R.array.mine_text);
             int img[] = new int[]
                     {
+                            R.raw.icon_wallpager,
                             R.raw.yundou,
                             R.raw.fuli,
-                            R.raw.icon_wallpager,
+
                             R.raw.qiyuan,
                             R.raw.jinshu,
                             R.raw.qian_icon,
@@ -111,8 +112,8 @@ public class MineManager {
         recyclerView.setLayoutManager(new GridLayoutManager(context, 4));
         mItemDeraction mItemDeraction = new mItemDeraction(1, Color.parseColor("#f2f2f2"));
         recyclerView.addItemDecoration(mItemDeraction);
-        ItemDragAndSwipeCallback swipeCallback = new ItemDragAndSwipeCallback(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
+        ItemDragAndSwipeCallback swipeCallback   = new ItemDragAndSwipeCallback(adapter);
+        ItemTouchHelper          itemTouchHelper = new ItemTouchHelper(swipeCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         adapter.enableDragItem(itemTouchHelper);
         adapter.setOnItemDragListener(new OnItemDragListener() {

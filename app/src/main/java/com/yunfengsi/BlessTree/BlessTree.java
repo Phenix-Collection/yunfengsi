@@ -307,33 +307,38 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
 
     public class MessageAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
         private Drawable place;
+
         public MessageAdapter(List<HashMap<String, String>> data) {
             super(R.layout.item_tree_message, data);
-            place= ContextCompat.getDrawable(BlessTree.this,R.drawable.placeholder_c6c6c6);
-            place.setBounds(0,0,DimenUtils.dip2px(BlessTree.this,30),DimenUtils.dip2px(BlessTree.this,30));
+            place = ContextCompat.getDrawable(BlessTree.this, R.drawable.placeholder_c6c6c6);
+            place.setBounds(0, 0, DimenUtils.dip2px(BlessTree.this, 30), DimenUtils.dip2px(BlessTree.this, 30));
         }
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            final RTextView rt =holder.getView(R.id.name);
-            Glide.with(BlessTree.this).load(map.get("user_image"))
-                    .asBitmap()
-                    .override(DimenUtils.dip2px(BlessTree.this,30)
-                    ,DimenUtils.dip2px(BlessTree.this,30))
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            RoundedBitmapDrawable rbd= RoundedBitmapDrawableFactory.create(getResources(),resource);
-                            rbd.setCircular(true);
-                            rt.setIconNormal(rbd);
-                        }
+            final RTextView rt = holder.getView(R.id.name);
+            if (!BlessTree.this.isDestroyed()) {
+                Glide.with(BlessTree.this).load(map.get("user_image"))
+                        .asBitmap()
+                        .override(DimenUtils.dip2px(BlessTree.this, 30)
+                                , DimenUtils.dip2px(BlessTree.this, 30))
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
+                                rbd.setCircular(true);
+                                rt.setIconNormal(rbd);
+                            }
 
-                        @Override
-                        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                            super.onLoadFailed(e, errorDrawable);
-                            rt.setIconNormal(place);
-                        }
-                    });
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                super.onLoadFailed(e, errorDrawable);
+                                rt.setIconNormal(place);
+                            }
+                        });
+            }
+
+
             holder.setText(R.id.name, map.get("pet_name"))
                     .setText(R.id.def, mApplication.ST("许下一个愿望"));
 //                    .setText(R.id.time, TimeUtils.getTrueTimeStr(map.get("time")));
@@ -410,12 +415,12 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
         public void onThemeColorChanged(View view, int themeColor) {
 
 
-            ColorMatrix colorMatrix=new ColorMatrix();
+            ColorMatrix colorMatrix = new ColorMatrix();
 
-            float red=Math.max(0.7f,(Color.red(themeColor/0xff)/255f));
-            float blue=Math.max(0.7f,(Color.blue(themeColor/0xff)/255f));
-            float green=Math.max(0.7f,(Color.green(themeColor/0xff)/255f));
-            colorMatrix.setScale(red,blue,green,1);
+            float red   = Math.max(0.7f, (Color.red(themeColor / 0xff) / 255f));
+            float blue  = Math.max(0.7f, (Color.blue(themeColor / 0xff) / 255f));
+            float green = Math.max(0.7f, (Color.green(themeColor / 0xff) / 255f));
+            colorMatrix.setScale(red, blue, green, 1);
 
             ((ImageView) view).setColorFilter(new ColorMatrixColorFilter(colorMatrix));
 //            BigInteger bigInteger=new BigInteger(String.valueOf(themeColor),16);

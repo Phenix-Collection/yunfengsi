@@ -1,5 +1,6 @@
-package com.yunfengsi.WallPager;
+package com.yunfengsi.WallPaper;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +13,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -79,17 +79,7 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
             }
         });
 
-        FrameLayout all    = (FrameLayout) LayoutInflater.from(getActivity()).inflate(R.layout.footer_fenlei, null);
-        TextView    tv_all = (TextView) all.findViewById(R.id.all);
-        tv_all.setOnClickListener(this);
-        adapter.addFooterView(all);
-        tv_all.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), Search_Result.class);
-//                startActivity(intent);
-            }
-        });
+
 
         TextView textView = new TextView(getActivity());
         Drawable d1       = ContextCompat.getDrawable(getActivity(), R.drawable.load_nothing);
@@ -104,15 +94,16 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
         adapter.setEmptyView(textView);
         adapter.setHeaderFooterEmpty(true,false);
 
-//        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int i) {
-//                Intent intent = new Intent(getActivity(), Search_Result.class);
-//                intent.putExtra("id", adapter.getData().get(i).get("id"));
-//                intent.putExtra("name", adapter.getData().get(i).get("name"));
-//                startActivity(intent);
-//            }
-//        });
+
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent=new Intent(getActivity(),WallPaperClassfiedList.class);
+                intent.putExtra("map", ((HashMap<String, String>) adapter.getItem(position)));
+                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -161,11 +152,7 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
 
-            case R.id.all://所有商品
-                break;
-        }
     }
 
     public class fenleiAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {

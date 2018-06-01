@@ -14,17 +14,18 @@ import java.util.ArrayList;
 
 public class ScaleImageUtil {
 
-    public static void openBigIagmeMode(Activity activity,ArrayList<String > arrayList, int positon){
+    public static void openBigIagmeMode(Activity activity,ArrayList<String > arrayList, int positon,boolean downloadAble){
         WeakReference<Activity> w=new WeakReference<Activity>(activity);
         Activity context=w.get();
         Intent intent = new Intent();
         intent.putExtra("array", arrayList);
         intent.putExtra("position", positon);
+        intent.putExtra("download",downloadAble);
 //        intent.setClass(context, ViewPagerActivity.class);
         intent.setClass(context, PhotoActivity.class);
         context.startActivity(intent);
     }
-    public static void openBigIagmeMode(Activity activity,String imgurl){
+    public static void openBigIagmeMode(Activity activity,String imgurl,boolean downloadAble){
         WeakReference<Activity> w=new WeakReference<Activity>(activity);
         Activity context=w.get();
         Intent intent = new Intent();
@@ -32,6 +33,7 @@ public class ScaleImageUtil {
         arrayList.add(imgurl);
         intent.putExtra("array", arrayList);
         intent.putExtra("position", 0);
+        intent.putExtra("download",downloadAble);
 //        intent.setClass(context, ViewPagerActivity.class);
         intent.setClass(context, PhotoActivity.class);
         context.startActivity(intent);

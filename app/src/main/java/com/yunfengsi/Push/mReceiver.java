@@ -44,6 +44,7 @@ public class mReceiver
    public static final String Fojin = "20";
    public static final String Bushi = "21";
    public static final String ZuoChan = "22";
+   public static final String WallPaper = "23";
    public static final String AD = "99";
 
     @Override

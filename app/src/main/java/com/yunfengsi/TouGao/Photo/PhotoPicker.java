@@ -210,8 +210,8 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
                     public void onClick(View v) {
                         dilog.dismiss();
                         if(!resource.isRecycled()){
-                            resource.recycle();
-                            System.gc();
+//                            resource.recycle();
+//                            System.gc();
                             i.setImageDrawable(null);
                         }
                     }

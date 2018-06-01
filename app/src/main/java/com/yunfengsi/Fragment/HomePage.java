@@ -78,7 +78,7 @@ import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
 import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mItemDeraction;
-import com.yunfengsi.WallPager.WallPapaerHome;
+import com.yunfengsi.WallPaper.WallPapaerHome;
 import com.yunfengsi.XuanzheActivity;
 import com.yunfengsi.YunDou.MyQuan;
 import com.yunfengsi.YunDou.YunDouHome;
@@ -108,28 +108,28 @@ import static com.yunfengsi.Fragment.OrignalEntity.VideoUrl;
  */
 
 public class HomePage extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
-    private static final String TEXT_KEY = "text";
+    private static final String TEXT_KEY  = "text";
     private static final String IMAGE_KEY = "image";
 
 
-    public static final String CACKE_BANNER = "cache_banner";
-    public static final String CACKE_ZIXUN = "cache_zixun";
+    public static final String CACKE_BANNER  = "cache_banner";
+    public static final String CACKE_ZIXUN   = "cache_zixun";
     public static final String CACKE_HUODONG = "cache_huodong";
 
 
-    private View rootView;
+    private View         rootView;
     private RecyclerView items, recyclerView;
     //    private LoadMoreListView2 listView2;
 //    private ziXun_List_Adapter adapter;
-    private static final String CACHE_NAME = ItemManager.CaCheName;
-    private static final String[] DEFAULT_NAME = {"共修", "收藏", "活动","佛经"};
+    private static final String   CACHE_NAME    = ItemManager.CaCheName;
+    private static final String[] DEFAULT_NAME  = {"共修", "收藏", "活动", "佛经"};
     //            , "更多"};
-    private static final int[] DEFAULT_IMAGE = {R.raw.gongxiu, R.raw.shoucang_justforleft, R.raw.mine_activity,R.raw.jinshu};
+    private static final int[]    DEFAULT_IMAGE = {R.raw.gongxiu, R.raw.shoucang_justforleft, R.raw.mine_activity, R.raw.jinshu};
     //        , R.raw.more};
-    private ItemAdapter itemAdapter;
+    private ItemAdapter                        itemAdapter;
     private ArrayList<HashMap<String, Object>> itemList;
 
-    private Banner banner;
+    private Banner   banner;
     //    private NewAdapter newAdapter;
     private Drawable ctrDra, like, comment;
     private int screenwidth;
@@ -138,15 +138,15 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
 
     private ImageView tip;
 
-    private ValueAnimator valueAnimator;
+    private ValueAnimator      valueAnimator;
     private SwipeRefreshLayout swip;
 
-    private int pageSize = 10;
-    private int page = 1;
-    private int endPage = -1;
+    private int     pageSize   = 10;
+    private int     page       = 1;
+    private int     endPage    = -1;
     private boolean isLoadMore = false;
-    private boolean isRefresh = false;
-    private HomeAdapter adapter;
+    private boolean isRefresh  = false;
+    private HomeAdapter  adapter;
     private LinearLayout head;
 
     @Subscribe
@@ -229,12 +229,12 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                     }
                     if (!url.equals("") && url.contains("yfs.php")) {
                         if (url.contains("?")) {
-                            int index = url.lastIndexOf("?");
-                            String arg = url.substring(index + 1, url.length());
+                            int    index = url.lastIndexOf("?");
+                            String arg   = url.substring(index + 1, url.length());
                             LogUtil.e("截取后的参数字段：" + arg);
                             if (arg.contains("&")) {
-                                String[] args = arg.split("&");
-                                final String id = args[0].substring(args[0].lastIndexOf("=") + 1);
+                                String[]     args = arg.split("&");
+                                final String id   = args[0].substring(args[0].lastIndexOf("=") + 1);
                                 final String type = args[1].substring(args[1].lastIndexOf("=") + 1);
                                 LogUtil.e("字段信息：  id::" + id + "  type::" + type);
                                 if (type == null) {
@@ -307,6 +307,12 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                                             intent1.putExtra("id", id);
                                             intent1.setClass(getActivity(), PingLunActivity.class);
                                         }
+                                    case mReceiver.WallPaper:
+
+                                        intent1.putExtra("id", id);
+                                        intent1.setClass(getActivity(), WallPapaerHome.class);
+                                        startActivity(intent1);
+
                                         break;
                                     case mReceiver.AD:
                                         intent1.setClass(getActivity(), AD.class);
@@ -329,7 +335,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         itemAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent();
+                Intent   intent   = new Intent();
                 TextView textView = (TextView) view.findViewById(R.id.text);
                 LogUtil.e("首页item点击：：：" + textView.getTag());
                 switch (textView.getTag().toString()) {
@@ -467,10 +473,10 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         LinearLayout more = head.findViewById(R.id.more);
         more.setOnClickListener(this);
         ((TextView) more.findViewById(R.id.text)).setText("更多");
-        Glide.with(getActivity()).load(R.raw.more).override(DimenUtils.dip2px(getActivity(),30),DimenUtils.dip2px(getActivity(),30))
-                .into( ((ImageView) more.findViewById(R.id.image)));
-        TextView textView = new TextView(getActivity());
-        ViewGroup.LayoutParams vl = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        Glide.with(getActivity()).load(R.raw.more).override(DimenUtils.dip2px(getActivity(), 30), DimenUtils.dip2px(getActivity(), 30))
+                .into(((ImageView) more.findViewById(R.id.image)));
+        TextView               textView = new TextView(getActivity());
+        ViewGroup.LayoutParams vl       = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         textView.setLayoutParams(vl);
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(16);
@@ -480,11 +486,12 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         recyclerView = rootView.findViewById(R.id.recycle);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         ArrayList<OrignalEntity> orignalEntities = new ArrayList<>();
         adapter = new HomeAdapter(orignalEntities);
         adapter.setEmptyView(textView);
         adapter.setHeaderView(head);
-        adapter.setHeaderFooterEmpty(true,false);
+        adapter.setHeaderFooterEmpty(true, false);
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -494,7 +501,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                     getZiXun();
                 }
             }
-        },recyclerView);
+        }, recyclerView);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -502,13 +509,13 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 intent.putExtra("id", ((OrignalEntity) adapter.getData().get(position)).getId());
                 if (null != view.findViewById(R.id.zixun_video_title)) {
                     String videourl = view.findViewById(R.id.zixun_video_title).getTag().toString();
-                    String title = ((TextView) view.findViewById(R.id.zixun_video_title)).getText().toString();
-                    String image = view.findViewById(R.id.zixun_video_Num).getTag().toString();
+                    String title    = ((TextView) view.findViewById(R.id.zixun_video_title)).getText().toString();
+                    String image    = view.findViewById(R.id.zixun_video_Num).getTag().toString();
                     if (!videourl.equals("")) {
                         intent.putExtra("video_url", videourl);
                         intent.putExtra("title", title);
                         intent.putExtra("image", image);
-                        LogUtil.e( "onItemClick: title-=-=" + title + " url=-=" + videourl + " image-=-=" + image);
+                        LogUtil.e("onItemClick: title-=-=" + title + " url=-=" + videourl + " image-=-=" + image);
                     }
                 }
                 if (null != view.findViewById(R.id.zixun_video_user)) {
@@ -531,6 +538,8 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         recyclerView.setAdapter(adapter);
 
+
+
         onRefresh();
     }
 
@@ -544,21 +553,21 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         getZiXun();
         getHuodong();
         adapter.setEnableLoadMore(true);
-        if(Network.HttpTest(getActivity())){
+        if (Network.HttpTest(getActivity())) {
             swip.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     swip.setRefreshing(false);
                 }
             }, 2000);
-        }else{
+        } else {
             swip.setRefreshing(false);
         }
 
     }
 
     private class HomeAdapter extends BaseMultiItemQuickAdapter<OrignalEntity, BaseViewHolder> {
-        private int screenwidth;
+        private int      screenwidth;
         private Drawable ctr, like, comment;
 
         /**
@@ -586,7 +595,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 case OrignalEntity.NORMAL:
                     Glide.with(getActivity()).load(bean.getImage())
                             .asBitmap()
-                            .skipMemoryCache(true)
+//                            .skipMemoryCache(true)
                             .override(DimenUtils.dip2px(getActivity(), 136), DimenUtils.dip2px(getActivity(), 102))
                             .centerCrop()
                             .into(new BitmapImageViewTarget(((ImageView) holder.getView(R.id.hot_two_item_image))) {
@@ -731,7 +740,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                             ArrayList<OrignalEntity> list = new ArrayList();
 
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject j = jsonArray.getJSONObject(i);
+                                JSONObject    j      = jsonArray.getJSONObject(i);
                                 OrignalEntity entity = new OrignalEntity();
                                 if (j.getString(VideoUrl).equals("")) {
                                     entity.setItemType(OrignalEntity.NORMAL);
@@ -782,7 +791,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 super.onAfter(s, e);
                 if (adapter.getData() == null || adapter.getData().size() == 0) {
                     ArrayList list = FileUtils.getStorageMapEntitiesEasy(getActivity(), CACKE_ZIXUN);
-                    LogUtil.e("加载资讯缓存"+list);
+                    LogUtil.e("加载资讯缓存" + list);
                     if (adapter != null && list != null) {
                         if (head.findViewById(R.id.layout1).getVisibility() != View.VISIBLE) {
                             head.findViewById(R.id.layout1).setVisibility(View.VISIBLE);
@@ -848,12 +857,12 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 }
                 for (final Object map : Huodonglist) {
                     view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_header2, null);
-                    TextView title = (TextView) view.findViewById(R.id.activity_item_title);
-                    TextView content = (TextView) view.findViewById(R.id.activity_item_content);
-                    ImageView imageView = (ImageView) view.findViewById(R.id.activity_item_img);
-                    TextView peopleNum = (TextView) view.findViewById(R.id.activity_item_peopleNum);
-                    TextView time = (TextView) view.findViewById(R.id.activity_item_time);
-                    final HashMap map1 = (HashMap) map;
+                    TextView      title     = (TextView) view.findViewById(R.id.activity_item_title);
+                    TextView      content   = (TextView) view.findViewById(R.id.activity_item_content);
+                    ImageView     imageView = (ImageView) view.findViewById(R.id.activity_item_img);
+                    TextView      peopleNum = (TextView) view.findViewById(R.id.activity_item_peopleNum);
+                    TextView      time      = (TextView) view.findViewById(R.id.activity_item_time);
+                    final HashMap map1      = (HashMap) map;
                     Glide.with(getActivity()).load(map1.get("image1")).asBitmap().centerCrop().override(screenwidth * 9 / 25, screenwidth * 27 / 100).into(new BitmapImageViewTarget(imageView) {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -873,7 +882,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(mApplication.getInstance(), activity_Detail.class);
-                            String Id = map1.get("id").toString();
+                            String Id     = map1.get("id").toString();
                             if (!TextUtils.isEmpty(Id)) {
                                 intent.putExtra("id", Id);
                                 startActivity(intent);
@@ -906,8 +915,8 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
     }
 
     private void getCacheOrDefaultItems() {
-        String version= Verification.getAppVersionName(getActivity());
-        if(PreferenceUtil.getSettingIncetance(getActivity()).getString(ItemManager.CaCheVersion,"").equals(version)){//同一版本才允许缓存，不同版本清空缓存
+        String version = Verification.getAppVersionName(getActivity());
+        if (PreferenceUtil.getSettingIncetance(getActivity()).getString(ItemManager.CaCheVersion, "").equals(version)) {//同一版本才允许缓存，不同版本清空缓存
             if (FileUtils.getStorageMapEntities(getActivity(), CACHE_NAME + PreferenceUtil.getUserId(getActivity())) == null) {
                 LogUtil.e("首页默认设置");
                 itemList = new ArrayList<>();
@@ -922,7 +931,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 LogUtil.e("首页获取缓存设置");
                 itemList = FileUtils.getStorageMapEntities(getActivity(), CACHE_NAME + PreferenceUtil.getUserId(getActivity()));
             }
-        }else{//不同版本
+        } else {//不同版本
             LogUtil.e("首页默认设置");
             itemList = new ArrayList<>();
             for (int i = 0; i < DEFAULT_NAME.length; i++) {
@@ -932,7 +941,6 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 itemList.add(map);
             }
         }
-
 
 
     }
@@ -1107,7 +1115,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
     @Override
     public void onDestroy() {
         super.onDestroy();
-        PreferenceUtil.getSettingIncetance(getActivity()).edit().putString(ItemManager.CaCheVersion,Verification.getAppVersionName(getActivity())).apply();
+        PreferenceUtil.getSettingIncetance(getActivity()).edit().putString(ItemManager.CaCheVersion, Verification.getAppVersionName(getActivity())).apply();
         saveLists();
         EventBus.getDefault().unregister(this);
     }
@@ -1134,7 +1142,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         if (valueAnimator != null) {
             valueAnimator.cancel();
         }
-        if(banner!=null){
+        if (banner != null) {
             banner.releaseBanner();
         }
     }
@@ -1144,7 +1152,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         super.onResume();
         Glide.with(this).load(R.drawable.small_head).skipMemoryCache(true).fitCenter().into((ImageView) rootView.findViewById(R.id.audio_tip));
         initAnimator();
-        if(banner!=null){
+        if (banner != null) {
             banner.startAutoPlay();
         }
     }

@@ -22,9 +22,9 @@
     <!--</integer-array>-->
 
     <string-array name="mine_text">
+        <item>壁纸</item>
         <item>我的云豆</item>
         <item>我的福利</item>
-        <item>壁纸</item>
         <item>祈愿树</item>
         <item>佛经</item>
         <item>卜事</item>

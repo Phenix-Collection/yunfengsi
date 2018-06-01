@@ -4,5 +4,6 @@
     <item name="position" type="id">position</item>
     <item name="BookPath" type="id">book</item>
     <item name="BookId" type="id">bookId</item>
+    <item name="WallPaperId" type="id">WallPaperId</item>
     <item name="type_text" type="id" format="integer">666</item>
 </resources>

@@ -2,6 +2,7 @@ package com.yunfengsi.Deamon;
 
 import android.content.Intent;
 
+import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.mApplication;
 
 /**
@@ -10,18 +11,18 @@ import com.yunfengsi.Utils.mApplication;
  */
 public class KeepLiveManager {
 
-    private static KeepLiveManager incetance;
-    public OnePixelActivity onePixelActivity;
+    private static KeepLiveManager instance;
 
-    public static KeepLiveManager getIncetance() {
-        if(incetance==null){
+
+    public static KeepLiveManager getInstance() {
+        if(instance==null){
             synchronized (KeepLiveManager.class){
-                if(incetance==null){
-                    incetance=new KeepLiveManager();
+                if(instance==null){
+                    instance=new KeepLiveManager();
                 }
             }
         }
-        return incetance;
+        return instance;
     }
 
 
@@ -31,6 +32,8 @@ public class KeepLiveManager {
         mApplication.getInstance().startActivity(intent);
     }
     public void    finishKeepAliveActivity(){
+        LogUtil.e("关闭一像素"+mApplication.getInstance().onePixelActivity);
+        OnePixelActivity onePixelActivity=mApplication.getInstance().onePixelActivity;
         if(onePixelActivity!=null){
             onePixelActivity.finish();
             onePixelActivity=null;

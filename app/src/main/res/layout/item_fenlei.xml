@@ -8,6 +8,7 @@
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:visibility="gone"
         android:id="@+id/image"/>
 
     <TextView
@@ -17,7 +18,6 @@
         android:textSize="16dp"
         android:textColor="@color/black"
         android:layout_toRightOf="@+id/image"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="20dp"
         android:text="类型"/>
     <TextView

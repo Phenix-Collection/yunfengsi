@@ -66,7 +66,7 @@ public class QuanDetail extends AppCompatActivity {
         findViewById(R.id.image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScaleImageUtil.openBigIagmeMode(QuanDetail.this, map.get("image"));
+                ScaleImageUtil.openBigIagmeMode(QuanDetail.this, map.get("image"),true);
             }
         });
 

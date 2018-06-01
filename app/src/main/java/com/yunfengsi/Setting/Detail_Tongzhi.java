@@ -248,7 +248,7 @@ public class Detail_Tongzhi extends AppCompatActivity implements View.OnClickLis
         @android.webkit.JavascriptInterface
         public void openImage(String img) {
             if (arrayList != null) {
-                ScaleImageUtil.openBigIagmeMode(Detail_Tongzhi.this,arrayList,arrayList.indexOf(img));
+                ScaleImageUtil.openBigIagmeMode(Detail_Tongzhi.this,arrayList,arrayList.indexOf(img),true);
                 LogUtil.e("openImage: 网页图片地址" + img + "页码：" + arrayList.indexOf(img));
             }
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
@@ -27,6 +28,7 @@ import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,9 +83,40 @@ public class Fund_Share extends BaseSTActivity implements View.OnClickListener{
         id=getIntent().getStringExtra("id");
         sut_id=getIntent().getStringExtra("sut_id");
         initView();
+        postYundouZX();
         getData();
     }
+    public void postYundouZX() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+            js.put("user_id", PreferenceUtil.getUserId(this));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtil.e("每日助学   回调确认：：" + js);
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(Constants.ZX_YUNDOU).params("key", m.K())
+                .params("msg", m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        try {
+                            JSONObject js = new JSONObject(s);
+                            if (js != null) {
+                                if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
+                                    YunDouAwardDialog.show(Fund_Share.this,"每日助学",js.getString("yundousum"));
+                                }
 
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                });
+    }
     private void getData() {
         JSONObject js=new JSONObject();
         try {
