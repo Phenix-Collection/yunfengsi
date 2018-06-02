@@ -39,7 +39,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
@@ -354,6 +353,8 @@ public class MainActivity extends UpPayUtil {
                                     Glide.with(MainActivity.this).load(map.get("gg_image"))
                                             .asBitmap()
                                             .skipMemoryCache(true)
+                                            .override(getResources().getDisplayMetrics().widthPixels*7/10,getResources().getDisplayMetrics().widthPixels*7*16/90)
+                                            .centerCrop()
                                             .into(new SimpleTarget<Bitmap>() {
                                                 @Override
                                                 public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
@@ -928,6 +929,7 @@ public class MainActivity extends UpPayUtil {
                                         public void onPageFinished(WebView view, String url) {
                                             super.onPageFinished(view, url);
                                             dialog.show();
+                                            imgReset(web);
                                         }
                                     });
 
@@ -1114,18 +1116,19 @@ public class MainActivity extends UpPayUtil {
         if (pp != null && pp.isShowing()) {
             pp.dismiss();
         }
-        if (needExit) {
-            finish();
-            return;
-        }
-        Toast.makeText(MainActivity.this, ST("再按一次退出应用"), Toast.LENGTH_SHORT).show();
-        needExit = true;
-        tabLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                needExit = false;
-            }
-        }, 2000);
+        moveTaskToBack(true);
+//        if (needExit) {
+//            finish();
+//            return;
+//        }
+//        Toast.makeText(MainActivity.this, ST("再按一次退出应用"), Toast.LENGTH_SHORT).show();
+//        needExit = true;
+//        tabLayout.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                needExit = false;
+//            }
+//        }, 2000);
     }
 
 
@@ -1184,6 +1187,45 @@ public class MainActivity extends UpPayUtil {
 //        else {
 //            MLinkAPIFactory.createAPI(this).checkYYB();
 //        }
+    }
+
+    private void imgReset(WebView webView) {
+        webView.loadUrl("javascript:(function(){" +
+                "var table=document.getElementsByTagName('table');" +
+                "for(var i=0;i<table.length;i++){" +
+                "var t=table[i];" +
+                "t.style.width='100%';" +
+                "t.style.margin='auto';" +
+                "t.style.display='block';" +
+                "}" +
+                "var objs = document.getElementsByTagName('img'); " +
+                "for(var i=0;i<objs.length;i++)  " +
+                "{"
+                + "var img = objs[i];   " +
+                "img.style.maxWidth = '100%'; " +
+                "var w=img.style.width;" +
+                "if(w > '50%') {" +
+                "img.style.width='100%';}" +
+                "img.style.height = 'auto'; " +
+                "img.style.marginBottom=10;" +
+                "img.style.marginTop=10;" +
+                "img.style.marginLeft='auto';" +
+                "img.style.marginRight='auto';" +
+                "img.style.display='block';" +
+                "}" +
+                "var obj1=document.getElementsByTagName('section');" +
+                "for(var i=0;i<obj1.length;i++)  " +
+                "{"
+                + "var sec = obj1[i];  " +
+                "sec.style.maxWidth = '100%'; " +
+                "var w1=sec.style.width;" +
+                "if(w1>'50%'){" +
+                "w1='100%';" +
+                "}" +
+                "sec.style.height = 'auto';" +
+                "}" +
+                "})()"
+        );
     }
 
 
