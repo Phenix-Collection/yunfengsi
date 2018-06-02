@@ -19,8 +19,8 @@ public class KeepLiveWakeLockReceiver extends BroadcastReceiver {
             LogUtil.e("锁屏");
             KeepLiveManager.getInstance().startKeepAliveActivity();
         }else if(action.equals(Intent.ACTION_SCREEN_ON)){//屏幕亮起
-            LogUtil.e("屏幕亮起");
-            KeepLiveManager.getInstance().finishKeepAliveActivity();
+//            LogUtil.e("屏幕亮起");
+//            KeepLiveManager.getInstance().finishKeepAliveActivity();
         }
     }
 }

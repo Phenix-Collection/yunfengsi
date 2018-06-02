@@ -339,6 +339,7 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
         page = 1;
         isRefresh = true;
         adapter.setEnableLoadMore(true);
+        swipeRefreshLayout.setRefreshing(true);
         getWallPapers();
     }
 

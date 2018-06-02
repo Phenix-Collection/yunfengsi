@@ -61,6 +61,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -648,6 +649,8 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                         if (wallPaper != null) {
                             try {
                                 manager.setBitmap(wallPaper);
+//                                manager.setBitmap(wallPaper,new Rect(0,0,getResources().getDisplayMetrics().widthPixels,getResources().getDisplayMetrics().heightPixels)
+//                                ,true,WallpaperManager.FLAG_LOCK);
                                 ToastUtil.showToastShort("壁纸设置成功");
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(WallPaperDetail.this);
                                 builder1.setMessage("是否需要回到桌面查看壁纸？")
@@ -719,5 +722,30 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                         }
                     }
                 });
+    }
+
+
+    private void SetLockWallPaper() {
+        // TODO Auto-generated method stub
+        try {
+            WallpaperManager mWallManager       = WallpaperManager.getInstance(this);
+//            mWallManager.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_wallpaper), null, true,
+//
+//            WallpaperManager.FLAG_LOCK | WallpaperManager.FLAG_SYSTEM);
+//            mWallManager.setBitmap()
+
+
+
+
+
+        Class            class1             = mWallManager.getClass();//获取类名
+            Method           setWallPaperMethod = class1.getMethod("setBitmapToLockWallpaper",Bitmap.class);//获取设置锁屏壁纸的函数
+            setWallPaperMethod.invoke(mWallManager, wallPaper);//调用锁屏壁纸的函数，并指定壁纸的路径imageFilesPath
+           ToastUtil.showToastShort( "锁屏壁纸设置成功");
+        } catch (Throwable e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 }

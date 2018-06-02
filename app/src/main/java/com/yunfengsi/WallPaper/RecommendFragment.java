@@ -64,6 +64,7 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         adapter = new RecommendPagerAdapter(list);
+        adapter.setPreLoadNumber(pageSize);
         adapter.setEmptyView(mApplication.getEmptyView(getActivity(), 180, "暂无壁纸"));
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override

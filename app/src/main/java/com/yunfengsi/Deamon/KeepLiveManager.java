@@ -2,7 +2,6 @@ package com.yunfengsi.Deamon;
 
 import android.content.Intent;
 
-import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.mApplication;
 
 /**
@@ -31,12 +30,5 @@ public class KeepLiveManager {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mApplication.getInstance().startActivity(intent);
     }
-    public void    finishKeepAliveActivity(){
-        LogUtil.e("关闭一像素"+mApplication.getInstance().onePixelActivity);
-        OnePixelActivity onePixelActivity=mApplication.getInstance().onePixelActivity;
-        if(onePixelActivity!=null){
-            onePixelActivity.finish();
-            onePixelActivity=null;
-        }
-    }
+
 }
