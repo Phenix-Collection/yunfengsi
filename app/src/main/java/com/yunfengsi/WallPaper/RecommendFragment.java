@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,15 +40,15 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class RecommendFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private View                  view;
-    private SwipeRefreshLayout    swipeRefreshLayout;
-    private RecyclerView          recyclerView;
+    private View view;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
     private RecommendPagerAdapter adapter;
-    private int     pageSize   = 9;
-    private int     page       = 1;
-    private int     endPage    = -1;
+    private int pageSize = 9;
+    private int page = 1;
+    private int endPage = -1;
     private boolean isLoadMore = false;
-    private boolean isRefresh  = false;
+    private boolean isRefresh = false;
 
     @Nullable
     @Override
@@ -94,7 +95,6 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
 
     private class RecommendPagerAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
         int singleWidth;
-
         public RecommendPagerAdapter(@Nullable List<HashMap<String, String>> data) {
             super(R.layout.item_wallpager_recommend, data);
             singleWidth = (getResources().getDisplayMetrics().widthPixels - DimenUtils.dip2px(getActivity(), 24)) / 3;
@@ -112,15 +112,15 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
             helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    IWallPaperManager.goToWallPaperDetailCompat(getActivity(), item, item.get("id"), v, false, false);
+                    IWallPaperManager.goToWallPaperDetailCompat(getActivity(), getData().indexOf(item), (ArrayList<HashMap<String, String>>) getData(), v, false, false);
                 }
             });
         }
     }
 
     private void getWallPapers() {
-        JSONObject js  = new JSONObject();
-        String     url = Constants.WallPaperList;
+        JSONObject js = new JSONObject();
+        String url = Constants.WallPaperList;
         try {
             js.put("m_id", Constants.M_id);
             js.put("page", page);

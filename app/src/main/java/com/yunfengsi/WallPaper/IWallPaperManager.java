@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.yunfengsi.Utils.ImageUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -37,14 +38,31 @@ public class IWallPaperManager {
     }
 
 
-    public static void goToWallPaperDetailCompat(Activity context,HashMap<String,String >map,String id, View view,boolean deleteAble,boolean isFromCollection){
+//    public static void goToWallPaperDetailCompat(Activity context,HashMap<String,String >map,String id, View view,boolean deleteAble,boolean isFromCollection){
+//        Intent intent = new Intent(context, WallPaperDetail.class);
+//
+//        intent.putExtra("url",map.get("image"));
+//        intent.putExtra("collect",isFromCollection);
+//        intent.putExtra("id",id);
+//        intent.putExtra("info",captureValues(view));
+//        intent.putExtra("delete",deleteAble);
+//        if(isFromCollection){
+//            context.startActivityForResult(intent,111);
+//        }else{
+//            context.startActivity(intent);
+//        }
+//        context.overridePendingTransition(0,0);
+//    }
+    public static void goToWallPaperDetailCompat(Activity context, int  pos, ArrayList<HashMap<String,String >> list, View view, boolean deleteAble, boolean isFromCollection){
         Intent intent = new Intent(context, WallPaperDetail.class);
 
-        intent.putExtra("url",map.get("image"));
+//        intent.putExtra("url",list.get(pos).get("image"));
         intent.putExtra("collect",isFromCollection);
-        intent.putExtra("id",id);
+        intent.putExtra("id",isFromCollection?list.get(pos).get("wallpaper_id"):list.get(pos).get("id"));
         intent.putExtra("info",captureValues(view));
+        intent.putExtra("pos",pos);
         intent.putExtra("delete",deleteAble);
+        intent.putExtra("paths",list);
         if(isFromCollection){
             context.startActivityForResult(intent,111);
         }else{

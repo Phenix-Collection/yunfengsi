@@ -165,7 +165,7 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
                     switch (type) {
                         case "1":
 //                            v.setTag(R.id.WallPaperId,item.get("id"));
-                            IWallPaperManager.goToWallPaperDetailCompat(getActivity(), item,item.get("id"), v,true,false);
+                            IWallPaperManager.goToWallPaperDetailCompat(getActivity(), getData().indexOf(item), (ArrayList<HashMap<String, String>>) getData(), v,true,false);
                             break;
                         case "2":
                             ScaleImageUtil.openBigIagmeMode(getActivity(), item.get("image"), false);
@@ -173,11 +173,11 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
                         case "3":
                             // TODO: 2018/5/30
 //                            v.setTag(R.id.WallPaperId,item.get("id"));
-                            IWallPaperManager.goToWallPaperDetailCompat(getActivity(),item, item.get("wallpaper_id"), v,false,true);
+                            IWallPaperManager.goToWallPaperDetailCompat(getActivity(),getData().indexOf(item), (ArrayList<HashMap<String, String>>) getData(), v,false,true);
                             break;
                         case "4":
 //                            v.setTag(R.id.WallPaperId,item.get("id"));
-                            IWallPaperManager.goToWallPaperDetailCompat(getActivity(), item,item.get("id"), v,false,false);
+                            IWallPaperManager.goToWallPaperDetailCompat(getActivity(),getData().indexOf(item), (ArrayList<HashMap<String, String>>) getData(), v,false,false);
                             break;
                     }
 

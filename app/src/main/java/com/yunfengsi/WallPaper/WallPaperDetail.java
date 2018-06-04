@@ -1,6 +1,7 @@
 package com.yunfengsi.WallPaper;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,9 +17,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -36,9 +41,13 @@ import com.cpiz.android.bubbleview.BubbleStyle;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.ruffian.library.RTextView;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.yunfengsi.Photo.AlxGifHelper;
+import com.yunfengsi.Photo.PhotoActivity;
+import com.yunfengsi.Photo.PhotoViewPager;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -61,12 +70,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.Call;
 import okhttp3.Response;
+import pl.droidsonroids.gif.GifImageView;
 import uk.co.senab.photoview.PhotoView;
 
 /**
@@ -74,7 +90,8 @@ import uk.co.senab.photoview.PhotoView;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class WallPaperDetail extends AppCompatActivity implements View.OnClickListener {
-    private PhotoView photoView;
+    //    private PhotoView photoView;
+    private PhotoViewPager pager;
     ImageView back;
     private RTextView like, user, download, collect, encourage, delete, comment;
     private Bundle info;//共享元素的信息
@@ -84,24 +101,28 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     float translationY;
     private boolean deleteAble = false;
     private HashMap<String, String> detailMap;
-    private String                  id;
+    private String id;//当前Id
 
-    private boolean hasLiked     = false;
-    private boolean hasCollected = false;
-    private Bitmap                   wallPaper;
-    private ImageView                animateLikeView;
-    private ViewGroup                root;
+    public boolean hasLiked = false;
+    public boolean hasCollected = false;
+    private Bitmap wallPaper; //当前的壁纸bitmap
+    private ImageView animateLikeView;
+    private ViewGroup root;
     private FrameLayout.LayoutParams fl;
     private boolean isAnimating = false;//是否正在点赞动画中
     private int animWidth, animHeight;
     private boolean netWork = true;
+    private photoAdapter adapter;
+    private PhotoView curentView;
+    private int currentPos = 0;
+    private boolean isFirstIn = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.wall_pager_detail);
-        photoView = findViewById(R.id.paper);
+        pager = findViewById(R.id.paper);
 
         id = getIntent().getStringExtra("id");
         deleteAble = getIntent().getBooleanExtra("delete", false);
@@ -118,84 +139,27 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 
         info = getIntent().getBundleExtra("info");
 
-        Glide.with(this).load(getIntent().getStringExtra("url"))
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        LogUtil.e("详情：：" + resource.getByteCount());
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                        wallPaper = resource;//保存bitmap对象
+            }
 
-                        photoView.setImageBitmap(resource);
-                        photoView.setVisibility(View.VISIBLE);
-                        photoView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                            @Override
-                            public boolean onPreDraw() {
-                                photoView.getViewTreeObserver().removeOnPreDrawListener(this);
-                                int pos[] = new int[2];
-                                photoView.getLocationOnScreen(pos);
-                                int endWidth  = photoView.getWidth();
-                                int endHeight = photoView.getHeight();
+            @Override
+            public void onPageSelected(int pos) {
+                LogUtil.e("当前：：" + currentPos + "   试图：：" + pos);
+                currentPos = pos;
+            }
 
-                                int startWidth  = info.getInt("width");
-                                int startHeight = info.getInt("height");
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-
-                                scaleX = (startWidth * 1.0f / endWidth);
-                                scaleY = (startHeight * 1.0f / endHeight);
-                                translationX = info.getInt("left") - pos[0];
-                                translationY = info.getInt("top") - pos[1];
-                                photoView.setPivotX(0);
-                                photoView.setPivotY(0);
-                                photoView.setScaleX(scaleX);
-                                photoView.setScaleY(scaleY);
-                                photoView.setTranslationX(translationX);
-                                photoView.setTranslationY(translationY);
-
-                                LogUtil.e("位移：：" + scaleX + "   " + scaleY + "    " + translationX + "   " + translationY);
-                                LogUtil.e("宽高：：" + startWidth + "   " + startHeight + "    " + endWidth + "   " + endHeight);
-                                LogUtil.e("位置：：" + pos[0] + "   " + pos[1] + "    " + info.getInt("left") + "   " + info.getInt("top"));
-                                photoView.animate().setDuration(300)
-                                        .scaleX(1)
-                                        .scaleY(1)
-                                        .translationX(0)
-                                        .translationY(0)
-                                        .withEndAction(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                visibleViews(true);
-
-                                                if (!Network.HttpTest(mApplication.getInstance())) {
-                                                    netWork = false;
-                                                    like.setVisibility(View.GONE);
-                                                    download.setEnabled(false);
-                                                    collect.setEnabled(false);
-                                                    findViewById(R.id.more).setVisibility(View.GONE);
-                                                    findViewById(R.id.user_place).setVisibility(View.GONE);
-                                                }
-                                            }
-                                        })
-
-                                        .start();
-
-                                return true;
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        super.onLoadFailed(e, errorDrawable);
-                        if (Network.HttpTest(mApplication.getInstance())) {
-                            ToastUtil.showToastShort("加载壁纸详情失败，请稍后重试");
-                        }
-                        finish();
-
-                    }
-                });
-
+            }
+        });
+        currentPos = getIntent().getIntExtra("pos", 0);
+        adapter = new photoAdapter(this, (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra("paths"));
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(currentPos, false);
 
         if (hasCollected) {
             showCollected();
@@ -203,6 +167,234 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         getDetail();
 
 
+    }
+
+    private class photoAdapter extends PagerAdapter {
+        private ArrayList<HashMap<String, String>> paths;
+        private Activity activity;
+        private int screenWidth;
+
+        public SparseArray<PhotoView> mSparseArray;
+        public photoAdapter(Activity activity, ArrayList<HashMap<String, String>> paths) {
+            super();
+            this.paths = paths;
+            WeakReference<Activity> w = new WeakReference<Activity>(activity);
+            this.activity = w.get();
+            mSparseArray=new SparseArray<>();
+        }
+
+        @Override
+        public int getCount() {
+            return paths == null ? 0 : paths.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+
+        @Override
+        public Object instantiateItem(ViewGroup container, final int position) {
+
+            if (paths.get(position).get("image").endsWith("gif")) {
+
+                Log.e("AlexGIF", "现在是gif大图");
+                View rl_gif = LayoutInflater.from(activity).inflate(R.layout.gif_progress_group, null);//这种方式容易导致内存泄漏
+                GifImageView gifImageView = (GifImageView) rl_gif.findViewById(R.id.gif_photo_view);
+                ProgressWheel progressWheel = (ProgressWheel) rl_gif.findViewById(R.id.progress_wheel);
+                TextView tv_progress = (TextView) rl_gif.findViewById(R.id.tv_progress);
+                AlxGifHelper.displayImage(paths.get(position).get("image"), gifImageView, progressWheel, tv_progress, 0);//最后一个参数传0表示不缩放gif的大小，显示原始尺寸
+                try {
+                    container.addView(rl_gif);//这里要注意由于container是一个复用的控件，所以频繁的addView会导致多张相同的图片重叠，必须予以处置
+                } catch (Exception e) {
+                    Log.e("AlexGIF", "父控件重复！！！！，这里出现异常很正常", e);
+                }
+                return rl_gif;
+            } else {
+                final PhotoView photo;
+                LogUtil.e("实例化");
+                photo = new PhotoView(activity);
+                mSparseArray.put(position,photo);
+                photo.setOnDoubleTapListener(mOnDoubleTapListener);
+                Glide.with(activity).load(paths.get(position).get("image"))
+                        .asBitmap()
+//                            .override(getResources().getDisplayMetrics().widthPixels,
+//                                    getResources().getDisplayMetrics().heightPixels)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                LogUtil.e("详情：：" + resource.getByteCount());
+                                wallPaper = resource;//保存bitmap对象
+                                photo.setImageBitmap(resource);
+                                if (pager.getVisibility() != View.VISIBLE) {
+                                    if (position == currentPos) {
+                                        pager.setVisibility(View.VISIBLE);
+                                        pager.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                                            @Override
+                                            public boolean onPreDraw() {
+                                                pager.getViewTreeObserver().removeOnPreDrawListener(this);
+                                                LogUtil.e("准备绘制viewpager咯");
+                                                int endWidth = getResources().getDisplayMetrics().widthPixels;
+                                                int endHeight = getResources().getDisplayMetrics().heightPixels;
+
+                                                int startWidth = info.getInt("width");
+                                                int startHeight = info.getInt("height");
+
+
+                                                scaleX = (startWidth * 1.0f / endWidth);
+                                                scaleY = (startHeight * 1.0f / endHeight);
+                                                translationX = info.getInt("left") - 0;
+                                                translationY = info.getInt("top") - 0;
+                                                photo.setPivotX(0);
+                                                photo.setPivotY(0);
+                                                photo.setScaleX(scaleX);
+                                                photo.setScaleY(scaleY);
+                                                photo.setTranslationX(translationX);
+                                                photo.setTranslationY(translationY);
+                                                LogUtil.e("当前view:::"+photo+"   current::"+curentView+"   sparse::::"+mSparseArray.get(position));
+                                                LogUtil.e("位移：：" + scaleX + "   " + scaleY + "    " + translationX + "   " + translationY);
+                                                LogUtil.e("宽高：：" + startWidth + "   " + startHeight + "    " + endWidth + "   " + endHeight);
+                                                LogUtil.e("位置：：" + info.getInt("left") + "   " + info.getInt("top"));
+                                                photo.animate().setDuration(300)
+                                                        .scaleX(1)
+                                                        .scaleY(1)
+                                                        .translationX(0)
+                                                        .translationY(0)
+                                                        .withEndAction(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                visibleViews(true);
+
+                                                                if (!Network.HttpTest(mApplication.getInstance())) {
+                                                                    onNetWorkDown();
+                                                                }
+                                                            }
+                                                        }).start();
+                                                return true;
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                super.onLoadFailed(e, errorDrawable);
+                                if (Network.HttpTest(mApplication.getInstance())) {
+                                    ToastUtil.showToastShort("加载壁纸详情失败，请稍后重试");
+                                    if (currentPos + 1 < paths.size()) {
+                                        pager.setCurrentItem(++currentPos);
+                                    } else if (currentPos - 1 >= 0) {
+                                        pager.setCurrentItem(--currentPos);
+                                    }
+                                }
+
+                            }
+                        });
+                LogUtil.e("外围：：：当前view:::"+photo+"   current::"+curentView+"   sparse::::"+mSparseArray.get(position));
+//            }
+
+
+                container.addView(photo);
+                return photo;
+            }
+
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+            mSparseArray.remove(position);
+        }
+
+    }
+
+    GestureDetector.OnDoubleTapListener mOnDoubleTapListener = new GestureDetector.OnDoubleTapListener() {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            if (!isAnimating) {
+                if (netWork) {
+                    like.performClick();
+                }
+                float x = e.getRawX();
+                float y = e.getRawY();
+
+                int rotation = new Random().nextInt(100) - 50;
+                if (animateLikeView == null) {
+                    animateLikeView = new ImageView(WallPaperDetail.this);
+                    animateLikeView.setImageBitmap(ImageUtil.readBitMap(WallPaperDetail.this, R.drawable.red_like));
+                    root = (ViewGroup) getWindow().getDecorView();
+                    fl = new FrameLayout.LayoutParams(animWidth, animHeight);
+                }
+                animateLikeView.setX(x - (animWidth >> 1));
+                animateLikeView.setY(y - (animHeight >> 1));
+                animateLikeView.setScaleX(0.01f);
+                animateLikeView.setScaleY(0.01f);
+                animateLikeView.setAlpha(1.0f);
+                animateLikeView.setRotation(rotation);
+
+                root.addView(animateLikeView, fl);
+                animateLikeView.animate().scaleX(1.0f)
+                        .withStartAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                isAnimating = true;
+                            }
+                        })
+                        .scaleY(1.0f)
+                        .setDuration(400)
+                        .withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                animateLikeView.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        animateLikeView.animate().scaleX(1.5f)
+                                                .scaleY(1.5f)
+                                                .alpha(0)
+                                                .setDuration(300)
+                                                .withEndAction(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        isAnimating = false;
+                                                        root.removeView(animateLikeView);
+                                                    }
+                                                })
+                                                .start();
+                                    }
+                                }, 80);
+                            }
+                        })
+                        .start();
+            }
+
+
+            return false;
+        }
+
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent e) {
+
+            return false;
+        }
+    };
+
+    /**
+     * 网络状况异常  处理显示
+     */
+    private void onNetWorkDown() {
+        netWork = false;
+        like.setVisibility(View.GONE);
+        download.setEnabled(false);
+        collect.setEnabled(false);
+        findViewById(R.id.more).setVisibility(View.GONE);
+        findViewById(R.id.user_place).setVisibility(View.GONE);
     }
 
     private void getDetail() {
@@ -295,6 +487,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.more).setVisibility(flag ? View.VISIBLE : View.GONE);
         findViewById(R.id.place_black).setVisibility(flag ? View.VISIBLE : View.GONE);
         findViewById(R.id.user_place).setVisibility(flag ? View.VISIBLE : View.GONE);
+
         like.setVisibility(flag ? View.VISIBLE : View.GONE);
         user.setVisibility(flag ? View.VISIBLE : View.GONE);
         download.setVisibility(flag ? View.VISIBLE : View.GONE);
@@ -302,6 +495,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         encourage.setVisibility(flag ? View.VISIBLE : View.GONE);
         delete.setVisibility(flag ? View.VISIBLE : View.GONE);
         comment.setVisibility(flag ? View.VISIBLE : View.GONE);
+        pager.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
 
 
     }
@@ -322,81 +516,6 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         comment.setOnClickListener(this);
         animWidth = DimenUtils.dip2px(this, 100);
         animHeight = DimenUtils.dip2px(this, 100);
-
-        photoView.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                if (!isAnimating) {
-                    if (netWork) {
-                        like.performClick();
-                    }
-                    float x = e.getRawX();
-                    float y = e.getRawY();
-
-                    int rotation = new Random().nextInt(100) - 50;
-                    if (animateLikeView == null) {
-                        animateLikeView = new ImageView(WallPaperDetail.this);
-                        animateLikeView.setImageBitmap(ImageUtil.readBitMap(WallPaperDetail.this, R.drawable.red_like));
-                        root = (ViewGroup) getWindow().getDecorView();
-                        fl = new FrameLayout.LayoutParams(animWidth, animHeight);
-                    }
-                    animateLikeView.setX(x - (animWidth >> 1));
-                    animateLikeView.setY(y - (animHeight >> 1));
-                    animateLikeView.setScaleX(0.01f);
-                    animateLikeView.setScaleY(0.01f);
-                    animateLikeView.setAlpha(1.0f);
-                    animateLikeView.setRotation(rotation);
-
-                    root.addView(animateLikeView, fl);
-                    animateLikeView.animate().scaleX(1.0f)
-                            .withStartAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    isAnimating = true;
-                                }
-                            })
-                            .scaleY(1.0f)
-                            .setDuration(400)
-                            .withEndAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    animateLikeView.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            animateLikeView.animate().scaleX(1.5f)
-                                                    .scaleY(1.5f)
-                                                    .alpha(0)
-                                                    .setDuration(300)
-                                                    .withEndAction(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            isAnimating = false;
-                                                            root.removeView(animateLikeView);
-                                                        }
-                                                    })
-                                                    .start();
-                                        }
-                                    }, 80);
-                                }
-                            })
-                            .start();
-                }
-
-
-                return false;
-            }
-
-            @Override
-            public boolean onDoubleTapEvent(MotionEvent e) {
-                LogUtil.e("onDoubleTapEvent:::" + e.getAction());
-                return false;
-            }
-        });
 
 
         if (deleteAble) {
@@ -626,29 +745,29 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     }
 
     private void animateBackToPrevious() {
-        photoView.animate()
-                .setDuration(300)
-                .scaleX(scaleX)
-                .scaleY(scaleY)
-                .translationX(translationX)
-                .translationY(translationY)
-                .withStartAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        visibleViews(false);
-                    }
-                })
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
+//        adapter.mSparseArray.get(currentPos).animate()
+//                .setDuration(300)
+//                .scaleX(scaleX)
+//                .scaleY(scaleY)
+//                .translationX(translationX)
+//                .translationY(translationY)
+//                .withStartAction(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        visibleViews(false);
+//                    }
+//                })
+//                .withEndAction(new Runnable() {
+//                    @Override
+//                    public void run() {
                         if (hasCollected) {
                             setResult(222);
                         }
                         finish();
-                        overridePendingTransition(0, 0);
-                    }
-                })
-                .withLayer().start();
+//                        overridePendingTransition(0, 0);
+//                    }
+//                })
+//                .withLayer().start();
     }
 
     private void setWallPaper() {
@@ -749,7 +868,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 //            mWallManager.setBitmap()
 
 
-            Class  class1             = mWallManager.getClass();//获取类名
+            Class class1 = mWallManager.getClass();//获取类名
             Method setWallPaperMethod = class1.getMethod("setBitmapToLockWallpaper", Bitmap.class);//获取设置锁屏壁纸的函数
             setWallPaperMethod.invoke(mWallManager, wallPaper);//调用锁屏壁纸的函数，并指定壁纸的路径imageFilesPath
             ToastUtil.showToastShort("锁屏壁纸设置成功");
