@@ -191,6 +191,8 @@ dependencies {
     //泡泡
     compile 'com.cpiz.bubbleview:bubbleview:1.0.2'
 
+    compile 'com.android.support:palette-v7:23.4.0'
+
     //内存测试
 //    compile 'com.squareup.leakcanary:leakcanary-android:1.5'
 }

@@ -75,8 +75,8 @@ import uk.co.senab.photoview.PhotoView;
  */
 public class WallPaperDetail extends AppCompatActivity implements View.OnClickListener {
     private PhotoView photoView;
-
-    private RTextView like, user, download, collect, encourage, delete;
+    ImageView back;
+    private RTextView like, user, download, collect, encourage, delete, comment;
     private Bundle info;//共享元素的信息
     float scaleX;
     float scaleY;
@@ -94,24 +94,13 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     private FrameLayout.LayoutParams fl;
     private boolean isAnimating = false;//是否正在点赞动画中
     private int animWidth, animHeight;
-    private boolean netWork=true;
+    private boolean netWork = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.wall_pager_detail);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Window window = getWindow();
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(Color.TRANSPARENT);
-//            window.setNavigationBarColor(Color.TRANSPARENT);
-        } else {
-            ((ViewGroup.MarginLayoutParams) findViewById(R.id.back).getLayoutParams()).topMargin = DimenUtils.dip2px(this, 5);
-            ((ViewGroup.MarginLayoutParams) findViewById(R.id.more).getLayoutParams()).topMargin = DimenUtils.dip2px(this, 5);
-        }
-
         photoView = findViewById(R.id.paper);
 
         id = getIntent().getStringExtra("id");
@@ -125,6 +114,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         collect = findViewById(R.id.collect);
         encourage = findViewById(R.id.encourage);
         delete = findViewById(R.id.delete);
+        comment = findViewById(R.id.comment);
 
         info = getIntent().getBundleExtra("info");
 
@@ -175,8 +165,9 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                                             @Override
                                             public void run() {
                                                 visibleViews(true);
-                                                if(!Network.HttpTest(mApplication.getInstance())){
-                                                    netWork=false;
+
+                                                if (!Network.HttpTest(mApplication.getInstance())) {
+                                                    netWork = false;
                                                     like.setVisibility(View.GONE);
                                                     download.setEnabled(false);
                                                     collect.setEnabled(false);
@@ -197,7 +188,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onLoadFailed(Exception e, Drawable errorDrawable) {
                         super.onLoadFailed(e, errorDrawable);
-                        if(Network.HttpTest(mApplication.getInstance())){
+                        if (Network.HttpTest(mApplication.getInstance())) {
                             ToastUtil.showToastShort("加载壁纸详情失败，请稍后重试");
                         }
                         finish();
@@ -207,10 +198,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 
 
         if (hasCollected) {
-            Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.collect_red);
-            red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 16), DimenUtils.dip2px(WallPaperDetail.this, 16));
-            collect.setIconNormal(red);
-            collect.setTextColorNormal(Color.parseColor("#F14E69"));
+            showCollected();
         }
         getDetail();
 
@@ -223,6 +211,9 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         try {
             js.put("id", getIntent().getStringExtra("id"));
             js.put("m_id", Constants.M_id);
+            if (!PreferenceUtil.getUserId(this).equals("")) {
+                js.put("user_id", PreferenceUtil.getUserId(this));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -285,7 +276,10 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                                                 }
                                             });
                                 }
-
+                                //判断是否收藏该壁纸  1没收藏  2收藏
+                                if ("2".equals(detailMap.get("keep"))) {
+                                    showCollected();
+                                }
                                 like.setText(detailMap.get("likes") + "人赞");
                             } else {
                                 ToastUtil.showToastShort("获取详情失败，请检查网络后重试");
@@ -296,29 +290,36 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     }
 
     private void visibleViews(boolean flag) {
-        findViewById(R.id.back).setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.more).setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.place_black).setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.user_place).setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        like.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        user.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        download.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        collect.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        encourage.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
-        delete.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
+        findViewById(R.id.back).setVisibility(flag ? View.VISIBLE : View.GONE);
+        findViewById(R.id.head_bg).setVisibility(flag ? View.VISIBLE : View.GONE);
+        findViewById(R.id.more).setVisibility(flag ? View.VISIBLE : View.GONE);
+        findViewById(R.id.place_black).setVisibility(flag ? View.VISIBLE : View.GONE);
+        findViewById(R.id.user_place).setVisibility(flag ? View.VISIBLE : View.GONE);
+        like.setVisibility(flag ? View.VISIBLE : View.GONE);
+        user.setVisibility(flag ? View.VISIBLE : View.GONE);
+        download.setVisibility(flag ? View.VISIBLE : View.GONE);
+        collect.setVisibility(flag ? View.VISIBLE : View.GONE);
+        encourage.setVisibility(flag ? View.VISIBLE : View.GONE);
+        delete.setVisibility(flag ? View.VISIBLE : View.GONE);
+        comment.setVisibility(flag ? View.VISIBLE : View.GONE);
+
 
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        findViewById(R.id.back).setOnClickListener(this);
-        findViewById(R.id.more).setOnClickListener(this);
+        back = findViewById(R.id.back);
+        ImageView more = findViewById(R.id.more);
+        back.setOnClickListener(this);
+        more.setOnClickListener(this);
         like.setOnClickListener(this);
         download.setOnClickListener(this);
         collect.setOnClickListener(this);
         encourage.setOnClickListener(this);
         delete.setOnClickListener(this);
+        comment.setOnClickListener(this);
         animWidth = DimenUtils.dip2px(this, 100);
         animHeight = DimenUtils.dip2px(this, 100);
 
@@ -331,7 +332,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 if (!isAnimating) {
-                    if(netWork){
+                    if (netWork) {
                         like.performClick();
                     }
                     float x = e.getRawX();
@@ -397,6 +398,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+
         if (deleteAble) {
             Drawable white = ContextCompat.getDrawable(this, R.drawable.delete_wallpaper);
             white.setBounds(0, 0, DimenUtils.dip2px(this, 16), DimenUtils.dip2px(this, 16));
@@ -449,7 +451,10 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
             case R.id.download:
                 saveImage();
                 break;
+            case R.id.comment:
 
+
+                break;
 
             case R.id.collect:
                 collectWallPaper();
@@ -555,22 +560,30 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                 HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
                 if (map != null) {
                     if ("000".equals(map.get("code"))) {
-                        Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.collect_red);
-                        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 16), DimenUtils.dip2px(WallPaperDetail.this, 16));
-                        collect.setIconNormal(red);
-                        collect.setTextColorNormal(Color.parseColor("#F14E69"));
+                        showCollected();
                         ToastUtil.showToastShort("收藏成功");
                     } else if ("001".equals(map.get("code"))) {
-                        Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.collect_wall_paper);
-                        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 16), DimenUtils.dip2px(WallPaperDetail.this, 16));
-                        collect.setIconNormal(red);
-                        collect.setTextColorNormal(Color.WHITE);
+                        hideCollected();
                         ToastUtil.showToastShort("收藏已取消");
                     }
 
                 }
             }
         });
+    }
+
+    private void hideCollected() {
+        Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.collect_wall_paper);
+        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 16), DimenUtils.dip2px(WallPaperDetail.this, 16));
+        collect.setIconNormal(red);
+        collect.setTextColorNormal(Color.WHITE);
+    }
+
+    private void showCollected() {
+        Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.collect_red);
+        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 16), DimenUtils.dip2px(WallPaperDetail.this, 16));
+        collect.setIconNormal(red);
+        collect.setTextColorNormal(Color.parseColor("#F14E69"));
     }
 
     private void saveImage() {
@@ -705,9 +718,10 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                         HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
                         if (map != null) {
                             Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.red_like);
-                            red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 40), DimenUtils.dip2px(WallPaperDetail.this, 40));
+                            red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 20), DimenUtils.dip2px(WallPaperDetail.this, 20));
                             like.setIconNormal(red);
-                            like.setTextColorNormal(Color.parseColor("#FE4B73"));
+                            like.setTextColorUnable(Color.parseColor("#FE4B73"));
+                            like.setEnabled(false);
                             hasLiked = true;
                             if ("000".equals(map.get("code"))) {
                                 int old = Integer.valueOf(detailMap.get("likes"));
@@ -728,20 +742,17 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     private void SetLockWallPaper() {
         // TODO Auto-generated method stub
         try {
-            WallpaperManager mWallManager       = WallpaperManager.getInstance(this);
+            WallpaperManager mWallManager = WallpaperManager.getInstance(this);
 //            mWallManager.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_wallpaper), null, true,
 //
 //            WallpaperManager.FLAG_LOCK | WallpaperManager.FLAG_SYSTEM);
 //            mWallManager.setBitmap()
 
 
-
-
-
-        Class            class1             = mWallManager.getClass();//获取类名
-            Method           setWallPaperMethod = class1.getMethod("setBitmapToLockWallpaper",Bitmap.class);//获取设置锁屏壁纸的函数
+            Class  class1             = mWallManager.getClass();//获取类名
+            Method setWallPaperMethod = class1.getMethod("setBitmapToLockWallpaper", Bitmap.class);//获取设置锁屏壁纸的函数
             setWallPaperMethod.invoke(mWallManager, wallPaper);//调用锁屏壁纸的函数，并指定壁纸的路径imageFilesPath
-           ToastUtil.showToastShort( "锁屏壁纸设置成功");
+            ToastUtil.showToastShort("锁屏壁纸设置成功");
         } catch (Throwable e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
