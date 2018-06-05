@@ -3,11 +3,13 @@ package com.yunfengsi.WallPaper;
 import android.Manifest;
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +24,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,7 +47,6 @@ import com.ruffian.library.RTextView;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Photo.AlxGifHelper;
-import com.yunfengsi.Photo.PhotoActivity;
 import com.yunfengsi.Photo.PhotoViewPager;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -71,14 +71,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -101,21 +96,22 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     float translationY;
     private boolean deleteAble = false;
     private HashMap<String, String> detailMap;
-    private String id;//当前Id
+    private String                  id;//当前Id
 
-    public boolean hasLiked = false;
+    public boolean hasLiked     = false;
     public boolean hasCollected = false;
-    private Bitmap wallPaper; //当前的壁纸bitmap
-    private ImageView animateLikeView;
-    private ViewGroup root;
+    private Bitmap                   wallPaper; //当前的壁纸bitmap
+    private ImageView                animateLikeView;
+    private ViewGroup                root;
     private FrameLayout.LayoutParams fl;
     private boolean isAnimating = false;//是否正在点赞动画中
     private int animWidth, animHeight;
     private boolean netWork = true;
     private photoAdapter adapter;
-    private PhotoView curentView;
-    private int currentPos = 0;
-    private boolean isFirstIn = true;
+    private PhotoView    curentView;
+    private int     currentPos = 0;
+    private boolean isFirstIn  = true;
+    private ArrayList<HashMap<String, String>> paths;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,7 +120,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.wall_pager_detail);
         pager = findViewById(R.id.paper);
 
-        id = getIntent().getStringExtra("id");
+
         deleteAble = getIntent().getBooleanExtra("delete", false);
         hasCollected = getIntent().getBooleanExtra("collect", false);
 
@@ -138,7 +134,8 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         comment = findViewById(R.id.comment);
 
         info = getIntent().getBundleExtra("info");
-
+        currentPos = getIntent().getIntExtra("pos", 0);
+        paths = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra("paths");
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -149,6 +146,9 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
             public void onPageSelected(int pos) {
                 LogUtil.e("当前：：" + currentPos + "   试图：：" + pos);
                 currentPos = pos;
+                id = hasCollected ? paths.get(currentPos).get("wallpaper_id") : paths.get(currentPos).get("id");
+                getDetail();
+                resetUI();
             }
 
             @Override
@@ -156,31 +156,66 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-        currentPos = getIntent().getIntExtra("pos", 0);
-        adapter = new photoAdapter(this, (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra("paths"));
+
+        adapter = new photoAdapter(this, paths);
         pager.setAdapter(adapter);
         pager.setCurrentItem(currentPos, false);
+        if (currentPos == 0) {
+            id = hasCollected ? paths.get(currentPos).get("wallpaper_id") : paths.get(currentPos).get("id");
+            getDetail();
+        }
 
         if (hasCollected) {
             showCollected();
         }
-        getDetail();
+        if (deleteAble) {
+            delete.setVisibility(View.VISIBLE);
+        } else {
+            delete.setVisibility(View.GONE);
+        }
 
+    }
+
+    /**
+     * 让所有Ui恢复到初始状态
+     */
+    private void resetUI() {
+        hideCollected();
+        hideLike();
+        if (Network.HttpTest(this)) {
+            netWork = true;
+            like.setEnabled(true);
+            download.setEnabled(true);
+            collect.setEnabled(true);
+            comment.setEnabled(true);
+        } else {
+            onNetWorkDown();
+        }
+
+    }
+
+    private void hideLike() {
+        hasLiked = false;
+        Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.encourage_wall_paper);
+        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 20), DimenUtils.dip2px(WallPaperDetail.this, 20));
+        like.setIconNormal(red);
+        like.setTextColorNormal(Color.WHITE);
+        like.setTextColorUnable(Color.parseColor("#888888"));
+        like.setEnabled(true);
 
     }
 
     private class photoAdapter extends PagerAdapter {
         private ArrayList<HashMap<String, String>> paths;
-        private Activity activity;
-        private int screenWidth;
+        private Activity                           activity;
+        private int                                screenWidth;
 
-        public SparseArray<PhotoView> mSparseArray;
+
         public photoAdapter(Activity activity, ArrayList<HashMap<String, String>> paths) {
             super();
             this.paths = paths;
             WeakReference<Activity> w = new WeakReference<Activity>(activity);
             this.activity = w.get();
-            mSparseArray=new SparseArray<>();
         }
 
         @Override
@@ -200,10 +235,10 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
             if (paths.get(position).get("image").endsWith("gif")) {
 
                 Log.e("AlexGIF", "现在是gif大图");
-                View rl_gif = LayoutInflater.from(activity).inflate(R.layout.gif_progress_group, null);//这种方式容易导致内存泄漏
-                GifImageView gifImageView = (GifImageView) rl_gif.findViewById(R.id.gif_photo_view);
+                View          rl_gif        = LayoutInflater.from(activity).inflate(R.layout.gif_progress_group, null);//这种方式容易导致内存泄漏
+                GifImageView  gifImageView  = (GifImageView) rl_gif.findViewById(R.id.gif_photo_view);
                 ProgressWheel progressWheel = (ProgressWheel) rl_gif.findViewById(R.id.progress_wheel);
-                TextView tv_progress = (TextView) rl_gif.findViewById(R.id.tv_progress);
+                TextView      tv_progress   = (TextView) rl_gif.findViewById(R.id.tv_progress);
                 AlxGifHelper.displayImage(paths.get(position).get("image"), gifImageView, progressWheel, tv_progress, 0);//最后一个参数传0表示不缩放gif的大小，显示原始尺寸
                 try {
                     container.addView(rl_gif);//这里要注意由于container是一个复用的控件，所以频繁的addView会导致多张相同的图片重叠，必须予以处置
@@ -213,14 +248,11 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                 return rl_gif;
             } else {
                 final PhotoView photo;
-                LogUtil.e("实例化");
                 photo = new PhotoView(activity);
-                mSparseArray.put(position,photo);
+
                 photo.setOnDoubleTapListener(mOnDoubleTapListener);
                 Glide.with(activity).load(paths.get(position).get("image"))
                         .asBitmap()
-//                            .override(getResources().getDisplayMetrics().widthPixels,
-//                                    getResources().getDisplayMetrics().heightPixels)
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -234,11 +266,10 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                                             @Override
                                             public boolean onPreDraw() {
                                                 pager.getViewTreeObserver().removeOnPreDrawListener(this);
-                                                LogUtil.e("准备绘制viewpager咯");
-                                                int endWidth = getResources().getDisplayMetrics().widthPixels;
+                                                int endWidth  = getResources().getDisplayMetrics().widthPixels;
                                                 int endHeight = getResources().getDisplayMetrics().heightPixels;
 
-                                                int startWidth = info.getInt("width");
+                                                int startWidth  = info.getInt("width");
                                                 int startHeight = info.getInt("height");
 
 
@@ -252,10 +283,6 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                                                 photo.setScaleY(scaleY);
                                                 photo.setTranslationX(translationX);
                                                 photo.setTranslationY(translationY);
-                                                LogUtil.e("当前view:::"+photo+"   current::"+curentView+"   sparse::::"+mSparseArray.get(position));
-                                                LogUtil.e("位移：：" + scaleX + "   " + scaleY + "    " + translationX + "   " + translationY);
-                                                LogUtil.e("宽高：：" + startWidth + "   " + startHeight + "    " + endWidth + "   " + endHeight);
-                                                LogUtil.e("位置：：" + info.getInt("left") + "   " + info.getInt("top"));
                                                 photo.animate().setDuration(300)
                                                         .scaleX(1)
                                                         .scaleY(1)
@@ -292,7 +319,6 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 
                             }
                         });
-                LogUtil.e("外围：：：当前view:::"+photo+"   current::"+curentView+"   sparse::::"+mSparseArray.get(position));
 //            }
 
 
@@ -305,7 +331,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
-            mSparseArray.remove(position);
+
         }
 
     }
@@ -390,18 +416,19 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
      */
     private void onNetWorkDown() {
         netWork = false;
-        like.setVisibility(View.GONE);
+        like.setEnabled(false);
         download.setEnabled(false);
         collect.setEnabled(false);
-        findViewById(R.id.more).setVisibility(View.GONE);
-        findViewById(R.id.user_place).setVisibility(View.GONE);
+        comment.setEnabled(false);
+//        findViewById(R.id.more).setVisibility(View.GONE);
+//        findViewById(R.id.user_place).setVisibility(View.GONE);
     }
 
     private void getDetail() {
 
         JSONObject js = new JSONObject();
         try {
-            js.put("id", getIntent().getStringExtra("id"));
+            js.put("id", hasCollected ? paths.get(currentPos).get("wallpaper_id") : paths.get(currentPos).get("id"));
             js.put("m_id", Constants.M_id);
             if (!PreferenceUtil.getUserId(this).equals("")) {
                 js.put("user_id", PreferenceUtil.getUserId(this));
@@ -478,6 +505,21 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                             }
                         }
                     }
+
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        pager.requestDisallowInterceptTouchEvent(true);
+                        ProgressUtil.show(WallPaperDetail.this, "", "正在加载...");
+                        ProgressUtil.canCancelAbleOutSide(false);
+                    }
+
+                    @Override
+                    public void onAfter(String s, Exception e) {
+                        super.onAfter(s, e);
+                        pager.requestDisallowInterceptTouchEvent(false);
+                        ProgressUtil.dismiss();
+                    }
                 });
     }
 
@@ -493,7 +535,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         download.setVisibility(flag ? View.VISIBLE : View.GONE);
         collect.setVisibility(flag ? View.VISIBLE : View.GONE);
         encourage.setVisibility(flag ? View.VISIBLE : View.GONE);
-        delete.setVisibility(flag ? View.VISIBLE : View.GONE);
+        delete.setVisibility(deleteAble ? View.VISIBLE : View.GONE);
         comment.setVisibility(flag ? View.VISIBLE : View.GONE);
         pager.setVisibility(flag ? View.VISIBLE : View.INVISIBLE);
 
@@ -514,22 +556,26 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
         encourage.setOnClickListener(this);
         delete.setOnClickListener(this);
         comment.setOnClickListener(this);
+//        like.setIconUnable(TintUtils.getTintDrawable(R.drawable.encourage_wall_paper, Color.parseColor("#888888"), 20));
+//        download.setIconUnable(TintUtils.getTintDrawable(R.drawable.download, Color.parseColor("#888888"), 20));
+//        collect.setIconUnable(TintUtils.getTintDrawable(R.drawable.collect_wall_paper, Color.parseColor("#888888"), 20));
+//        comment.setIconUnable(TintUtils.getTintDrawable(R.drawable.comment_wall_paper, Color.parseColor("#888888"), 20));
         animWidth = DimenUtils.dip2px(this, 100);
         animHeight = DimenUtils.dip2px(this, 100);
 
 
-        if (deleteAble) {
-            Drawable white = ContextCompat.getDrawable(this, R.drawable.delete_wallpaper);
-            white.setBounds(0, 0, DimenUtils.dip2px(this, 16), DimenUtils.dip2px(this, 16));
-            delete.setIconNormal(white);
-            delete.setTextColorNormal(Color.WHITE);
-        } else {
-            Drawable gray = ContextCompat.getDrawable(this, R.drawable.delete_wallpaper_gray);
-            gray.setBounds(0, 0, DimenUtils.dip2px(this, 16), DimenUtils.dip2px(this, 16));
-            delete.setIconNormal(gray);
-            delete.setTextColorNormal(Color.parseColor("#888888"));
-            delete.setPressedTextColor(Color.parseColor("#888888"));
-        }
+//        if (deleteAble) {
+//            Drawable white = ContextCompat.getDrawable(this, R.drawable.delete_wallpaper);
+//            white.setBounds(0, 0, DimenUtils.dip2px(this, 16), DimenUtils.dip2px(this, 16));
+//            delete.setIconNormal(white);
+//            delete.setTextColorNormal(Color.WHITE);
+//        } else {
+//            Drawable gray = ContextCompat.getDrawable(this, R.drawable.delete_wallpaper_gray);
+//            gray.setBounds(0, 0, DimenUtils.dip2px(this, 16), DimenUtils.dip2px(this, 16));
+//            delete.setIconNormal(gray);
+//            delete.setTextColorNormal(Color.parseColor("#888888"));
+//            delete.setPressedTextColor(Color.parseColor("#888888"));
+//        }
     }
 
     @Override
@@ -571,7 +617,11 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                 saveImage();
                 break;
             case R.id.comment:
-
+                Intent intent = new Intent();
+                intent.setComponent(new ComponentName(WallPaperDetail.this, WallPaperComments.class));
+                intent.putExtra("id", id);
+                intent.putExtra("url", paths.get(currentPos).get("image"));
+                startActivity(intent);
 
                 break;
 
@@ -579,15 +629,33 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                 collectWallPaper();
                 break;
             case R.id.encourage:
-                setWallPaper();
+                if (Build.VERSION.SDK_INT >= 24) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setItems(new String[]{"桌面壁纸", "锁屏壁纸"}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            switch (which) {
+                                case 0:
+                                    setWallPaper();
+                                    break;
+                                case 1:
+                                    SetLockWallPaper();
+                                    break;
+                            }
+                        }
+                    }).create().show();
+                } else {
+                    setWallPaper();
+                }
+
+
                 break;
             case R.id.delete:
-                if (deleteAble) {
-                    // TODO: 2018/5/30 删除
-                    deleteWallPaper();
-                } else {
-                    ToastUtil.showToastShort("该壁纸无法删除");
-                }
+
+                // TODO: 2018/5/30 删除
+                deleteWallPaper();
+
                 break;
         }
     }
@@ -601,6 +669,9 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     }
 
     private void deleteWallPaper() {
+        if (!Network.HttpTest(this)) {
+            return;
+        }
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setMessage("确认删除该壁纸吗?")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -693,14 +764,14 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 
     private void hideCollected() {
         Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.collect_wall_paper);
-        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 16), DimenUtils.dip2px(WallPaperDetail.this, 16));
+        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 20), DimenUtils.dip2px(WallPaperDetail.this, 20));
         collect.setIconNormal(red);
         collect.setTextColorNormal(Color.WHITE);
     }
 
     private void showCollected() {
         Drawable red = ContextCompat.getDrawable(WallPaperDetail.this, R.drawable.collect_red);
-        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 16), DimenUtils.dip2px(WallPaperDetail.this, 16));
+        red.setBounds(0, 0, DimenUtils.dip2px(WallPaperDetail.this, 20), DimenUtils.dip2px(WallPaperDetail.this, 20));
         collect.setIconNormal(red);
         collect.setTextColorNormal(Color.parseColor("#F14E69"));
     }
@@ -760,10 +831,10 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 //                .withEndAction(new Runnable() {
 //                    @Override
 //                    public void run() {
-                        if (hasCollected) {
-                            setResult(222);
-                        }
-                        finish();
+        if (hasCollected) {
+            setResult(222);
+        }
+        finish();
 //                        overridePendingTransition(0, 0);
 //                    }
 //                })
@@ -772,39 +843,47 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 
     private void setWallPaper() {
         AlertDialog.Builder builder = new AlertDialog.Builder(WallPaperDetail.this);
-        builder.setMessage("确定要使用该壁纸吗？")
+        builder.setMessage("确定要使用该壁纸作为桌面壁纸吗？")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        WallpaperManager manager = WallpaperManager.getInstance(WallPaperDetail.this);
-                        if (wallPaper != null) {
-                            try {
-                                manager.setBitmap(wallPaper);
+                        Glide.with(WallPaperDetail.this)
+                                .load(paths.get(currentPos).get("image"))
+                                .asBitmap().into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                wallPaper = resource;
+                                WallpaperManager manager = WallpaperManager.getInstance(WallPaperDetail.this);
+                                if (wallPaper != null) {
+                                    try {
+                                        manager.setBitmap(wallPaper);
 //                                manager.setBitmap(wallPaper,new Rect(0,0,getResources().getDisplayMetrics().widthPixels,getResources().getDisplayMetrics().heightPixels)
 //                                ,true,WallpaperManager.FLAG_LOCK);
-                                ToastUtil.showToastShort("壁纸设置成功");
-                                AlertDialog.Builder builder1 = new AlertDialog.Builder(WallPaperDetail.this);
-                                builder1.setMessage("是否需要回到桌面查看壁纸？")
-                                        .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                                        ToastUtil.showToastShort("壁纸设置成功");
+                                        AlertDialog.Builder builder1 = new AlertDialog.Builder(WallPaperDetail.this);
+                                        builder1.setMessage("是否需要回到桌面查看壁纸？")
+                                                .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                        moveTaskToBack(true);
+                                                    }
+                                                }).setNegativeButton("不需要，谢谢", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
-                                                moveTaskToBack(true);
                                             }
-                                        }).setNegativeButton("不需要，谢谢", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
+                                        }).create().show();
+                                    } catch (IOException e) {
+                                        ToastUtil.showToastShort("壁纸设置失败，请稍后重试");
+                                        e.printStackTrace();
                                     }
-                                }).create().show();
-                            } catch (IOException e) {
-                                ToastUtil.showToastShort("壁纸设置失败，请稍后重试");
-                                e.printStackTrace();
+                                } else {
+                                    ToastUtil.showToastShort("壁纸设置失败，请稍后重试");
+                                }
                             }
-                        } else {
-                            ToastUtil.showToastShort("壁纸设置失败，请稍后重试");
-                        }
+                        });
 
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -859,23 +938,42 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
 
 
     private void SetLockWallPaper() {
-        // TODO Auto-generated method stub
-        try {
-            WallpaperManager mWallManager = WallpaperManager.getInstance(this);
-//            mWallManager.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.default_wallpaper), null, true,
-//
-//            WallpaperManager.FLAG_LOCK | WallpaperManager.FLAG_SYSTEM);
-//            mWallManager.setBitmap()
+        AlertDialog.Builder builder = new AlertDialog.Builder(WallPaperDetail.this);
+        builder.setMessage("确定要使用该壁纸作为锁屏壁纸吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Glide.with(WallPaperDetail.this)
+                                .load(paths.get(currentPos).get("image"))
+                                .asBitmap().into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                wallPaper = resource;
+                                WallpaperManager manager = WallpaperManager.getInstance(WallPaperDetail.this);
+                                if (wallPaper != null) {
+                                    try {
+//                                        manager.setBitmap(wallPaper);
+                                        manager.setBitmap(wallPaper, new Rect(0, 0, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels)
+                                                , true, WallpaperManager.FLAG_LOCK);
+                                        ToastUtil.showToastShort("锁屏壁纸设置成功");
+                                    } catch (IOException e) {
+                                        ToastUtil.showToastShort("壁纸设置失败，请稍后重试");
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    ToastUtil.showToastShort("壁纸设置失败，请稍后重试");
+                                }
+                            }
+                        });
 
-
-            Class class1 = mWallManager.getClass();//获取类名
-            Method setWallPaperMethod = class1.getMethod("setBitmapToLockWallpaper", Bitmap.class);//获取设置锁屏壁纸的函数
-            setWallPaperMethod.invoke(mWallManager, wallPaper);//调用锁屏壁纸的函数，并指定壁纸的路径imageFilesPath
-            ToastUtil.showToastShort("锁屏壁纸设置成功");
-        } catch (Throwable e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
 
     }
 }

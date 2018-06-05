@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_color" />
+
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/back_sel"
+        android:padding="10dp"
+        android:src="@drawable/back" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="壁纸评论"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="45dp"
+        android:layout_marginTop="40dp">
+
+        <com.yunfengsi.View.LoadMoreListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@color/transparent"
+            android:padding="10dp"
+
+            android:scrollbars="none">
+
+        </com.yunfengsi.View.LoadMoreListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="45dp"
+        android:background="@color/huise" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/pinglun"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/back_sel"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/pinglun_image"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:id="@+id/pltv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:gravity="center"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#aaaaaa" />
+
+        <LinearLayout
+            android:id="@+id/fenxiangb"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/back_sel"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/fenxiang_image"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:id="@+id/fxtv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:gravity="center"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000"
+        android:visibility="gone">
+
+
+        <LinearLayout
+            android:id="@+id/zixun_detail_toPinglun_buttom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <ImageView
+                android:id="@+id/toggle_audio_word"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginRight="5dp"
+                android:padding="8dp"
+                android:src="@drawable/sel_audio_word_toggle" />
+
+            <TextView
+                android:id="@+id/audio_button"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/sel_audio_button"
+                android:gravity="center"
+                android:text="按住 说话"
+                android:textSize="16dp"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/zixun_detail_apply_edt"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/item_shape"
+                android:ellipsize="start"
+                android:maxLength="300"
+                android:maxLines="4"
+                android:paddingLeft="5dp"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/zixun_detail_fasong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button1_sel"
+                android:clickable="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+
+            <ImageView
+                android:id="@+id/zixun_detail_fenxiang2"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:clickable="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/share_small"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
+
+</merge>

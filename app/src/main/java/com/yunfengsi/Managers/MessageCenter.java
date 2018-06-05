@@ -66,6 +66,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
     private static final int GongYangPay       = 7;
     private static final int ZhuXuePay         = 8;
     private static final int WallPaperVerified = 9;
+    private static final int QianDaoToMineActivity = 10;
     private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
@@ -151,6 +152,9 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                             intent.setClass(MessageCenter.this, WallPaperUserHome.class);
                             intent.putExtra("mine", true);
 
+                            break;
+                        case QianDaoToMineActivity:
+                            intent.setClass(MessageCenter.this, Mine_activity_list.class);
                             break;
 //                        case mReceiver.QiYuan:
 //                            intent.setClass(MessageCenter.this, BlessTree.class);
@@ -245,6 +249,9 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
 //                        break;
                     case PINGLUN:
                         holder.setText(R.id.title, "评论");
+                        break;
+                    case QianDaoToMineActivity:
+                        holder.setText(R.id.title, "签到");
                         break;
 //                    case mReceiver.QiYuan:
 //                        holder.setText(R.id.title, "祈愿树");

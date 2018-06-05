@@ -1,12 +1,16 @@
 package com.yunfengsi.Model_activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -46,6 +50,7 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.ErWeiMa.QRActivity;
 import com.yunfengsi.Login;
 import com.yunfengsi.Managers.CollectManager;
 import com.yunfengsi.R;
@@ -59,6 +64,7 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.MD5Utls;
 import com.yunfengsi.Utils.Network;
+import com.yunfengsi.Utils.PointMoveHelper;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ScaleImageUtil;
@@ -325,9 +331,15 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
         FaSong = (TextView) findViewById(R.id.activity_detail_fasong);
         FaSong.setText(mApplication.ST("发送"));
         shoucang = (ImageView) findViewById(R.id.activity_detail_shoucang);
-//        FaSong.setOnClickListener(this);
-//        shoucang.setOnClickListener(this);
 
+
+        if(PreferenceUtil.getUserIncetance(this).getString("role","").equals("3")){
+            findViewById(R.id.qr_saoyisao).setVisibility(View.VISIBLE);
+            new PointMoveHelper(this, findViewById(R.id.qr_saoyisao));
+            findViewById(R.id.qr_saoyisao).setOnClickListener(this);
+        }else{
+            findViewById(R.id.qr_saoyisao).setVisibility(View.GONE);
+        }
 
 
 
@@ -972,6 +984,18 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
+            case R.id.qr_saoyisao:
+                if (Build.VERSION.SDK_INT >= 23) {
+                    int ca = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.CAMERA);
+                    if (ca != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA}, 000);
+                        return;
+                    }
+                }
+                Intent intent1=new Intent(this, QRActivity.class);
+                intent1.putExtra("id",Id);
+                startActivity(intent1);
+                break;
             case R.id.activity_detail_yue:
 //                if(TimeUtils.dataOne(map.get("act_time"))<System.currentTimeMillis()){
 //                    ToastUtil.showToastShort("该活动已经开始，约功能已停止");
@@ -1283,5 +1307,13 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
     protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
         Id=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
         LoadData();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(permissions[0].equals(Manifest.permission.CAMERA)&&grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            findViewById(R.id.qr_saoyisao).performClick();
+        }
     }
 }

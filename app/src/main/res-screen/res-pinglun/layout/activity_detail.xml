@@ -2,6 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -71,6 +72,7 @@
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textIsSelectable="true"
+                tools:text="lksdfjklsjfklsdjfklsdjkf"
                 android:textStyle="bold" />
 
             <TextView
@@ -412,4 +414,17 @@
         android:background="@color/huise"
         android:layout_gravity="bottom"
         android:layout_marginBottom="45dp"/>
+
+    <com.yunfengsi.View.UsefulImageView
+        android:id="@+id/qr_saoyisao"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="55dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="right|bottom"
+        android:padding="10dp"
+        android:background="@drawable/circle_white_bg"
+        android:src="@drawable/saoyisao" />
 </merge>

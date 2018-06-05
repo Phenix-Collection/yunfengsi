@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by Administrator on 2016/7/29.
@@ -26,20 +28,20 @@ public class StatusBarCompat {
             return;
         }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-//        {
-//            int color = COLOR_DEFAULT;
-//            ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
-//            if (statusColor != INVALID_VAL)
-//            {
-//                color = statusColor;
-//            }
-//            View statusBarView = new View(activity);
-//            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                    getStatusBarHeight(activity));
-//            statusBarView.setBackgroundColor(color);
-//            contentView.addView(statusBarView, lp);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+        {
+            int       color       = COLOR_DEFAULT;
+            ViewGroup contentView = (ViewGroup) activity.findViewById(android.R.id.content);
+            if (statusColor != INVALID_VAL)
+            {
+                color = statusColor;
+            }
+            View statusBarView = new View(activity);
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    getStatusBarHeight(activity));
+            statusBarView.setBackgroundColor(color);
+            contentView.addView(statusBarView, lp);
+        }
 
     }
 

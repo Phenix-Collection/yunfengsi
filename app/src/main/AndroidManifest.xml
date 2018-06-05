@@ -758,6 +758,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/ITransition"
           ></activity>
+        <activity
+            android:name=".WallPaper.WallPaperComments"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            android:screenOrientation="portrait"
+            ></activity>
 
         <activity
             android:name=".WallPaper.WallPaperUserHome"
@@ -769,7 +774,10 @@
             android:screenOrientation="portrait"
             ></activity>
 
-
+        <activity
+            android:name=".ErWeiMa.QRActivity"
+            android:screenOrientation="portrait"
+            ></activity>
 
 
 

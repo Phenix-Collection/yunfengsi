@@ -57,6 +57,13 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
                 finish();
             }
         });
+        findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: 2018/5/29 上传页面开启
+                startActivity(new Intent(WallPapaerHome.this, WallPaperUpload.class));
+            }
+        });
 
         list = new ArrayList<>();
         list.add(new RecommendFragment());

@@ -1,6 +1,5 @@
 package com.yunfengsi.WallPaper;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -87,7 +86,6 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
             b.putString("type","4");
             Other.setArguments(b);
             fragments.add(Other);
-            findViewById(R.id.upload).setVisibility(View.GONE);
             if(userId.equals("0")){
                 Glide.with(this).load(R.drawable.indra)
                         .override(DimenUtils.dip2px(this,80),DimenUtils.dip2px(this,80))
@@ -140,7 +138,6 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
     protected void onStart() {
         super.onStart();
         findViewById(R.id.back).setOnClickListener(this);
-        findViewById(R.id.upload).setOnClickListener(this);
 
     }
 
@@ -155,10 +152,6 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.back:
                 finish();
-                break;
-            case R.id.upload:
-                // TODO: 2018/5/29 上传页面开启
-                startActivityForResult(new Intent(this, WallPaperUpload.class), 666);
                 break;
         }
     }
@@ -194,16 +187,16 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==999&&verify!=null){
-            viewPager.setCurrentItem(1);
-            verify.onRefresh();
-            LogUtil.e("刷新审核列表：：：");
-        }if(resultCode==222&&collection!=null){
-            collection.onRefresh();
-            LogUtil.e("刷新收藏列表：：：");
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(resultCode==999&&verify!=null){
+//            viewPager.setCurrentItem(1);
+//            verify.onRefresh();
+//            LogUtil.e("刷新审核列表：：：");
+//        }if(resultCode==222&&collection!=null){
+//            collection.onRefresh();
+//            LogUtil.e("刷新收藏列表：：：");
+//        }
+//    }
 }

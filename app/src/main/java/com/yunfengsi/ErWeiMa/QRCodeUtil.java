@@ -59,7 +59,7 @@ public class QRCodeUtil {
             }
 
             // 生成二维码图片的格式，使用ARGB_8888
-            Bitmap bitmap = Bitmap.createBitmap(widthPix, heightPix, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(widthPix, heightPix, Bitmap.Config.RGB_565);
             bitmap.setPixels(pixels, 0, widthPix, 0, 0, widthPix, heightPix);
 
             if (logoBm != null) {

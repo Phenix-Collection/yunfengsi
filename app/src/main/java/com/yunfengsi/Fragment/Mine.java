@@ -15,11 +15,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -44,6 +47,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
@@ -52,6 +56,7 @@ import com.lzy.okgo.request.BaseRequest;
 import com.yunfengsi.BaseSTFragement;
 import com.yunfengsi.BlessTree.BlessTree;
 import com.yunfengsi.E_Book.BookList;
+import com.yunfengsi.ErWeiMa.QRCodeUtil;
 import com.yunfengsi.Login;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
@@ -77,9 +82,11 @@ import com.yunfengsi.Utils.ACache;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
+import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
+import com.yunfengsi.Utils.MD5Utls;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
@@ -183,6 +190,13 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         mineManager = new MineManager(getActivity(), recyclerView);
         isAgreeed = sp.getString("agree_status", "").equals("0") || sp.getString("agree_status", "").equals("") ? false : true;
 
+        /**
+         * 点击打开个人二维码  二维码规则：对user_id进行加密
+         */
+        v.findViewById(R.id.qr).setOnClickListener(this);
+        if(!new LoginUtil().checkLogin(getActivity())){
+            v.findViewById(R.id.qr).setVisibility(View.GONE);
+        }
 
         mineManager.setOnitemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -987,6 +1001,46 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {
+            case R.id.qr:
+                //使用的是测试分享地址
+                String md5 = MD5Utls.stringToMD5(Constants.safeKey);
+                String m1 = md5.substring(0, 16);
+                String m2 = md5.substring(16, md5.length());
+                LogUtil.e("m1:::" + m1 + "\n" + "m2:::" + m2);
+                final StringBuilder builder = new StringBuilder(m1);
+                builder.append(PreferenceUtil.getUserId(getActivity()));
+                builder.append(m2);
+                Glide.with(getActivity()).load(PreferenceUtil.getUserIncetance(getActivity()).getString("head_url",""))
+                        .asBitmap()
+                        .override(DimenUtils.dip2px(getActivity(),50),DimenUtils.dip2px(getActivity(),50))
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                RoundedBitmapDrawable rbd= RoundedBitmapDrawableFactory.create(getResources(),resource);
+                                rbd.setCircular(true);
+
+
+                                if (QRCodeUtil.createQRImage(builder.toString(), DimenUtils.dip2px(getActivity(), 300)
+                                        , DimenUtils.dip2px(getActivity(), 300),rbd.getBitmap(), Environment.getExternalStorageDirectory() + "/qr.jpg")) {
+                                    AlertDialog.Builder builder1=new AlertDialog.Builder(getActivity());
+                                    ImageView imageView=new ImageView(getActivity());
+                                    Glide.with(getActivity()).load(Environment.getExternalStorageDirectory() + "/qr.jpg")
+                                            .override(DimenUtils.dip2px(getActivity(),300),DimenUtils.dip2px(getActivity(),300))
+                                            .into(imageView);
+                                    AlertDialog dialog=builder1.setView(imageView).create();
+                                    dialog.getWindow().getDecorView().setPadding(0,0,0,0);
+                                    dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                                    WindowManager.LayoutParams wl=dialog.getWindow().getAttributes();
+                                    wl.width=DimenUtils.dip2px(getActivity(),310);
+                                    wl.height=DimenUtils.dip2px(getActivity(),310);
+                                    dialog.getWindow().setAttributes(wl);
+                                    dialog.show();
+                                }
+
+                            }
+                        });
+
+                break;
 //            case R.id.mine_pinglun:
 //                intent.setClass(getActivity(), MessageManager.class);
 //                startActivity(intent);

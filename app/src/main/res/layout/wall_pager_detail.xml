@@ -112,7 +112,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="2dp"
-        android:text="99人赞"
+        android:text="赞"
         android:textSize="15dp"
         app:icon_direction="top"
         app:icon_height="20dp"
@@ -124,6 +124,7 @@
         app:layout_constraintRight_toLeftOf="@+id/comment"
         app:text_color_normal="@color/white"
         app:text_color_pressed="@color/white"
+        app:text_color_unable="#888888"
         app:background_pressed="#88888888"/>
     <com.ruffian.library.RTextView
         android:id="@+id/comment"
@@ -146,6 +147,7 @@
         app:layout_constraintRight_toLeftOf="@+id/delete"
         app:text_color_normal="@color/white"
         app:text_color_pressed="@color/white"
+        app:text_color_unable="#888888"
         app:background_pressed="#88888888"/>
 
     <com.ruffian.library.RTextView
@@ -168,6 +170,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:text_color_normal="@color/white"
         app:text_color_pressed="@color/white"
+        app:text_color_unable="#888888"
         app:background_pressed="#88888888" />
 
 
