@@ -778,6 +778,15 @@
             android:name=".ErWeiMa.QRActivity"
             android:screenOrientation="portrait"
             ></activity>
+        <activity
+            android:name=".E_Book.DZJHistory"
+            android:screenOrientation="portrait"
+            ></activity>
+        <activity
+            android:name=".Managers.ForManagers"
+            android:screenOrientation="portrait"
+            ></activity>
+
 
 
 

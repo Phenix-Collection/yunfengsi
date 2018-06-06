@@ -5,6 +5,7 @@ import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -58,7 +59,10 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
     private void vibrator() {
         //获取系统震动服务
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(200);
+        if(vibrator!=null){
+            vibrator.vibrate(200);
+        }
+
 
     }
 
@@ -131,11 +135,11 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
                         HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
                         if (map != null) {
                             if ("000".equals(map.get("code"))) {
-                                ToastUtil.showToastShort("签到成功");
+                                ToastUtil.showToastLong("签到成功", Gravity.CENTER);
                             } else if ("002".equals(map.get("code"))) {
-                                ToastUtil.showToastShort("该用户已经签过到了,请到个人活动产看");
+                                ToastUtil.showToastLong("该用户已经签过到了,请到个人活动产看",Gravity.CENTER);
                             } else if ("003".equals(map.get("code"))) {
-                                ToastUtil.showToastShort("未查到用户报名信息，该用户尚未报名");
+                                ToastUtil.showToastLong("未查到用户报名信息，该用户尚未报名",Gravity.CENTER);
                             }
                         }
                     }

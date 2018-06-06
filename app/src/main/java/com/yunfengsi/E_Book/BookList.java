@@ -48,6 +48,7 @@ import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.FileUtils;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.Network;
+import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
@@ -78,34 +79,36 @@ import okhttp3.Response;
 
 public class BookList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private static final String TAG = "BookList";
-    private BookRecyclerView recyclerView;
-    private BookAdapter adapter;
+    public static final  String DZ  = "dazang";
+    private BookRecyclerView                   recyclerView;
+    private BookAdapter                        adapter;
     private ArrayList<HashMap<String, Object>> list;
-    private SwipeRefreshLayout swip;
-    private int pageSize = 15;
-    private int page = 1;
-    private int endPage = -1;
+    private SwipeRefreshLayout                 swip;
+    private int     pageSize   = 15;
+    private int     page       = 1;
+    private int     endPage    = -1;
     private boolean isLoadMore = false;
     //    private MyGridView gridView;
 //    private gridAdapter adapter;
-    private boolean isRefresh = true;
+    private boolean isRefresh  = true;
 
     //    private final BookCollectionShadow myCollection = new BookCollectionShadow();
 
     private TextView fojing, dazang;
-    private RecyclerView treeRecycle;
+    private RecyclerView               treeRecycle;
     private ArrayList<MultiItemEntity> mainList;
-    private TreeAdapter treeAdapter;
-    private EditText edit;
-    private TextView search;
+    private TreeAdapter                treeAdapter;
+    private EditText                   edit;
+    private TextView                   search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
         mApplication.getInstance().addActivity(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-        edit=findViewById(R.id.search_edit);
-        search=findViewById(R.id.search);
+        edit = findViewById(R.id.search_edit);
+        search = findViewById(R.id.search);
         search.setOnClickListener(this);
         ((ImageView) findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +122,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         dazang = findViewById(R.id.dazang);
         dazang.setOnClickListener(this);
         findViewById(R.id.share).setOnClickListener(this);
+        findViewById(R.id.zuji).setOnClickListener(this);
 
         treeRecycle = findViewById(R.id.dazang_mulu);
         treeRecycle.setLayoutManager(new LinearLayoutManager(this));
@@ -160,9 +164,32 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         verifyStoragePermissions(this);
 
         getMainList();
-        if(getIntent().getIntExtra("type",0)==2){
+        if (getIntent().getIntExtra("type", 0) == 2) {
             dazang.performClick();
         }
+
+
+        Delete();
+    }
+
+    private void Delete() {
+        JSONObject js=new JSONObject();
+        try {
+            js.put("m_id",Constants.M_id);
+            js.put("id","3296,3295");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LogUtil.e("删除：："+js);
+        ApisSeUtil.M m=ApisSeUtil.i(js);
+        OkGo.post(Constants.PendingCommentDelete).params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+
+                    }
+                });
     }
 
     @Override
@@ -197,7 +224,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                                     JSONArray jsonArray = new JSONArray(map.get("msg"));
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject js = (JSONObject) jsonArray.get(i);
-                                        DaZang1 d1 = new DaZang1();
+                                        DaZang1    d1 = new DaZang1();
                                         d1.setId(js.getString("id"));
                                         d1.setTitle(js.getString("title"));
                                         d1.setLoaded(false);
@@ -255,7 +282,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                 file.createNewFile();
                 try {
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-                    BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+                    BufferedWriter     bufferedWriter     = new BufferedWriter(outputStreamWriter);
                     bufferedWriter.write(content);
                     bufferedWriter.close();
                 } catch (FileNotFoundException e) {
@@ -275,7 +302,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         book.setAccessTime(System.currentTimeMillis());
         Intent intent = new Intent(BookList.this, IRead.class);
         intent.putExtra("book", book);
-        intent.putExtra("type",2);
+        intent.putExtra("type", 2);
         startActivity(intent);
 
 
@@ -601,6 +628,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
 
             }
             js.put("m_id", Constants.M_id);
+            js.put("user_id", PreferenceUtil.getUserId(this));
             js.put("level", multiItemEntity.getItemType() + 1);
 
 
@@ -621,7 +649,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                             if (map.get("code") != null && "000".equals(map.get("code"))) {
                                 try {
                                     JSONArray jsonArray = new JSONArray(map.get("msg"));
-                                    ArrayList list = new ArrayList();
+                                    ArrayList list      = new ArrayList();
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject js = (JSONObject) jsonArray.get(i);
                                         switch (multiItemEntity.getItemType()) {
@@ -746,6 +774,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         try {
             js.put("m_id", Constants.M_id);
             js.put("page", page);
+            js.put("user_id", PreferenceUtil.getUserId(this));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -763,6 +792,13 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
 
                                 if (list != null) {
                                     if (isRefresh) {
+                                        HashMap<String, String> dz = new HashMap<>();
+                                        dz.put("id", DZ);
+                                        dz.put("m_id", "1");
+                                        dz.put("title", "大藏经");
+                                        dz.put("contents", "go to DZ");
+                                        dz.put("time", "");
+                                        list.add(0, dz);//添加大藏经类目
                                         adapter.setNewData(list);
                                         isRefresh = false;
                                         swip.setRefreshing(false);
@@ -816,19 +852,19 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
 
         switch (view.getId()) {
             case R.id.share:
-                UMWeb umWeb=new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
+                UMWeb umWeb = new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=com.yunfengsi");
                 umWeb.setDescription("阅读佛经,明心见性,学习佛家的大智慧和大爱。这里有大量的经书,一起来阅读吧!");
-                umWeb.setThumb(new UMImage(this,R.drawable.indra_share));
+                umWeb.setThumb(new UMImage(this, R.drawable.indra_share));
                 umWeb.setTitle("须弥芥子，万千佛法");
-                new ShareManager().shareWeb(umWeb,this);
+                new ShareManager().shareWeb(umWeb, this);
                 break;
             case R.id.search:
-                if(edit.getText().toString().trim().equals("")){
+                if (edit.getText().toString().trim().equals("")) {
                     ToastUtil.showToastShort("请输入搜索内容");
                     return;
                 }
-                Intent intent=new Intent(this,DaZangSearch.class);
-                intent.putExtra("content",edit.getText().toString().trim());
+                Intent intent = new Intent(this, DaZangSearch.class);
+                intent.putExtra("content", edit.getText().toString().trim());
                 startActivity(intent);
                 break;
             case R.id.fojing:
@@ -836,19 +872,24 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                 findViewById(R.id.dazang).setEnabled(true);
                 recyclerView.setVisibility(View.VISIBLE);
                 findViewById(R.id.dazang_mulu2).setVisibility(View.GONE);
+                findViewById(R.id.zuji).setVisibility(View.GONE);
                 break;
             case R.id.dazang:
                 view.setEnabled(false);
                 findViewById(R.id.fojing).setEnabled(true);
                 recyclerView.setVisibility(View.GONE);
                 findViewById(R.id.dazang_mulu2).setVisibility(View.VISIBLE);
+                findViewById(R.id.zuji).setVisibility(View.VISIBLE);
+                break;
+            case R.id.zuji:
+                startActivity(new Intent(BookList.this,DZJHistory.class));
                 break;
         }
     }
 
 
     private class BookAdapter extends BaseQuickAdapter<HashMap<String, Object>, BaseViewHolder> {
-        private Context context;
+        private Context          context;
         private BookRecyclerView recyclerView;
 
         public BookAdapter(Context context, ArrayList<HashMap<String, Object>> data, BookRecyclerView recyclerView) {
@@ -859,8 +900,8 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
 
         @Override
         public int getItemCount() {
-            int count = getData().size() % 3 == 0 ? getData().size() / 3 : getData().size() / 3 + 1;
-            int height = DimenUtils.dip2px(context, 180);
+            int count   = getData().size() % 3 == 0 ? getData().size() / 3 : getData().size() / 3 + 1;
+            int height  = DimenUtils.dip2px(context, 180);
             int coulumn = recyclerView.getHeight() / height + 1;
 
             return count < coulumn ? coulumn : count;
@@ -880,10 +921,17 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                     HashMap<String, Object> m = getData().get(i);
                     switch (i % 3) {
                         case 0:
+                            if (!m.get("id").equals(DZ)) {
+                                item1.setVisibility(View.VISIBLE);
+                                item1.setBackgroundResource(R.drawable.jinshu);
+                                item1.setTag(R.id.BookPath, m.get("contents"));
+                                item1.setTag(R.id.BookId, m.get("id"));
+                                item1.setText(m.get("title").toString());
+                            }else{
+                                item1.setBackgroundResource(R.drawable.dazang_img);
+                            }
                             item1.setVisibility(View.VISIBLE);
-                            item1.setTag(R.id.BookPath, m.get("contents"));
-                            item1.setTag(R.id.BookId, m.get("id"));
-                            item1.setText(m.get("title").toString());
+
                             break;
                         case 1:
                             item2.setTag(R.id.BookPath, m.get("contents"));
@@ -921,21 +969,25 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                 @Override
                 public void onClick(View view) {
                     LogUtil.e("点击第一列");
-                    clickBook(view.getTag(R.id.BookId).toString(),((TextView) view).getText().toString(), view.getTag(R.id.BookPath).toString());
+                    if(map.get("id").equals(DZ)){
+                        dazang.performClick();
+                    }else{
+                        clickBook(view.getTag(R.id.BookId).toString(), ((TextView) view).getText().toString(), view.getTag(R.id.BookPath).toString());
+                    }
                 }
             });
             holder.getView(R.id.item2).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     LogUtil.e("点击第2列");
-                    clickBook(view.getTag(R.id.BookId).toString(),((TextView) view).getText().toString(), view.getTag(R.id.BookPath).toString());
+                    clickBook(view.getTag(R.id.BookId).toString(), ((TextView) view).getText().toString(), view.getTag(R.id.BookPath).toString());
                 }
             });
             holder.getView(R.id.item3).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     LogUtil.e("点击第3列");
-                    clickBook(view.getTag(R.id.BookId).toString(),((TextView) view).getText().toString(), view.getTag(R.id.BookPath).toString());
+                    clickBook(view.getTag(R.id.BookId).toString(), ((TextView) view).getText().toString(), view.getTag(R.id.BookPath).toString());
                 }
             });
 
@@ -962,8 +1014,8 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
             book.setPath(file.getPath());
             Intent intent = new Intent(BookList.this, IRead.class);
             intent.putExtra("book", book);
-            intent.putExtra("type",1);
-            intent.putExtra("id",id);
+            intent.putExtra("type", 1);
+            intent.putExtra("id", id);
 //            Intent intent = new Intent(BookList.this, Read.class);
 //            intent.putExtra("title", title + ".txt");
 //            intent.putExtra("path", file.getPath());
@@ -982,8 +1034,8 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                     book.setPath(file.getPath());
                     Intent intent = new Intent(BookList.this, IRead.class);
                     intent.putExtra("book", book);
-                    intent.putExtra("type",1);
-                    intent.putExtra("id",id);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("id", id);
 //            Intent intent = new Intent(BookList.this, Read.class);
 //            intent.putExtra("title", title + ".txt");
 //            intent.putExtra("path", file.getPath());

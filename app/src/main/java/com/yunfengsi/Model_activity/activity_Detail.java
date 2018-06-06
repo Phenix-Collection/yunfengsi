@@ -335,7 +335,8 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
 
         if(PreferenceUtil.getUserIncetance(this).getString("role","").equals("3")){
             findViewById(R.id.qr_saoyisao).setVisibility(View.VISIBLE);
-            new PointMoveHelper(this, findViewById(R.id.qr_saoyisao));
+            new PointMoveHelper(this, findViewById(R.id.qr_saoyisao))
+            .setMargins(50,10,10,55);
             findViewById(R.id.qr_saoyisao).setOnClickListener(this);
         }else{
             findViewById(R.id.qr_saoyisao).setVisibility(View.GONE);

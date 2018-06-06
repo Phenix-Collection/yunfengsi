@@ -501,6 +501,9 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                                 }
                                 like.setText(detailMap.get("likes") + "人赞");
                             } else {
+                                like.setEnabled(false);
+                                download.setEnabled(false);
+                                comment.setEnabled(false);
                                 ToastUtil.showToastShort("获取详情失败，请检查网络后重试");
                             }
                         }

@@ -481,6 +481,11 @@ public class Constants {
     //经书纠错接口
     public static final String JiuCuo                = host_Ip + iiiiii + "Ebookadd";
 
+    //大藏经足迹列表接口
+    public static final String DaZangHistory = host_Ip + iiiiii + "Dzjkeep";
+    //大藏经足迹删除接口
+    public static final String DaZangHistory_Delete = host_Ip + iiiiii + "Dzjkeepdelete";
+
     //修行经历列表接口
     public static final String Practice   = host_Ip + iiiiii + "Practice";
     //云豆界面接口
@@ -564,7 +569,8 @@ public class Constants {
     public static final String WallPaperCommentList = host_Ip + iiiiii + "Wallpaperpl";
 
 
-
+    //待审核评论删除接口
+    public static final String PendingCommentDelete = host_Ip + iiiiii + "Pldelete";
 
     //众筹列表换一换接口
     public static final String Fund_Change = host_Ip + oooooo + "Zhongchouhyh";
