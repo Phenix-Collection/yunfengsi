@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:background="@color/white"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:id="@+id/choose"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:src="@drawable/unselected_btn" />
+
+
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
+            android:id="@+id/head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/choose"
+            tools:src="@drawable/def" />
+
+
+        <TextView
+            android:id="@+id/petName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:layout_toLeftOf="@+id/time"
+            android:layout_toRightOf="@+id/head"
+            android:textColor="@color/main_color"
+            android:textSize="15dp"
+            tools:text="用户昵称" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/head"
+            android:layout_below="@+id/head"
+            android:paddingTop="10dp"
+            android:textColor="@color/wordhuise"
+            android:textSize="14dp"
+            tools:text="对 [某某某] 评论：" />
+
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/title"
+            android:layout_below="@+id/title"
+            android:paddingTop="10dp"
+            android:textColor="@color/wordblack"
+            android:textSize="14dp"
+            tools:text="评论内容评论内容评论内容" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/petName"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/gray"
+            android:textSize="12dp"
+            tools:text="2018年7月18日" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/ban"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="用户禁言"
+        android:textColor="@color/white" />
+
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

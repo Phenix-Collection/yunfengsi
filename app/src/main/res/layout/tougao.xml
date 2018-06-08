@@ -169,7 +169,7 @@
                         android:textColor="@color/black"/>
                 <!--</LinearLayout>-->
             </LinearLayout>
-            <com.yunfengsi.TouGao.mGridView
+            <com.yunfengsi.Models.TouGao.mGridView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:numColumns="3"
@@ -177,7 +177,7 @@
                 android:verticalSpacing="10dp"
                 android:id="@+id/tougao_grid"
                 android:layout_marginBottom="5dp">
-            </com.yunfengsi.TouGao.mGridView>
+            </com.yunfengsi.Models.TouGao.mGridView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

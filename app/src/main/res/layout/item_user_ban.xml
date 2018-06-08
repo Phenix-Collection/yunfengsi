@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content">
+
+
+    <cn.carbs.android.avatarimageview.library.AvatarImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/head"
+        tools:src="@drawable/def"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:textSize="15dp"
+        tools:text="昵称"
+        app:layout_constraintTop_toTopOf="@+id/head"
+        app:layout_constraintLeft_toRightOf="@+id/head"
+        app:layout_constraintBottom_toBottomOf="@+id/head"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/status"
+        android:textSize="15dp"
+        tools:text="已禁言 "
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/name"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/wordhuise"/>
+
+</android.support.constraint.ConstraintLayout>

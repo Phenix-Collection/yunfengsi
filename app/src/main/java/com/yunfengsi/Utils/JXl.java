@@ -4,7 +4,7 @@ import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.yunfengsi.SideListview.CharacterParser;
+import com.yunfengsi.View.SideListview.CharacterParser;
 
 import java.util.ArrayList;
 

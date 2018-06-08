@@ -9,6 +9,8 @@
 
 
     <string name="wallPaper_ShareName">wallpaper</string>
+    <string name="commitCommentSuccess">提交成功，请耐心等待小编审核</string>
+    <string name="haveNoPermission">您没有该功能管理权限</string>
     <string name="wallPaper_User_Head_ShareName">wallpaper_User_Head</string>
 
     <!--<integer-array name="mine_image">-->
@@ -22,6 +24,7 @@
     <!--</integer-array>-->
 
     <string-array name="mine_text">
+        <item>义卖</item>
         <item>壁纸</item>
         <item>我的云豆</item>
         <item>我的福利</item>

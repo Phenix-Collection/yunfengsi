@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.yunfengsi.BaseSTFragement;
+import com.yunfengsi.Managers.Base.BaseSTFragement;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -29,7 +29,7 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mHeadLineView;
-import com.yunfengsi.XuanzheActivity;
+import com.yunfengsi.Models.GongYangDetail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,7 +104,7 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             if (i != list.size()) {
-                Intent    intent = new Intent(getActivity(), XuanzheActivity.class);
+                Intent    intent = new Intent(getActivity(), GongYangDetail.class);
                 TextView  title  = (TextView) view.findViewById(R.id.list_itme_name);
                 TextView  money  = (TextView) view.findViewById(R.id.list_itme_qian);
                 ImageView image  = (ImageView) view.findViewById(R.id.list_itme_imageview);

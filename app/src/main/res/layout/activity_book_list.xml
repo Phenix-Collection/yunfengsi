@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yunfengsi.E_Book.BookList">
+    tools:context=".Models.E_Book.BookList">
 
 
     <include layout="@layout/title_default" />

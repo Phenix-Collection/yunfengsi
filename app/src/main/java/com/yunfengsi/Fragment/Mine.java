@@ -15,14 +15,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -47,28 +44,28 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
-import com.yunfengsi.BaseSTFragement;
-import com.yunfengsi.BlessTree.BlessTree;
-import com.yunfengsi.E_Book.BookList;
-import com.yunfengsi.ErWeiMa.QRCodeUtil;
-import com.yunfengsi.Login;
+import com.yunfengsi.Managers.Base.BaseSTFragement;
+import com.yunfengsi.Models.Auction.AuctionDetail;
+import com.yunfengsi.Models.BlessTree.BlessTree;
+import com.yunfengsi.Models.E_Book.BookList;
+import com.yunfengsi.Setting.Login;
 import com.yunfengsi.MainActivity;
+import com.yunfengsi.Managers.ForManager.ForManagers;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Managers.MineManager;
-import com.yunfengsi.Model_activity.Mine_activity_list;
-import com.yunfengsi.More.Fortune;
-import com.yunfengsi.More.Meditation;
-import com.yunfengsi.NianFo.GYMX;
-import com.yunfengsi.NianFo.GYMX_FaYuan;
-import com.yunfengsi.NianFo.NianFo;
-import com.yunfengsi.NianFo.nianfo_home_tab4;
-import com.yunfengsi.NianFo.nianfo_home_tab5;
+import com.yunfengsi.Models.Model_activity.Mine_activity_list;
+import com.yunfengsi.Models.More.Fortune;
+import com.yunfengsi.Models.More.Meditation;
+import com.yunfengsi.Models.NianFo.GYMX;
+import com.yunfengsi.Models.NianFo.GYMX_FaYuan;
+import com.yunfengsi.Models.NianFo.NianFo;
+import com.yunfengsi.Models.NianFo.nianfo_home_tab4;
+import com.yunfengsi.Models.NianFo.nianfo_home_tab5;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Activity_ShouCang;
 import com.yunfengsi.Setting.Mine_HuiYuan;
@@ -77,7 +74,7 @@ import com.yunfengsi.Setting.Month_Detail;
 import com.yunfengsi.Setting.NiCTemple_Activity;
 import com.yunfengsi.Setting.Sign;
 import com.yunfengsi.Setting.gerenshezhi;
-import com.yunfengsi.TouGao.TouGao;
+import com.yunfengsi.Models.TouGao.TouGao;
 import com.yunfengsi.Utils.ACache;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -93,10 +90,10 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.WallPaper.WallPapaerHome;
-import com.yunfengsi.YunDou.MyQuan;
-import com.yunfengsi.YunDou.YunDouAwardDialog;
-import com.yunfengsi.YunDou.YunDouHome;
+import com.yunfengsi.Models.WallPaper.WallPapaerHome;
+import com.yunfengsi.Models.YunDou.MyQuan;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
+import com.yunfengsi.Models.YunDou.YunDouHome;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,6 +107,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -194,156 +192,11 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
          * 点击打开个人二维码  二维码规则：对user_id进行加密
          */
         v.findViewById(R.id.qr).setOnClickListener(this);
-        if(!new LoginUtil().checkLogin(getActivity())){
+        if (!new LoginUtil().checkLogin(getActivity())) {
             v.findViewById(R.id.qr).setVisibility(View.GONE);
         }
 
-        mineManager.setOnitemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                HashMap<String, Object> map = mineManager.getMaps().get(position);
-
-                switch (map.get(mineManager.text).toString()) {
-                    case "壁纸":
-
-                        startActivity(new Intent(getActivity(), WallPapaerHome.class));
-
-                        break;
-                    case "我的云豆":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            startActivity(new Intent(getActivity(), YunDouHome.class));
-                        }
-                        break;
-                    case "我的福利":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            startActivity(new Intent(getActivity(), MyQuan.class));
-                        }
-                        break;
-                    case "祈愿树":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            startActivity(new Intent(getActivity(), BlessTree.class));
-                        }
-                        break;
-                    case "佛经":
-//                        if (new LoginUtil().checkLogin(getActivity())) {
-                        startActivity(new Intent(getActivity(), BookList.class));
-//                        }
-                        break;
-                    case "卜事":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            startActivity(new Intent(getActivity(), Fortune.class));
-                        }
-                        break;
-                    case "坐禅":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            startActivity(new Intent(getActivity(), Meditation.class));
-                        }
-                        break;
-                    case "通知":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            intent.setClass(getActivity(), MessageCenter.class);
-                            startActivity(intent);
-                        }
-                        break;
-                    case "投稿":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            intent.setClass(getActivity(), TouGao.class);
-                            startActivity(intent);
-                        }
-                        break;
-                    case "切换账号":
-                        CloudPushService pushService = PushServiceFactory.getCloudPushService();
-                        pushService.removeAlias(sp.getString("user_id", ""), new CommonCallback() {
-                            @Override
-                            public void onSuccess(String s) {
-                                LogUtil.e("解绑成功");
-                            }
-
-                            @Override
-                            public void onFailed(String s, String s1) {
-                                LogUtil.e("解绑失败");
-                            }
-                        });
-                        SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("uid", "");
-                        ed.putString("user_id", "");
-                        ed.putString("head_path", "");
-                        ed.putString("head_url", "");
-                        ed.putString("phone", "");
-                        ed.putString("signature", "");
-                        ed.putString("sex", "");
-                        ed.putLong("time", 0);
-                        ed.putString("pet_name", "");
-                        ed.putString("level", "0");
-                        ed.putString("tougao_title", "");
-                        ed.putString("tougao_content", "");
-                        aCache.remove("head_" + sp.getString("user_id", ""));
-                        ed.apply();
-                        Glide.with(getActivity()).load(R.drawable.indra).into(head);
-                        petname.setText("昵称");
-                        intent.setClass(mApplication.getInstance(), Login.class);
-
-
-                        startActivity(intent);
-                        getActivity().finish();
-                        break;
-                    case "感谢信":
-                        if (!new LoginUtil().checkLogin(getActivity())) {
-                            return;
-                        }
-                        intent.setClass(getActivity(), Month_Detail.class);
-                        startActivity(intent);
-                        break;
-                    case "功德":
-                        if (!new LoginUtil().checkLogin(getActivity())) {
-                            return;
-                        }
-                        intent.setClass(getActivity(), Mine_GYQD.class);
-                        startActivity(intent);
-                        break;
-                    case "活动":
-                        if (new LoginUtil().checkLogin(getActivity())) {
-                            intent.setClass(getActivity(), Mine_activity_list.class);
-                            startActivity(intent);
-                        }
-
-                        break;
-                    case "共修":
-                        intent.setClass(getActivity(), NianFo.class);
-
-                        startActivity(intent);
-                        break;
-                    case "收藏":
-                        if (!new LoginUtil().checkLogin(getActivity())) {
-                            return;
-                        }
-                        intent.setClass(getActivity(), Activity_ShouCang.class);
-                        startActivity(intent);
-                        break;
-                    case "会员中心":
-                        if (!new LoginUtil().checkLogin(getActivity())) {
-                            return;
-                        }
-                        if (view.findViewById(R.id.badge).getVisibility() == View.VISIBLE) {
-                            sp.edit().putLong("time", System.currentTimeMillis()).apply();
-                            view.findViewById(R.id.badge).setVisibility(View.GONE);
-                            ((MainActivity) getActivity()).tabLayout.getTabAt(4)
-                                    .getCustomView().findViewById(R.id.badge)
-                                    .setVisibility(View.GONE);
-                        }
-                        intent.setClass(getActivity(), Mine_HuiYuan.class);
-                        startActivity(intent);
-                        break;
-                    case "功课":
-                        openGongke();
-                        break;
-                    case "设置":
-                        intent.setClass(getActivity(), gerenshezhi.class);
-                        startActivity(intent);
-                        break;
-                }
-            }
-        });
+        mineManager.setOnitemClickListener(onItemClickListener);
         ((ImageView) v.findViewById(R.id.mine_gerenbeijing)).setImageBitmap(ImageUtil.readBitMap(getActivity(), R.drawable.mine_banner));
         ((ImageView) v.findViewById(R.id.mine_gerenbeijing)).setColorFilter(Color.parseColor("#30000000"));
         head = (ImageView) v.findViewById(R.id.mine_head);
@@ -395,6 +248,157 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         return v;
     }
 
+    BaseQuickAdapter.OnItemClickListener onItemClickListener=new BaseQuickAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            HashMap<String, Object> map = mineManager.getMaps().get(position);
+
+            switch (map.get(mineManager.text).toString()) {
+                case "义卖":
+                    startActivity(new Intent(getActivity(), AuctionDetail.class));
+                    break;
+                case "管理员":
+                    startActivity(new Intent(getActivity(), ForManagers.class));
+                    break;
+                case "壁纸":
+                    startActivity(new Intent(getActivity(), WallPapaerHome.class));
+                    break;
+                case "我的云豆":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        startActivity(new Intent(getActivity(), YunDouHome.class));
+                    }
+                    break;
+                case "我的福利":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        startActivity(new Intent(getActivity(), MyQuan.class));
+                    }
+                    break;
+                case "祈愿树":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        startActivity(new Intent(getActivity(), BlessTree.class));
+                    }
+                    break;
+                case "佛经":
+//                        if (new LoginUtil().checkLogin(getActivity())) {
+                    startActivity(new Intent(getActivity(), BookList.class));
+//                        }
+                    break;
+                case "卜事":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        startActivity(new Intent(getActivity(), Fortune.class));
+                    }
+                    break;
+                case "坐禅":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        startActivity(new Intent(getActivity(), Meditation.class));
+                    }
+                    break;
+                case "通知":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        intent.setClass(getActivity(), MessageCenter.class);
+                        startActivity(intent);
+                    }
+                    break;
+                case "投稿":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        intent.setClass(getActivity(), TouGao.class);
+                        startActivity(intent);
+                    }
+                    break;
+                case "切换账号":
+                    CloudPushService pushService = PushServiceFactory.getCloudPushService();
+                    pushService.removeAlias(sp.getString("user_id", ""), new CommonCallback() {
+                        @Override
+                        public void onSuccess(String s) {
+                            LogUtil.e("解绑成功");
+                        }
+
+                        @Override
+                        public void onFailed(String s, String s1) {
+                            LogUtil.e("解绑失败");
+                        }
+                    });
+                    SharedPreferences.Editor ed = sp.edit();
+                    ed.putString("uid", "");
+                    ed.putString("user_id", "");
+                    ed.putString("head_path", "");
+                    ed.putString("head_url", "");
+                    ed.putString("phone", "");
+                    ed.putString("signature", "");
+                    ed.putString("sex", "");
+                    ed.putLong("time", 0);
+                    ed.putString("pet_name", "");
+                    ed.putString("level", "0");
+                    ed.putString("tougao_title", "");
+                    ed.putString("tougao_content", "");
+                    ed.putString("role", "1");
+                    aCache.remove("head_" + sp.getString("user_id", ""));
+                    ed.apply();
+                    Glide.with(getActivity()).load(R.drawable.indra).into(head);
+                    petname.setText("昵称");
+                    intent.setClass(mApplication.getInstance(), Login.class);
+
+
+                    startActivity(intent);
+                    getActivity().finish();
+                    break;
+                case "感谢信":
+                    if (!new LoginUtil().checkLogin(getActivity())) {
+                        return;
+                    }
+                    intent.setClass(getActivity(), Month_Detail.class);
+                    startActivity(intent);
+                    break;
+                case "功德":
+                    if (!new LoginUtil().checkLogin(getActivity())) {
+                        return;
+                    }
+                    intent.setClass(getActivity(), Mine_GYQD.class);
+                    startActivity(intent);
+                    break;
+                case "活动":
+                    if (new LoginUtil().checkLogin(getActivity())) {
+                        intent.setClass(getActivity(), Mine_activity_list.class);
+                        startActivity(intent);
+                    }
+
+                    break;
+                case "共修":
+                    intent.setClass(getActivity(), NianFo.class);
+
+                    startActivity(intent);
+                    break;
+                case "收藏":
+                    if (!new LoginUtil().checkLogin(getActivity())) {
+                        return;
+                    }
+                    intent.setClass(getActivity(), Activity_ShouCang.class);
+                    startActivity(intent);
+                    break;
+                case "会员中心":
+                    if (!new LoginUtil().checkLogin(getActivity())) {
+                        return;
+                    }
+                    if (view.findViewById(R.id.badge).getVisibility() == View.VISIBLE) {
+                        sp.edit().putLong("time", System.currentTimeMillis()).apply();
+                        view.findViewById(R.id.badge).setVisibility(View.GONE);
+                        ((MainActivity) getActivity()).tabLayout.getTabAt(4)
+                                .getCustomView().findViewById(R.id.badge)
+                                .setVisibility(View.GONE);
+                    }
+                    intent.setClass(getActivity(), Mine_HuiYuan.class);
+                    startActivity(intent);
+                    break;
+                case "功课":
+                    openGongke();
+                    break;
+                case "设置":
+                    intent.setClass(getActivity(), gerenshezhi.class);
+                    startActivity(intent);
+                    break;
+            }
+        }
+    };
     public void openGongke() {
         View vi = LayoutInflater.from(getActivity()).inflate(R.layout.mine_gongke_fragment, null);
         tvone = (TextView) vi.findViewById(R.id.mine_gongke_fragment_oneitme);
@@ -583,7 +587,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                         }
                                         if (!"".equals(map.get("user_image"))) {
                                             ed.putString("head_url", map.get("user_image"));
-                                            Glide.with(Mine.this).load(map.get("user_image")).asBitmap().override(screenWidth / 4, screenWidth / 4).into(new BitmapImageViewTarget(head) {
+                                            Glide.with(Mine.this).load(map.get("user_image")).asBitmap().override(90, 90).into(new BitmapImageViewTarget(head) {
                                                 @Override
                                                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                                     aCache.put("head" + sp.getString("user_id", ""), resource);
@@ -652,7 +656,12 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                         }
 
                                     }
-                                    ed.apply();
+
+
+                                    if(mineManager!=null){
+                                        mineManager.initMine();
+                                        mineManager.setOnitemClickListener(onItemClickListener);
+                                    }
 
                                 }
                             });
@@ -998,11 +1007,11 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.qr:
-                //使用的是测试分享地址
+
                 String md5 = MD5Utls.stringToMD5(Constants.safeKey);
                 String m1 = md5.substring(0, 16);
                 String m2 = md5.substring(16, md5.length());
@@ -1010,35 +1019,30 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 final StringBuilder builder = new StringBuilder(m1);
                 builder.append(PreferenceUtil.getUserId(getActivity()));
                 builder.append(m2);
-                Glide.with(getActivity()).load(PreferenceUtil.getUserIncetance(getActivity()).getString("head_url",""))
-                        .asBitmap()
-                        .override(DimenUtils.dip2px(getActivity(),50),DimenUtils.dip2px(getActivity(),50))
-                        .into(new SimpleTarget<Bitmap>() {
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        final Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(builder.toString(), DimenUtils.dip2px(getActivity(),300),Color.BLACK,aCache.getAsBitmap("head"+PreferenceUtil.getUserId(getActivity())));
+                        getActivity().runOnUiThread(new Runnable() {
                             @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                RoundedBitmapDrawable rbd= RoundedBitmapDrawableFactory.create(getResources(),resource);
-                                rbd.setCircular(true);
-
-
-                                if (QRCodeUtil.createQRImage(builder.toString(), DimenUtils.dip2px(getActivity(), 300)
-                                        , DimenUtils.dip2px(getActivity(), 300),rbd.getBitmap(), Environment.getExternalStorageDirectory() + "/qr.jpg")) {
-                                    AlertDialog.Builder builder1=new AlertDialog.Builder(getActivity());
-                                    ImageView imageView=new ImageView(getActivity());
-                                    Glide.with(getActivity()).load(Environment.getExternalStorageDirectory() + "/qr.jpg")
-                                            .override(DimenUtils.dip2px(getActivity(),300),DimenUtils.dip2px(getActivity(),300))
-                                            .into(imageView);
-                                    AlertDialog dialog=builder1.setView(imageView).create();
-                                    dialog.getWindow().getDecorView().setPadding(0,0,0,0);
-                                    dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-                                    WindowManager.LayoutParams wl=dialog.getWindow().getAttributes();
-                                    wl.width=DimenUtils.dip2px(getActivity(),310);
-                                    wl.height=DimenUtils.dip2px(getActivity(),310);
-                                    dialog.getWindow().setAttributes(wl);
-                                    dialog.show();
-                                }
-
+                            public void run() {
+                                LogUtil.e("bitmap：："+bitmap.getByteCount());
+                                AlertDialog.Builder builder1  = new AlertDialog.Builder(getActivity());
+                                ImageView           imageView = new ImageView(getActivity());
+                                imageView.setImageBitmap(bitmap);
+                                AlertDialog dialog = builder1.setView(imageView).create();
+                                dialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
+                                dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+                                WindowManager.LayoutParams wl = dialog.getWindow().getAttributes();
+                                wl.width = DimenUtils.dip2px(getActivity(), 320);
+                                wl.height = DimenUtils.dip2px(getActivity(), 320);
+                                dialog.getWindow().setAttributes(wl);
+                                dialog.show();
                             }
                         });
+                    }
+                }.start();
 
                 break;
 //            case R.id.mine_pinglun:

@@ -21,9 +21,9 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Adapter.PingLunActivity;
 import com.yunfengsi.Fragment.Mine_GYQD;
-import com.yunfengsi.Model_activity.Mine_activity_list;
-import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.NianFo.NianFo;
+import com.yunfengsi.Models.Model_activity.Mine_activity_list;
+import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.NianFo.NianFo;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -35,9 +35,9 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.WallPaper.WallPaperUserHome;
-import com.yunfengsi.XuanzheActivity;
-import com.yunfengsi.ZiXun_Detail;
+import com.yunfengsi.Models.WallPaper.WallPaperUserHome;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.ZiXun_Detail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -133,7 +133,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                             intent.setClass(MessageCenter.this, activity_Detail.class);
                             break;
                         case GongYang:
-                            intent.setClass(MessageCenter.this, XuanzheActivity.class);
+                            intent.setClass(MessageCenter.this, GongYangDetail.class);
                             break;
                         case ZhuXue:
                             intent.setClass(MessageCenter.this, NianFo.class);

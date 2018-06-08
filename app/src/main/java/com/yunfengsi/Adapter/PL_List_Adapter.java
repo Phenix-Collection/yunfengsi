@@ -24,8 +24,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lzy.okgo.OkGo;
-import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -35,9 +36,8 @@ import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.ScaleImageUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.XuanzheActivity;
-import com.yunfengsi.YunDou.YunDouAwardDialog;
-import com.yunfengsi.ZiXun_Detail;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
+import com.yunfengsi.Models.ZiXun_Detail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -193,7 +193,7 @@ public class PL_List_Adapter extends BaseAdapter {
                                 intent.setClass(context, ZiXun_Detail.class);
                                 break;
                             case "4":
-                                intent.setClass(context, XuanzheActivity.class);
+                                intent.setClass(context, GongYangDetail.class);
                                 break;
                             case "5":
                                 intent.setClass(context, FundingDetailActivity.class);

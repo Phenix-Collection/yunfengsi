@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -35,7 +35,7 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview2;
-import com.yunfengsi.ZhiFuShare;
+import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.json.JSONException;
 import org.json.JSONObject;

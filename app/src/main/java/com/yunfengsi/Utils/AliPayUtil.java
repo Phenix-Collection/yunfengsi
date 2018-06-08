@@ -10,9 +10,9 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.yunfengsi.Model_zhongchou.Fund_Share;
-import com.yunfengsi.YunDou.YunDouAwardDialog;
-import com.yunfengsi.ZhiFuShare;
+import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
+import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.json.JSONException;
 import org.json.JSONObject;

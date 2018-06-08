@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
-import com.yunfengsi.NianFo.HuiXiang;
+import com.yunfengsi.Models.NianFo.HuiXiang;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;

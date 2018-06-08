@@ -21,11 +21,11 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.NumUtils;
-import com.yunfengsi.XuanzheActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,7 +151,7 @@ public class mHeadLineView extends LinearLayout {
                         LogUtil.e("助学跳转：：：：id:::"+view.getTag().toString());
                         break;
                     case GONGYANG:
-                        Intent intent2 =new Intent(context, XuanzheActivity.class);
+                        Intent intent2 =new Intent(context, GongYangDetail.class);
                         intent2.putExtra("id",view.getTag().toString());
                         context.startActivity(intent2);
                         LogUtil.e("供养跳转：：：：id:::"+view.getTag().toString());

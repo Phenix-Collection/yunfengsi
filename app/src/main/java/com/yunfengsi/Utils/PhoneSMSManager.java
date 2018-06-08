@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 
-import com.yunfengsi.SideListview.SortModel;
+import com.yunfengsi.View.SideListview.SortModel;
 
 import java.util.ArrayList;
 import java.util.List;

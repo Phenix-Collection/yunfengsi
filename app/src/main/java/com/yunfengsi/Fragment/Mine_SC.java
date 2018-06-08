@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.yunfengsi.Adapter.Mine_SC_adapter;
-import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -31,7 +31,7 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview2;
-import com.yunfengsi.ZiXun_Detail;
+import com.yunfengsi.Models.ZiXun_Detail;
 
 import org.json.JSONException;
 import org.json.JSONObject;

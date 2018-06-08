@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import com.yunfengsi.Managers.CollectManager;
-import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Activity_ShouCang;
 import com.yunfengsi.Setting.Activity_ShouCang_Result;
@@ -25,7 +25,7 @@ import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.ZiXun_Detail;
+import com.yunfengsi.Models.ZiXun_Detail;
 
 import org.greenrobot.eventbus.EventBus;
 

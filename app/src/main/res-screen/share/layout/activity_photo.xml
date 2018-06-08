@@ -7,12 +7,12 @@
     >
 
 
-    <com.yunfengsi.Photo.PhotoViewPager
+    <com.yunfengsi.View.Photo.PhotoViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewpager">
 
-    </com.yunfengsi.Photo.PhotoViewPager>
+    </com.yunfengsi.View.Photo.PhotoViewPager>
 
     <FrameLayout
         android:id="@+id/topLayout"

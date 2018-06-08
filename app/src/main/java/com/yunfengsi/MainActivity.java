@@ -65,16 +65,19 @@ import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.HomePage;
 import com.yunfengsi.Fragment.Mine;
 import com.yunfengsi.Managers.MessageCenter;
-import com.yunfengsi.Model_activity.Mine_activity_list;
-import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.Model_activity.activity_fragment;
-import com.yunfengsi.Model_zhongchou.FundFragment;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
-import com.yunfengsi.NianFo.NianFo;
-import com.yunfengsi.Push.mReceiver;
+import com.yunfengsi.Models.Model_activity.Mine_activity_list;
+import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_activity.activity_fragment;
+import com.yunfengsi.Models.Model_zhongchou.FundFragment;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.NianFo.NianFo;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.ZiXun_Detail;
+import com.yunfengsi.ThirdPart.Push.mReceiver;
+import com.yunfengsi.Setting.AD;
 import com.yunfengsi.Setting.PhoneCheck;
 import com.yunfengsi.Setting.Search;
-import com.yunfengsi.SideListview.Contact;
+import com.yunfengsi.View.SideListview.Contact;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -92,6 +95,7 @@ import com.yunfengsi.Utils.UpPayUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
+import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -315,7 +319,7 @@ public class MainActivity extends UpPayUtil {
                                                                     intent1.putExtra("id", id);
                                                                     break;
                                                                 case mReceiver.GOngyang:
-                                                                    intent1.setClass(MainActivity.this, XuanzheActivity.class);
+                                                                    intent1.setClass(MainActivity.this, GongYangDetail.class);
                                                                     intent1.putExtra("id", id);
                                                                     break;
                                                                 case mReceiver.ZHONGCHou:
@@ -1149,7 +1153,7 @@ public class MainActivity extends UpPayUtil {
 //                        intent.setClass(this, activity_Detail.class);
 //                        break;
 //                    case "3":
-//                        intent.setClass(this, XuanzheActivity.class);
+//                        intent.setClass(this, GongYangDetail.class);
 //                        break;
 //                    case "4":
 //                        intent.setClass(this, FundingDetailActivity.class);

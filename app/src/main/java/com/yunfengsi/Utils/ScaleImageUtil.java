@@ -3,7 +3,7 @@ package com.yunfengsi.Utils;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.yunfengsi.Photo.PhotoActivity;
+import com.yunfengsi.View.Photo.PhotoActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

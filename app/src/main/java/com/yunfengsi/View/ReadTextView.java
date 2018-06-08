@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yunfengsi.E_Book.PageFactory;
+import com.yunfengsi.Models.E_Book.PageFactory;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.LogUtil;
 

@@ -87,13 +87,13 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
     <application
-        android:name=".Sophix.SophixStubApplication"
+        android:name=".ThirdPart.Sophix.SophixStubApplication"
         android:allowBackup="true"
         android:icon="@drawable/indra"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Splash">
+        <activity android:name=".Setting.Splash">
             <intent-filter android:priority="1000">
                 <data android:scheme="yunfengsi" />
 
@@ -161,55 +161,52 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".AD"
+            android:name=".Setting.AD"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".More.Fortune"
+            android:name=".Models.More.Fortune"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".More.Fortune_History"
+            android:name=".Models.More.Fortune_History"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".More.Meditation_History"
+            android:name=".Models.More.Meditation_History"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".YaoYue.YaoYue_Fabu"
+            android:name=".Models.YaoYue.YaoYue_Fabu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ZixunActivity"
+            android:name=".Models.More.Fortune_Detail"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".More.Fortune_Detail"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".More.Meditation"
+            android:name=".Models.More.Meditation"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Managers.ItemManager"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NianFo.HuiXiang"
+            android:name=".Models.NianFo.HuiXiang"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".YunDou.YunDou_History"
+            android:name=".Models.YunDou.YunDou_History"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Photo.PhotoActivity"
+            android:name=".View.Photo.PhotoActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".EnterShortCut">
+        <activity android:name=".Setting.EnterShortCut">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".Model_zhongchou.Fund_surpport_list"
+            android:name=".Models.Model_zhongchou.Fund_surpport_list"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".XuanzheActivity"
+            android:name=".Models.GongYangDetail"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ZhiFuShare"
+            android:name=".WebShare.ZhiFuShare"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Managers.MessageCenter"
@@ -218,22 +215,22 @@
             android:name=".Setting.Detail_Tongzhi"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RedPacket"
+            android:name=".Models.RedPacket.RedPacket"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Login"
+            android:name=".Setting.Login"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ZiXun_Detail"
+            android:name=".Models.ZiXun_Detail"
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ZhuCe"
+            android:name=".Setting.ZhuCe"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -248,22 +245,22 @@
             android:name=".Setting.Mine_gerenziliao"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SideListview.Contact"
+            android:name=".View.SideListview.Contact"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <!-- 活动模板 -->
         <activity
-            android:name=".Model_activity.activity_Detail"
+            android:name=".Models.Model_activity.activity_Detail"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".Model_activity.Enrollment"
+            android:name=".Models.Model_activity.Enrollment"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <!-- 活动模板 -->
 
 
         <!-- 众筹模板 -->
         <activity
-            android:name=".Model_zhongchou.FundingDetailActivity"
+            android:name=".Models.Model_zhongchou.FundingDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
@@ -303,73 +300,73 @@
             android:name=".Setting.PhoneCheck"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NianFo.nianfo_home_tab1"
+            android:name=".Models.NianFo.nianfo_home_tab1"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".NianFo.nianfo_home_tab2"
+            android:name=".Models.NianFo.nianfo_home_tab2"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".NianFo.nianfo_home_tab3"
+            android:name=".Models.NianFo.nianfo_home_tab3"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".NianFo.nianfo_home_tab4"
+            android:name=".Models.NianFo.nianfo_home_tab4"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".NianFo.nianfo_home_tab5"
+            android:name=".Models.NianFo.nianfo_home_tab5"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".NianFo.nianfo_home_tab6"
+            android:name=".Models.NianFo.nianfo_home_tab6"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".NianFo.GYMX_FaYuan"
+            android:name=".Models.NianFo.GYMX_FaYuan"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NianFo.FaYuan_Detail"
+            android:name=".Models.NianFo.FaYuan_Detail"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NianFo.GYMX"
+            android:name=".Models.NianFo.GYMX"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NianFo.NianFo_Detail"
+            android:name=".Models.NianFo.NianFo_Detail"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NianFo.MyZuNianActivity"
+            android:name=".Models.NianFo.MyZuNianActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".NianFo.NianFo"
+            android:name=".Models.NianFo.NianFo"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Model_activity.Mine_activity_list"
+            android:name=".Models.Model_activity.Mine_activity_list"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.Activity_ShouCang"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Setting.Activity_ShouCang_Result"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".YunDou.yundou_paihang"
+            android:name=".Models.YunDou.yundou_paihang"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".Fragment.Mine_GYQD"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".user_Info_First"
+            android:name=".Models.Model_activity.user_Info_First"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TouGao.TouGao"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="portrait" />
+            android:name=".Models.TouGao.TouGao"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".TouGao.Photo.PhotoPicker"
+            android:name=".Models.TouGao.Photo.PhotoPicker"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.MessageManager"
@@ -378,34 +375,34 @@
             android:name=".Setting.Mine_HuiYuan"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChengZhangJiLu"
+            android:name=".Setting.ChengZhangJiLu"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.ST"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Model_zhongchou.Fund_Share"
+            android:name=".Models.Model_zhongchou.Fund_Share"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".Setting.Sign"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BlessTree.BlessTree"
-            android:theme="@style/NormalFullScreen"
+            android:name=".Models.BlessTree.BlessTree"
+            android:screenOrientation="portrait"
+            android:theme="@style/NormalFullScreen" />
+        <activity
+            android:name=".Models.E_Book.chapter.ChapterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".E_Book.chapter.ChapterActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".BlessTree.Bless_History"
+            android:name=".Models.BlessTree.Bless_History"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.ViewPagerActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".wxapi.WXPayEntryActivity"
+            android:name=".ThirdPart.wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -417,7 +414,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".wxapi.AppRegister">
+        <receiver android:name=".ThirdPart.wxapi.AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
@@ -441,7 +438,7 @@
 
         <!-- &lt;!&ndash;微信~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt; -->
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name=".ThirdPart.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -633,7 +630,7 @@
 
         <!-- 消息接收监听器 -->
         <receiver
-            android:name=".Push.mReceiver"
+            android:name=".ThirdPart.Push.mReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
@@ -667,7 +664,7 @@
         </receiver>
 
         <activity
-            android:name=".CallbackActivity"
+            android:name=".ThirdPart.QQshare.CallbackActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -680,7 +677,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Managers.AudioTest" />
-        <activity android:name=".RedPacket_Final" />
+        <activity android:name=".Models.RedPacket.RedPacket_Final" />
 
         <!-- 百度语音 -->
 
@@ -701,10 +698,10 @@
             android:exported="false" />
 
         <activity
-            android:name=".YaoYue.Activity_YaoYue"
+            android:name=".Models.YaoYue.Activity_YaoYue"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".YaoYue.CarerManage"
+            android:name=".Models.YaoYue.CarerManage"
             android:screenOrientation="portrait" />
 
         <!-- 高德地图 -->
@@ -722,79 +719,81 @@
             //开发者申请的key</meta-data>
 
         <activity
-            android:name=".E_Book.BookList"
+            android:name=".Models.E_Book.BookList"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".E_Book.IRead"
+            android:name=".Models.E_Book.IRead"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".E_Book.DaZangSearch"
+            android:name=".Models.E_Book.DaZangSearch"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Model_activity.ActivityHistory"
+            android:name=".Models.Model_activity.ActivityHistory"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".YunDou.YunDouHome"
+            android:name=".Models.YunDou.YunDouHome"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".YunDou.DuiHuan"
+            android:name=".Models.YunDou.DuiHuan"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".YunDou.QuanDetail"
+            android:name=".Models.YunDou.QuanDetail"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".YunDou.MyQuan"
-            android:screenOrientation="portrait"></activity>
-
-        <activity
-            android:name=".YunDou.QiFu_PaiWei_Detail"
+            android:name=".Models.YunDou.MyQuan"
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".WallPaper.WallPapaerHome"
+            android:name=".Models.YunDou.QiFu_PaiWei_Detail"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".Models.WallPaper.WallPapaerHome"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".WallPaper.WallPaperDetail"
+            android:name=".Models.WallPaper.WallPaperDetail"
             android:screenOrientation="portrait"
-            android:theme="@style/ITransition"
-          ></activity>
+            android:theme="@style/ITransition"></activity>
         <activity
-            android:name=".WallPaper.WallPaperComments"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            android:name=".Models.WallPaper.WallPaperComments"
             android:screenOrientation="portrait"
-            ></activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
 
         <activity
-            android:name=".WallPaper.WallPaperUserHome"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:name=".Models.WallPaper.WallPaperUserHome"
+            android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".WallPaper.WallPaperClassfiedList"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:name=".Models.WallPaper.WallPaperClassfiedList"
+            android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".ErWeiMa.QRActivity"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:name=".View.ErWeiMa.QRActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".E_Book.DZJHistory"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:name=".Models.E_Book.DZJHistory"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".Managers.ForManagers"
-            android:screenOrientation="portrait"
-            ></activity>
-
-
-
+            android:name=".Managers.ForManager.ForManagers"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Managers.ForManager.CommentManage"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Managers.ForManager.UserBannedCommentList"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Managers.ForManager.WishManage"
+            android:screenOrientation="portrait"></activity>
 
 
         <activity
-            android:name=".WallPaper.WallPaperUpload"
-            android:screenOrientation="portrait"
-            ></activity>
+            android:name=".Models.WallPaper.WallPaperUpload"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".Models.Auction.AuctionDetail"
+            android:screenOrientation="portrait"></activity>
 
 
         <!--sophix-->
@@ -811,22 +810,19 @@
         <!--sophix-->
 
 
-
-
-                <!--deamon-->
-
+        <!--deamon-->
 
 
         <activity
             android:name=".Deamon.OnePixelActivity"
-            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation"
             android:excludeFromRecents="true"
             android:exported="false"
             android:finishOnTaskLaunch="false"
             android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|navigation"
-            android:theme="@style/YFS_Deamon_Style"
-            android:process=":yfs">
+            android:process=":yfs"
+            android:screenOrientation="portrait"
+            android:theme="@style/YFS_Deamon_Style">
 
         </activity>
 

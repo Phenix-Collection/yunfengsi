@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/main_color">
+
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/back_sel"
+            android:padding="10dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="义卖详情"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="45dp"
+            android:background="@drawable/back_sel"
+            android:padding="10dp"
+            android:src="@drawable/fenxiang2" />
+
+        <ImageView
+            android:id="@+id/collect"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="right"
+            android:padding="8dp"
+            android:src="@drawable/shoucang_selector" />
+
+
+    </FrameLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/front"
+        android:layout_width="match_parent"
+        android:paddingTop="45dp"
+        android:clipToPadding="false"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:delay_time="3000"
+                    app:image_scale_type="center_crop"
+                    app:indicator_drawable_selected="@drawable/shape_selected_circle"
+                    app:indicator_drawable_unselected="@drawable/shape_unselected_circle"
+                    app:indicator_height="4dp"
+                    app:indicator_margin="8dp"
+                    app:indicator_width="8dp"
+                    app:is_auto_play="true"
+                    app:layout_collapseMode="parallax">
+
+                </com.youth.banner.Banner>
+
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/down_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="180dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="7dp"
+                    android:text="即将开始"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    app:background_normal="#E81D4A"
+                    app:icon_direction="left"
+                    app:icon_height="30dp"
+                    app:icon_src_normal="@drawable/time_auction"
+                    app:icon_width="30dp"
+                    app:layout_collapseMode="none"
+
+                    />
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="哈回复到拉萨的路口附近开始多了几分立
+                    fjsdjklfjdsklfjdsklfjklsdjfklsdjfk\n刻
+\n\n\n\n\n\\n\n\n\n\n\n\n\n\n\n\\n\n\n\n\n\n\n\n\n\n\\n\n\n\n\n\n\n\n\n\\n\n\n\n\n\n\\n\n\n\n\n\n\n\dsfsdfjsdklfjlkasdjfklsdjfklsdjfkldsjfkljsdklfjdasklfjl"
+                    android:textColor="@color/black"/>
+            </android.support.v4.widget.NestedScrollView>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

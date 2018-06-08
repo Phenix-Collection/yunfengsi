@@ -32,7 +32,7 @@
             android:textColor="@color/white" />
     </RelativeLayout>
 
-    <com.yunfengsi.SideListview.ClearEditText
+    <com.yunfengsi.View.SideListview.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_marginTop="10dip"
         android:layout_marginBottom="10dp"
@@ -61,7 +61,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             />
-        <com.yunfengsi.SideListview.SideBar
+        <com.yunfengsi.View.SideListview.SideBar
             android:id="@+id/sidrbar"
             android:layout_width="30.0dip"
             android:layout_height="fill_parent"

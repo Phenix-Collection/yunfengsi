@@ -70,7 +70,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <com.yunfengsi.Model_zhongchou.CircleProgressView
+            <com.yunfengsi.Models.Model_zhongchou.CircleProgressView
                 android:id="@+id/circle_people_num"
                 android:layout_width="80dp"
                 android:layout_height="80dp" />
@@ -85,7 +85,7 @@
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <com.yunfengsi.Model_zhongchou.CircleProgressView
+        <com.yunfengsi.Models.Model_zhongchou.CircleProgressView
             android:id="@+id/circle_funding_percent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <com.yunfengsi.Model_zhongchou.CircleProgressView
+            <com.yunfengsi.Models.Model_zhongchou.CircleProgressView
                 android:id="@+id/circle_time_rest"
                 android:layout_width="80dp"
                 android:layout_height="80dp"

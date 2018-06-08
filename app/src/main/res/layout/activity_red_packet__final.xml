@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yunfengsi.RedPacket_Final">
+    tools:context="com.yunfengsi.Models.RedPacket.RedPacket_Final">
 
 
     <FrameLayout

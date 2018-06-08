@@ -21,4 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="45dp" />
 
+    <TextView
+        android:id="@+id/wish_manage"
+        android:text="祈愿管理"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:background="@drawable/layout_bg_sel"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+
 </LinearLayout>

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import com.yunfengsi.Login;
+import com.yunfengsi.Setting.Login;
 
 
 /**

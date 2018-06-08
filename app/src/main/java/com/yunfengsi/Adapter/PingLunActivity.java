@@ -32,7 +32,7 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
-import com.yunfengsi.YunDou.YunDouAwardDialog;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,9 +109,8 @@ public class PingLunActivity extends AndroidPopupActivity implements View.OnClic
                                         public void run() {
                                             if(!"0".equals(hashMap.get("yundousum"))){
                                                 YunDouAwardDialog.show(PingLunActivity.this,"每日评论",hashMap.get("yundousum"));
-                                            }else{
-                                                ToastUtil.showToastShort(mApplication.ST("添加回复成功"));
                                             }
+                                            ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
                                             final HashMap<String, String> map = new HashMap<>();
                                             String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
                                             final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");

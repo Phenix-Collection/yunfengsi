@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/yaoyue"
-        android:name="com.yunfengsi.YaoYue.YaoYue"
+        android:name="com.yunfengsi.Models.YaoYue.YaoYue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="45dp"/>

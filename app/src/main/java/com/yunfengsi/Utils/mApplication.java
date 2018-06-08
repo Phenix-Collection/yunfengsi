@@ -64,7 +64,7 @@ public class mApplication extends Application {
     public static boolean changeIcon = false;//是否切换图标
     public static ComponentName componentName;//入口名称
 
-    public static final String                                  alias1          = "com.yunfengsi.Splash";
+    public static final String                                  alias1          = "com.yunfengsi.Setting.Splash";
     public static final String                                  alias2          = "com.yunfengsi.Splash1";
     public              HashMap<Class, WeakReference<Activity>> activityHashMap = new HashMap<>();
 

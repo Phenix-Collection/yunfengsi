@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".YunDou.YunDouHome">
+    tools:context=".Models.YunDou.YunDouHome">
 
 
     <include layout="@layout/title_default"/>

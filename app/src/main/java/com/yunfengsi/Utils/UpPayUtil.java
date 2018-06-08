@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.unionpay.UPPayAssistEx;
-import com.yunfengsi.Model_zhongchou.Fund_Share;
-import com.yunfengsi.ZhiFuShare;
+import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
+import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.json.JSONObject;
 

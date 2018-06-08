@@ -14,6 +14,7 @@ import com.yunfengsi.Adapter.Mine_GridAdapter;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.FileUtils;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDeraction;
@@ -62,8 +63,8 @@ public class MineManager {
     public MineManager(Context context, RecyclerView recyclerView) {
         super();
         this.recyclerView = recyclerView;
-        initMine();
         this.context = context;
+        initMine();
 
     }
 
@@ -78,6 +79,7 @@ public class MineManager {
             String text[] = mApplication.getInstance().getResources().getStringArray(R.array.mine_text);
             int img[] = new int[]
                     {
+                            R.drawable.auction,
                             R.raw.icon_wallpager,
                             R.raw.yundou,
                             R.raw.fuli,
@@ -99,6 +101,7 @@ public class MineManager {
                             R.raw.qiehuan
                     };
 
+
             for (int i = 0; i < img.length; i++) {
                 LogUtil.e("img::::" + img[i] + "  text::::" + text[i]);
                 HashMap<String, Object> map = new HashMap<>();
@@ -107,7 +110,19 @@ public class MineManager {
                 maps.add(map);
             }
         }
-        LogUtil.e(maps + "  @#@#@#@#@~!!@!~~");
+        if(PreferenceUtil.getUserIncetance(mApplication.getInstance()).getString("role","").equals("3")){
+            if(!maps.get(0).get(MineManager.text).equals("管理员")){
+                HashMap<String, Object> map = new HashMap<>();
+                map.put(MineManager.img, R.drawable.admin_mine);
+                map.put(MineManager.text, "管理员");
+                maps.add(0,map);
+            }
+        }else{
+            if(maps.get(0).get(MineManager.text).equals("管理员")){
+                maps.remove(0);
+            }
+        }
+        LogUtil.e(maps + "  @#@#@#@#@~!!@!~~是否是管理员：：："+PreferenceUtil.getUserIncetance(context).getString("role","").equals("3"));
         adapter = new Mine_GridAdapter(maps);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 4));
         mItemDeraction mItemDeraction = new mItemDeraction(1, Color.parseColor("#f2f2f2"));

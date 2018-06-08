@@ -11,9 +11,9 @@ public class Constants {
     public static final String Help = "https://indrah.cn/yfs.php/Index/help";
 
     //服务器测试域名
-    public static final String host_Ip       = "http://yintolo.net";
+//    public static final String host_Ip       = "http://yintolo.net";
     //    //服务器域名
-//    public static  final String host_Ip="https://indrah.cn";
+    public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo        = "/api.php/EncryptApi/";
     public static final String iiiiii        = "/api.php/SecretApi/";
@@ -568,9 +568,27 @@ public class Constants {
     //壁纸评论列表接口
     public static final String WallPaperCommentList = host_Ip + iiiiii + "Wallpaperpl";
 
+    //待审核评论列表接口
+    public static final String PendingCommentList = host_Ip + iiiiii + "Plshenhe";
 
     //待审核评论删除接口
     public static final String PendingCommentDelete = host_Ip + iiiiii + "Pldelete";
+
+    //待审核评论显示接口
+    public static final String PendingCommentDisplay = host_Ip + iiiiii + "Plsave";
+
+
+    //用户禁言列表接口
+    public static final String UserBanCommentList = host_Ip + iiiiii + "Userabatelist";
+
+    //用户禁言接口
+    public static final String UserBanComment= host_Ip + iiiiii + "Userabate";
+
+    //祈愿管理列表接口
+    public static final String WishManageList= host_Ip + iiiiii + "Wishgllist";
+
+    //祈愿删除列表接口
+    public static final String WishManageDelete= host_Ip + iiiiii + "Wishgldelete";
 
     //众筹列表换一换接口
     public static final String Fund_Change = host_Ip + oooooo + "Zhongchouhyh";

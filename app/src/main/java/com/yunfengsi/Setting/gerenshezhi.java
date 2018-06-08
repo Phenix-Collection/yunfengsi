@@ -10,8 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yunfengsi.AD;
-import com.yunfengsi.BaseSTActivity;
+import com.yunfengsi.Managers.Base.BaseSTActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.ACache;
 import com.yunfengsi.Utils.CleanMessageUtil;

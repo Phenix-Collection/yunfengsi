@@ -48,7 +48,7 @@ import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.ZhiFuShare;
+import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.json.JSONException;
 import org.json.JSONObject;

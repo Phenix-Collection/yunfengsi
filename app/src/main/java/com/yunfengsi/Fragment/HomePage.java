@@ -41,25 +41,31 @@ import com.lzy.okgo.callback.StringCallback;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
-import com.yunfengsi.AD;
 import com.yunfengsi.Adapter.PingLunActivity;
-import com.yunfengsi.BlessTree.BlessTree;
-import com.yunfengsi.E_Book.BookList;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.ItemManager;
 import com.yunfengsi.Managers.MessageCenter;
-import com.yunfengsi.Model_activity.Mine_activity_list;
-import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
-import com.yunfengsi.More.Fortune;
-import com.yunfengsi.More.Meditation;
-import com.yunfengsi.NianFo.NianFo;
-import com.yunfengsi.Push.mReceiver;
+import com.yunfengsi.Models.Auction.AuctionDetail;
+import com.yunfengsi.Models.BlessTree.BlessTree;
+import com.yunfengsi.Models.E_Book.BookList;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_activity.Mine_activity_list;
+import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.More.Fortune;
+import com.yunfengsi.Models.More.Meditation;
+import com.yunfengsi.Models.NianFo.NianFo;
+import com.yunfengsi.Models.TouGao.TouGao;
+import com.yunfengsi.Models.WallPaper.WallPapaerHome;
+import com.yunfengsi.Models.YunDou.MyQuan;
+import com.yunfengsi.Models.YunDou.YunDouHome;
+import com.yunfengsi.Models.ZiXun_Detail;
 import com.yunfengsi.R;
+import com.yunfengsi.Setting.AD;
 import com.yunfengsi.Setting.Activity_ShouCang;
 import com.yunfengsi.Setting.Mine_HuiYuan;
 import com.yunfengsi.Setting.Month_Detail;
-import com.yunfengsi.TouGao.TouGao;
+import com.yunfengsi.ThirdPart.Push.mReceiver;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -78,12 +84,7 @@ import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
 import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mItemDeraction;
-import com.yunfengsi.WallPaper.WallPapaerHome;
-import com.yunfengsi.XuanzheActivity;
-import com.yunfengsi.YunDou.MyQuan;
-import com.yunfengsi.YunDou.YunDouHome;
-import com.yunfengsi.ZhiFuShare;
-import com.yunfengsi.ZiXun_Detail;
+import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -248,7 +249,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                                         startActivity(intent1);
                                         break;
                                     case mReceiver.GOngyang:
-                                        intent1.setClass(getActivity(), XuanzheActivity.class);
+                                        intent1.setClass(getActivity(), GongYangDetail.class);
                                         intent1.putExtra("id", id);
                                         startActivity(intent1);
                                         break;
@@ -339,6 +340,9 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 TextView textView = (TextView) view.findViewById(R.id.text);
                 LogUtil.e("首页item点击：：：" + textView.getTag());
                 switch (textView.getTag().toString()) {
+                    case "义卖":
+                        startActivity(new Intent(getActivity(), AuctionDetail.class));
+                        break;
                     case "壁纸":
                         startActivity(new Intent(getActivity(), WallPapaerHome.class));
                         break;

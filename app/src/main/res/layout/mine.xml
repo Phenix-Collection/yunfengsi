@@ -31,6 +31,7 @@
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
             android:layout_marginTop="20dp"
+            android:padding="1.5px"
             android:background="@drawable/white_stroke_1dp_bg"
             />
 

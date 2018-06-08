@@ -39,8 +39,8 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
-import com.yunfengsi.Model_activity.activity_Detail;
-import com.yunfengsi.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -54,8 +54,8 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.DiffuseView;
-import com.yunfengsi.XuanzheActivity;
-import com.yunfengsi.ZiXun_Detail;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.ZiXun_Detail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -350,7 +350,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 } else if (url.equals(Constants.CFG_Search_Ip)) {
                     intent.setClass(mApplication.getInstance(), FundingDetailActivity.class);
                 } else if (url.equals(Constants.GY_Search_Ip)) {
-                    intent.setClass(mApplication.getInstance(), XuanzheActivity.class);
+                    intent.setClass(mApplication.getInstance(), GongYangDetail.class);
                 }
                 intent.putExtra("id", adapter.getList().get(position).get("id"));
                 startActivity(intent);
