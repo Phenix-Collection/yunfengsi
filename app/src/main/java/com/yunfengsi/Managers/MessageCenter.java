@@ -303,7 +303,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                                     swip.setRefreshing(false);
                                 } else if (isLoadMore) {
                                     isLoadMore = false;
-                                    if (list.size() < 10) {
+                                    if (list.size() < pageSize) {
                                         endPage = page;
                                         adapter.addData(list);
                                         adapter.loadMoreEnd(false);

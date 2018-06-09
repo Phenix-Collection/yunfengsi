@@ -45,7 +45,7 @@ import com.yunfengsi.Adapter.PingLunActivity;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.ItemManager;
 import com.yunfengsi.Managers.MessageCenter;
-import com.yunfengsi.Models.Auction.AuctionDetail;
+import com.yunfengsi.Models.Auction.AuctionList;
 import com.yunfengsi.Models.BlessTree.BlessTree;
 import com.yunfengsi.Models.E_Book.BookList;
 import com.yunfengsi.Models.GongYangDetail;
@@ -341,7 +341,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 LogUtil.e("首页item点击：：：" + textView.getTag());
                 switch (textView.getTag().toString()) {
                     case "义卖":
-                        startActivity(new Intent(getActivity(), AuctionDetail.class));
+                        startActivity(new Intent(getActivity(), AuctionList.class));
                         break;
                     case "壁纸":
                         startActivity(new Intent(getActivity(), WallPapaerHome.class));

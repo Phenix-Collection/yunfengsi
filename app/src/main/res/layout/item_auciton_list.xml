@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_bg_sel"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:padding="10dp">
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:adjustViewBounds="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/priceNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/wordhuise"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/peopleNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/wordhuise"
+        android:textSize="15dp" />
+    <TextView
+        android:id="@+id/endTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/wordhuise"
+        android:textSize="15dp" />
+</LinearLayout>

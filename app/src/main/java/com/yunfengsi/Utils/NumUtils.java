@@ -22,7 +22,7 @@ public class NumUtils {
         }
         double n = Double.valueOf(num);
         if (n < 10000) {
-            return num;
+            return subZeroAndDot(num);
         } else {
             if(n>=100000000){
                 double d=Double.valueOf(num)/100000000;

@@ -15,6 +15,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -298,12 +299,19 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(isRefresh){
+                                if(isRefresh&&PlListVIew.getHeaderViewsCount()==0){
                                     tv = new TextView(WallPaperComments.this);
+                                    ViewGroup.LayoutParams vl=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    tv.setLayoutParams(vl);
+                                    tv.setPadding(0,DimenUtils.dip2px(WallPaperComments.this,10),0,DimenUtils.dip2px(WallPaperComments.this,10));
                                     tv.setText(mApplication.ST("还没有评论,快来评论吧"));
                                     PlListVIew.addHeaderView(tv);
                                     PlListVIew.footer.setVisibility(View.GONE);
                                     isRefresh=false;
+                                    if(adapter!=null){
+                                        adapter.mlist.clear();
+                                        adapter.notifyDataSetChanged();
+                                    }
                                 }
                             }
                         });
@@ -319,12 +327,18 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                                     if (adapter.mlist.size() == 0 && Pllist.size() == 0) {//没有评论的时候
                                         tv = new TextView(WallPaperComments.this);
                                         tv.setText(mApplication.ST("还没有评论,快来评论吧"));
-                                        PlListVIew.addHeaderView(tv);
+                                        ViewGroup.LayoutParams vl=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        tv.setLayoutParams(vl);
+                                        tv.setPadding(0,DimenUtils.dip2px(WallPaperComments.this,10),0,DimenUtils.dip2px(WallPaperComments.this,10));
+                                        if(PlListVIew.getHeaderViewsCount()==0){
+                                            PlListVIew.addHeaderView(tv);
+                                        }
                                         PlListVIew.footer.setVisibility(View.GONE);
                                         PlListVIew.setAdapter(adapter);
 
                                         return;
                                     }
+                                    PlListVIew.removeHeaderView(tv);
                                     if (isRefresh) {
                                         isRefresh=false;
                                         adapter.addList(Pllist);

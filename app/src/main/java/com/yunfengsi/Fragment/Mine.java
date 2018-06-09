@@ -49,15 +49,14 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
-import com.yunfengsi.Managers.Base.BaseSTFragement;
-import com.yunfengsi.Models.Auction.AuctionDetail;
-import com.yunfengsi.Models.BlessTree.BlessTree;
-import com.yunfengsi.Models.E_Book.BookList;
-import com.yunfengsi.Setting.Login;
 import com.yunfengsi.MainActivity;
+import com.yunfengsi.Managers.Base.BaseSTFragement;
 import com.yunfengsi.Managers.ForManager.ForManagers;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Managers.MineManager;
+import com.yunfengsi.Models.Auction.AuctionList;
+import com.yunfengsi.Models.BlessTree.BlessTree;
+import com.yunfengsi.Models.E_Book.BookList;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
 import com.yunfengsi.Models.More.Fortune;
 import com.yunfengsi.Models.More.Meditation;
@@ -66,15 +65,20 @@ import com.yunfengsi.Models.NianFo.GYMX_FaYuan;
 import com.yunfengsi.Models.NianFo.NianFo;
 import com.yunfengsi.Models.NianFo.nianfo_home_tab4;
 import com.yunfengsi.Models.NianFo.nianfo_home_tab5;
+import com.yunfengsi.Models.TouGao.TouGao;
+import com.yunfengsi.Models.WallPaper.WallPapaerHome;
+import com.yunfengsi.Models.YunDou.MyQuan;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
+import com.yunfengsi.Models.YunDou.YunDouHome;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Activity_ShouCang;
+import com.yunfengsi.Setting.Login;
 import com.yunfengsi.Setting.Mine_HuiYuan;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Setting.Month_Detail;
 import com.yunfengsi.Setting.NiCTemple_Activity;
 import com.yunfengsi.Setting.Sign;
 import com.yunfengsi.Setting.gerenshezhi;
-import com.yunfengsi.Models.TouGao.TouGao;
 import com.yunfengsi.Utils.ACache;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -90,10 +94,6 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.Models.WallPaper.WallPapaerHome;
-import com.yunfengsi.Models.YunDou.MyQuan;
-import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
-import com.yunfengsi.Models.YunDou.YunDouHome;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -255,7 +255,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
 
             switch (map.get(mineManager.text).toString()) {
                 case "义卖":
-                    startActivity(new Intent(getActivity(), AuctionDetail.class));
+                    startActivity(new Intent(getActivity(), AuctionList.class));
                     break;
                 case "管理员":
                     startActivity(new Intent(getActivity(), ForManagers.class));

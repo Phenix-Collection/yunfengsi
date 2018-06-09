@@ -792,6 +792,10 @@
             android:screenOrientation="portrait"></activity>
 
         <activity
+            android:name=".Models.Auction.AuctionList"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
             android:name=".Models.Auction.AuctionDetail"
             android:screenOrientation="portrait"></activity>
 
