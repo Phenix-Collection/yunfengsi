@@ -22,6 +22,7 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.yunfengsi.R;
+import com.yunfengsi.Utils.LogUtil;
 
 import static com.yunfengsi.BuildConfig.DEBUG;
 
@@ -48,6 +49,8 @@ public class SlideDetailsLayout extends ViewGroup {
          * @param status {@link Status}
          */
         void onStatucChanged(Status status);
+
+        void onScrollChanged();
     }
 
     public enum Status {
@@ -133,7 +136,7 @@ public class SlideDetailsLayout extends ViewGroup {
     public void smoothOpen(boolean smooth) {
         if (mStatus != Status.OPEN) {
             mStatus = Status.OPEN;
-            final float height = -getMeasuredHeight();
+            final float height = -getMeasuredHeight()-textView.getMeasuredHeight();
             animatorSwitch(0, height, true, smooth ? mDuration : 0);
         }
     }
@@ -146,7 +149,7 @@ public class SlideDetailsLayout extends ViewGroup {
     public void smoothClose(boolean smooth) {
         if (mStatus != Status.CLOSE) {
             mStatus = Status.OPEN;
-            final float height = -getMeasuredHeight();
+            final float height = -getMeasuredHeight()-textView.getMeasuredHeight();
             animatorSwitch(height, 0, true, smooth ? mDuration : 0);
         }
     }
@@ -184,11 +187,12 @@ public class SlideDetailsLayout extends ViewGroup {
             throw new RuntimeException("SlideDetailsLayout only accept childs more than 1!!");
         }
         textView=new TextView(getContext());
-        textView.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT,Math.round(density*200)));
-        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT,Math.round(density*100)));
+        textView.setGravity(Gravity.CENTER);
         textView.setTextColor(Color.BLACK);
-        textView.setBackgroundColor(Color.RED);
+        textView.setBackgroundColor(Color.LTGRAY);
         textView.setTextSize(20);
+        textView.setText("上拉拖动，查看商品详情");
         addView(textView,1);
         mFrontView = getChildAt(0);
         mBehindView = getChildAt(2);
@@ -240,21 +244,26 @@ public class SlideDetailsLayout extends ViewGroup {
         View child;
         for (int i = 0; i < getChildCount(); i++) {
             child = getChildAt(i);
-
             // skip layout
             if (child.getVisibility() == GONE) {
                 continue;
             }
 
             if (child == mBehindView) {
-                top = (int) (b + offset-needCutHeight+textView.getHeight());
-                bottom = (int) (top + b - t+textView.getHeight());
+                top = (int) (b + offset-needCutHeight+textView.getMeasuredHeight());
+                bottom = (int) (top + b - t);
             } else if(child==mFrontView){
                 top = (int) (t + offset-needCutHeight);
                 bottom = (int) (b + offset-needCutHeight);
             }else {
-                top = (int) (t + offset-needCutHeight);
-                bottom = (int) (b + offset-needCutHeight);
+//                if(mStatus==Status.CLOSE){
+                    top = (int) (b+offset-needCutHeight);
+                    bottom = (int) (b + offset-needCutHeight+textView.getMeasuredHeight());
+//                }else{
+//                    top = (int) (t+offset-needCutHeight-textView.getMeasuredHeight());
+//                    bottom = (int) (t + offset-needCutHeight);
+//                }
+
             }
 
             child.layout(left, top, right, bottom);
@@ -340,6 +349,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        LogUtil.e("当前offset：：："+mSlideOffset);
         ensureTarget();
         if (null == mTarget) {
             return false;
@@ -411,7 +421,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
             // pull down to close
         } else if (mStatus == Status.OPEN) {
-            final float pHeight = -getMeasuredHeight();
+            final float pHeight = -getMeasuredHeight()-textView.getMeasuredHeight();
             // reset if pull up
             if (offset <= 0) {
                 mSlideOffset = pHeight;
@@ -449,7 +459,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
         if (Status.CLOSE == mStatus) {
             if (offset <= -percent || yVelocity <= -DEFAULT_MAX_VELOCITY) {
-                mSlideOffset = -pHeight;
+                mSlideOffset = -pHeight-textView.getMeasuredHeight();
                 mStatus = Status.OPEN;
                 changed = true;
             } else {
@@ -463,7 +473,7 @@ public class SlideDetailsLayout extends ViewGroup {
                 changed = true;
             } else {
                 // keep panel opened
-                mSlideOffset = -pHeight;
+                mSlideOffset = -pHeight-textView.getMeasuredHeight();
             }
         }
 
@@ -500,7 +510,10 @@ public class SlideDetailsLayout extends ViewGroup {
                 super.onAnimationEnd(animation);
                 if (changed) {
                     if (mStatus == Status.OPEN) {
+                        textView.setText("释放，返回详情");
                         checkAndFirstOpenPanel();
+                    }else{
+                        textView.setText("上拉拖动，查看商品详情");
                     }
 
                     if (null != mOnSlideDetailsListener) {

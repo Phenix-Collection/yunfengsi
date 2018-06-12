@@ -24,14 +24,14 @@ public class AuctionDetail extends AppCompatActivity {
 
 //        front = ((LinearLayout) findViewById(R.id.front));
 //        front.setOverScrollMode(NestedScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
-        behind = ((WebView) findViewById(R.id.bebind));
-        behind.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return true;
-            }
-        });
-        behind.loadUrl("http://baidu.com");
+//        behind = ((WebView) findViewById(R.id.bebind));
+//        behind.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                return true;
+//            }
+//        });
+//        behind.loadUrl("http://baidu.com");
 
     }
 }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <FrameLayout
@@ -61,27 +62,95 @@
         app:need_cut_height="45dp">
     <ScrollView
         android:layout_width="match_parent"
-        android:background="@color/blue"
+        android:id="@+id/front"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/front"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+           >
 
-            android:orientation="vertical">
+          <com.youth.banner.Banner
+              android:id="@+id/banner"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              app:layout_constraintDimensionRatio="4:1"
+              app:delay_time="3000"
+              app:scroll_time="500"
 
+              >
+
+          </com.youth.banner.Banner>
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/time_tip"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:icon_src_normal="@drawable/time_auction"
+            app:background_normal="@color/red"
+            app:icon_height="30dp"
+            android:gravity="center_vertical"
+            android:text="即将开始"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:paddingLeft="5dp"
+            android:drawablePadding="5dp"
+            app:icon_width="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/banner"/>
+
+
+            <com.ruffian.library.RTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                tools:text="即将开始sdjflsjflks砥砺奋进上课了就烦死了快减肥了快速减肥流口水"
+                android:textSize="16dp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/time_tip"/>
 
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/main_color"
-                android:textColor="@color/white"
-                android:textSize="18dp"
-                android:gravity="center"
-                android:text="上拉加载图文详情"/>
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rmb"
+                android:textColor="@color/wordhuise"
+                android:textSize="22dp"
+                android:text="RMB"
+
+                android:paddingLeft="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:layout_constraintLeft_toLeftOf="@+id/rmb_now"
+                app:layout_constraintRight_toRightOf="@+id/rmb_now"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rmb_now"
+                android:textColor="@color/red"
+                android:textSize="17dp"
+                android:text="当前价"
+                android:paddingLeft="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/rmb"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/price_now"
+                android:textColor="@color/red"
+                android:textSize="22dp"
+                tools:text="712.00"
+                android:paddingLeft="22dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@+id/rmb"
+                app:layout_constraintLeft_toRightOf="@+id/rmb_now"
+                app:layout_constraintBottom_toBottomOf="@+id/rmb_now"
+                />
+        </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
 
