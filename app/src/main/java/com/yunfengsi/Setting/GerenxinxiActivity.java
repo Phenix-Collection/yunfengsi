@@ -66,8 +66,8 @@ import cn.carbs.android.avatarimageview.library.AvatarImageView;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.yunfengsi.Utils.photoUtil.CHOOSEPICTUE;
-import static com.yunfengsi.Utils.photoUtil.TAKEPICTURE;
+import static com.yunfengsi.Utils.PhotoUtilForWeb.CHOOSEPICTUE;
+import static com.yunfengsi.Utils.PhotoUtilForWeb.TAKEPICTURE;
 
 public class GerenxinxiActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView mtvxinbie;     //性别

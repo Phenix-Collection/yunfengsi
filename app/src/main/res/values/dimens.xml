@@ -10,4 +10,6 @@
     <dimen name="activity_main_title_text">13dp</dimen>
     <dimen name="activity_main_submit_lift">46dp</dimen>
     <dimen name="activity_main_submit_width">267dp</dimen>
+
+    <dimen name="dp_16">16dp</dimen>
 </resources>

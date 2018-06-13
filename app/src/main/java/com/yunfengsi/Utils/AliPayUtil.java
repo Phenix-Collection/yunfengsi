@@ -141,6 +141,7 @@ public class AliPayUtil {
                                                     if (type.equals("4")) {//供养支付
                                                         Intent intent1 = new Intent(context, ZhiFuShare.class);
                                                         intent1.putExtra("stu_id", mApplication.sut_id);
+                                                        intent1.putExtra("yundou", true);
                                                         context.startActivity(intent1);
                                                     } else if (type.equals("5")) {//慈善
                                                         Intent intent = new Intent("Mine");

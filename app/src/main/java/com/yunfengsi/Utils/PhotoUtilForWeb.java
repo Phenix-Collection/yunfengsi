@@ -27,7 +27,7 @@ import java.util.Locale;
 /**
  * Created by Administrator on 2016/12/22.
  */
-public class photoUtil {
+public class PhotoUtilForWeb {
     public static final int CHOOSEPICTUE = 2;//相册
     public static final int TAKEPICTURE = 1;//相机
     public static Uri uri;
@@ -37,13 +37,13 @@ public class photoUtil {
     private static boolean needCameraChoose=true;
 
     public static void setmUploadCallbackAboveL(ValueCallback<Uri[]> mUploadCallbackAboveL) {
-        photoUtil.mUploadCallbackAboveL = mUploadCallbackAboveL;
+        PhotoUtilForWeb.mUploadCallbackAboveL = mUploadCallbackAboveL;
     }
     public static void setCameraChoose(boolean cameraChoose){
         needCameraChoose=cameraChoose;
     }
     public static void setmUploadImage(ValueCallback<Uri> mUploadImage) {
-        photoUtil.mUploadImage = mUploadImage;
+        PhotoUtilForWeb.mUploadImage = mUploadImage;
     }
 
     //选择照片或照相

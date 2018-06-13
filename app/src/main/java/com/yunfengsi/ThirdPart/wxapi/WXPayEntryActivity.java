@@ -71,6 +71,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
                 if ("4".equals(mApplication.type)) {
                     Intent intent1 = new Intent(this, ZhiFuShare.class);
                     intent1.putExtra("stu_id", mApplication.sut_id);
+                    intent1.putExtra("yundou", true);
                     startActivity(intent1);
 
                     finish();

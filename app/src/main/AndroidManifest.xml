@@ -116,6 +116,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
+
         </provider>
         <!-- <receiver android:name=".Managers.SMSBroadcastReceiver"> -->
         <!-- <intent-filter android:priority="1000"> -->
@@ -190,6 +191,10 @@
         <activity
             android:name=".Models.YunDou.YunDou_History"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Models.Model_activity.IdCardCheck"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".View.Photo.PhotoActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

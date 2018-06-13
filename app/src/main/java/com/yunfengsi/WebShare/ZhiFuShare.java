@@ -40,7 +40,7 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.Utils.photoUtil;
+import com.yunfengsi.Utils.PhotoUtilForWeb;
 import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
@@ -98,6 +98,9 @@ public class ZhiFuShare extends AppCompatActivity {
 
                     stu_id = getIntent().getStringExtra("stu_id");
                     if (stu_id != null) {
+                        if(getIntent().getBooleanExtra("yundou",false)){
+                            postYundouGY();
+                        }
                         url = URL + "/type/1/sut_id/" + stu_id + "/st/" + (mApplication.isChina ? "s" : "t");
                         name.setText(mApplication.ST("供养回向"));
                     } else {
@@ -175,8 +178,8 @@ public class ZhiFuShare extends AppCompatActivity {
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                 LogUtil.e("图片文件回调");
                 mUploadCallbackAboveL = filePathCallback;
-                photoUtil.choosePic(ZhiFuShare.this, 0);
-                photoUtil.setmUploadCallbackAboveL(mUploadCallbackAboveL);
+                PhotoUtilForWeb.choosePic(ZhiFuShare.this, 0);
+                PhotoUtilForWeb.setmUploadCallbackAboveL(mUploadCallbackAboveL);
                 return true;
             }
 
@@ -186,11 +189,11 @@ public class ZhiFuShare extends AppCompatActivity {
                 mUploadImage = uploadMsg;
 //
                 if (Build.VERSION.SDK_INT == 19) {
-                    photoUtil.DoPicture(ZhiFuShare.this, 0, null);//直接选择照片
+                    PhotoUtilForWeb.DoPicture(ZhiFuShare.this, 0, null);//直接选择照片
                 } else {
-                    photoUtil.choosePic(ZhiFuShare.this, 0);//选择相机或照片
+                    PhotoUtilForWeb.choosePic(ZhiFuShare.this, 0);//选择相机或照片
                 }
-                photoUtil.setmUploadImage(mUploadImage);
+                PhotoUtilForWeb.setmUploadImage(mUploadImage);
             }
 
 
@@ -198,8 +201,8 @@ public class ZhiFuShare extends AppCompatActivity {
             public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
                 LogUtil.e("图片文件回调");
                 mUploadImage = uploadMsg;
-                photoUtil.choosePic(ZhiFuShare.this, 0);
-                photoUtil.setmUploadImage(mUploadImage);
+                PhotoUtilForWeb.choosePic(ZhiFuShare.this, 0);
+                PhotoUtilForWeb.setmUploadImage(mUploadImage);
 //                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
 //                i.addCategory(Intent.CATEGORY_OPENABLE);
 //                i.setType("*/*");
@@ -325,7 +328,7 @@ public class ZhiFuShare extends AppCompatActivity {
                 webView.post(new Runnable() {
                     @Override
                     public void run() {
-                        postYundouGY();
+
                         new ShareManager().shareWeb(umWeb, ZhiFuShare.this);
                     }
                 });
@@ -416,8 +419,8 @@ public class ZhiFuShare extends AppCompatActivity {
                 Uri[] results = null;
                 if (resultCode == Activity.RESULT_OK) {
                     if (data == null) {//自定义路径后的拍照
-                        results = new Uri[]{Uri.fromFile(new File(ImageUtil.getImageAbsolutePath(this, photoUtil.uri)))};
-                        LogUtil.e("回调：：：自定义路径：：；" + ImageUtil.getImageAbsolutePath(this, photoUtil.uri) + "    文件大小：：" + new File(ImageUtil.getImageAbsolutePath(this, photoUtil.uri)).length());
+                        results = new Uri[]{Uri.fromFile(new File(ImageUtil.getImageAbsolutePath(this, PhotoUtilForWeb.uri)))};
+                        LogUtil.e("回调：：：自定义路径：：；" + ImageUtil.getImageAbsolutePath(this, PhotoUtilForWeb.uri) + "    文件大小：：" + new File(ImageUtil.getImageAbsolutePath(this, PhotoUtilForWeb.uri)).length());
 
                     } else {
                         String dataString = data.getDataString();

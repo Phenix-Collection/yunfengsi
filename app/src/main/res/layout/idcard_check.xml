@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/title_default"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:showDividers="middle"
+            android:background="@color/white"
+            android:divider="@drawable/mdivider"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="上传身份证正面照（用于核实身份，必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+
+            <com.yunfengsi.View.UsefulImageView
+                android:id="@+id/addCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="150dp"
+                android:maxWidth="240dp"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/person_add_pic_sel"
+                android:contentDescription="上传身份证正面照"
+                android:src="@drawable/add_idcard"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="拍照参考示例/用于核实身份（只支持/jpg/png/bmp格式）"
+                android:gravity="center_vertical"
+                android:textSize="16dp"
+                android:lineSpacingExtra="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@color/white"/>
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/id_card"
+                android:adjustViewBounds="true"
+                android:paddingLeft="8dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="真实姓名（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/trueName"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入真实姓名"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/darkWhite"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="性别（必填）"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/sex"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入性别"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="民族（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/nation"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入民族"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="身份证号（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/IDCard"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入身份证号码"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="家庭住址（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/address"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入家庭住址"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="手机号码（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/phonenumber"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入手机号码"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="法名（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/religiousName"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入法名（没有法名请填 无 ）"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="工作单位（可填 无 ，请勿空白，必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/company"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入工作单位"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="修行经历（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/practiceExperience"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入修行经历"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="职业（请勿填写自由职业或个人，必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/profession"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入职业"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="紧急联系人手机号码（必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/morePhone"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入紧急联系人手机号码"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="车牌登记（登记车牌以便预留车位；如不开车，请填写 无 ，必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/plateNumber"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:textSize="@dimen/dp_16"
+                android:hint="请输入车牌号"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="上传个人正面照（用于核实身份，必填）"
+                android:gravity="center_vertical"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:background="@color/darkWhite"/>
+
+
+            <com.yunfengsi.View.UsefulImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/photo"
+                android:maxWidth="200dp"
+                android:src="@drawable/photo_add"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:background="@drawable/person_add_pic_sel"/>
+
+
+            <com.ruffian.library.RTextView
+                android:id="@+id/commit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                app:background_normal="@color/main_color"
+                android:textSize="18dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="立即提交"
+                app:corner_radius="3dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="50dp"
+                app:background_pressed="#80fe963b"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</merge>

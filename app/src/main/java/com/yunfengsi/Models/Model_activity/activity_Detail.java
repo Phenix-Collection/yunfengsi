@@ -50,10 +50,12 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
-import com.yunfengsi.View.ErWeiMa.QRActivity;
-import com.yunfengsi.Setting.Login;
+import com.yunfengsi.BuildConfig;
 import com.yunfengsi.Managers.CollectManager;
+import com.yunfengsi.Models.YaoYue.Activity_YaoYue;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.R;
+import com.yunfengsi.Setting.Login;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -73,10 +75,8 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.View.ErWeiMa.QRActivity;
 import com.yunfengsi.View.mPLlistview;
-import com.yunfengsi.Models.YaoYue.Activity_YaoYue;
-import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
-import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -861,8 +861,9 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
     private void BaoMing() {
 
         if (sp.getString("perfect", "1").equals("1") && !act_prol.equals("")) {
-            Intent intent = new Intent(activity_Detail.this, ZhiFuShare.class);
-            intent.putExtra(ZhiFuShare.ISFORM, true);
+            Intent intent = new Intent(activity_Detail.this, IdCardCheck.class);
+//            Intent intent = new Intent(activity_Detail.this, ZhiFuShare.class);
+//            intent.putExtra(ZhiFuShare.ISFORM, true);
             startActivityForResult(intent, 666);
             Toast.makeText(activity_Detail.this, mApplication.ST("您还未完善资料，快去完善资料吧"), Toast.LENGTH_SHORT).show();
         } else {
@@ -1109,7 +1110,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                         cancle.setText(mApplication.ST("不同意"));
                         final TextView baoming = (TextView) view.findViewById(R.id.baoming);
                         baoming.setEnabled(false);
-                        final CountDownTimer cdt = new CountDownTimer(10000, 1000) {
+                        final CountDownTimer cdt = new CountDownTimer(BuildConfig.DEBUG?1000:10000, 1000) {
                             @Override
                             public void onTick(long millisUntilFinished) {
                                 baoming.setText(mApplication.ST("请阅读报名须知(" + millisUntilFinished / 1000 + "秒)"));

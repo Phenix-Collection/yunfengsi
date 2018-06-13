@@ -3,9 +3,12 @@ package com.yunfengsi.Utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,8 +24,8 @@ import java.util.HashMap;
 
 public class FileUtils {
 
-    private static final String TAG = "FileUtils";
-    public static final String TEMPPAH = Environment.getExternalStorageDirectory() + File.separator
+    private static final String TAG     = "FileUtils";
+    public static final  String TEMPPAH = Environment.getExternalStorageDirectory() + File.separator
             + Constants.cacheO + "/temp/";
 
     public static void saveBitmap(Bitmap bm, String picName) {
@@ -49,6 +52,69 @@ public class FileUtils {
         }
     }
 
+    public static void saveBitmap(Bitmap bm, File file, int sizeKb) {
+        System.out.println("-----------------------------");
+        try {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            FileOutputStream      out                   = new FileOutputStream(file);
+
+            int quality = 90;
+            do {
+                quality -= 10;
+                byteArrayOutputStream.reset();
+                bm.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
+            } while (byteArrayOutputStream.toByteArray().length > sizeKb / 1024&&quality>=50);
+            out.write(byteArrayOutputStream.toByteArray());
+            out.flush();
+            out.close();
+            LogUtil.e("压缩后大小：：" + file.length()+"   质量：：；"+quality);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将图片转换成Base64编码的字符串
+     * @param path
+     * @return base64编码的字符串
+     */
+    public static String imageToBase64(String path){
+        if(TextUtils.isEmpty(path)){
+            return null;
+        }
+        InputStream is = null;
+        byte[] data = null;
+        String result = null;
+        try{
+            is = new FileInputStream(path);
+            //创建一个字符流大小的数组。
+            data = new byte[is.available()];
+            //写入数组
+            is.read(data);
+            //用默认的编码格式进行编码
+            result = android.util.Base64.encodeToString(data, Base64.DEFAULT);
+            LogUtil.e("字节数：：；"+result.length());
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            if(null !=is){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return result;
+//        return "data:image/jpeg;base64,"+result;
+    }
     public static File createSDDir(String dirName) throws IOException {
         File dir = new File(TEMPPAH + dirName);
         if (Environment.getExternalStorageState().equals(
@@ -161,7 +227,7 @@ public class FileUtils {
      * @throws IOException
      */
     public static void copyFileUsingFileChannels(File source, File dest) throws IOException {
-        FileChannel inputChannel = null;
+        FileChannel inputChannel  = null;
         FileChannel outputChannel = null;
         try {
             inputChannel = new FileInputStream(source).getChannel();
@@ -180,9 +246,9 @@ public class FileUtils {
      */
     public static void saveStorage2SDCard(Context context, ArrayList tArrayList, String fileName) {
 
-        FileOutputStream fileOutputStream = null;
+        FileOutputStream   fileOutputStream   = null;
         ObjectOutputStream objectOutputStream = null;
-        FileInputStream fileInputStream = null;
+        FileInputStream    fileInputStream    = null;
         try {
             File f = new File(context.getExternalCacheDir() + File.separator + fileName);
             fileOutputStream = new FileOutputStream(f);  //新建一个内容为空的文件
@@ -215,8 +281,8 @@ public class FileUtils {
      */
     public static ArrayList<String> getStorageStringEntities(Context context, String fileName) {
         ObjectInputStream objectInputStream = null;
-        FileInputStream fileInputStream = null;
-        ArrayList<String> savedArrayList = null;
+        FileInputStream   fileInputStream   = null;
+        ArrayList<String> savedArrayList    = null;
         try {
             File file = new File(context.getExternalCacheDir() + File.separator + fileName);
             fileInputStream = new FileInputStream(file.toString());
@@ -235,9 +301,9 @@ public class FileUtils {
      * @return
      */
     public static ArrayList<Integer> getStorageIntEntities(Context context, String fileName) {
-        ObjectInputStream objectInputStream = null;
-        FileInputStream fileInputStream = null;
-        ArrayList<Integer> savedArrayList = null;
+        ObjectInputStream  objectInputStream = null;
+        FileInputStream    fileInputStream   = null;
+        ArrayList<Integer> savedArrayList    = null;
         try {
             File file = new File(context.getExternalCacheDir() + File.separator + fileName);
             fileInputStream = new FileInputStream(file.toString());
@@ -256,9 +322,9 @@ public class FileUtils {
      * @return
      */
     public static ArrayList<HashMap<String, Object>> getStorageMapEntities(Context context, String fileName) {
-        ObjectInputStream objectInputStream = null;
-        FileInputStream fileInputStream = null;
-        ArrayList<HashMap<String, Object>> savedArrayList = null;
+        ObjectInputStream                  objectInputStream = null;
+        FileInputStream                    fileInputStream   = null;
+        ArrayList<HashMap<String, Object>> savedArrayList    = null;
         try {
             File file = new File(context.getExternalCacheDir() + File.separator + fileName);
             fileInputStream = new FileInputStream(file.toString());
@@ -278,8 +344,8 @@ public class FileUtils {
      */
     public static ArrayList getStorageMapEntitiesEasy(Context context, String fileName) {
         ObjectInputStream objectInputStream = null;
-        FileInputStream fileInputStream = null;
-        ArrayList savedArrayList = null;
+        FileInputStream   fileInputStream   = null;
+        ArrayList         savedArrayList    = null;
         try {
             File file = new File(context.getExternalCacheDir() + File.separator + fileName);
             fileInputStream = new FileInputStream(file.toString());
@@ -294,7 +360,7 @@ public class FileUtils {
 
     public static String getFileEncode2(String path) {
         InputStream inputStream = null;
-        byte[] head = new byte[3];
+        byte[]      head        = new byte[3];
 
         try {
             inputStream = new FileInputStream(path);
@@ -313,15 +379,15 @@ public class FileUtils {
 //        if (head[0] == -2 && head[1] == -1)
 //            code = "Unicode";
 //        if (head[0] == -17 && head[1] == -69 && head[2] == -65)
-            code = "UTF-8";
+        code = "UTF-8";
 
         return code;
     }
 
     public static String getFileEncode(String path) {
-        String charset = "asci";
-        byte[] first3Bytes = new byte[3];
-        BufferedInputStream bis = null;
+        String              charset     = "asci";
+        byte[]              first3Bytes = new byte[3];
+        BufferedInputStream bis         = null;
         try {
             boolean checked = false;
             bis = new BufferedInputStream(new FileInputStream(path));
@@ -422,8 +488,8 @@ public class FileUtils {
      * 当写入完毕时返回true;
      */
     public static boolean writeFile(byte data[], String path, String code) {
-        boolean flag = true;
-        OutputStreamWriter osw = null;
+        boolean            flag = true;
+        OutputStreamWriter osw  = null;
         try {
             File file = new File(path);
             if (!file.exists()) {
@@ -466,8 +532,8 @@ public class FileUtils {
      */
     public static byte[] getFile(String path) throws IOException {
         FileInputStream stream = new FileInputStream(path);
-        int size = stream.available();
-        byte data[] = new byte[size];
+        int             size   = stream.available();
+        byte            data[] = new byte[size];
         stream.read(data);
         stream.close();
         stream = null;
