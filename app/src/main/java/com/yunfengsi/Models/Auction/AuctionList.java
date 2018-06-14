@@ -120,6 +120,8 @@ public class AuctionList extends AppCompatActivity implements SwipeRefreshLayout
             Glide.with(AuctionList.this)
                     .load(map.get("image"))
                     .override(dp30,dp30)
+                    .placeholder(R.color.darkWhite)
+                    .error(R.color.darkWhite)
                     .centerCrop()
                     .into((ImageView) holder.getView(R.id.image));
             SpannableString ss=new SpannableString("当前 ￥"+ NumUtils.getNumStr(map.get("now_price")));

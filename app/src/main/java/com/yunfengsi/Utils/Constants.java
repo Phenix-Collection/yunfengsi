@@ -482,7 +482,7 @@ public class Constants {
     public static final String JiuCuo                = host_Ip + iiiiii + "Ebookadd";
 
     //大藏经足迹列表接口
-    public static final String DaZangHistory = host_Ip + iiiiii + "Dzjkeep";
+    public static final String DaZangHistory        = host_Ip + iiiiii + "Dzjkeep";
     //大藏经足迹删除接口
     public static final String DaZangHistory_Delete = host_Ip + iiiiii + "Dzjkeepdelete";
 
@@ -547,7 +547,7 @@ public class Constants {
     public static final String WallPaperMyCollection = host_Ip + iiiiii + "Mywallpaper";
 
     //我的壁纸删除接口
-    public static final String WallPaperTMineDelete             = host_Ip + iiiiii + "Wallpapermydelete";
+    public static final String WallPaperTMineDelete = host_Ip + iiiiii + "Wallpapermydelete";
 
     //壁纸收藏、删除接口
     public static final String WallPaperCollectInterface = host_Ip + iiiiii + "Wallpaperkeep";
@@ -582,16 +582,41 @@ public class Constants {
     public static final String UserBanCommentList = host_Ip + iiiiii + "Userabatelist";
 
     //用户禁言接口
-    public static final String UserBanComment= host_Ip + iiiiii + "Userabate";
+    public static final String UserBanComment = host_Ip + iiiiii + "Userabate";
 
     //祈愿管理列表接口
-    public static final String WishManageList= host_Ip + iiiiii + "Wishgllist";
+    public static final String WishManageList = host_Ip + iiiiii + "Wishgllist";
 
     //祈愿删除列表接口
-    public static final String WishManageDelete= host_Ip + iiiiii + "Wishgldelete";
+    public static final String WishManageDelete = host_Ip + iiiiii + "Wishgldelete";
+
+    //义卖出价排行榜接口
+    public static final String AuctionBidList = host_Ip + iiiiii + "Auction_userlist";
+
+
+    //义卖留言显示接口
+    public static final String AuctionCommentList = host_Ip + iiiiii + "Auctionpl";
+
+    //义卖评论提交接口
+    public static final String AuctionCommentPost = host_Ip + iiiiii + "Auctiontjpl";
+
+    //义卖出价接口
+    public static final String AuctionPay    = host_Ip + iiiiii + "Auctionpay";
+
+    //义卖详情接口
+    public static final String AuctionDetail = host_Ip + iiiiii + "Auctiond";
+
+    //义卖我的竞拍记录接口
+    public static final String AuctionMyBid = host_Ip + iiiiii + "Myauction";
+
+
 
     //所有义卖列表接口
-    public static final String AuctionList= host_Ip + iiiiii + "Auctionlist";
+    public static final String AuctionList = host_Ip + iiiiii + "Auctionlist";
+
+
+    //用户资料完善接口
+    public static final String UserForm = host_Ip + iiiiii + "Userform";
 
     //众筹列表换一换接口
     public static final String Fund_Change = host_Ip + oooooo + "Zhongchouhyh";

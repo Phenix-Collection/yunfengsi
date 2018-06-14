@@ -862,8 +862,6 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
 
         if (sp.getString("perfect", "1").equals("1") && !act_prol.equals("")) {
             Intent intent = new Intent(activity_Detail.this, IdCardCheck.class);
-//            Intent intent = new Intent(activity_Detail.this, ZhiFuShare.class);
-//            intent.putExtra(ZhiFuShare.ISFORM, true);
             startActivityForResult(intent, 666);
             Toast.makeText(activity_Detail.this, mApplication.ST("您还未完善资料，快去完善资料吧"), Toast.LENGTH_SHORT).show();
         } else {

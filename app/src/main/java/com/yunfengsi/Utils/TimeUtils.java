@@ -188,6 +188,52 @@ public class TimeUtils {
     }
 
     /**
+     * 显示时间格式为 hh:mm:ss
+     *
+     * @param when
+     * @param flag  是否使用汉字
+     * @return String
+     *
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String formatTimeShort(long when,boolean flag) {
+        long h=when/1000/60/60;
+        long m,s;
+        if(h==0){
+            m=when/1000/60;
+            if((h*60*60+m*60)==0){
+                s=when/1000;
+            }else{
+                s=(when/1000)%(h*60*60+m*60);
+            }
+        }else{
+            m=(when/1000/60)%(h*60);
+            s=(when/1000)%(h*60*60+m*60);
+        }
+
+
+        String H="";
+        String M="";
+        String S="";
+        if(String.valueOf(h).length()==1){
+            H="0"+h;
+        }else{
+            H=String.valueOf(h);
+        }
+        if(String.valueOf(m).length()==1){
+            M="0"+m;
+        }else{
+            M=String.valueOf(m);
+        }
+        if(String.valueOf(s).length()==1){
+            S="0"+s;
+        }else{
+            S=String.valueOf(s);
+        }
+        return flag?H+"小时"+M+"分钟"+S+"秒":(H+":"+M+":"+S);
+    }
+
+    /**
      * 是否同一天
      *
      * @param date1

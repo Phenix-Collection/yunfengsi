@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <FrameLayout
@@ -22,7 +23,6 @@
             android:src="@drawable/back" />
 
         <TextView
-            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -54,112 +54,346 @@
 
 
     <com.yunfengsi.View.SlideDetailsLayout
+        android:id="@+id/slide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:percent="0.3"
+        android:visibility="gone"
         app:default_panel="front"
         app:duration="300"
-        app:need_cut_height="45dp">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:id="@+id/front"
-        android:layout_height="match_parent">
+        app:need_cut_height="45dp"
+        app:percent="0.3">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/front"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-           >
+            android:layout_height="match_parent">
 
-          <com.youth.banner.Banner
-              android:id="@+id/banner"
-              android:layout_width="match_parent"
-              android:layout_height="0dp"
-              app:layout_constraintDimensionRatio="4:1"
-              app:delay_time="3000"
-              app:scroll_time="500"
-
-              >
-
-          </com.youth.banner.Banner>
-
-        <com.ruffian.library.RTextView
-            android:id="@+id/time_tip"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:icon_src_normal="@drawable/time_auction"
-            app:background_normal="@color/red"
-            app:icon_height="30dp"
-            android:gravity="center_vertical"
-            android:text="即将开始"
-            android:textSize="16dp"
-            android:textColor="@color/white"
-            android:paddingLeft="5dp"
-            android:drawablePadding="5dp"
-            app:icon_width="30dp"
-            app:layout_constraintTop_toBottomOf="@+id/banner"/>
-
-
-            <com.ruffian.library.RTextView
-                android:id="@+id/title"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                tools:text="即将开始sdjflsjflks砥砺奋进上课了就烦死了快减肥了快速减肥流口水"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@+id/time_tip"/>
+                android:layout_height="wrap_content">
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:delay_time="3000"
+                    app:layout_constraintDimensionRatio="4:1"
+                    app:scroll_time="500"
+
+                    >
+
+                </com.youth.banner.Banner>
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/time_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="即将开始"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:background_normal="@color/auction_pink"
+                    app:icon_height="22dp"
+                    app:icon_src_normal="@drawable/time_auction"
+                    app:icon_width="22dp"
+                    app:layout_constraintTop_toBottomOf="@+id/banner" />
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rmb"
-                android:textColor="@color/wordhuise"
-                android:textSize="22dp"
-                android:text="RMB"
+                <com.ruffian.library.RTextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/time_tip"
+                    tools:text="即将开始sdjflsjflks砥砺奋进上课了就烦死了快减肥了快速减肥流口水" />
 
-                android:paddingLeft="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                app:layout_constraintLeft_toLeftOf="@+id/rmb_now"
-                app:layout_constraintRight_toRightOf="@+id/rmb_now"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rmb_now"
-                android:textColor="@color/red"
-                android:textSize="17dp"
-                android:text="当前价"
-                android:paddingLeft="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/rmb"
-                />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/price_now"
-                android:textColor="@color/red"
-                android:textSize="22dp"
-                tools:text="712.00"
-                android:paddingLeft="22dp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@+id/rmb"
-                app:layout_constraintLeft_toRightOf="@+id/rmb_now"
-                app:layout_constraintBottom_toBottomOf="@+id/rmb_now"
-                />
-        </android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/rmb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="RMB"
+                    android:textColor="@color/wordhuise"
+                    android:textSize="20dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/rmb_now"
+                    app:layout_constraintRight_toRightOf="@+id/rmb_now"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    </ScrollView>
+                <TextView
+                    android:id="@+id/rmb_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="当前价"
+                    android:textColor="@color/red"
+                    android:textSize="15dp"
+                    app:layout_constraintTop_toBottomOf="@+id/rmb" />
 
-    <WebView
-        android:id="@+id/bebind"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/price_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="25dp"
+                    android:textColor="@color/auction_pink"
+                    android:textSize="26dp"
+                    android:textStyle="bold"
+                    android:gravity="right"
+                    app:layout_constraintBottom_toBottomOf="@+id/rmb_now"
+                    app:layout_constraintLeft_toRightOf="@+id/rmb_now"
+                    app:layout_constraintTop_toTopOf="@+id/rmb"
+                    tools:text="712.00" />
 
-    </WebView>
+                <TextView
+                    android:id="@+id/cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/wordhuise"
+                    android:textSize="16dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/price_now"
+                    app:layout_constraintBottom_toBottomOf="@+id/rmb_now"
+                    app:layout_constraintLeft_toRightOf="@+id/price_now"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rmb"
+                    tools:text="712.00" />
+
+
+                <TextView
+                    android:id="@+id/circusee"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/bid"
+                    app:layout_constraintTop_toBottomOf="@+id/rmb_now"
+                    tools:text="围观 23232人" />
+
+                <TextView
+                    android:id="@+id/bid"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@+id/circusee"
+                    app:layout_constraintRight_toLeftOf="@+id/collectNum"
+                    app:layout_constraintTop_toBottomOf="@+id/rmb_now"
+                    tools:text="出价 23232人" />
+
+                <TextView
+                    android:id="@+id/collectNum"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@+id/bid"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rmb_now"
+                    tools:text="收藏 23232人" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="25dp"
+                    android:background="#d6d6d6"
+                    app:layout_constraintBottom_toBottomOf="@+id/circusee"
+                    app:layout_constraintLeft_toRightOf="@+id/circusee"
+                    app:layout_constraintRight_toLeftOf="@+id/bid"
+                    app:layout_constraintTop_toTopOf="@+id/circusee" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="25dp"
+                    android:background="#d6d6d6"
+                    app:layout_constraintBottom_toBottomOf="@+id/circusee"
+                    app:layout_constraintLeft_toRightOf="@+id/bid"
+                    app:layout_constraintRight_toLeftOf="@+id/collectNum"
+                    app:layout_constraintTop_toTopOf="@+id/circusee" />
+
+                <View
+                    android:id="@+id/line81"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:background="#e6e6e6"
+                    app:layout_constraintTop_toBottomOf="@+id/circusee" />
+
+                <View
+                    android:id="@+id/pinkBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/auction_LTpink"
+                    app:layout_constraintTop_toBottomOf="@+id/line81" />
+
+                <View
+                    android:id="@+id/line82"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:background="#e6e6e6"
+                    app:layout_constraintTop_toBottomOf="@+id/pinkBg" />
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/price_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:textSize="16dp"
+                    app:icon_direction="left"
+                    app:icon_height="30dp"
+                    app:icon_src_normal="@drawable/pay_ali"
+                    app:icon_width="30dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/pinkBg"
+                    app:layout_constraintTop_toTopOf="@+id/pinkBg"
+                    app:text_color_normal="@color/black"
+                    tools:text="起拍价  ￥789" />
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/perPriceAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16dp"
+                    app:icon_direction="left"
+                    app:icon_height="30dp"
+                    app:icon_src_normal="@drawable/pay_ali"
+                    app:icon_width="30dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/pinkBg"
+                    app:layout_constraintLeft_toRightOf="@+id/price_start"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/pinkBg"
+                    app:text_color_normal="@color/black"
+                    tools:text="加价幅度  ￥789" />
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/priceHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="出价记录"
+                    android:textSize="18dp"
+                    app:icon_direction="left"
+                    app:icon_height="30dp"
+                    app:icon_src_normal="@drawable/pay_ali"
+                    app:icon_width="30dp"
+                    app:layout_constraintTop_toBottomOf="@+id/line82"
+                    app:text_color_normal="@color/black" />
+
+
+                <TextView
+                    android:id="@+id/priceHistoryNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/wordhuise"
+                    android:textSize="14dp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/priceHistory"
+                    app:layout_constraintLeft_toRightOf="@+id/priceHistory"
+                    tools:text="7800条" />
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/moreHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="更多"
+                    android:textSize="14dp"
+                    app:text_color_pressed="#444444"
+                    app:icon_direction="right"
+                    app:icon_height="25dp"
+                    app:icon_src_normal="@drawable/next"
+                    app:icon_width="25dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line82"
+                    app:text_color_normal="@color/wordhuise" />
+
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mdivider"
+                    app:layout_constraintTop_toBottomOf="@+id/priceHistory" />
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/petName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:textSize="16dp"
+                    app:icon_direction="left"
+                    app:icon_height="30dp"
+                    app:icon_src_normal="@drawable/pay_ali"
+                    app:icon_width="30dp"
+                    app:layout_constraintTop_toBottomOf="@+id/line3"
+                    app:text_color_normal="@color/auction_pink"
+                    tools:text="昵称" />
+
+                <TextView
+                    android:id="@+id/overPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/auction_pink"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/petName"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/petName"
+                    tools:text="领先￥7900" />
+
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mdivider"
+                    app:layout_constraintTop_toBottomOf="@+id/petName" />
+
+                <com.yunfengsi.View.AutoPollRecyclerView
+                    android:id="@+id/commentsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line4">
+
+
+                </com.yunfengsi.View.AutoPollRecyclerView>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <com.yunfengsi.View.myWebView
+            android:id="@+id/bebind"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.yunfengsi.View.myWebView>
 
     </com.yunfengsi.View.SlideDetailsLayout>
 </LinearLayout>

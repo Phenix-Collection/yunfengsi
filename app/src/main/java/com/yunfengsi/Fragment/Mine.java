@@ -324,6 +324,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                     ed.putString("head_path", "");
                     ed.putString("head_url", "");
                     ed.putString("phone", "");
+                    ed.putString("perfect", "1");
                     ed.putString("signature", "");
                     ed.putString("sex", "");
                     ed.putLong("time", 0);

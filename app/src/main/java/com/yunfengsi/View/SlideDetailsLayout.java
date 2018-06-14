@@ -22,7 +22,6 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.yunfengsi.R;
-import com.yunfengsi.Utils.LogUtil;
 
 import static com.yunfengsi.BuildConfig.DEBUG;
 
@@ -349,7 +348,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        LogUtil.e("当前offset：：："+mSlideOffset);
+//        LogUtil.e("当前offset：：："+mSlideOffset);
         ensureTarget();
         if (null == mTarget) {
             return false;
