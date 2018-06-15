@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_marginBottom="8dp"
+    android:layout_height="wrap_content">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5px"
+        android:background="@drawable/mdivider"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="10dp"
+        tools:text="正在竞拍"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/price"
+        android:textColor="@color/red"
+        android:textSize="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/title"
+        tools:text="当前价 ￥19"
+        app:layout_constraintLeft_toLeftOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:layout_marginTop="10dp"
+        />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1.5px"
+        android:background="@drawable/mdivider"
+        app:layout_constraintTop_toBottomOf="@+id/price"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time_tip"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        android:layout_marginLeft="10dp"
+        tools:text="2018年12月13日  10:43:32 结束"
+        app:layout_constraintTop_toTopOf="@+id/handleBid"
+        app:layout_constraintBottom_toBottomOf="@id/handleBid"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1.5px"
+        android:background="@drawable/mdivider"
+        app:layout_constraintTop_toBottomOf="@+id/handleBid"
+        android:layout_marginTop="8dp"
+        />
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/handleBid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="@color/white"
+        app:text_color_pressed="#666666"
+        app:text_color_unable="#dddddd"
+        android:textSize="16dp"
+        app:corner_radius="3dp"
+        android:text="立即发货"
+        android:gravity="center"
+        app:background_normal="@color/red"
+        app:background_unable="@color/lightgray"
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintRight_toRightOf="parent"/>
+</android.support.constraint.ConstraintLayout>

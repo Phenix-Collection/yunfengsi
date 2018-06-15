@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
+import com.yunfengsi.Managers.AboutPay.MyZhiFuDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -110,6 +111,16 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
                     }else if("5".equals(title.getTag(R.id.sut_type))){
                         Intent intent=new Intent(Mine_GYQD.this, FundingDetailActivity.class);
                         intent.putExtra("id",list.get(position).get("shop_id"));
+                        startActivity(intent);
+                    }else if("13".equals(title.getTag(R.id.sut_type))){
+                        Intent intent=new Intent(Mine_GYQD.this, MyZhiFuDetail.class);
+                        intent.putExtra("id",list.get(position).get("id"));
+                        intent.putExtra("snr",list.get(position).get("snr"));
+                        intent.putExtra("status",list.get(position).get("delivery"));
+                        intent.putExtra("exp_code",list.get(position).get("exp_code"));
+                        intent.putExtra("express",list.get(position).get("express"));
+                        intent.putExtra("exp_name",list.get(position).get("exp_name"));
+
                         startActivity(intent);
                     }
                 }
@@ -266,9 +277,14 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
                 holder.image.setText(mApplication.ST("供养"));
                 holder.image.setTextColor(ContextCompat.getColor(Mine_GYQD.this, R.color.main_color));
                 holder.image.setSelected(false);
-            }else{
+            }else if("5".equals(list.get(position).get("sut_type"))){
                 holder.image.setText(mApplication.ST("助学"));
                 holder.image.setTextColor(Color.parseColor("#FF6F61"));
+                holder.image.setSelected(true);
+            }else if("13".equals(list.get(position).get("sut_type"))){
+                //义卖支付
+                holder.image.setText(mApplication.ST("义卖"));
+                holder.image.setTextColor(Color.RED);
                 holder.image.setSelected(true);
             }
             return view;

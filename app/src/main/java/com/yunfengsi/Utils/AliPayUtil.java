@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.yunfengsi.Fragment.Mine_GYQD;
 import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
 import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.WebShare.ZhiFuShare;
@@ -66,7 +67,7 @@ public class AliPayUtil {
 
 
         Uri           uri           = Uri.parse("alipays://platformapi/startApp");
-        Intent        intent        = new Intent(Intent.ACTION_VIEW, uri);
+        final Intent  intent        = new Intent(Intent.ACTION_VIEW, uri);
         ComponentName componentName = intent.resolveActivity(context.getPackageManager());
         if (componentName == null) {
             ToastUtil.showToastShort("请安装支付宝软件");
@@ -87,15 +88,24 @@ public class AliPayUtil {
 
                 try {
                     if (type.equals("4")) {
+                        //供养商品  祈愿信息
                         js.put("mark", extra);
                     }
-                    js.put("shop_id", attachId);
+                    if(type.equals("13")){
+                        //义卖支付  出价列表id 和   义卖id
+                        js.put("auct_user_id",attachId.substring(attachId.indexOf(",")+1));
+                        js.put("shop_id",attachId.substring(0,attachId.indexOf(",")));
+                        js.put("address",address);
+                    }else{
+                        js.put("shop_id", attachId);
+                    }
                     js.put("money", allmoney);
                     js.put("title", title);
                     js.put("user_id", PreferenceUtil.getUserIncetance(context).getString("user_id", ""));
                     js.put("receiveid", Constants.M_id);
                     js.put("num", num);
                     js.put("type", type);
+                    // 微信1 支付宝2 QQ钱包3 银联4
                     js.put("pay_type", "2");
                     ApisSeUtil.M m1 = ApisSeUtil.i(js);
                     String attachIdData = OkGo.post(url)
@@ -153,6 +163,10 @@ public class AliPayUtil {
                                                         intent.putExtra("sut_id", mApplication.sut_id);
                                                         intent.putExtra("id", mApplication.id);
                                                         intent.putExtra("title", mApplication.title);
+                                                        context.startActivity(intent);
+                                                    }else if(type.equals("13")){
+                                                        //义卖支付
+                                                        intent.setClass(context, Mine_GYQD.class);
                                                         context.startActivity(intent);
                                                     }
                                                 } else {

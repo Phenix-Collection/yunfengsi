@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
@@ -10,14 +10,14 @@
     <FrameLayout
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:background="@color/main_color">
 
 
         <ImageView
             android:id="@+id/back"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/back_sel"
             android:padding="10dp"
             android:src="@drawable/back" />
@@ -33,8 +33,8 @@
 
         <ImageView
             android:id="@+id/share"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="right"
             android:layout_marginRight="45dp"
             android:background="@drawable/back_sel"
@@ -43,8 +43,8 @@
 
         <ImageView
             android:id="@+id/collect"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="right"
             android:padding="8dp"
             android:src="@drawable/shoucang_selector" />
@@ -60,8 +60,9 @@
         android:visibility="gone"
         app:default_panel="front"
         app:duration="300"
+        android:layout_marginTop="40dp"
         app:need_cut_height="45dp"
-        app:percent="0.3">
+        app:percent="0.25">
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/front"
@@ -77,9 +78,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     app:delay_time="3000"
-                    app:layout_constraintDimensionRatio="4:1"
+                    app:indicator_drawable_unselected="@drawable/shape_unselected_circle"
+                    app:indicator_drawable_selected="@drawable/shape_selected_circle"
+                    app:layout_constraintDimensionRatio="2:1"
                     app:scroll_time="500"
-
+                    app:indicator_height="5dp"
+                    app:indicator_width="10dp"
                     >
 
                 </com.youth.banner.Banner>
@@ -87,7 +91,7 @@
                 <com.ruffian.library.RTextView
                     android:id="@+id/time_tip"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="42dp"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
@@ -157,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/wordhuise"
-                    android:textSize="16dp"
+                    android:textSize="14dp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/price_now"
                     app:layout_constraintBottom_toBottomOf="@+id/rmb_now"
                     app:layout_constraintLeft_toRightOf="@+id/price_now"
@@ -259,9 +263,9 @@
                     android:paddingLeft="10dp"
                     android:textSize="16dp"
                     app:icon_direction="left"
-                    app:icon_height="30dp"
-                    app:icon_src_normal="@drawable/pay_ali"
-                    app:icon_width="30dp"
+                    app:icon_height="25dp"
+                    app:icon_src_normal="@drawable/auction_start"
+                    app:icon_width="25dp"
                     app:layout_constraintBottom_toBottomOf="@+id/pinkBg"
                     app:layout_constraintTop_toTopOf="@+id/pinkBg"
                     app:text_color_normal="@color/black"
@@ -275,9 +279,9 @@
                     android:gravity="center_vertical"
                     android:textSize="16dp"
                     app:icon_direction="left"
-                    app:icon_height="30dp"
-                    app:icon_src_normal="@drawable/pay_ali"
-                    app:icon_width="30dp"
+                    app:icon_height="25dp"
+                    app:icon_src_normal="@drawable/auction_peradd"
+                    app:icon_width="25dp"
                     app:layout_constraintBottom_toBottomOf="@+id/pinkBg"
                     app:layout_constraintLeft_toRightOf="@+id/price_start"
                     app:layout_constraintRight_toRightOf="parent"
@@ -291,13 +295,13 @@
                     android:layout_height="40dp"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="14dp"
                     android:text="出价记录"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     app:icon_direction="left"
-                    app:icon_height="30dp"
-                    app:icon_src_normal="@drawable/pay_ali"
-                    app:icon_width="30dp"
+                    app:icon_height="24dp"
+                    app:icon_src_normal="@drawable/auction_history"
+                    app:icon_width="18dp"
                     app:layout_constraintTop_toBottomOf="@+id/line82"
                     app:text_color_normal="@color/black" />
 
@@ -347,7 +351,7 @@
                     android:textSize="16dp"
                     app:icon_direction="left"
                     app:icon_height="30dp"
-                    app:icon_src_normal="@drawable/pay_ali"
+                    app:icon_src_normal="@drawable/def"
                     app:icon_width="30dp"
                     app:layout_constraintTop_toBottomOf="@+id/line3"
                     app:text_color_normal="@color/auction_pink"
@@ -375,8 +379,8 @@
 
                 <com.yunfengsi.View.AutoPollRecyclerView
                     android:id="@+id/commentsView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="400dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -390,13 +394,164 @@
 
         <com.yunfengsi.View.myWebView
             android:id="@+id/bebind"
+            android:scrollbars="none"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         </com.yunfengsi.View.myWebView>
 
     </com.yunfengsi.View.SlideDetailsLayout>
-</LinearLayout>
+
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/huise"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="45dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/pinglun"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/back_sel"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/pinglun_image"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="10dp"
+                />
+            <TextView
+                android:id="@+id/pltv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:textSize="16dp"
+                android:gravity="center"
+                />
+        </LinearLayout>
+        <View
+
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#aaaaaa"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:id="@+id/fenxiangb"
+            android:background="@color/auction_pink"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/fenxiang_image"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginRight="10dp"
+                />
+            <TextView
+                android:id="@+id/fxtv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:gravity="center"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000"
+        android:visibility="gone"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/zixun_detail_toPinglun_buttom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="#ffffff"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:id="@+id/toggle_audio_word"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/sel_audio_word_toggle"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/audio_button"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/sel_audio_button"
+                android:layout_marginRight="5dp"
+                android:text="按住 说话"
+                android:textSize="16dp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_weight="1"/>
+            <EditText
+                android:id="@+id/zixun_detail_apply_edt"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/item_shape"
+                android:ellipsize="start"
+                android:maxLength="300"
+                android:maxLines="4"
+                android:paddingLeft="5dp"
+                android:textSize="14dp"
+                />
+
+            <TextView
+                android:id="@+id/fasong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/button1_sel"
+                android:textSize="15dp" />
+
+
+            <ImageView
+                android:id="@+id/zixun_detail_fenxiang2"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:clickable="true"
+                android:visibility="gone"
+                android:scaleType="centerCrop"
+                android:src="@drawable/share_small"
+                />
+        </LinearLayout>
+    </FrameLayout>
+</merge>
 
 
 

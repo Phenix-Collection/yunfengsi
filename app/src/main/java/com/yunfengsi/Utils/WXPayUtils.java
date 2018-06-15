@@ -35,12 +35,6 @@ public class WXPayUtils {
 //1356168702
 
 
-
-
-
-
-
-
     // 得到本机ip地址
     public String getLocalHostIp() {
         String ipaddress = "";
@@ -49,7 +43,7 @@ public class WXPayUtils {
                     .getNetworkInterfaces();
             // 遍历所用的网络接口
             while (en.hasMoreElements()) {
-                NetworkInterface nif = en.nextElement();// 得到每一个网络接口绑定的所有ip
+                NetworkInterface         nif  = en.nextElement();// 得到每一个网络接口绑定的所有ip
                 Enumeration<InetAddress> inet = nif.getInetAddresses();
                 // 遍历每一个接口绑定的所有ip
                 while (inet.hasMoreElements()) {
@@ -77,11 +71,11 @@ public class WXPayUtils {
      */
     public static Map<String, String> readStringXmlOut(String xml) {
         Map<String, String> map = new HashMap<String, String>();
-        Document doc = null;
+        Document            doc = null;
         try {
             doc = DocumentHelper.parseText(xml); // 将字符串转为XML
             org.dom4j.Element rootElt = doc.getRootElement(); // 获取根节点
-            List<Element> list = rootElt.elements();//获取根节点下所有节点
+            List<Element>     list    = rootElt.elements();//获取根节点下所有节点
             for (Element element : list) {  //遍历节点
                 map.put(element.getName(), element.getText()); //节点的name为map的key，text为map的value
             }
@@ -112,16 +106,16 @@ public class WXPayUtils {
             return;
         }
 
-            IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
-            msgApi.registerApp(Constants.WXPay_APPID);
+        IWXAPI msgApi = WXAPIFactory.createWXAPI(context, null);
+        msgApi.registerApp(Constants.WXPay_APPID);
 
-            boolean sIsWXAppInstalledAndSupported = msgApi.isWXAppInstalled()
-                    && msgApi.isWXAppSupportAPI();
+        boolean sIsWXAppInstalledAndSupported = msgApi.isWXAppInstalled()
+                && msgApi.isWXAppSupportAPI();
 
-            if(!sIsWXAppInstalledAndSupported){
-                ToastUtil.showToastShort("请安装微信");
-                return;
-            }
+        if (!sIsWXAppInstalledAndSupported) {
+            ToastUtil.showToastShort("请安装微信");
+            return;
+        }
 
         ProgressUtil.show(context, "", "正在调起微信支付,请稍等");
         new Thread(new Runnable() {
@@ -132,7 +126,16 @@ public class WXPayUtils {
                 JSONObject js = new JSONObject();
                 try {
                     if (type.equals("4")) {
+                        //供养商品  祈愿信息
                         js.put("mark", extra);
+                    }
+                    if (type.equals("13")) {
+                        //义卖支付  出价列表id 和   义卖id
+                        js.put("auct_user_id", attachId.substring(attachId.indexOf(",") + 1));
+                        js.put("shop_id", attachId.substring(0, attachId.indexOf(",")));
+                        js.put("address",extra);
+                    } else {
+                        js.put("shop_id", attachId);
                     }
                     js.put("type", type);
                     js.put("money", allmoney);
@@ -140,10 +143,9 @@ public class WXPayUtils {
                     js.put("user_id", PreferenceUtil.getUserIncetance(context).getString("user_id", ""));
                     js.put("receiveid", Constants.M_id);
                     js.put("num", num);
-                    js.put("shop_id", attachId);
+                    // 微信1 支付宝2 QQ钱包3 银联4
                     js.put("pay_type", "1");
-
-                    ApisSeUtil.M m1=ApisSeUtil.i(js);
+                    ApisSeUtil.M m1 = ApisSeUtil.i(js);
                     String attachIdData = OkGo.post(Constants.getAttachId_ip).tag(TAG)
                             .params("key", m1.K())
                             .params("msg", m1.M())
@@ -156,9 +158,9 @@ public class WXPayUtils {
                             mApplication.id = attachId;
                             mApplication.title = title;
                             money = m.get("money");
-                            HashMap<String,String > map=AnalyticalJSON.getHashMap(m.get("x"));
+                            HashMap<String, String> map = AnalyticalJSON.getHashMap(m.get("x"));
                             Log.w(TAG, "run:  map-=-=-=-=-=解析得到的map：" + map);
-                            if(map!=null) {
+                            if (map != null) {
                                 IWXAPI api = WXAPIFactory.createWXAPI(mApplication.getInstance(), map.get("appid"));
                                 api.registerApp(map.get("appid"));
                                 PayReq req = new PayReq();
@@ -171,7 +173,7 @@ public class WXPayUtils {
 //
 //                                String a = "appid=" + map.get("appid") + "&noncestr=" + map.get("noncestr") + "&package=" + "Sign=WXPay" + "&partnerid=" + map.get("partnerid")
 //                                        + "&prepayid=" + map.get("prepayid") + "&timestamp=" +map.get("timestamp")+ "&key=" + key;
-                                req.sign =map.get("sign");
+                                req.sign = map.get("sign");
                                 Log.w(TAG, "run: sign-=-=-=-=-=" + req.sign);
 //
                                 ProgressUtil.dismiss();
@@ -192,7 +194,6 @@ public class WXPayUtils {
 //                    String data = OkGo.post(Constants.WXPay_post_Url).upString(new WXPayUtils().getXMl(mApplication.getInstance(), money, mApplication.sut_id, title)).execute().body().string();
 
 //                    if (!data.equals("")) {
-
 
 
                 } catch (Exception e) {

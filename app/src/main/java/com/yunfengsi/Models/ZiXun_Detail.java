@@ -125,7 +125,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
     private HashMap<String, String> FirstMap;
     //无评论时的header
     private TextView tv;
-    private InputMethodManager imm;
+
     private SHARE_MEDIA[] share_list;
     private ShareAction action;
     private ViewStub video;
@@ -143,9 +143,10 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
 
     private LinearLayout pinglun, fenxiangb;
     private FrameLayout overlay;
-    private ImageView toggle;
     private TextView audio;
     private IBDRcognizeImpl ibdRcognize;
+    private ImageView toggle;
+    private InputMethodManager imm;
 
     private UMWeb umWeb;
 
@@ -276,6 +277,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
 
             }
         });
+        imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new OnClickListener() {
             @Override
@@ -419,7 +421,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 getPLandSet(FirstMap);
             }
         });
-        imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+
 
 
         back.setOnClickListener(this);

@@ -1,5 +1,6 @@
 package com.yunfengsi.View.ErWeiMa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
@@ -47,7 +48,9 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
         setContentView(R.layout.qr_activity);
         zXingView = (ZXingView) findViewById(R.id.zxingview);
         zXingView.setDelegate(this);
-//        zXingView.changeToScanBarcodeStyle();//切换到条形码扫描
+        if(getIntent().getStringExtra("id")==null){
+            zXingView.changeToScanBarcodeStyle();//切换到条形码扫描
+        }
         findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,11 +93,21 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
     public void onScanQRCodeSuccess(String result) {
 //扫描成功后调用震动器
         vibrator();
-        //显示扫描结果
-        LogUtil.e(result);
-        result = result.substring(16, result.length() - 16);
-        LogUtil.e("获取的最终结果：：" + result);
-        postSign(result);
+        if(getIntent().getStringExtra("id")!=null){
+            //显示扫描结果   活动扫码签到
+            LogUtil.e(result);
+            result = result.substring(16, result.length() - 16);
+            LogUtil.e("获取的最终结果：：" + result);
+            postSign(result);
+        }else{
+            //发货扫条形码
+            Intent intent =new Intent();
+            intent.putExtra("code",result);
+            setResult(0,intent);
+            finish();
+        }
+
+
 
 
 //        Intent intent =new Intent();

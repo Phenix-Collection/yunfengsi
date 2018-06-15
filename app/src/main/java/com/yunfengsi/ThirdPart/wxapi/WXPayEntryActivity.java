@@ -16,6 +16,7 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.yunfengsi.Fragment.Mine_GYQD;
 import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.Constants;
@@ -86,6 +87,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
                     intent.putExtra("sut_id", mApplication.sut_id);
                     intent.putExtra("id", mApplication.id);
                     intent.putExtra("title", mApplication.title);
+                    startActivity(intent);
+                }else if(mApplication.type.equals("13")){
+                    //义卖支付
+                    Intent intent = new Intent();
+                    intent.setClass(this, Mine_GYQD.class);
                     startActivity(intent);
                 }
             } else if (resp.errCode == -2) {

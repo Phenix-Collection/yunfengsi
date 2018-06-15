@@ -601,7 +601,7 @@ public class Constants {
     public static final String AuctionCommentPost = host_Ip + iiiiii + "Auctiontjpl";
 
     //义卖出价接口
-    public static final String AuctionPay    = host_Ip + iiiiii + "Auctionpay";
+    public static final String AuctionOffer = host_Ip + iiiiii + "Auction_offer";
 
     //义卖详情接口
     public static final String AuctionDetail = host_Ip + iiiiii + "Auctiond";
@@ -614,6 +614,9 @@ public class Constants {
     //所有义卖列表接口
     public static final String AuctionList = host_Ip + iiiiii + "Auctionlist";
 
+    //发货管理列表接口
+    public static final String DeliveryMangeList = host_Ip + iiiiii + "Deliverylist";
+
 
     //用户资料完善接口
     public static final String UserForm = host_Ip + iiiiii + "Userform";
@@ -623,4 +626,35 @@ public class Constants {
 
     //关于云峰寺接口
     public static final String AboutApp = host_Ip + oooooo + "Aboutapp";
+
+
+    //我的收获地址
+    public static final String Shucheng_shouhuo_list_Ip = host_Ip + oooooo + "Address";
+    //添加收货地址
+    public static final String Shucheng_shouhuo_add_Ip = host_Ip + oooooo + "Addresstj";
+    //修改收货地址
+    public static final String Shucheng_shouhuo_update_Ip = host_Ip + oooooo + "Addressxg";
+    //删除收货地址
+    public static final String Shucheng_shouhuo_delete_Ip = host_Ip + oooooo + "Addresssc";
+
+
+    //个人订单详情页面
+    public static final String MyOrders_detail=host_Ip+iiiiii+"Mybilld";
+
+
+    //快递信息查询
+    public static final String Expresses = host_Ip + iiiiii + "Express";
+    //快递公司列表查询
+    public static final String ExpressesList= host_Ip + iiiiii + "Expresslist";
+    //绑定快递信息
+    public static final String Bdexpress= host_Ip + iiiiii + "Bdexpress";
+
+
+    //绑定快递单号同时发货
+    public static final String Deliveryexpress= host_Ip + iiiiii + "Deliveryexpress";
+
+
+
+//    //管理员订单详情接口
+//    public static final String GoodsAdminDdxq= host_Ip + iiiiii + "Myddxq";
 }

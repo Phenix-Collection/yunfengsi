@@ -282,6 +282,16 @@ public class mApplication extends Application {
         return textView;
     }
 
+    /**
+     *
+     * @param context  上下文对象
+     * @param allmoney  总支付费用
+     * @param attachId  支付商品的id  多个用，链接
+     * @param title  支付标题   多个用，链接
+     * @param num    购买数量  默认1
+     * @param type   支付type  1视频    2直播 3 寺庙 4供养 5助学 6 书城 7点餐  8预约 9业务购买 11 拼团12 约参与费用 13义卖支付
+     * @param extra  供养使用  extra   如果有地址信息  则为地址id
+     */
     public static void openPayLayout(final Activity context, final String allmoney, final String attachId, final String title, final String num, final String type, final String extra) {// TODO: 2016/12/20 打开支付窗口
 
 

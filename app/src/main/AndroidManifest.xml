@@ -804,6 +804,47 @@
             android:name=".Models.Auction.AuctionDetail"
             android:screenOrientation="portrait"></activity>
 
+        <activity
+            android:name=".Models.Auction.Bid_History"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Models.Auction.Bid_History_Mine"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".Managers.ForManager.AuctionManage"
+            android:screenOrientation="portrait"></activity>
+
+
+        <activity
+            android:name=".Managers.AboutPay.Dingdan_commit"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Managers.AboutPay.MyShouHuoAddress"
+            android:screenOrientation="portrait"></activity>
+
+
+        <activity
+            android:name=".Managers.AboutPay.add_address"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Managers.AboutPay.Update"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".Managers.AboutPay.MyZhiFuDetail"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".Managers.AboutPay.WuLiuDetail"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Managers.AboutPay.WuLiuCompanys"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Managers.AboutPay.Fahuo"
+            android:screenOrientation="portrait"></activity>
+
 
         <!--sophix-->
         <meta-data

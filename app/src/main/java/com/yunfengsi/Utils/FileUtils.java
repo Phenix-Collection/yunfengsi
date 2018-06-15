@@ -557,4 +557,26 @@ public class FileUtils {
         out = null;
         return true;
     }
+
+
+    /**
+     * 获取本地数据
+     *
+     * @return
+     */
+    public static ArrayList getStorageEntities(Context context,String fileName) {
+        ObjectInputStream objectInputStream = null;
+        FileInputStream fileInputStream = null;
+        ArrayList savedArrayList =null;
+        try {
+            File file =new File(context.getExternalCacheDir()+File.separator+fileName);
+            fileInputStream = new FileInputStream(file.toString());
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            savedArrayList = (ArrayList) objectInputStream.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return savedArrayList;
+    }
 }

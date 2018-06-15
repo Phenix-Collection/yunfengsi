@@ -37,7 +37,8 @@ import static com.yunfengsi.BuildConfig.DEBUG;
 public class SlideDetailsLayout extends ViewGroup {
     private static final String TAG = "SlideDetailsLayout";
 
-    private float needCutHeight=0;
+    private float needCutHeight = 0;
+
     /**
      * Callback for panel OPEN-CLOSE status changed.
      */
@@ -53,9 +54,13 @@ public class SlideDetailsLayout extends ViewGroup {
     }
 
     public enum Status {
-        /** Panel is closed */
+        /**
+         * Panel is closed
+         */
         CLOSE,
-        /** Panel is opened */
+        /**
+         * Panel is opened
+         */
         OPEN;
 
         public static Status valueOf(int stats) {
@@ -69,8 +74,8 @@ public class SlideDetailsLayout extends ViewGroup {
         }
     }
 
-    private static final float DEFAULT_PERCENT = 0.2f;
-    private static final int DEFAULT_DURATION = 300;
+    private static final float DEFAULT_PERCENT      = 0.2f;
+    private static final int   DEFAULT_DURATION     = 300;
     private static final float DEFAULT_MAX_VELOCITY = 2500f;
 
     private View mFrontView;
@@ -81,13 +86,13 @@ public class SlideDetailsLayout extends ViewGroup {
     private float mInitMotionX;
 
 
-    private View mTarget;
+    private View  mTarget;
     private float mSlideOffset;
-    private Status mStatus = Status.CLOSE;
+    private Status  mStatus               = Status.CLOSE;
     private boolean isFirstShowBehindView = true;
-    private float mPercent = DEFAULT_PERCENT;
-    private long mDuration = DEFAULT_DURATION;
-    private int mDefaultPanel = 0;
+    private float   mPercent              = DEFAULT_PERCENT;
+    private long    mDuration             = DEFAULT_DURATION;
+    private int     mDefaultPanel         = 0;
     private VelocityTracker mVelocityTracker;
 
     private OnSlideDetailsListener mOnSlideDetailsListener;
@@ -111,11 +116,11 @@ public class SlideDetailsLayout extends ViewGroup {
         mPercent = a.getFloat(R.styleable.SlideDetailsLayout_percent, DEFAULT_PERCENT);
         mDuration = a.getInt(R.styleable.SlideDetailsLayout_duration, DEFAULT_DURATION);
         mDefaultPanel = a.getInt(R.styleable.SlideDetailsLayout_default_panel, 0);
-        needCutHeight=a.getDimension(R.styleable.SlideDetailsLayout_need_cut_height,0f);
+        needCutHeight = a.getDimension(R.styleable.SlideDetailsLayout_need_cut_height, 0f);
         a.recycle();
 
         mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-        density=getResources().getDisplayMetrics().density;
+        density = getResources().getDisplayMetrics().density;
     }
 
     /**
@@ -135,7 +140,7 @@ public class SlideDetailsLayout extends ViewGroup {
     public void smoothOpen(boolean smooth) {
         if (mStatus != Status.OPEN) {
             mStatus = Status.OPEN;
-            final float height = -getMeasuredHeight()-textView.getMeasuredHeight();
+            final float height = -getMeasuredHeight() - textView.getMeasuredHeight();
             animatorSwitch(0, height, true, smooth ? mDuration : 0);
         }
     }
@@ -148,7 +153,7 @@ public class SlideDetailsLayout extends ViewGroup {
     public void smoothClose(boolean smooth) {
         if (mStatus != Status.CLOSE) {
             mStatus = Status.OPEN;
-            final float height = -getMeasuredHeight()-textView.getMeasuredHeight();
+            final float height = -getMeasuredHeight() - textView.getMeasuredHeight();
             animatorSwitch(height, 0, true, smooth ? mDuration : 0);
         }
     }
@@ -185,14 +190,14 @@ public class SlideDetailsLayout extends ViewGroup {
         if (1 >= childCount) {
             throw new RuntimeException("SlideDetailsLayout only accept childs more than 1!!");
         }
-        textView=new TextView(getContext());
-        textView.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT,Math.round(density*100)));
+        textView = new TextView(getContext());
+        textView.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, Math.round(density * 100)));
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(Color.BLACK);
         textView.setBackgroundColor(Color.LTGRAY);
         textView.setTextSize(20);
         textView.setText("上拉拖动，查看商品详情");
-        addView(textView,1);
+        addView(textView, 1);
         mFrontView = getChildAt(0);
         mBehindView = getChildAt(2);
         // set behindview's visibility to GONE before show.
@@ -209,7 +214,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int pWidth = MeasureSpec.getSize(widthMeasureSpec);
+        final int pWidth  = MeasureSpec.getSize(widthMeasureSpec);
         final int pHeight = MeasureSpec.getSize(heightMeasureSpec);
 
         final int childWidthMeasureSpec =
@@ -233,10 +238,10 @@ public class SlideDetailsLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int left = l;
+        final int left  = l;
         final int right = r;
-        int top;
-        int bottom;
+        int       top;
+        int       bottom;
 
         final int offset = (int) mSlideOffset;
 
@@ -249,15 +254,15 @@ public class SlideDetailsLayout extends ViewGroup {
             }
 
             if (child == mBehindView) {
-                top = (int) (b + offset-needCutHeight+textView.getMeasuredHeight());
+                top = (int) (b + offset - needCutHeight + textView.getMeasuredHeight());
                 bottom = (int) (top + b - t);
-            } else if(child==mFrontView){
-                top = (int) (t + offset-needCutHeight);
-                bottom = (int) (b + offset-needCutHeight);
-            }else {
+            } else if (child == mFrontView) {
+                top = (int) (t + offset - needCutHeight);
+                bottom = (int) (b + offset - needCutHeight);
+            } else {
 //                if(mStatus==Status.CLOSE){
-                    top = (int) (b+offset-needCutHeight);
-                    bottom = (int) (b + offset-needCutHeight+textView.getMeasuredHeight());
+                top = (int) (b + offset - needCutHeight);
+                bottom = (int) (b + offset - needCutHeight + textView.getMeasuredHeight());
 //                }else{
 //                    top = (int) (t+offset-needCutHeight-textView.getMeasuredHeight());
 //                    bottom = (int) (t + offset-needCutHeight);
@@ -318,8 +323,8 @@ public class SlideDetailsLayout extends ViewGroup {
                     // 2. Panel stauts is CLOSE：slide up
                     // 3. Panel status is OPEN：slide down
                     if (yDiffabs > mTouchSlop && yDiffabs >= xDiffabs
-                        && !(mStatus == Status.CLOSE && yDiff > 0
-                             || mStatus == Status.OPEN && yDiff < 0)) {
+                            && !(mStatus == Status.CLOSE && yDiff > 0
+                            || mStatus == Status.OPEN && yDiff < 0)) {
                         shouldIntercept = true;
                         if (DEBUG) {
                             Log.d(TAG, "intercept, intercept events");
@@ -339,8 +344,8 @@ public class SlideDetailsLayout extends ViewGroup {
         return shouldIntercept;
     }
 
-    private void recycleVelocityTracker(){
-        if(null != mVelocityTracker){
+    private void recycleVelocityTracker() {
+        if (null != mVelocityTracker) {
             mVelocityTracker.recycle();
             mVelocityTracker = null;
         }
@@ -359,8 +364,8 @@ public class SlideDetailsLayout extends ViewGroup {
         }
 
 
-        boolean wantTouch = true;
-        final int action = MotionEventCompat.getActionMasked(ev);
+        boolean   wantTouch = true;
+        final int action    = MotionEventCompat.getActionMasked(ev);
 
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
@@ -374,7 +379,7 @@ public class SlideDetailsLayout extends ViewGroup {
             case MotionEvent.ACTION_MOVE: {
                 mVelocityTracker.addMovement(ev);
                 mVelocityTracker.computeCurrentVelocity(1000);
-                final float y = ev.getY();
+                final float y     = ev.getY();
                 final float yDiff = y - mInitMotionY;
                 if (canChildScrollVertically(((int) yDiff))) {
                     wantTouch = false;
@@ -420,7 +425,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
             // pull down to close
         } else if (mStatus == Status.OPEN) {
-            final float pHeight = -getMeasuredHeight()-textView.getMeasuredHeight();
+            final float pHeight = -getMeasuredHeight() - textView.getMeasuredHeight();
             // reset if pull up
             if (offset <= 0) {
                 mSlideOffset = pHeight;
@@ -445,11 +450,11 @@ public class SlideDetailsLayout extends ViewGroup {
      * Called after gesture is ending.
      */
     private void finishTouchEvent() {
-        final int pHeight = getMeasuredHeight();
-        final int percent = (int) (pHeight * mPercent);
-        final float offset = mSlideOffset;
+        final int   pHeight = getMeasuredHeight();
+        final int   percent = (int) (pHeight * mPercent);
+        final float offset  = mSlideOffset;
 
-        boolean changed = false;
+        boolean     changed   = false;
         final float yVelocity = mVelocityTracker.getYVelocity();
 
         if (DEBUG) {
@@ -458,7 +463,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
         if (Status.CLOSE == mStatus) {
             if (offset <= -percent || yVelocity <= -DEFAULT_MAX_VELOCITY) {
-                mSlideOffset = -pHeight-textView.getMeasuredHeight();
+                mSlideOffset = -pHeight - textView.getMeasuredHeight();
                 mStatus = Status.OPEN;
                 changed = true;
             } else {
@@ -472,7 +477,7 @@ public class SlideDetailsLayout extends ViewGroup {
                 changed = true;
             } else {
                 // keep panel opened
-                mSlideOffset = -pHeight-textView.getMeasuredHeight();
+                mSlideOffset = -pHeight - textView.getMeasuredHeight();
             }
         }
 
@@ -511,7 +516,7 @@ public class SlideDetailsLayout extends ViewGroup {
                     if (mStatus == Status.OPEN) {
                         textView.setText("释放，返回详情");
                         checkAndFirstOpenPanel();
-                    }else{
+                    } else {
                         textView.setText("上拉拖动，查看商品详情");
                     }
 
@@ -552,7 +557,6 @@ public class SlideDetailsLayout extends ViewGroup {
      * Check child view can srcollable in vertical direction.
      *
      * @param direction Negative to check scrolling up, positive to check scrolling down.
-     *
      * @return true if this view can be scrolled in the specified direction, false otherwise.
      */
     protected boolean canChildScrollVertically(int direction) {
@@ -562,8 +566,8 @@ public class SlideDetailsLayout extends ViewGroup {
     private boolean innerCanChildScrollVertically(View view, int direction) {
         if (view instanceof ViewGroup) {
             final ViewGroup vGroup = (ViewGroup) view;
-            View child;
-            boolean result;
+            View            child;
+            boolean         result;
             for (int i = 0; i < vGroup.getChildCount(); i++) {
                 child = vGroup.getChildAt(i);
                 if (child instanceof View) {
@@ -584,15 +588,15 @@ public class SlideDetailsLayout extends ViewGroup {
     protected boolean canListViewSroll(AbsListView absListView) {
         if (mStatus == Status.OPEN) {
             return absListView.getChildCount() > 0
-                   && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                                                                               .getTop() <
-                                                                    absListView.getPaddingTop());
+                    && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+                    .getTop() <
+                    absListView.getPaddingTop());
         } else {
             final int count = absListView.getChildCount();
             return count > 0
-                   && (absListView.getLastVisiblePosition() < count - 1
-                       || absListView.getChildAt(count - 1)
-                                     .getBottom() > absListView.getMeasuredHeight());
+                    && (absListView.getLastVisiblePosition() < count - 1
+                    || absListView.getChildAt(count - 1)
+                    .getBottom() > absListView.getMeasuredHeight());
         }
     }
 
@@ -621,7 +625,7 @@ public class SlideDetailsLayout extends ViewGroup {
     static class SavedState extends BaseSavedState {
 
         private float offset;
-        private int status;
+        private int   status;
 
         /**
          * Constructor used when reading from a parcel. Reads the state of the superclass.

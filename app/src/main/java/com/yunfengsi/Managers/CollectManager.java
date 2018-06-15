@@ -36,7 +36,7 @@ public class CollectManager {
     /**
      *
      * @param id   收藏的id
-     * @param type  收藏的类型   1图文  2 活动  3供养  4助学
+     * @param type  收藏的类型   1图文  2 活动  3供养  4助学 5义卖
      * @param selectView 需要设置selected的view
      *
      * @return  code  000 收藏成功   001  收藏失败
