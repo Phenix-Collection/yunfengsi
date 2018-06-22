@@ -129,6 +129,12 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
                 LogUtil.e("获取分类壁纸列表" + js);
                 url = Constants.WallPaperTypeListClassfied;
             } else {
+                if(getArguments()!=null&&getArguments().getBoolean("new")){
+                    //最新壁纸
+                    js.put("type","1");
+                }else{
+                    //推荐壁纸
+                }
                 LogUtil.e("获取壁纸列表" + js);
             }
         } catch (JSONException e) {

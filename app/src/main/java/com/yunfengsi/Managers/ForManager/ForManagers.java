@@ -33,6 +33,7 @@ public class ForManagers extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.comment_manage).setOnClickListener(this);
         findViewById(R.id.wish_manage).setOnClickListener(this);
         findViewById(R.id.auciton_manage).setOnClickListener(this);
+        findViewById(R.id.wallpaper_manage).setOnClickListener(this);
     }
 
     @Override
@@ -46,6 +47,9 @@ public class ForManagers extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.auciton_manage:
                 startActivity(new Intent(this,AuctionManage.class));
+                break;
+            case R.id.wallpaper_manage:
+                startActivity(new Intent(this,WallPaperManage.class));
                 break;
         }
     }

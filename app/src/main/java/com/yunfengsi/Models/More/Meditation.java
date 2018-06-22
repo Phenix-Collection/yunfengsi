@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.yunfengsi.MainActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -29,6 +30,7 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -121,7 +123,9 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
         if(countDownTimer!=null){
             countDownTimer.cancel();
         }
+        EventBus.getDefault().unregister(this);
         mApplication.getInstance().romoveActivity(this);
+
     }
 
     @Override
@@ -299,6 +303,7 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
     }
 
     private void start() {
+        pauseWakeUp();
         status = OVER;
         time.setVisibility(View.VISIBLE);
         //播放上座音，开始倒计时，变化按钮文字
@@ -324,7 +329,18 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
         });
     }
 
+    private void pauseWakeUp() {
+        MainActivity.NoticeEvent noticeEvent =new MainActivity.NoticeEvent();
+        noticeEvent.setAction(2);
+        EventBus.getDefault().post(noticeEvent);
+    }
+    private void startWakeUp() {
+        MainActivity.NoticeEvent noticeEvent =new MainActivity.NoticeEvent();
+        noticeEvent.setAction(1);
+        EventBus.getDefault().post(noticeEvent);
+    }
     private void doOver() {
+        startWakeUp();
         postMuse();
         key.setEnabled(false);
         countDownTimer.cancel();

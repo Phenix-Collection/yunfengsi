@@ -15,7 +15,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import com.yunfengsi.Managers.CollectManager;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Auction.AuctionDetail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Activity_ShouCang;
@@ -106,6 +107,9 @@ public class Mine_SC_adapter extends BaseAdapter {
         } else if (map.get("type").equals("4")) {
             holder.title.setText(mApplication.ST(Html.fromHtml(map.get("abstract")).toString()));
             holder.type.setText(mApplication.ST("助学"));
+        }else if(map.get("type").equals("5")){
+            holder.title.setText(mApplication.ST(map.get("abstract")));
+            holder.type.setText(mApplication.ST("义卖"));
         }
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,9 +121,11 @@ public class Mine_SC_adapter extends BaseAdapter {
                 if (view1.getText().toString().equals(mApplication.ST("图文"))) {
                     intent.setClass(mApplication.getInstance(), ZiXun_Detail.class);
                 } else if (view1.getText().toString().equals(mApplication.ST("活动"))) {
-                    intent.setClass(mApplication.getInstance(), activity_Detail.class);
+                    intent.setClass(mApplication.getInstance(), ActivityDetail.class);
                 } else if (view1.getText().toString().equals(mApplication.ST("助学"))) {
                     intent.setClass(mApplication.getInstance(), FundingDetailActivity.class);
+                } else if(view1.getText().toString().equals(mApplication.ST("义卖"))){
+                    intent.setClass(mApplication.getInstance(), AuctionDetail.class);
                 }
                 intent.putExtra("id", id1);
                 context.startActivityForResult(intent, 0);

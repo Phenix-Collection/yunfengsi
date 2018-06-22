@@ -1,4 +1,4 @@
-package com.yunfengsi.ThirdPart.wxapi;
+package com.yunfengsi.wxapi;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

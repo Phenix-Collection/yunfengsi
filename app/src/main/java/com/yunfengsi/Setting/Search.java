@@ -28,6 +28,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,8 +40,10 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.lzy.okgo.OkGo;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.ZiXun_Detail;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -54,8 +57,6 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.DiffuseView;
-import com.yunfengsi.Models.GongYangDetail;
-import com.yunfengsi.Models.ZiXun_Detail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -340,13 +341,13 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                LogUtil.e("当前Url:::"+url);
                 Intent intent = new Intent();
 
                 if (url.equals(Constants.News_Search_Ip)) {
                     intent.setClass(mApplication.getInstance(), ZiXun_Detail.class);
                 } else if (url.equals(Constants.Activity_Search_Ip)) {
-                    intent.setClass(mApplication.getInstance(), activity_Detail.class);
+                    intent.setClass(mApplication.getInstance(), ActivityDetail.class);
                 } else if (url.equals(Constants.CFG_Search_Ip)) {
                     intent.setClass(mApplication.getInstance(), FundingDetailActivity.class);
                 } else if (url.equals(Constants.GY_Search_Ip)) {
@@ -583,10 +584,22 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                     holder.time = (TextView) view.findViewById(R.id.mine_shoucang_item_time);
                     holder.user = (TextView) view.findViewById(R.id.mine_shoucang_item_user);
                     holder.type = (TextView) view.findViewById(R.id.mine_shoucang_item_type);
+                    holder.delete = (TextView) view.findViewById(R.id.delete);
+                    holder.content = (RelativeLayout) view.findViewById(R.id.content);
                     view.setTag(holder);
                 } else {
                     holder = (ViewHolder) view.getTag();
                 }
+                holder.content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setClass(mApplication.getInstance(),GongYangDetail.class);
+                        intent.putExtra("id", map.get("id"));
+                        context.startActivity(intent);
+                    }
+                });
+                holder.delete.setVisibility(View.GONE);
                 holder.type.setText(mApplication.ST("供养"));
                 holder.type.setTag(map.get("id"));
                 Glide.with(context).load(map.get("image")).override(screenWidth / 5, screenWidth / 5).centerCrop().into(holder.image);
@@ -612,11 +625,22 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                     holder.time = (TextView) view.findViewById(R.id.mine_shoucang_item_time);
                     holder.user = (TextView) view.findViewById(R.id.mine_shoucang_item_user);
                     holder.type = (TextView) view.findViewById(R.id.mine_shoucang_item_type);
+                    holder.delete = (TextView) view.findViewById(R.id.delete);
+                    holder.content = (RelativeLayout) view.findViewById(R.id.content);
                     view.setTag(holder);
                 } else {
                     holder = (ViewHolder) view.getTag();
                 }
-
+                holder.content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setClass(mApplication.getInstance(),FundingDetailActivity.class);
+                        intent.putExtra("id", map.get("id"));
+                        context.startActivity(intent);
+                    }
+                });
+                holder.delete.setVisibility(View.GONE);
                 holder.type.setText(mApplication.ST("助学"));
                 holder.type.setTag(map.get("id"));
                 holder.user.setText(mApplication.ST("参与人数：" + map.get("cy_people")));
@@ -649,6 +673,8 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         class ViewHolder {
             ImageView image;
             TextView  title, user, time, type;
+            TextView delete;
+            RelativeLayout content;
         }
 
         class ViewHolder0 {
@@ -671,6 +697,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
             TextView  time;
             TextView  peopleNum;
             ImageView imageView;
+
         }
     }
 

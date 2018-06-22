@@ -57,7 +57,7 @@ import okhttp3.Response;
  */
 //其中 mLinkKey即后台mLink服务对应的mLink Key。
 //@MLinkRouter(keys={"zixun_detail"})
-public class ZhiFuShare extends AppCompatActivity {
+public class WebInteraction extends AppCompatActivity {
     private WebView webView;
     private ImageView back;
     private static final String URL = "http://indrah.cn" + "/" + Constants.NAME_LOW + ".php/Index/shareg";
@@ -151,7 +151,7 @@ public class ZhiFuShare extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 LogUtil.e("跳转地址：：："+url);
-//                if(url.equals(ZhiFuShare.this.url)){
+//                if(url.equals(WebInteraction.this.url)){
                     view.loadUrl(url);
 //                }else{
 //                    finish();
@@ -162,7 +162,7 @@ public class ZhiFuShare extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                ProgressUtil.show(ZhiFuShare.this, "", mApplication.ST("请稍等...."));
+                ProgressUtil.show(WebInteraction.this, "", mApplication.ST("请稍等...."));
             }
 
             @Override
@@ -178,7 +178,7 @@ public class ZhiFuShare extends AppCompatActivity {
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                 LogUtil.e("图片文件回调");
                 mUploadCallbackAboveL = filePathCallback;
-                PhotoUtilForWeb.choosePic(ZhiFuShare.this, 0);
+                PhotoUtilForWeb.choosePic(WebInteraction.this, 0);
                 PhotoUtilForWeb.setmUploadCallbackAboveL(mUploadCallbackAboveL);
                 return true;
             }
@@ -189,9 +189,9 @@ public class ZhiFuShare extends AppCompatActivity {
                 mUploadImage = uploadMsg;
 //
                 if (Build.VERSION.SDK_INT == 19) {
-                    PhotoUtilForWeb.DoPicture(ZhiFuShare.this, 0, null);//直接选择照片
+                    PhotoUtilForWeb.DoPicture(WebInteraction.this, 0, null);//直接选择照片
                 } else {
-                    PhotoUtilForWeb.choosePic(ZhiFuShare.this, 0);//选择相机或照片
+                    PhotoUtilForWeb.choosePic(WebInteraction.this, 0);//选择相机或照片
                 }
                 PhotoUtilForWeb.setmUploadImage(mUploadImage);
             }
@@ -201,7 +201,7 @@ public class ZhiFuShare extends AppCompatActivity {
             public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
                 LogUtil.e("图片文件回调");
                 mUploadImage = uploadMsg;
-                PhotoUtilForWeb.choosePic(ZhiFuShare.this, 0);
+                PhotoUtilForWeb.choosePic(WebInteraction.this, 0);
                 PhotoUtilForWeb.setmUploadImage(mUploadImage);
 //                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
 //                i.addCategory(Intent.CATEGORY_OPENABLE);
@@ -231,12 +231,12 @@ public class ZhiFuShare extends AppCompatActivity {
             public void onClick(View v) {
                 if("5".equals(getIntent().getStringExtra("type"))||(getIntent().getStringExtra("url")!=null&&getIntent().getStringExtra("url").contains(URL_Red))){
                     UMWeb umWeb=new UMWeb(URL_Red);
-                    umWeb.setThumb(new UMImage(ZhiFuShare.this,R.drawable.hongbao_3));
+                    umWeb.setThumb(new UMImage(WebInteraction.this,R.drawable.hongbao_3));
                     umWeb.setTitle("智灯师父发福包啦！");
                     // TODO: 2017/11/29  
                     umWeb.setDescription("智灯师父新年送祝福，福包抢不停");
                     ShareManager shareManager=new ShareManager();
-                    shareManager.shareWeb(umWeb,ZhiFuShare.this);
+                    shareManager.shareWeb(umWeb,WebInteraction.this);
                 }else{
                     webView.loadUrl(url);
                 }
@@ -266,7 +266,7 @@ public class ZhiFuShare extends AppCompatActivity {
         public void formCommitEnd(String code) {
             LogUtil.e("返回的参数：" + code);
             if ("001".equals(code)) {
-                Toast.makeText(ZhiFuShare.this, mApplication.ST("完善资料成功，可到我的>设置>个人信息中查看资料"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(WebInteraction.this, mApplication.ST("完善资料成功，可到我的>设置>个人信息中查看资料"), Toast.LENGTH_SHORT).show();
                 PreferenceUtil.getUserIncetance(getApplicationContext()).edit().putString("perfect", "2").commit();
                 Intent intent = new Intent();
                 intent.putExtra("baoming", true);
@@ -276,7 +276,7 @@ public class ZhiFuShare extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ZhiFuShare.this, mApplication.ST("上传资料失败，请重新填写"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WebInteraction.this, mApplication.ST("上传资料失败，请重新填写"), Toast.LENGTH_SHORT).show();
                         String md5 = MD5Utls.stringToMD5(Constants.safeKey);
                         String m1 = md5.substring(0, 16);
                         String m2 = md5.substring(16, md5.length());
@@ -290,8 +290,8 @@ public class ZhiFuShare extends AppCompatActivity {
         public void openShare(String imgUrl, String petName, String goodName, String num, String info, String units, String money) {
             if("5".equals(getIntent().getStringExtra("type"))||(getIntent().getStringExtra("url")!=null&&getIntent().getStringExtra("url").contains(URL_Red))){
                 LogUtil.e("跳转红包页面");
-                if(new LoginUtil().checkLogin(ZhiFuShare.this)){
-                    Intent intent=new Intent(ZhiFuShare.this,RedPacket.class);
+                if(new LoginUtil().checkLogin(WebInteraction.this)){
+                    Intent intent=new Intent(WebInteraction.this,RedPacket.class);
                     startActivityForResult(intent,2);
                 }
 
@@ -322,14 +322,14 @@ public class ZhiFuShare extends AppCompatActivity {
                     }
                 }
                 LogUtil.e(image);
-                umWeb.setThumb(new UMImage(ZhiFuShare.this, image));
+                umWeb.setThumb(new UMImage(WebInteraction.this, image));
 
                 //使用的是测试分享地址
                 webView.post(new Runnable() {
                     @Override
                     public void run() {
 
-                        new ShareManager().shareWeb(umWeb, ZhiFuShare.this);
+                        new ShareManager().shareWeb(umWeb, WebInteraction.this);
                     }
                 });
             }
@@ -351,12 +351,12 @@ public class ZhiFuShare extends AppCompatActivity {
                         umWeb.setDescription(mApplication.ST(units));
                         break;
                 }
-                umWeb.setThumb(new UMImage(ZhiFuShare.this, R.drawable.indra));
+                umWeb.setThumb(new UMImage(WebInteraction.this, R.drawable.indra));
                 //使用的是测试分享地址
 //                webView.post(new Runnable() {
 //                    @Override
 //                    public void run() {
-                new ShareManager().shareWeb(umWeb, ZhiFuShare.this);
+                new ShareManager().shareWeb(umWeb, WebInteraction.this);
 //                    }
 //                });
 
@@ -384,7 +384,7 @@ public class ZhiFuShare extends AppCompatActivity {
                             JSONObject js = new JSONObject(s);
                             if (js != null) {
                                 if (js.getString("yundousum") != null && !js.getString("yundousum").equals("0")) {
-                                    YunDouAwardDialog.show(ZhiFuShare.this,"每日供养",js.getString("yundousum"));
+                                    YunDouAwardDialog.show(WebInteraction.this,"每日供养",js.getString("yundousum"));
                                 }
 
                             }

@@ -11,10 +11,13 @@ import com.alipay.sdk.app.PayTask;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Fragment.Mine_GYQD;
+import com.yunfengsi.Managers.Base.BasePayParams;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
 import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,8 +25,6 @@ import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Response;
-
-import static com.yunfengsi.Utils.UpPayUtil.extra;
 
 /**
  * Created by Administrator on 2017/1/4.
@@ -52,7 +53,7 @@ public class AliPayUtil {
     /**
      * 支付宝支付业务
      */
-    public static void openAliPay(final Activity context, final String allmoney, final String attachId, final String title, final String num, final String address, final String type) {
+    public static void openAliPay(final Activity context, final BasePayParams payParams) {
         /**
          * 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
          * 真实App里，privateKey等数据严禁放在客户端，加签过程务必要放在服务端完成；
@@ -76,7 +77,6 @@ public class AliPayUtil {
 
 
         ProgressUtil.show(context, "", "正在调起支付宝,请稍等");
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -87,24 +87,29 @@ public class AliPayUtil {
                 JSONObject js = new JSONObject();
 
                 try {
-                    if (type.equals("4")) {
+                    if (payParams.payType.equals("4")) {
                         //供养商品  祈愿信息
-                        js.put("mark", extra);
+                        js.put("mark", payParams.wishInformation);
                     }
-                    if(type.equals("13")){
+                    if(payParams.payType.equals("14")){
+                        //快速通道额外信息
+                        js.put("mark",payParams.jsonInfo);
+                    }
+                    if(payParams.payType.equals("13")){
                         //义卖支付  出价列表id 和   义卖id
-                        js.put("auct_user_id",attachId.substring(attachId.indexOf(",")+1));
-                        js.put("shop_id",attachId.substring(0,attachId.indexOf(",")));
-                        js.put("address",address);
+                        js.put("auct_user_id",payParams.payId.substring(payParams.payId.indexOf(",")+1));
+                        js.put("shop_id",payParams.payId.substring(0,payParams.payId.indexOf(",")));
+                        js.put("address",payParams.addressId);
                     }else{
-                        js.put("shop_id", attachId);
+                        js.put("shop_id", payParams.payId);
                     }
-                    js.put("money", allmoney);
-                    js.put("title", title);
+
+                    js.put("money", payParams.allMoney);
+                    js.put("title", payParams.title);
                     js.put("user_id", PreferenceUtil.getUserIncetance(context).getString("user_id", ""));
                     js.put("receiveid", Constants.M_id);
-                    js.put("num", num);
-                    js.put("type", type);
+                    js.put("num", payParams.num);
+                    js.put("type", payParams.payType);
                     // 微信1 支付宝2 QQ钱包3 银联4
                     js.put("pay_type", "2");
                     ApisSeUtil.M m1 = ApisSeUtil.i(js);
@@ -116,8 +121,8 @@ public class AliPayUtil {
                         final HashMap<String, String> m = AnalyticalJSON.getHashMap(attachIdData);
                         if (m != null && ("000").equals(m.get("code"))) {
                             mApplication.sut_id = m.get("sut_id");
-                            mApplication.id = attachId;
-                            mApplication.title = title;
+                            mApplication.id = payParams.payId;
+                            mApplication.title = payParams.title;
 
                             HashMap<String, String> map = AnalyticalJSON.getHashMap(attachIdData);
                             if (map != null) {
@@ -148,12 +153,12 @@ public class AliPayUtil {
                                                 // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                                                 if (TextUtils.equals(resultStatus, "9000")) {
                                                     Toast.makeText(context, "支付成功", Toast.LENGTH_SHORT).show();
-                                                    if (type.equals("4")) {//供养支付
-                                                        Intent intent1 = new Intent(context, ZhiFuShare.class);
+                                                    if (payParams.payType.equals("4")) {//供养支付
+                                                        Intent intent1 = new Intent(context, WebInteraction.class);
                                                         intent1.putExtra("stu_id", mApplication.sut_id);
                                                         intent1.putExtra("yundou", true);
                                                         context.startActivity(intent1);
-                                                    } else if (type.equals("5")) {//慈善
+                                                    } else if (payParams.payType.equals("5")) {//慈善
                                                         Intent intent = new Intent("Mine");
                                                         intent.putExtra("level", true);
                                                         context.sendBroadcast(intent);
@@ -164,10 +169,13 @@ public class AliPayUtil {
                                                         intent.putExtra("id", mApplication.id);
                                                         intent.putExtra("title", mApplication.title);
                                                         context.startActivity(intent);
-                                                    }else if(type.equals("13")){
+                                                    }else if(payParams.payType.equals("13")){
                                                         //义卖支付
                                                         intent.setClass(context, Mine_GYQD.class);
                                                         context.startActivity(intent);
+                                                    }else if(payParams.payType.equals("14")){
+                                                        EventBus.getDefault().post(new ActivityDetail.RefreshEvent());
+
                                                     }
                                                 } else {
                                                     // 判断resultStatus 为非"9000"则代表可能支付失败

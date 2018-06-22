@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/layout_bg_sel"
     android:paddingLeft="10dp"
     android:paddingTop="5dp"
     android:paddingRight="10dp"

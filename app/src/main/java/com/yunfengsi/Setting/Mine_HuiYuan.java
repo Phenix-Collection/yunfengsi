@@ -31,6 +31,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.yunfengsi.Managers.Base.BaseSTActivity;
+import com.yunfengsi.Models.ZiXun_Detail;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -41,6 +42,7 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.QrUtils;
+import com.yunfengsi.Utils.ScaleImageUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.myWebView;
 
@@ -331,11 +333,7 @@ public class Mine_HuiYuan extends BaseSTActivity implements View.OnClickListener
         @android.webkit.JavascriptInterface
         public void openImage(String img) {
             if (arrayList != null) {
-                Intent intent = new Intent();
-                intent.putExtra("array", arrayList);
-                intent.putExtra("position", arrayList.indexOf(img));
-                intent.setClass(context, ViewPagerActivity.class);
-                context.startActivity(intent);
+                ScaleImageUtil.openBigIagmeMode(Mine_HuiYuan.this, arrayList, arrayList.indexOf(img),true);
             }
 
         }

@@ -632,25 +632,25 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
                 collectWallPaper();
                 break;
             case R.id.encourage:
-                if (Build.VERSION.SDK_INT >= 24) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setItems(new String[]{"桌面壁纸", "锁屏壁纸"}, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            switch (which) {
-                                case 0:
-                                    setWallPaper();
-                                    break;
-                                case 1:
-                                    SetLockWallPaper();
-                                    break;
-                            }
-                        }
-                    }).create().show();
-                } else {
+//                if (Build.VERSION.SDK_INT >= 24) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                    builder.setItems(new String[]{"桌面壁纸", "锁屏壁纸"}, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                            switch (which) {
+//                                case 0:
+//                                    setWallPaper();
+//                                    break;
+//                                case 1:
+//                                    SetLockWallPaper();
+//                                    break;
+//                            }
+//                        }
+//                    }).create().show();
+//                } else {
                     setWallPaper();
-                }
+//                }
 
 
                 break;

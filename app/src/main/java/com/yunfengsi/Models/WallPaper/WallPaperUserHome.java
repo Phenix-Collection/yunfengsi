@@ -178,7 +178,7 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
         @Override
         public CharSequence getPageTitle(int position) {
             if (position == 0) {
-                return "我的壁纸";
+                return list.size()==1?"所有壁纸":"我的壁纸";
             } else if (position == 1) {
                 return "壁纸审核";
             } else if (position == 2) {

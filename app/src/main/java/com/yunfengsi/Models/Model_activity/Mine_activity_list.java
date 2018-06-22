@@ -247,7 +247,7 @@ public class Mine_activity_list extends AndroidPopupActivity implements LoadMore
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView title = (TextView) view.findViewById(R.id.fund_list_item_name);
                 if (title != null && title.getTag() != null) {
-                    Intent intent = new Intent(Mine_activity_list.this, activity_Detail.class);
+                    Intent intent = new Intent(Mine_activity_list.this, ActivityDetail.class);
                     intent.putExtra("id", ((String) title.getTag()));
                     startActivity(intent);
                 }

@@ -5,13 +5,14 @@ import android.content.Intent;
 
 import com.alibaba.sdk.android.push.MessageReceiver;
 import com.alibaba.sdk.android.push.notification.CPushMessage;
+import com.yunfengsi.Models.Auction.AuctionDetail;
 import com.yunfengsi.Models.BlessTree.BlessTree;
 import com.yunfengsi.Models.E_Book.BookList;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Models.GongYangDetail;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Models.More.Fortune;
 import com.yunfengsi.Models.More.Meditation;
@@ -45,6 +46,7 @@ public class mReceiver
    public static final String Bushi = "21";
    public static final String ZuoChan = "22";
    public static final String WallPaper = "23";
+   public static final String Auction = "24";
    public static final String AD = "99";
 
     @Override
@@ -86,7 +88,7 @@ public class mReceiver
         } else if (ZHONGCHou.equals(map.get("type"))) {
             intent.setClass(mApplication.getInstance(), FundingDetailActivity.class);
         } else if (HUODong.equals(map.get("type"))) {
-            intent.setClass(mApplication.getInstance(), activity_Detail.class);
+            intent.setClass(mApplication.getInstance(), ActivityDetail.class);
         } else if (GONGXIU.equals(map.get("type"))) {
             intent.setClass(mApplication.getInstance(), NianFo.class);
         } else if (BaoMing.equals(map.get("type"))) {
@@ -103,6 +105,8 @@ public class mReceiver
             intent.setClass(mApplication.getInstance(), Fortune.class);
         }else if (ZuoChan.equals(map.get("type"))) {
             intent.setClass(mApplication.getInstance(), Meditation.class);
+        }else if (Auction.equals(map.get("type"))) {
+            intent.setClass(mApplication.getInstance(), AuctionDetail.class);
         }
         context.startActivity(intent);
 

@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.yunfengsi.Managers.Base.BasePayParams;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.CheckNumUtil;
@@ -378,9 +379,14 @@ public class FundingItemAdapter extends BaseAdapter {
                         }
 
                         dialog.dismiss();
+                        BasePayParams payParams=new BasePayParams();
+                        payParams.allMoney= currentFee.equals(others.getTag().toString()) ? String.format("%.2f", (Double.valueOf(otherNum.getText().toString()))) : String.valueOf(Integer.valueOf(currentFee));
+                        payParams.payId=fundId;
+                        payParams.title=title;
+                        payParams.num="1";
+                        payParams.payType="5";
                         mApplication.openPayLayout
-                                (context,currentFee.equals(others.getTag().toString()) ?
-                                        String.format("%.2f",(Double.valueOf(otherNum.getText().toString()))) : String.valueOf(Integer.valueOf(currentFee)),fundId,title,"1","5","");
+                                (context,payParams);
 
                         break;
                 }

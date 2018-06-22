@@ -420,7 +420,7 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
                                         trueName.setText(AnalyticalJSON.getHashMap(map1.get("姓名")).get("words"));
                                         edtCard.setText(AnalyticalJSON.getHashMap(map1.get("公民身份号码")).get("words"));
                                         edtSex.setText(AnalyticalJSON.getHashMap(map1.get("性别")).get("words"));
-                                        edtAddress.setText(AnalyticalJSON.getHashMap(map1.get("住址")).get("words"));
+//                                        edtAddress.setText(AnalyticalJSON.getHashMap(map1.get("住址")).get("words"));
                                         edtNation.setText(AnalyticalJSON.getHashMap(map1.get("民族")).get("words"));
                                     }else{
                                         ToastUtil.showToastShort("图片识别错误，请重新上传照片");

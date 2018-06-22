@@ -34,6 +34,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
+import com.yunfengsi.Models.Model_activity.IdCardCheck;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -48,7 +49,6 @@ import com.yunfengsi.Utils.SystemUtil;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.WebShare.ZhiFuShare;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -404,8 +404,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.perfect:
                 if (sp.getString("perfect", "1").equals("1")) {
-                    Intent intent = new Intent(this, ZhiFuShare.class);
-                    intent.putExtra(ZhiFuShare.ISFORM, true);
+                    Intent intent = new Intent(this, IdCardCheck.class);
                     startActivityForResult(intent, 666);
 //                    finish();
                 }

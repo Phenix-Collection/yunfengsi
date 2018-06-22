@@ -27,7 +27,7 @@ import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.View.myWebView;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import java.util.HashMap;
 
@@ -164,8 +164,8 @@ public class user_Info_First extends AppCompatActivity  implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.commit){
-            Intent intent =new Intent(this,ZhiFuShare.class);
-            intent.putExtra(ZhiFuShare.ISFORM,true);
+            Intent intent =new Intent(this,WebInteraction.class);
+            intent.putExtra(WebInteraction.ISFORM,true);
             startActivity(intent);
             finish();
         }else if(v.getId()==R.id.back){

@@ -32,8 +32,8 @@ android {
         applicationId "com.yunfengsi"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 81
-        versionName "2.3.0"
+        versionCode 82
+        versionName "2.4.0"
         ndk {
             abiFilters "armeabi-v7a", "armeabi"
 //            , "x86"
@@ -42,9 +42,16 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            zipAlignEnabled false  // Zipalign优化
+            shrinkResources false // 友盟出错   移除无用的resource文件,必须和minifyEnabled 一起使用
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false  // Zipalign优化
+            shrinkResources false // 友盟出错   移除无用的resource文件,必须和minifyEnabled 一起使用
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
 
     }
     signingConfigs {
@@ -89,14 +96,18 @@ dependencies {
     compile 'com.lzy.net:okgo:2.1.4'
     compile 'com.zhy:percent-support-extends:1.1.1'
     compile 'com.android.support:cardview-v7:23.2.1'
-    compile files('libs/UPPayPluginExPro.jar')
-    compile files('libs/UPPayAssistEx.jar')
-    compile project(':library')
+
+    //银联
+//    compile files('libs/UPPayPluginExPro.jar')
+//    compile files('libs/UPPayAssistEx.jar')
+
+//二维码底层库
 //    compile files('libs/zxing-3.2.1.jar')
 
     //        compile files('libs/utdid4all-1.1.5.2.jar')
-
     //    compile files('libs/alisdk-ut-5.jar')
+
+    //---------------------------------------------友盟
     compile files('libs/mqqopenpay.jar')
     compile files('libs/SocialSDK_QQ_Simplify.jar')
     compile files('libs/SocialSDK_Sina_Simplify.jar')
@@ -106,34 +117,36 @@ dependencies {
     compile files('libs/umeng_social_shareview.jar')
     compile files('libs/umeng_social_shareboard.jar')
 
-    //    compile 'com.squareup.leakcanary:leakcanary-android:1.5'
-
-    //    compile files('libs/alipaySdk-20160825.jar')
-
-    //    compile files('libs/jcc-bate-0.7.3.jar')
+    compile files('libs/SocialSDK_line.jar')
+    compile files('libs/SocialSDK_twitter.jar')
+    compile files('libs/umeng_shareboard_widget.jar')
+    compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
+    //---------------------------------------------友盟
 
     //recyclerView适配器
 
     //    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.9.7'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
     compile files('libs/jxl.jar')
 
     //轮播图控件
     compile 'com.youth.banner:banner:1.4.10'
+
+
     compile files('libs/ZHConverter.jar')
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
+
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
+
     compile 'com.pnikosis:materialish-progress:1.7'
+
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 
     //继续滑动
-    compile 'homhomlin.lib:sldinglayout:0.9.0'
-    compile files('libs/SocialSDK_line.jar')
-    compile files('libs/SocialSDK_twitter.jar')
-    compile files('libs/umeng_shareboard_widget.jar')
-    compile files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
+//    compile 'homhomlin.lib:sldinglayout:0.9.0'
 
-    //    compile 'cn.magicwindow:MagicWindowSDK:4.1'
+
     implementation files('libs/bdasr_V3_20171108_9800a2a.jar')
 
     //字
@@ -141,26 +154,28 @@ dependencies {
 
     //选择器
     compile 'com.contrarywind:Android-PickerView:3.2.7'
+
+
     implementation files('libs/AMap_Location_V3.8.0_20180201.jar')
 
     //    //下拉刷新
 
     //    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
 
-    //    compile 'com.aliyun.ams:alicloud-android-push:3.1.1'
+    //------------------------------------------阿里云推送
     compile(name: 'alicloud-android-third-push-3.0.5', ext: 'aar')
 
-    //    implementation files('libs/alipaySdk-20160825.jar')
     implementation files('libs/alicloud-android-push-sdk-3.1.1.jar')
     implementation files('libs/alicloud-android-beacon-1.0.1.jar')
 
-    //    implementation files('libs/utdid4all-1.1.5.3_proguard.jar')
     implementation files('libs/alicloud-android-ut-5.1.0.jar')
     implementation files('libs/alicloud-android-utils-1.1.1.jar')
 
+    //------------------------------------------阿里云推送
+
     //许愿树  3d球形特效
     compile 'com.moxun:tagcloudlib:1.2.1'
-//图片压缩
+    //图片压缩
     implementation 'com.zxy.android:tiny:0.1.0'
 
 
@@ -171,8 +186,9 @@ dependencies {
     //    implementation 'com.android.support:support-v4:24.2.1'
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.16'
 
-    //    //热更新
+    //---------------------------------------热更新
     compile(name: 'alicloud-android-hotfix-3.2.2', ext: 'aar')
+    //--------------------------------------支付宝
     implementation files('libs/alipaySdk-20180403.jar')
 
     //泡泡
@@ -180,11 +196,10 @@ dependencies {
 
 //    compile 'com.android.support:palette-v7:23.4.0'
 
-    //扫描库
-//    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
+    //-----------------------------------------二维码、扫描库
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
     compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
-
+    //-----------------------------------------------------------扫描库
     //内存测试
 //    compile 'com.squareup.leakcanary:leakcanary-android:1.5'
 }

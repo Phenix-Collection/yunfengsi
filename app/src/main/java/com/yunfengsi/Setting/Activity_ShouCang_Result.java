@@ -194,7 +194,7 @@ public class Activity_ShouCang_Result extends AppCompatActivity implements View.
 //                if (view1.getText().toString().equals(mApplication.ST("图文"))) {
 //                    intent.setClass(mApplication.getInstance(), ZiXun_Detail.class);
 //                } else if (view1.getText().toString().equals(mApplication.ST("活动"))) {
-//                    intent.setClass(mApplication.getInstance(), activity_Detail.class);
+//                    intent.setClass(mApplication.getInstance(), ActivityDetail.class);
 //                } else if (view1.getText().toString().equals(mApplication.ST("助学"))) {
 //                    intent.setClass(mApplication.getInstance(), FundingDetailActivity.class);
 //                }

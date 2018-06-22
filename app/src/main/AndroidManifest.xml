@@ -211,7 +211,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".WebShare.ZhiFuShare"
+            android:name=".WebShare.WebInteraction"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Managers.MessageCenter"
@@ -255,7 +255,7 @@
             android:windowSoftInputMode="adjustPan" />
         <!-- 活动模板 -->
         <activity
-            android:name=".Models.Model_activity.activity_Detail"
+            android:name=".Models.Model_activity.ActivityDetail"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Models.Model_activity.Enrollment"
@@ -403,11 +403,7 @@
             android:name=".Models.BlessTree.Bless_History"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Setting.ViewPagerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".ThirdPart.wxapi.WXPayEntryActivity"
+            android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -419,7 +415,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".ThirdPart.wxapi.AppRegister">
+        <receiver android:name=".wxapi.AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
@@ -443,7 +439,7 @@
 
         <!-- &lt;!&ndash;微信~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&ndash;&gt; -->
         <activity
-            android:name=".ThirdPart.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -471,10 +467,10 @@
 
         <!-- QQ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <activity
-            android:name="com.unionpay.uppay.PayActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard"
-            android:screenOrientation="portrait" />
+              <!--<activity-->
+        <!--android:name="com.unionpay.uppay.PayActivity"-->
+        <!--android:configChanges="orientation|keyboardHidden|keyboard"-->
+        <!--android:screenOrientation="portrait" />-->
 
         <!-- teitter -->
         <activity
@@ -843,6 +839,10 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Managers.AboutPay.Fahuo"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".Managers.ForManager.WallPaperManage"
             android:screenOrientation="portrait"></activity>
 
 

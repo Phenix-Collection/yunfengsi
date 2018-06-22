@@ -8,6 +8,7 @@ import com.lzy.okgo.OkGo;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.yunfengsi.Managers.Base.BasePayParams;
 
 import org.apache.http.conn.util.InetAddressUtils;
 import org.dom4j.Document;
@@ -100,7 +101,7 @@ public class WXPayUtils {
     }
 
 
-    public static void openWXPay(final Activity context, final String allmoney, final String attachId, final String title, final String num, final String type, final String extra) {
+    public static void openWXPay(final Activity context, final BasePayParams payParams) {
         if (!Network.HttpTest(context)) {
             Toast.makeText(mApplication.getInstance(), "网络连接不稳定，请稍后重试", Toast.LENGTH_SHORT).show();
             return;
@@ -125,27 +126,35 @@ public class WXPayUtils {
 
                 JSONObject js = new JSONObject();
                 try {
-                    if (type.equals("4")) {
+                    if (payParams.payType.equals("4")) {
                         //供养商品  祈愿信息
-                        js.put("mark", extra);
+                        js.put("mark", payParams.wishInformation);
                     }
-                    if (type.equals("13")) {
+                    if(payParams.payType.equals("14")){
+                        //快速通道额外信息
+                        js.put("mark",payParams.jsonInfo);
+                    }
+                    if (payParams.payType.equals("13")) {
                         //义卖支付  出价列表id 和   义卖id
-                        js.put("auct_user_id", attachId.substring(attachId.indexOf(",") + 1));
-                        js.put("shop_id", attachId.substring(0, attachId.indexOf(",")));
-                        js.put("address",extra);
+                        js.put("auct_user_id", payParams.payId.substring(payParams.payId.indexOf(",") + 1));
+                        js.put("shop_id", payParams.payId.substring(0, payParams.payId.indexOf(",")));
+                        js.put("address",payParams.addressId);
                     } else {
-                        js.put("shop_id", attachId);
+                        js.put("shop_id", payParams.payId);
                     }
-                    js.put("type", type);
-                    js.put("money", allmoney);
-                    js.put("title", title);
+                    js.put("type", payParams.payType);
+                    js.put("money", payParams.allMoney);
+                    js.put("title", payParams.title);
                     js.put("user_id", PreferenceUtil.getUserIncetance(context).getString("user_id", ""));
                     js.put("receiveid", Constants.M_id);
-                    js.put("num", num);
+                    js.put("num", payParams.num);
                     // 微信1 支付宝2 QQ钱包3 银联4
                     js.put("pay_type", "1");
+
+
+
                     ApisSeUtil.M m1 = ApisSeUtil.i(js);
+                    LogUtil.e("微信支付：：；"+js);
                     String attachIdData = OkGo.post(Constants.getAttachId_ip).tag(TAG)
                             .params("key", m1.K())
                             .params("msg", m1.M())
@@ -154,9 +163,9 @@ public class WXPayUtils {
                         HashMap<String, String> m = AnalyticalJSON.getHashMap(attachIdData);
                         if (m != null && ("000").equals(m.get("code"))) {
                             mApplication.sut_id = m.get("sut_id");
-                            mApplication.type = type;
-                            mApplication.id = attachId;
-                            mApplication.title = title;
+                            mApplication.type = payParams.payType;
+                            mApplication.id = payParams.payId;
+                            mApplication.title = payParams.title;
                             money = m.get("money");
                             HashMap<String, String> map = AnalyticalJSON.getHashMap(m.get("x"));
                             Log.w(TAG, "run:  map-=-=-=-=-=解析得到的map：" + map);

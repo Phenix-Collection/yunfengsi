@@ -29,7 +29,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -127,7 +127,7 @@ public class MyQuan extends AppCompatActivity implements DuiHuanContract.MyQuanV
                             public void onClick(View v) {
                                 Intent intent = new Intent();
                                 if (type.equals("1")) {//活动券
-                                    intent.setClass(MyQuan.this, activity_Detail.class);
+                                    intent.setClass(MyQuan.this, ActivityDetail.class);
                                     intent.putExtra("wel_id", ((HashMap<String, String>) adapter.getItem(position)).get("id"));
                                     intent.putExtra("id", ((HashMap<String, String>) adapter.getItem(position)).get("act_id"));
                                     startActivityForResult(intent, 666);

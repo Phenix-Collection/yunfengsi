@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.yunfengsi.Managers.AboutPay.MyZhiFuDetail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -36,7 +37,7 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview2;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -105,7 +106,7 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
                 TextView title= (TextView) view.findViewById(R.id.title);
                 if(title.getTag()!=null){
                     if("4".equals(title.getTag(R.id.sut_type))){
-                        Intent intent=new Intent(Mine_GYQD.this, ZhiFuShare.class);
+                        Intent intent=new Intent(Mine_GYQD.this, WebInteraction.class);
                         intent.putExtra("stu_id",view.findViewById(R.id.title).getTag().toString());
                         startActivity(intent);
                     }else if("5".equals(title.getTag(R.id.sut_type))){
@@ -121,6 +122,10 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
                         intent.putExtra("express",list.get(position).get("express"));
                         intent.putExtra("exp_name",list.get(position).get("exp_name"));
 
+                        startActivity(intent);
+                    }else if("14".equals(title.getTag(R.id.sut_type))){
+                        Intent intent=new Intent(Mine_GYQD.this, ActivityDetail.class);
+                        intent.putExtra("id",list.get(position).get("shop_id"));
                         startActivity(intent);
                     }
                 }
@@ -284,6 +289,11 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
             }else if("13".equals(list.get(position).get("sut_type"))){
                 //义卖支付
                 holder.image.setText(mApplication.ST("义卖"));
+                holder.image.setTextColor(Color.RED);
+                holder.image.setSelected(true);
+            }else if("14".equals(list.get(position).get("sut_type"))){
+                //活动快速通道支付
+                holder.image.setText(mApplication.ST("活动"));
                 holder.image.setTextColor(Color.RED);
                 holder.image.setSelected(true);
             }

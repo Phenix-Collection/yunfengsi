@@ -25,7 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lzy.okgo.OkGo;
 import com.yunfengsi.Models.GongYangDetail;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -199,7 +199,7 @@ public class PL_List_Adapter extends BaseAdapter {
                                 intent.setClass(context, FundingDetailActivity.class);
                                 break;
                             case "6":
-                                intent.setClass(context, activity_Detail.class);
+                                intent.setClass(context, ActivityDetail.class);
                                 break;
                         }
                         intent.putExtra("id", bean.get("ct_id"));

@@ -61,12 +61,19 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 // TODO: 2018/5/29 上传页面开启
-                startActivity(new Intent(WallPapaerHome.this, WallPaperUpload.class));
+                if (Network.HttpTest(WallPapaerHome.this)) {
+                    startActivity(new Intent(WallPapaerHome.this, WallPaperUpload.class));
+                }
             }
         });
 
         list = new ArrayList<>();
         list.add(new RecommendFragment());
+        RecommendFragment newest=new RecommendFragment();
+        Bundle b=new Bundle();
+        b.putBoolean("new",true);
+        newest.setArguments(b);
+        list.add(newest);
         list.add(new WallPagerClassification());
 
         adapter = new WallPaperPageAdapter(getSupportFragmentManager(), list);
@@ -96,7 +103,7 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.userImage:
                 if (new LoginUtil().checkLogin(this)) {
-                    if(Network.HttpTest(WallPapaerHome.this)){
+                    if (Network.HttpTest(WallPapaerHome.this)) {
                         startActivity(new Intent(this, WallPaperUserHome.class));
                     }
 
@@ -135,6 +142,8 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
             if (position == 0) {
                 return "推荐";
             } else if (position == 1) {
+                return "最新";
+            } else if (position == 2) {
                 return "分类";
             }
             return super.getPageTitle(position);

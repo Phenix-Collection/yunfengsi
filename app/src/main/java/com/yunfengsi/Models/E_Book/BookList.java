@@ -12,11 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,7 +51,6 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.BookRecyclerView;
-import com.yunfengsi.View.MyGridView;
 import com.yunfengsi.View.mItemDecoration;
 
 import org.json.JSONArray;
@@ -1068,71 +1063,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         }
     }
 
-    private class gridAdapter extends BaseAdapter {
-        private ArrayList<HashMap<String, Object>> list;
 
-        public gridAdapter(ArrayList<HashMap<String, Object>> list) {
-            super();
-            this.list = list;
-        }
-
-        private void setNewList(ArrayList list) {
-            this.list = list;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return list.size() == 0 ? 0 : list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(final int position, View view, ViewGroup parent) {
-
-            viewHolder holder = null;
-            if (view == null) {
-                holder = new viewHolder();
-                view = LayoutInflater.from(BookList.this).inflate(R.layout.item_book_one, null);
-                holder.textView = (TextView) view.findViewById(R.id.text);
-                view.setTag(holder);
-            } else {
-                holder = (viewHolder) view.getTag();
-            }
-            int itemheight = ((MyGridView) parent).itemHeight;
-            LogUtil.e("高度：：：" + itemheight);
-            AbsListView.LayoutParams al = new AbsListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, itemheight - DimenUtils.dip2px(BookList.this, 30));
-            holder.textView.setLayoutParams(al);
-            holder.textView.setText(list.get(position).get("title").toString());
-            holder.textView.setTag(R.id.BookPath, list.get(position).get("contents"));
-
-            holder.textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    clickBook(list.get(position));
-
-
-                }
-
-
-            });
-            return view;
-        }
-
-        class viewHolder {
-            TextView textView;
-        }
-
-    }
 
     @Override
     protected void onDestroy() {

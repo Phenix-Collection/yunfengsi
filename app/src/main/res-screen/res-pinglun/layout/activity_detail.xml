@@ -408,13 +408,28 @@
 
         </LinearLayout>
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/huise"
         android:layout_gravity="bottom"
         android:layout_marginBottom="45dp"/>
-
+    <com.ruffian.library.RTextView
+        android:id="@+id/quickChannel"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:background="@drawable/green_circle_shape"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="@color/white"
+        app:background_normal="#3CC617"
+        app:corner_radius="100dp"
+        app:background_pressed="#aa3CC617"
+        app:text_color_normal="@color/white"
+        app:text_color_pressed="#aaffffff"
+        android:visibility="gone"
+        android:textSize="15dp" />
     <com.yunfengsi.View.UsefulImageView
         android:id="@+id/qr_saoyisao"
         android:layout_width="50dp"

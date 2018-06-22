@@ -170,6 +170,7 @@ public class AuctionManage extends AppCompatActivity implements SwipeRefreshLayo
                     Intent intent=new Intent(AuctionManage.this, Fahuo.class);
                     intent.putExtra("id",map.get("id"));
                     intent.putExtra("money",map.get("money"));
+                    intent.putExtra("user_id",map.get("user_id"));
                     startActivityForResult(intent,666);
 
                 }

@@ -21,9 +21,13 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Adapter.PingLunActivity;
 import com.yunfengsi.Fragment.Mine_GYQD;
+import com.yunfengsi.Models.Auction.AuctionList;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
 import com.yunfengsi.Models.NianFo.NianFo;
+import com.yunfengsi.Models.WallPaper.WallPaperUserHome;
+import com.yunfengsi.Models.ZiXun_Detail;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -35,9 +39,6 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.Models.WallPaper.WallPaperUserHome;
-import com.yunfengsi.Models.GongYangDetail;
-import com.yunfengsi.Models.ZiXun_Detail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +68,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
     private static final int ZhuXuePay         = 8;
     private static final int WallPaperVerified = 9;
     private static final int QianDaoToMineActivity = 10;
+    private static final int Auction = 11;
     private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
@@ -130,7 +132,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                             intent.setClass(MessageCenter.this, ZiXun_Detail.class);
                             break;
                         case HuoDong:
-                            intent.setClass(MessageCenter.this, activity_Detail.class);
+                            intent.setClass(MessageCenter.this, ActivityDetail.class);
                             break;
                         case GongYang:
                             intent.setClass(MessageCenter.this, GongYangDetail.class);
@@ -155,6 +157,9 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                             break;
                         case QianDaoToMineActivity:
                             intent.setClass(MessageCenter.this, Mine_activity_list.class);
+                            break;
+                        case Auction:
+                            intent.setClass(MessageCenter.this, AuctionList.class);
                             break;
 //                        case mReceiver.QiYuan:
 //                            intent.setClass(MessageCenter.this, BlessTree.class);
@@ -238,12 +243,15 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                     case WallPaperVerified:
                         holder.setText(R.id.title, "壁纸审核结果");
                         break;
+                    case Auction:
+                        holder.setText(R.id.title, "义卖支付");
+                        break;
 //                    case mReceiver.GONGXIU:
 //                        holder.setText(R.id.title, "共修");
 //                        break;
-//                    case mReceiver.BaoMing:
-//                        holder.setText(R.id.title, "报名结果");
-//                        break;
+                    case MineHuodong:
+                        holder.setText(R.id.title, "报名结果");
+                        break;
 //                    case mReceiver.TongZhi:
 //                        holder.setText(R.id.title, "通知");
 //                        break;

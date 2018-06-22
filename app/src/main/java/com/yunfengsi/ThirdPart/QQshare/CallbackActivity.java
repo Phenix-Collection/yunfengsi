@@ -19,7 +19,7 @@ import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.QpayUtil;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 
 public class CallbackActivity extends Activity implements IOpenApiListener, View.OnClickListener {
@@ -62,7 +62,7 @@ public class CallbackActivity extends Activity implements IOpenApiListener, View
                     if (!payResponse.isPayByWeChat()) {
                         msg.setText("支付成功");
                         if("4".equals(mApplication.type)){
-                            Intent intent1 = new Intent(this, ZhiFuShare.class);
+                            Intent intent1 = new Intent(this, WebInteraction.class);
                             intent1.putExtra("stu_id", mApplication.sut_id);
                             startActivity(intent1);
                             finish();

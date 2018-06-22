@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">云峰寺</string>
-    <string name="versonCode">2.3.0</string>
+    <string name="versonCode">2.4.0</string>
     <color name="main_color">#fe963b</color>
     <color name="auction_pink">#E81D4A</color>
     <color name="auction_LTpink">#FFF3F3</color>

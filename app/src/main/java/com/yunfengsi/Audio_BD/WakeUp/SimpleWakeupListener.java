@@ -13,10 +13,11 @@ import android.support.v4.content.ContextCompat;
 import com.baidu.speech.EventListener;
 import com.baidu.speech.asr.SpeechConstant;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
-import com.yunfengsi.Models.BlessTree.BlessTree;
-import com.yunfengsi.Models.E_Book.BookList;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
+import com.yunfengsi.Models.Auction.AuctionList;
+import com.yunfengsi.Models.BlessTree.BlessTree;
+import com.yunfengsi.Models.E_Book.BookList;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
 import com.yunfengsi.Models.More.Fortune;
 import com.yunfengsi.Models.More.Meditation;
@@ -27,6 +28,13 @@ import com.yunfengsi.Models.NianFo.nianfo_home_tab3;
 import com.yunfengsi.Models.NianFo.nianfo_home_tab4;
 import com.yunfengsi.Models.NianFo.nianfo_home_tab5;
 import com.yunfengsi.Models.NianFo.nianfo_home_tab6;
+import com.yunfengsi.Models.TouGao.TouGao;
+import com.yunfengsi.Models.WallPaper.WallPapaerHome;
+import com.yunfengsi.Models.WallPaper.WallPaperUpload;
+import com.yunfengsi.Models.YunDou.DuiHuan;
+import com.yunfengsi.Models.YunDou.MyQuan;
+import com.yunfengsi.Models.YunDou.YunDouHome;
+import com.yunfengsi.Models.YunDou.yundou_paihang;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Activity_ShouCang;
 import com.yunfengsi.Setting.GanyuActivity;
@@ -34,17 +42,10 @@ import com.yunfengsi.Setting.Mine_HuiYuan;
 import com.yunfengsi.Setting.Month_Detail;
 import com.yunfengsi.Setting.Search;
 import com.yunfengsi.Setting.gerenshezhi;
-import com.yunfengsi.Models.TouGao.TouGao;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.WakeLockUtil;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.Models.WallPaper.WallPapaerHome;
-import com.yunfengsi.Models.WallPaper.WallPaperUpload;
-import com.yunfengsi.Models.YunDou.DuiHuan;
-import com.yunfengsi.Models.YunDou.MyQuan;
-import com.yunfengsi.Models.YunDou.YunDouHome;
-import com.yunfengsi.Models.YunDou.yundou_paihang;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -445,7 +446,11 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
                 text = OK;
                 Intent i2 = new Intent(context, GanyuActivity.class);
                 context.startActivity(i2);
-            } else if (result.contains("祈愿树") || result.contains("许愿") || result.contains("祈愿")) {
+            } else if (result.contains("义卖")||result.contains("拍卖")||result.contains("竞拍")) {
+                text = OK;
+                Intent i2 = new Intent(context, AuctionList.class);
+                context.startActivity(i2);
+            }else if (result.contains("祈愿树") || result.contains("许愿") || result.contains("祈愿")) {
                 text = OK;
                 Intent i2 = new Intent(context, BlessTree.class);
                 context.startActivity(i2);

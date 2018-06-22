@@ -11,9 +11,9 @@ public class Constants {
     public static final String Help = "https://indrah.cn/yfs.php/Index/help";
 
     //服务器测试域名
-    public static final String host_Ip       = "http://yintolo.net";
+//    public static final String host_Ip       = "http://yintolo.net";
     //    //服务器域名
-//    public static  final String host_Ip="https://indrah.cn";
+    public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo        = "/api.php/EncryptApi/";
     public static final String iiiiii        = "/api.php/SecretApi/";
@@ -646,14 +646,27 @@ public class Constants {
     public static final String Expresses = host_Ip + iiiiii + "Express";
     //快递公司列表查询
     public static final String ExpressesList= host_Ip + iiiiii + "Expresslist";
-    //绑定快递信息
-    public static final String Bdexpress= host_Ip + iiiiii + "Bdexpress";
+//    //绑定快递信息
+//    public static final String Bdexpress= host_Ip + iiiiii + "Bdexpress";
 
 
     //绑定快递单号同时发货
     public static final String Deliveryexpress= host_Ip + iiiiii + "Deliveryexpress";
 
 
+
+    //壁纸管理列表
+    public static final String WallPaperManageList= host_Ip + iiiiii + "Wallpaperlist";
+    //壁纸管理列表删除
+    public static final String WallPaperManageDelete= host_Ip + iiiiii + "Wallpaperdelete";
+
+    //壁纸管理列表通过
+    public static final String WallPaperManagePass= host_Ip + iiiiii + "Wallpaperupdate";
+
+
+
+    //活动快速通道
+    public static final String ActivityQuick= host_Ip + oooooo + "Actquick";
 
 //    //管理员订单详情接口
 //    public static final String GoodsAdminDdxq= host_Ip + iiiiii + "Myddxq";

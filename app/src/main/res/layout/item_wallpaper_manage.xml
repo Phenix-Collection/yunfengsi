@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+
+        <com.yunfengsi.View.UsefulImageView
+            android:id="@+id/wallpaper"
+            android:layout_width="90dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="9:16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/start" />
+
+
+        <cn.carbs.android.avatarimageview.library.AvatarImageView
+            android:id="@+id/head"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintLeft_toRightOf="@+id/wallpaper"
+            app:layout_constraintTop_toTopOf="@+id/wallpaper"
+            tools:src="@drawable/def" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="昵称"
+            android:textColor="@color/main_color"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/head"
+            app:layout_constraintLeft_toRightOf="@+id/head"
+            app:layout_constraintTop_toTopOf="@+id/head" />
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/classification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:text="分类"
+            android:textSize="16dp"
+            app:icon_direction="left"
+            app:icon_height="20dp"
+            app:icon_src_normal="@drawable/spinner_down"
+            app:icon_width="20dp"
+            app:layout_constraintLeft_toLeftOf="@+id/head"
+            app:layout_constraintTop_toBottomOf="@+id/head"
+            app:text_color_normal="@color/green"
+            app:text_color_pressed="@color/gray" />
+
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="时间"
+            android:textColor="@color/wordhuise"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/wallpaper"
+            app:layout_constraintLeft_toLeftOf="@+id/head" />
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/commit"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="通过"
+            android:textSize="18dp"
+            app:background_normal="@color/auction_pink"
+            app:background_pressed="#90E81D4A"
+            app:corner_radius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:text_color_normal="@color/white" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/delete"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="删除"
+        android:textColor="@color/white" />
+
+
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

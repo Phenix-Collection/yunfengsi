@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -51,6 +52,7 @@ import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.BuildConfig;
+import com.yunfengsi.Managers.Base.BasePayParams;
 import com.yunfengsi.Managers.CollectManager;
 import com.yunfengsi.Models.YaoYue.Activity_YaoYue;
 import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
@@ -59,6 +61,7 @@ import com.yunfengsi.Setting.Login;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
+import com.yunfengsi.Utils.CheckNumUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.ImageUtil;
@@ -76,8 +79,12 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.ErWeiMa.QRActivity;
+import com.yunfengsi.View.ListDialog;
 import com.yunfengsi.View.mPLlistview;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -96,59 +103,76 @@ import okhttp3.Response;
 /**
  * Created by Administrator on 2016/10/7.
  */
-public class activity_Detail extends AndroidPopupActivity implements View.OnClickListener, PL_List_Adapter.onHuifuListener {
+public class ActivityDetail extends AndroidPopupActivity implements View.OnClickListener, PL_List_Adapter.onHuifuListener {
     private ImageView back, rightImg, shoucang, dianzanImg;
     private TextView dianzanText, title, fabuTime, faqidanwei, huodongdidian, huodongTime, peopleNum, Tobaoming, content, FaSong;
-    private EditText PLText;
+    private EditText     PLText;
     private LinearLayout dianzan;
     //    private LinearLayout PointLayou;//轮播图圆点layout
-    private mPLlistview PlListVIew;
-    private String page = "1";
+    private mPLlistview  PlListVIew;
+    private String page    = "1";
     private String endPage = "";
     private Thread thread;//线程
     private static final String TAG = "Activityd";
-    private String Id;//活动id
+    private String            Id;//活动id
     private ArrayList<String> imageList;
     //    private ViewPager viewPager;//轮播
-    private Banner banner;
-    private int screeWidth, dp10, dp180, dp7;
-    private PL_List_Adapter adapter;
-    private SharedPreferences sp;
+    private Banner            banner;
+    private int               screeWidth, dp10, dp180, dp7;
+    private PL_List_Adapter    adapter;
+    private SharedPreferences  sp;
     private InputMethodManager imm;
-    private TextView tv;//评论的头部
+    private TextView           tv;//评论的头部
 
     private ShareAction action;
     private boolean isPLing = false;
     private LinearLayout currentLayout;
-    private int currentPosition;
-    private String currentId;
+    private int          currentPosition;
+    private String       currentId;
     /*
        活动按钮
         */
-    private TextView tv_activity;
+    private TextView     tv_activity;
 
     private LinearLayout pinglun, fenxiangb;
-    private FrameLayout overlay;
-    private ImageView toggle;
-    private TextView audio;
+    private FrameLayout     overlay;
+    private ImageView       toggle;
+    private TextView        audio;
     private IBDRcognizeImpl ibdRcognize;
-    private UMWeb umWeb;
+    private UMWeb           umWeb;
     private String act_prol = "";//活动协议Html
 
     private ImageView tip;
     //第一次加载的评论数量
     private int firstNum = 0;
-   private  HashMap<String, String> map;
+    private HashMap<String, String> map;
 
     private boolean isNeedToChooseTime = false;
-    private String startTime = "", endTime ="";
-    private TextView  yue;
+    private String  startTime          = "", endTime = "";
+    private TextView yue;
+
+
+    private TextView quickChannel;
+    private boolean hasShowedQuick = false;
+    private ArrayList<HashMap<String, String>> quickInfoMap;
+
+
+    public static class RefreshEvent {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refresh(RefreshEvent event) {
+        LogUtil.e("重新加载活动详情");
+        LoadData();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_detail);
-
+        EventBus.getDefault().register(this);
         initView();
         LoadData();
     }
@@ -159,16 +183,24 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
     private void initView() {
         tip = (ImageView) findViewById(R.id.tip);
         tip.setOnClickListener(this);
+        /**
+         * 快速通道
+         */
+        quickChannel = findViewById(R.id.quickChannel);
+        quickChannel.setText(mApplication.ST("直录通道"));
+        quickChannel.setOnClickListener(this);
+        /**
+         * 快速通道
+         */
 
-
-        yue= (TextView) findViewById(R.id.activity_detail_yue);
+        yue = (TextView) findViewById(R.id.activity_detail_yue);
         yue.setText("约");
         yue.setOnClickListener(this);
         PLText = (EditText) findViewById(R.id.activity_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
-        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.pinglun_image));
-        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.fenxiang_image));
         toggle = (ImageView) findViewById(R.id.toggle_audio_word);
         audio = (TextView) findViewById(R.id.audio_button);
@@ -192,7 +224,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                     case MotionEvent.ACTION_DOWN:
 
                         if (ibdRcognize == null) {
-                            ibdRcognize = new IBDRcognizeImpl(activity_Detail.this);
+                            ibdRcognize = new IBDRcognizeImpl(ActivityDetail.this);
                             ibdRcognize.attachView(PLText, audio, toggle);
                         }
                         view.setSelected(true);
@@ -236,7 +268,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 if (umWeb != null) {
-                    new ShareManager().shareWeb(umWeb, activity_Detail.this);
+                    new ShareManager().shareWeb(umWeb, ActivityDetail.this);
                 }
             }
         });
@@ -285,8 +317,8 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
                 imageView.setBackgroundColor(Color.parseColor("#e6e6e6"));
-                Glide.with(activity_Detail.this)
-                        .load(path).override(getResources().getDisplayMetrics().widthPixels, DimenUtils.dip2px(activity_Detail.this, 200))
+                Glide.with(ActivityDetail.this)
+                        .load(path).override(getResources().getDisplayMetrics().widthPixels, DimenUtils.dip2px(ActivityDetail.this, 200))
                         .into(imageView);
             }
         });
@@ -295,7 +327,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
             @Override
             public void OnBannerClick(int position) {
                 if (imageList != null) {
-                    ScaleImageUtil.openBigIagmeMode(activity_Detail.this, imageList, position,true);
+                    ScaleImageUtil.openBigIagmeMode(ActivityDetail.this, imageList, position, true);
                     LogUtil.e("大图浏览:::" + imageList);
                 }
             }
@@ -332,15 +364,14 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
         shoucang = (ImageView) findViewById(R.id.activity_detail_shoucang);
 
 
-        if(PreferenceUtil.getUserIncetance(this).getString("role","").equals("3")){
+        if (PreferenceUtil.getUserIncetance(this).getString("role", "").equals("3")) {
             findViewById(R.id.qr_saoyisao).setVisibility(View.VISIBLE);
             new PointMoveHelper(this, findViewById(R.id.qr_saoyisao))
-            .setMargins(50,10,10,55);
+                    .setMargins(50, 10, 10, 55);
             findViewById(R.id.qr_saoyisao).setOnClickListener(this);
-        }else{
+        } else {
             findViewById(R.id.qr_saoyisao).setVisibility(View.GONE);
         }
-
 
 
     }
@@ -360,7 +391,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
      */
     @Override
     protected void onDestroy() {
-        if(thread!=null){
+        if (thread != null) {
             if (thread.isAlive()) thread.interrupt();
         }
 
@@ -368,6 +399,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
 
         super.onDestroy();
         UMShareAPI.get(this).release();
+        EventBus.getDefault().unregister(this);
 //        ShareManager.release();
     }
 
@@ -404,7 +436,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                 if ((Pllist != null)) {
                                     PlListVIew.setFocusable(false);
                                     if (adapter.mlist.size() == 0 && Pllist.size() == 0) {//没有评论的时候
-                                        tv = new TextView(activity_Detail.this);
+                                        tv = new TextView(ActivityDetail.this);
                                         tv.setText(mApplication.ST("还没有评论嘞"));
                                         PlListVIew.addHeaderView(tv);
                                         PlListVIew.footer.setVisibility(View.GONE);
@@ -456,16 +488,13 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
      * 加载详情页数据（不包括评论）
      */
     private void LoadData() {
-//        if (progressDialog == null) {
-//            progressDialog = ProgressDialog.show(this, null, );
-//            progressDialog.setCanceledOnTouchOutside(true);
-//        }
+
         if (!Network.HttpTest(this)) {
             tip.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.load_neterror));
             tip.setVisibility(View.VISIBLE);
             return;
         }
-        if(Id==null||Id.equals("")){
+        if (Id == null || Id.equals("")) {
             return;
         }
 //        ProgressUtil.show(this, "", mApplication.ST("正在加载...."));
@@ -477,8 +506,8 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                     try {
                         js.put("act_id", Id);
                         js.put("m_id", Constants.M_id);
-                        if (!PreferenceUtil.getUserId(activity_Detail.this).equals("")) {
-                            js.put("user_id", PreferenceUtil.getUserId(activity_Detail.this));
+                        if (!PreferenceUtil.getUserId(ActivityDetail.this).equals("")) {
+                            js.put("user_id", PreferenceUtil.getUserId(ActivityDetail.this));
                         }
 
 
@@ -502,7 +531,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         tip.setVisibility(View.GONE);
 
                                         isNeedToChooseTime = map.get("term").equals("2") ? true : false;
-                                        if(TimeUtils.dataOne(map.get("act_time"))<System.currentTimeMillis()){
+                                        if (TimeUtils.dataOne(map.get("act_time")) < System.currentTimeMillis()) {
                                             yue.setVisibility(View.GONE);
                                         }
 
@@ -512,11 +541,13 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         } else {
                                             LogUtil.e("没有活动协议");
                                         }
-                                        dianzan.setOnClickListener(activity_Detail.this);
-                                        Tobaoming.setOnClickListener(activity_Detail.this);
-                                        rightImg.setOnClickListener(activity_Detail.this);
-                                        FaSong.setOnClickListener(activity_Detail.this);
-                                        shoucang.setOnClickListener(activity_Detail.this);
+
+
+                                        dianzan.setOnClickListener(ActivityDetail.this);
+                                        Tobaoming.setOnClickListener(ActivityDetail.this);
+                                        rightImg.setOnClickListener(ActivityDetail.this);
+                                        FaSong.setOnClickListener(ActivityDetail.this);
+                                        shoucang.setOnClickListener(ActivityDetail.this);
 
 
                                         title.setText(mApplication.ST(map.get("title")));//标题
@@ -525,7 +556,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         faqidanwei.append(mApplication.ST("发起单位:" + map.get("author")));//发布单位
                                         huodongdidian.append(mApplication.ST("活动地点:" + map.get("address")));//活动地点
 //                                        String acttime = map.get("act_time");
-                                        String endTime = map.get("end_time");
+                                        String endTime   = map.get("end_time");
                                         String startTime = map.get("start_time");
 //                                        if ((TimeUtils.dataOne(acttime) - System.currentTimeMillis()) <= 0) {
 //                                            huodongTime.append(mApplication.ST("活动时间:活动已开始"));
@@ -536,26 +567,49 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         if ((TimeUtils.dataOne(endTime) - System.currentTimeMillis()) <= 0) {
                                             Tobaoming.setText(mApplication.ST("已结束"));
                                             Tobaoming.setEnabled(false);
-                                            if(getIntent().getStringExtra("wel_id")!=null){
+                                            if (getIntent().getStringExtra("wel_id") != null) {
                                                 ToastUtil.showToastShort("该活动已结束");
                                             }
                                         } else {
-                                            if (!PreferenceUtil.getUserId(activity_Detail.this).equals("")) {
+                                            if (!PreferenceUtil.getUserId(ActivityDetail.this).equals("")) {
                                                 if ("000".equals(totalMap.get("code"))) {
+                                                    //已报名，但是正在审核，显示快速通道
+                                                    LogUtil.e("已报名，但是正在审核，显示快速通道");
+                                                    quickChannel.setVisibility(View.VISIBLE);
                                                     Tobaoming.setText(mApplication.ST("已报名"));
                                                     Tobaoming.setEnabled(false);
-                                                    if(getIntent().getStringExtra("wel_id")!=null){
+                                                    if (getIntent().getStringExtra("wel_id") != null) {
                                                         //绑定福利券
                                                         BaoMing();
                                                     }
-                                                }else{
-                                                    // TODO: 2018/4/23 使用券进入详情页  直接模拟点击报名
-                                                    if(getIntent().getStringExtra("wel_id")!=null){
-                                                        Tobaoming.performClick();
+                                                } else {
+                                                    if ("002".equals(totalMap.get("code"))) {
+                                                        //已报名并且审核通过
+                                                        LogUtil.e("已报名并且审核通过");
+                                                        Tobaoming.setText(mApplication.ST("已通过"));
+                                                        Tobaoming.setEnabled(false);
+                                                        quickChannel.setVisibility(View.GONE);
+                                                    } else if("005".equals(totalMap.get("code"))){
+                                                        //未报名的情况,暂时先显示快速通道
+                                                        quickChannel.setVisibility(View.VISIBLE);
+                                                        // TODO: 2018/4/23 使用券进入详情页  直接模拟点击报名
+                                                        if (getIntent().getStringExtra("wel_id") != null) {
+                                                            Tobaoming.performClick();
+                                                        }
                                                     }
+
                                                 }
                                             }
 
+                                        }
+                                        LogUtil.e("code::::"+totalMap.get("code"));
+                                        if ("2".equals(map.get("actquick"))) {
+                                            //该活动拥有显示快速通道的权利，最后一次确定是否显示
+                                            //如果有权利显示，则根据前面判断确定
+
+                                        } else {
+                                            //如果没有权利显示，则直接隐藏
+                                            quickChannel.setVisibility(View.GONE);
                                         }
                                         peopleNum.append(mApplication.ST("已报名人数:" + map.get("enrollment")));//已报名人数
                                         dianzanText.setText(map.get("likes"));
@@ -567,13 +621,13 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         title.setFocusableInTouchMode(true);
                                         title.requestFocus();
                                         String md5 = MD5Utls.stringToMD5(Constants.safeKey);
-                                        String m1 = md5.substring(0, 16);
-                                        String m2 = md5.substring(16, md5.length());
+                                        String m1  = md5.substring(0, 16);
+                                        String m2  = md5.substring(16, md5.length());
                                         umWeb = new UMWeb(Constants.FX_host_Ip + TAG + "/id/" + m1 + Id + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
                                         LogUtil.e("链接：：：：" + Constants.FX_host_Ip + TAG + "/id/" + m1 + Id + m2);
                                         umWeb.setTitle(mApplication.ST(map.get("title")));
                                         umWeb.setDescription(mApplication.ST(map.get("abstract")));
-                                        umWeb.setThumb(new UMImage(activity_Detail.this, map.get("image1")));
+                                        umWeb.setThumb(new UMImage(ActivityDetail.this, map.get("image1")));
 
                                         getPLData();
                                         ProgressUtil.dismiss();
@@ -619,7 +673,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                             });
                         }
                     });
-                }finally {
+                } finally {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -658,7 +712,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                 public void run() {
                     try {
                         final String content = PLText.getText().toString();
-                        JSONObject js = new JSONObject();
+                        JSONObject   js      = new JSONObject();
                         try {
                             js.put("user_id", sp.getString("user_id", ""));
                             js.put("ct_contents", content);
@@ -677,15 +731,15 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(!"0".equals(hashMap.get("yundousum"))){
-                                            YunDouAwardDialog.show(activity_Detail.this,"每日评论",hashMap.get("yundousum"));
+                                        if (!"0".equals(hashMap.get("yundousum"))) {
+                                            YunDouAwardDialog.show(ActivityDetail.this, "每日评论", hashMap.get("yundousum"));
                                         }
                                         ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                        final HashMap<String, String> map = new HashMap<>();
-                                        String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-                                        final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-                                        String petname = sp.getString("pet_name", "");
-                                        String diazannum = "0";
+                                        final HashMap<String, String> map       = new HashMap<>();
+                                        String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
+                                        final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
+                                        String                        petname   = sp.getString("pet_name", "");
+                                        String                        diazannum = "0";
                                         map.put("user_image", headurl);
                                         map.put("ct_contents", content);
                                         map.put("pet_name", petname);
@@ -726,7 +780,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(activity_Detail.this, mApplication.ST("上传评论失败，请重新尝试"), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ActivityDetail.this, mApplication.ST("上传评论失败，请重新尝试"), Toast.LENGTH_SHORT).show();
                                         ProgressUtil.dismiss();
                                         v.setEnabled(true);
                                     }
@@ -736,7 +790,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(activity_Detail.this, mApplication.ST("上传评论失败，请重新尝试"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityDetail.this, mApplication.ST("上传评论失败，请重新尝试"), Toast.LENGTH_SHORT).show();
                                     ProgressUtil.dismiss();
                                     v.setEnabled(true);
                                 }
@@ -754,7 +808,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                 public void run() {
                     try {
                         final String content = PLText.getText().toString();
-                        JSONObject js = new JSONObject();
+                        JSONObject   js      = new JSONObject();
                         try {
                             js.put("user_id", sp.getString("user_id", ""));
                             js.put("ct_contents", content);
@@ -775,17 +829,17 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         if (currentLayout.getVisibility() == View.GONE) {
                                             currentLayout.setVisibility(View.VISIBLE);
                                         }
-                                        if(!"0".equals(hashMap.get("yundousum"))){
-                                            YunDouAwardDialog.show(activity_Detail.this,"每日评论",hashMap.get("yundousum"));
+                                        if (!"0".equals(hashMap.get("yundousum"))) {
+                                            YunDouAwardDialog.show(ActivityDetail.this, "每日评论", hashMap.get("yundousum"));
                                         }
                                         ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                        TextView textView = new TextView(activity_Detail.this);
+                                        TextView                  textView     = new TextView(ActivityDetail.this);
                                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                        layoutParams.setMargins(0, DimenUtils.dip2px(activity_Detail.this, 5), 0, DimenUtils.dip2px(activity_Detail.this, 5));
+                                        layoutParams.setMargins(0, DimenUtils.dip2px(ActivityDetail.this, 5), 0, DimenUtils.dip2px(ActivityDetail.this, 5));
                                         textView.setLayoutParams(layoutParams);
-                                        String pet_name = sp.getString("pet_name", "");
-                                        SpannableStringBuilder ssb = new SpannableStringBuilder(pet_name + ":" + mApplication.ST(content));
-                                        ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(activity_Detail.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                                        String                 pet_name = sp.getString("pet_name", "");
+                                        SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + mApplication.ST(content));
+                                        ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ActivityDetail.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                                         textView.setText(ssb);
                                         currentLayout.addView(textView);
                                         PLText.setText("");
@@ -796,7 +850,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         FaSong.setEnabled(true);
                                         isPLing = false;
                                         try {
-                                            JSONArray jsonArray = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
+                                            JSONArray  jsonArray  = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
                                             JSONObject jsonObject = new JSONObject();
                                             jsonObject.put("id", hashMap.get("id"));
                                             jsonObject.put("pet_name", pet_name);
@@ -822,7 +876,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                 @Override
                                 public void run() {
                                     v.setEnabled(true);
-                                    Toast.makeText(activity_Detail.this, mApplication.ST("回复提交失败，请重新尝试"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ActivityDetail.this, mApplication.ST("回复提交失败，请重新尝试"), Toast.LENGTH_SHORT).show();
                                     ProgressUtil.dismiss();
                                 }
                             });
@@ -861,118 +915,320 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
     private void BaoMing() {
 
         if (sp.getString("perfect", "1").equals("1") && !act_prol.equals("")) {
-            Intent intent = new Intent(activity_Detail.this, IdCardCheck.class);
+            Intent intent = new Intent(ActivityDetail.this, IdCardCheck.class);
             startActivityForResult(intent, 666);
-            Toast.makeText(activity_Detail.this, mApplication.ST("您还未完善资料，快去完善资料吧"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityDetail.this, mApplication.ST("您还未完善资料，快去完善资料吧"), Toast.LENGTH_SHORT).show();
         } else {
-            JSONObject js = new JSONObject();
-            try {
-                js.put("m_id", Constants.M_id);
-                js.put("act_id", Id);
-                js.put("user_id", sp.getString("user_id", ""));
-                if (getIntent().getStringExtra("wel_id")!=null){
-                    js.put("wel",getIntent().getStringExtra("wel_id"));
+            if (hasShowedQuick) {
+                //快速报名通道
+                getInfos();
+            } else {
+                //普通报名通道
+                JSONObject js = new JSONObject();
+                try {
+                    js.put("m_id", Constants.M_id);
+                    js.put("act_id", Id);
+                    js.put("user_id", sp.getString("user_id", ""));
+                    if (getIntent().getStringExtra("wel_id") != null) {
+                        js.put("wel", getIntent().getStringExtra("wel_id"));
+                    }
+                    if (isNeedToChooseTime && !startTime.equals("") && !endTime.equals("")) {
+                        js.put("start_time", startTime);
+                        js.put("end_time", endTime);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                if(isNeedToChooseTime&&!startTime.equals("")&&!endTime.equals("")){
-                    js.put("start_time",startTime);
-                    js.put("end_time",endTime);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            LogUtil.e("提交报名信息：：；"+js);
-            ApisSeUtil.M m = ApisSeUtil.i(js);
-            OkGo.post(Constants.Activity_BaoMing).tag(TAG)
-                    .params("key", m.K())
-                    .params("msg", m.M())
-                    .execute(new AbsCallback<HashMap<String, String>>() {
-                        @Override
-                        public HashMap<String, String> convertSuccess(Response response) throws Exception {
-                            return AnalyticalJSON.getHashMap(response.body().string());
-                        }
+                LogUtil.e("提交报名信息：：；" + js);
+                ApisSeUtil.M m = ApisSeUtil.i(js);
+                OkGo.post(Constants.Activity_BaoMing).tag(TAG)
+                        .params("key", m.K())
+                        .params("msg", m.M())
+                        .execute(new AbsCallback<HashMap<String, String>>() {
+                            @Override
+                            public HashMap<String, String> convertSuccess(Response response) throws Exception {
+                                return AnalyticalJSON.getHashMap(response.body().string());
+                            }
 
 
-                        @Override
-                        public void onBefore(BaseRequest request) {
-                            super.onBefore(request);
-                            ProgressUtil.show(activity_Detail.this, "", mApplication.ST("正在报名，请稍等"));
-                        }
+                            @Override
+                            public void onBefore(BaseRequest request) {
+                                super.onBefore(request);
+                                ProgressUtil.show(ActivityDetail.this, "", mApplication.ST("正在报名，请稍等"));
+                            }
 
-                        @Override
-                        public void onSuccess(final HashMap<String, String> map, Call call, Response response) {
-                            if (map != null) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        View view = LayoutInflater.from(activity_Detail.this).inflate(R.layout.baoming_alert, null);
-                                        AlertDialog.Builder b = new AlertDialog.Builder(activity_Detail.this).
-                                                setView(view);
-                                        final AlertDialog d = b.create();
-                                        d.getWindow().setDimAmount(0.2f);
-                                        view.findViewById(R.id.commit).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                if (sp.getString("perfect", "1").equals("1") && !act_prol.equals("")) {
-                                                    Intent intent = new Intent(activity_Detail.this, user_Info_First.class);
-                                                    startActivity(intent);
-                                                    Toast.makeText(activity_Detail.this, mApplication.ST("您还未完善资料，快去完善资料吧"), Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onSuccess(final HashMap<String, String> map, Call call, Response response) {
+                                if (map != null) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            View view = LayoutInflater.from(ActivityDetail.this).inflate(R.layout.baoming_alert, null);
+                                            AlertDialog.Builder b = new AlertDialog.Builder(ActivityDetail.this).
+                                                    setView(view);
+                                            final AlertDialog d = b.create();
+                                            d.getWindow().setDimAmount(0.2f);
+                                            view.findViewById(R.id.commit).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    if (sp.getString("perfect", "1").equals("1") && !act_prol.equals("")) {
+                                                        Intent intent = new Intent(ActivityDetail.this, user_Info_First.class);
+                                                        startActivity(intent);
+                                                        Toast.makeText(ActivityDetail.this, mApplication.ST("您还未完善资料，快去完善资料吧"), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                    d.dismiss();
                                                 }
-                                                d.dismiss();
-                                            }
-                                        });
-                                        if ("000".equals(map.get("code"))) {
-                                            ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已成功报名"));
-                                            view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#40d976"));
-                                            ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
-                                            Tobaoming.setText(mApplication.ST("已报名"));
-                                            Tobaoming.setEnabled(false);
-                                            d.show();
-                                            if (getIntent().getStringExtra("wel_id")!=null){
-                                                d.dismiss();
-                                                ToastUtil.showToastShort("该福利券已使用成功");
+                                            });
+                                            if ("000".equals(map.get("code"))) {
+                                                ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已成功报名"));
+                                                view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#40d976"));
+                                                ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
+                                                Tobaoming.setText(mApplication.ST("已报名"));
+                                                Tobaoming.setEnabled(false);
+                                                d.show();
+                                                if (getIntent().getStringExtra("wel_id") != null) {
+                                                    d.dismiss();
+                                                    ToastUtil.showToastShort("该福利券已使用成功");
+                                                    setResult(666);
+                                                    finish();
+                                                }
+
+                                            } else if ("003".equals(map.get("code"))) {
+                                                if (getIntent().getStringExtra("wel_id") != null && map.get("type") != null) {//绑定兑换券
+                                                    if (map.get("type").equals("000")) {
+                                                        ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("福利券使用成功"));
+                                                    } else if (map.get("type").equals("001")) {
+                                                        ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("福利券使用失败"));
+                                                    }
+                                                    ((TextView) view.findViewById(R.id.phone)).setText("");
+                                                } else {
+                                                    ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
+                                                    ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已经报名过了哟~"));
+                                                }
+                                                view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#40d976"));
+                                                Tobaoming.setText(mApplication.ST("已报名"));
+                                                Tobaoming.setEnabled(false);
+
+                                            } else if ("005".equals(map.get("code"))) {
+                                                ToastUtil.showToastShort("使用兑换券失败，兑换券已使用或已转赠");
                                                 setResult(666);
                                                 finish();
                                             }
+                                            ProgressUtil.dismiss();
 
-                                        } else if ("003".equals(map.get("code"))) {
-                                            if (getIntent().getStringExtra("wel_id")!=null&&map.get("type")!=null){//绑定兑换券
-                                                if(map.get("type").equals("000")){
-                                                    ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("福利券使用成功"));
-                                                }else if(map.get("type").equals("001")){
-                                                    ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("福利券使用失败"));
-                                                }
-                                                ((TextView) view.findViewById(R.id.phone)).setText("");
-                                            }else{
-                                                ((TextView) view.findViewById(R.id.phone)).setText(mApplication.ST("审核结果请及时关注App我的活动：\n[我的]->[活动]"));
-                                                ((TextView) view.findViewById(R.id.result_msg)).setText(mApplication.ST("您已经报名过了哟~"));
-                                            }
-                                            view.findViewById(R.id.commit).setBackgroundColor(Color.parseColor("#40d976"));
-                                            Tobaoming.setText(mApplication.ST("已报名"));
-                                            Tobaoming.setEnabled(false);
 
-                                        }else if("005".equals(map.get("code"))){
-                                            ToastUtil.showToastShort("使用兑换券失败，兑换券已使用或已转赠");
-                                            setResult(666);
-                                            finish();
                                         }
-                                        ProgressUtil.dismiss();
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onAfter(HashMap<String, String> map, Exception e) {
+                                super.onAfter(map, e);
+                                ProgressUtil.dismiss();
+                            }
 
 
-                                    }
-                                });
+                        });
+            }
 
+        }
+    }
+
+    /**
+     * 获取快速通道的信息
+     */
+    private void getInfos() {
+        if (!Network.HttpTest(this)) {
+            return;
+        }
+        JSONObject js = new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+            js.put("act_id", Id);
+            js.put("user_id", PreferenceUtil.getUserId(this));
+            if (isNeedToChooseTime) {
+                js.put("start_time", startTime);
+                js.put("end_time", endTime);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        LogUtil.e("快速通道：：" + js);
+        OkGo.post(Constants.ActivityQuick)
+                .tag(this)
+                .params("key", m.K())
+                .params("msg", m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        final HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
+                        if (map != null) {
+                            if ("000".equals(map.get("code"))) {
+                                //获取快速通道的信息
+                                quickInfoMap = AnalyticalJSON.getList_zj(map.get("msg"));
+                                if (quickInfoMap != null) {
+                                    ListDialog.create(ActivityDetail.this)
+                                            .setView(R.layout.dialog_list)
+                                            .mode(ListDialog.WITH_LIST)
+                                            .setAnimResId(R.style.dialogWindowAnim)
+                                            .setListViewId(R.id.recycle)
+                                            .setCancelViewId(R.id.cancel)
+                                            .setList(quickInfoMap, "title")
+                                            .setText(R.id.title, mApplication.ST("请选择【免审核】直接录取方式"))
+                                            .setCallBack(new ListDialog.HandleCallBack<HashMap<String, String>>() {
+                                                @Override
+                                                public void onItemClick(final HashMap<String, String> item, int pos, AlertDialog dialog) {
+                                                    dialog.dismiss();
+                                                    View          view   = LayoutInflater.from(ActivityDetail.this).inflate(R.layout.activity_confirm_dialog, null);
+                                                    final WebView web    = (WebView) view.findViewById(R.id.web);
+                                                    TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                                                    cancle.setText(mApplication.ST("取消"));
+                                                    final TextView commitToPay = (TextView) view.findViewById(R.id.baoming);
+                                                    commitToPay.setText(mApplication.ST(item.get("title")));
+                                                    commitToPay.setBackgroundResource(R.color.main_color);
+                                                    web.loadDataWithBaseURL("", item.get("contents")
+                                                            , "text/html", "UTF-8", null);
+
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDetail.this);
+                                                    builder.setView(view);
+                                                    final AlertDialog d = builder.create();
+                                                    cancle.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            web.destroy();
+
+                                                            d.dismiss();
+                                                        }
+                                                    });
+                                                    commitToPay.setOnClickListener(new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View v) {
+                                                            d.dismiss();
+                                                            showPayCommitDialog(item);
+
+                                                        }
+                                                    });
+
+                                                    builder.setCancelable(false);
+                                                    web.setWebViewClient(new WebViewClient() {
+                                                        @Override
+                                                        public void onPageFinished(WebView view, String url) {
+                                                            super.onPageFinished(view, url);
+
+                                                        }
+
+                                                        @Override
+                                                        public void onPageCommitVisible(WebView view, String url) {
+                                                            super.onPageCommitVisible(view, url);
+                                                            d.show();
+                                                        }
+                                                    });
+                                                }
+                                            }).show();
+
+                                }
+
+                            } else if ("002".equals(map.get("code"))) {
+                                //已经是理事会成员了
+                                Tobaoming.setText(mApplication.ST("已通过"));
+                                Tobaoming.setEnabled(false);
+                                quickChannel.setVisibility(View.GONE);
+                                ToastUtil.showToastShort("您已报名通过，请到个人中心查看");
                             }
                         }
 
-                        @Override
-                        public void onAfter(HashMap<String, String> map, Exception e) {
-                            super.onAfter(map, e);
-                            ProgressUtil.dismiss();
-                        }
+                    }
 
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        ProgressUtil.show(ActivityDetail.this, "", "请稍等");
+                    }
 
-                    });
-        }
+                    @Override
+                    public void onAfter(String s, Exception e) {
+                        super.onAfter(s, e);
+                        ProgressUtil.dismiss();
+                    }
+                });
+    }
+
+    //支付提示窗口
+    private void showPayCommitDialog(final HashMap<String, String> map) {
+        View           view  = LayoutInflater.from(this).inflate(R.layout.dialog_title_msg_edt_cancel_commit, null);
+        TextView       title = view.findViewById(R.id.title);
+        TextView       msg   = view.findViewById(R.id.msg);
+        final EditText edit  = view.findViewById(R.id.edit);
+        edit.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        TextView cancel = view.findViewById(R.id.cancel);
+        TextView commit = view.findViewById(R.id.commit);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        title.setText(mApplication.ST("支付提示"));
+        msg.setText(mApplication.ST("支付金额：" + map.get("money") + "起"));
+        cancel.setText(mApplication.ST("取消"));
+        commit.setText(mApplication.ST("支付"));
+        edit.setHint("支付金额：" + map.get("money") + "起");
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        commit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String editable = edit.getText().toString().trim();
+                if (editable.equals("")) {
+                    ToastUtil.showToastShort("请根据提示输入金额");
+                    return;
+                }
+                if (!CheckNumUtil.checkNum(editable)) {
+                    ToastUtil.showToastShort("请根据提示输入正确的金额");
+                    return;
+                }
+                if (editable.contains(".") && (editable.substring(editable.lastIndexOf(".")).length() - 1) > 2) {
+                    LogUtil.e("小数点后位数：：：" + (editable.substring(editable.lastIndexOf(".")).length() - 1));
+                    ToastUtil.showToastShort("金额只支持小数点后两位，请重新输入");
+                    return;
+                }
+                double money = Double.valueOf(map.get("money"));
+                double input = Double.valueOf(editable);
+                if (money > input) {
+                    ToastUtil.showToastShort("支付金额：" + map.get("money") + "起");
+                    return;
+                }
+                dialog.dismiss();
+                BasePayParams basePayParams = new BasePayParams();
+                JSONObject    jsonInfo      = new JSONObject();
+                if (isNeedToChooseTime) {
+                    try {
+                        jsonInfo.put("act_type", map.get("id"));
+                        jsonInfo.put("start_time", startTime);
+                        jsonInfo.put("end_time", endTime);
+                        basePayParams.jsonInfo = jsonInfo.toString();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                basePayParams.allMoney = editable;
+                basePayParams.num = "1";
+                basePayParams.payType = "14";
+                basePayParams.payId = Id;//活动id
+                basePayParams.title = ActivityDetail.this.map.get("title");
+                mApplication.openPayLayout(ActivityDetail.this, basePayParams);
+
+            }
+        });
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        dialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
+        dialog.show();
+
     }
 
     /**
@@ -983,6 +1239,11 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
     @Override
     public void onClick(final View v) {
         switch (v.getId()) {
+            case R.id.quickChannel:
+                if (quickInfoMap == null) quickInfoMap = new ArrayList<>();
+                hasShowedQuick = true;//确定点击快速通道
+                prepareBaoMing();
+                break;
             case R.id.qr_saoyisao:
                 if (Build.VERSION.SDK_INT >= 23) {
                     int ca = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.CAMERA);
@@ -991,8 +1252,8 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                         return;
                     }
                 }
-                Intent intent1=new Intent(this, QRActivity.class);
-                intent1.putExtra("id",Id);
+                Intent intent1 = new Intent(this, QRActivity.class);
+                intent1.putExtra("id", Id);
                 startActivity(intent1);
                 break;
             case R.id.activity_detail_yue:
@@ -1000,32 +1261,32 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
 //                    ToastUtil.showToastShort("该活动已经开始，约功能已停止");
 //                    return;
 //                }
-                if(new LoginUtil().checkLogin(this)){
-                    JSONObject js=new JSONObject();
+                if (new LoginUtil().checkLogin(this)) {
+                    JSONObject js = new JSONObject();
                     try {
-                        js.put("m_id",Constants.M_id);
-                        js.put("user_id",PreferenceUtil.getUserId(this));
-                        js.put("act_id",Id);
+                        js.put("m_id", Constants.M_id);
+                        js.put("user_id", PreferenceUtil.getUserId(this));
+                        js.put("act_id", Id);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    ApisSeUtil.M m=ApisSeUtil.i(js);
-                    LogUtil.e("判断用户是否报名审核成功"+js);
-                    OkGo.post(Constants.IsEnrolled).params("key",m.K())
-                            .params("msg",m.M())
+                    ApisSeUtil.M m = ApisSeUtil.i(js);
+                    LogUtil.e("判断用户是否报名审核成功" + js);
+                    OkGo.post(Constants.IsEnrolled).params("key", m.K())
+                            .params("msg", m.M())
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(String s, Call call, Response response) {
-                                    HashMap<String,String> map=AnalyticalJSON.getHashMap(s);
-                                    if(map!=null){
-                                        if("000".equals(map.get("code"))){
+                                    HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
+                                    if (map != null) {
+                                        if ("000".equals(map.get("code"))) {
                                             LogUtil.e("已通过审核");
-                                            Intent intent=new Intent(activity_Detail.this, Activity_YaoYue.class);
-                                            intent.putExtra("id",Id);
+                                            Intent intent = new Intent(ActivityDetail.this, Activity_YaoYue.class);
+                                            intent.putExtra("id", Id);
                                             startActivity(intent);
-                                        }else if("001".equals(map.get("code"))){
+                                        } else if ("001".equals(map.get("code"))) {
                                             ToastUtil.showToastShort("您的报名还没通过审核，请留意活动中的审核结果");
-                                        }else if("002".equals(map.get("code"))){
+                                        } else if ("002".equals(map.get("code"))) {
                                             ToastUtil.showToastShort("您还没有报名该活动，快去报名参加吧");
                                         }
                                     }
@@ -1044,7 +1305,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                 if (sp.getString("user_id", "").equals("") && sp.getString("uid", "").equals("")) {
                     Intent intent = new Intent(this, Login.class);
                     startActivity(intent);
-                    Toast.makeText(activity_Detail.this, mApplication.ST("请先登录"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityDetail.this, mApplication.ST("请先登录"), Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     new Thread(new Runnable() {
@@ -1068,8 +1329,8 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if(!"0".equals(map.get("yundousum"))){
-                                                    YunDouAwardDialog.show(activity_Detail.this,"每日点赞",map.get("yundousum"));
+                                                if (!"0".equals(map.get("yundousum"))) {
+                                                    YunDouAwardDialog.show(ActivityDetail.this, "每日点赞", map.get("yundousum"));
                                                 }
                                                 dianzanText.setText((Integer.valueOf(dianzanText.getText().toString()) + 1) + "");
                                                 dianzanText.setTextColor(getResources().getColor(R.color.main_color));
@@ -1085,7 +1346,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                                                 dianzanText.setTextColor(getResources().getColor(R.color.main_color));
                                                 dianzanImg.setImageResource(R.drawable.dianzan1);
                                                 dianzan.setEnabled(false);
-                                                Toast.makeText(activity_Detail.this, mApplication.ST("已点过赞啦"), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(ActivityDetail.this, mApplication.ST("已点过赞啦"), Toast.LENGTH_SHORT).show();
                                             }
                                         });
 
@@ -1100,62 +1361,8 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                 }
                 break;
             case R.id.activity_detail_baoming://报名页面
-                if (new LoginUtil().checkLogin(activity_Detail.this)) {
-                    if (act_prol != null && !act_prol.equals("")) {
-                        View view = LayoutInflater.from(this).inflate(R.layout.activity_confirm_dialog, null);
-                        final WebView web = (WebView) view.findViewById(R.id.web);
-                        TextView cancle = (TextView) view.findViewById(R.id.cancle);
-                        cancle.setText(mApplication.ST("不同意"));
-                        final TextView baoming = (TextView) view.findViewById(R.id.baoming);
-                        baoming.setEnabled(false);
-                        final CountDownTimer cdt = new CountDownTimer(BuildConfig.DEBUG?1000:10000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                baoming.setText(mApplication.ST("请阅读报名须知(" + millisUntilFinished / 1000 + "秒)"));
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                baoming.setText(mApplication.ST("同意"));
-                                baoming.setEnabled(true);
-                            }
-                        };
-                        web.loadDataWithBaseURL("", act_prol
-                                , "text/html", "UTF-8", null);
-//                    Api.getUserNeedKnow(this,web);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setView(view);
-                        final AlertDialog dialog = builder.create();
-                        cancle.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                web.destroy();
-                                cdt.cancel();
-                                dialog.dismiss();
-                            }
-                        });
-                        baoming.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                showBaoMingDialog();
-
-                            }
-                        });
-                        cdt.start();
-                        builder.setCancelable(false);
-                        web.setWebViewClient(new WebViewClient() {
-                            @Override
-                            public void onPageFinished(WebView view, String url) {
-                                super.onPageFinished(view, url);
-                                dialog.show();
-                            }
-                        });
-
-                    } else {
-                        showBaoMingDialog();
-                    }
-                }
+                hasShowedQuick = false;//未点击快速通道
+                prepareBaoMing();
 
 
                 break;
@@ -1165,7 +1372,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
             case R.id.title_image2://分享
                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                 if (umWeb != null) {
-                    new ShareManager().shareWeb(umWeb, activity_Detail.this);
+                    new ShareManager().shareWeb(umWeb, ActivityDetail.this);
                 }
                 break;
             case R.id.activity_detail_shoucang:
@@ -1173,12 +1380,77 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                     return;
                 }
                 if (!Network.HttpTest(this)) {
-                    Toast.makeText(activity_Detail.this, mApplication.ST("请检查网络连接"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityDetail.this, mApplication.ST("请检查网络连接"), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                CollectManager.doCollect(activity_Detail.this,Id,"2",shoucang);
+                CollectManager.doCollect(ActivityDetail.this, Id, "2", shoucang);
 
                 break;
+        }
+    }
+
+    private void prepareBaoMing() {
+        if (new LoginUtil().checkLogin(ActivityDetail.this)) {
+            if (act_prol != null && !act_prol.equals("")) {
+                View          view   = LayoutInflater.from(this).inflate(R.layout.activity_confirm_dialog, null);
+                final WebView web    = (WebView) view.findViewById(R.id.web);
+                TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                cancle.setText(mApplication.ST("不同意"));
+                final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                baoming.setEnabled(false);
+                final CountDownTimer cdt = new CountDownTimer(BuildConfig.DEBUG ? 1000 : 10000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        baoming.setText(mApplication.ST("请阅读报名须知(" + millisUntilFinished / 1000 + "秒)"));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        baoming.setText(mApplication.ST("同意"));
+                        baoming.setEnabled(true);
+                    }
+                };
+                web.loadDataWithBaseURL("", act_prol
+                        , "text/html", "UTF-8", null);
+//                    Api.getUserNeedKnow(this,web);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setView(view);
+                final AlertDialog dialog = builder.create();
+                cancle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        web.destroy();
+                        cdt.cancel();
+                        dialog.dismiss();
+                    }
+                });
+                baoming.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        showBaoMingDialog();
+
+                    }
+                });
+                cdt.start();
+                builder.setCancelable(false);
+                web.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        super.onPageFinished(view, url);
+
+                    }
+
+                    @Override
+                    public void onPageCommitVisible(WebView view, String url) {
+                        super.onPageCommitVisible(view, url);
+                        dialog.show();
+                    }
+                });
+
+            } else {
+                showBaoMingDialog();
+            }
         }
     }
 
@@ -1192,19 +1464,19 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                 @Override
                 public void onTimeSelect(Date date, View v) {
                     LogUtil.e("开始时间：：" + TimeUtils.getYMDTime(date, true));
-                    startTime =TimeUtils.getYMDTime(date, true);
+                    startTime = TimeUtils.getYMDTime(date, true);
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(date);
                     calendar.add(Calendar.DAY_OF_MONTH, 29);
                     Calendar end = Calendar.getInstance();
                     end.set(calendar.get(Calendar.YEAR) + 100, 11, 31);
-                    TimePickerView timePickerView = new TimePickerView.Builder(activity_Detail.this, new TimePickerView.OnTimeSelectListener() {
+                    TimePickerView timePickerView = new TimePickerView.Builder(ActivityDetail.this, new TimePickerView.OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date endDate, View v) {
                             LogUtil.e("结束时间：：" + TimeUtils.getYMDTime(endDate, false));
-                            endTime =TimeUtils.getYMDTime(endDate, false);
+                            endTime = TimeUtils.getYMDTime(endDate, false);
 
-                            AlertDialog.Builder builder1 = new AlertDialog.Builder(activity_Detail.this);
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(ActivityDetail.this);
                             builder1.setCancelable(true);
                             builder1.setPositiveButton(mApplication.ST("取消"), new DialogInterface.OnClickListener() {
                                 @Override
@@ -1226,7 +1498,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
                             .setCancelText("取消")
                             .setCancelColor(Color.GRAY)
                             .setSubmitColor(Color.BLACK)
-                            .setTitleColor(ContextCompat.getColor(activity_Detail.this,R.color.main_color))
+                            .setTitleColor(ContextCompat.getColor(ActivityDetail.this, R.color.main_color))
                             .setTitleBgColor(Color.WHITE)
                             .setTitleSize(18)
                             .setTitleText("请选择结束时间")
@@ -1258,7 +1530,7 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
             timePickerView.show();
 
         } else {
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(activity_Detail.this);
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(ActivityDetail.this);
             builder1.setCancelable(true);
             builder1.setPositiveButton(mApplication.ST("取消"), new DialogInterface.OnClickListener() {
                 @Override
@@ -1304,14 +1576,14 @@ public class activity_Detail extends AndroidPopupActivity implements View.OnClic
 
     @Override
     protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
-        Id=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
+        Id = AnalyticalJSON.getHashMap(map.get("msg")).get("id");
         LoadData();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(permissions[0].equals(Manifest.permission.CAMERA)&&grantResults[0]== PackageManager.PERMISSION_GRANTED){
+        if (permissions[0].equals(Manifest.permission.CAMERA) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             findViewById(R.id.qr_saoyisao).performClick();
         }
     }

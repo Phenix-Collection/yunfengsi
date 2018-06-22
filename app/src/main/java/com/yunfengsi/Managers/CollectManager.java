@@ -29,9 +29,27 @@ import okhttp3.Response;
  * 收藏管理
  */
 public class CollectManager {
+
     public interface OnDeleteListener{
      void   onDelete();
 
+    }
+    public static abstract class OnDataArrivedListener{
+        void   onSuccess(){
+
+        };
+        void   onError(){
+
+        };
+        void onAfter(){
+
+        }
+        public abstract  void  onUp();
+        public abstract  void  onDown();
+
+    }
+    public CollectManager getInstance(){
+        return new CollectManager();
     }
     /**
      *
@@ -53,6 +71,7 @@ public class CollectManager {
         }
         ApisSeUtil.M m=ApisSeUtil.i(js);
         LogUtil.e("收藏接口：："+js);
+
         OkGo.post(Constants.Collect).tag(activity).params("key",m.K())
                 .params("msg",m.M())
                 .execute(new StringCallback() {
@@ -63,11 +82,13 @@ public class CollectManager {
                             if("000".equals(map.get("code"))){//收藏成功
                                 ToastUtil.showToastShort("收藏成功");
                                 selectView.setSelected(true);
+
                             }else if("001".equals(map.get("code"))){//取消成功
                                 ToastUtil.showToastShort("已取消收藏");
                                 selectView.setSelected(false);
                             }
                         }
+
                     }
 
                     @Override
@@ -83,15 +104,75 @@ public class CollectManager {
                     }
                 });
     }
+
     /**
      *
      * @param id   收藏的id
-     * @param type  收藏的类型   1图文  2 活动  3供养  4助学
+     * @param type  收藏的类型   1图文  2 活动  3供养  4助学 5义卖
+     * @param selectView 需要设置selected的view
+     *@param listener  监听
+     * @return  code  000 收藏成功   001  收藏失败
+     */
+    public  static  void doCollect(final Activity activity, String id, String type, final View selectView, final OnDataArrivedListener listener){
+        JSONObject js=new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+            js.put("user_id", PreferenceUtil.getUserId(mApplication.getInstance()));
+            js.put("type", type);
+            js.put("collect", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApisSeUtil.M m=ApisSeUtil.i(js);
+        LogUtil.e("收藏接口：："+js);
+
+        OkGo.post(Constants.Collect).tag(activity).params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        HashMap<String ,String > map= AnalyticalJSON.getHashMap(s);
+                        if(map!=null){
+
+                            if("000".equals(map.get("code"))){//收藏成功
+                                ToastUtil.showToastShort("收藏成功");
+                                selectView.setSelected(true);
+                                listener.onUp();
+                            }else if("001".equals(map.get("code"))){//取消成功
+                                ToastUtil.showToastShort("已取消收藏");
+                                selectView.setSelected(false);
+                                listener.onDown();
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+//                        ProgressUtil.show(activity,"","请稍等");
+                    }
+
+                    @Override
+                    public void onAfter(String s, Exception e) {
+                        super.onAfter(s, e);
+//                        ProgressUtil.dismiss();
+                    }
+                });
+    }
+
+
+    /**
+     *
+     * @param id   收藏的id
+     * @param type  收藏的类型   1图文  2 活动  3供养  4助学 5义卖
      * @param listener 收藏列表删除收藏监听
      *
      * @return  code  000 收藏成功   001  收藏失败
      */
     public static void doCollectOnDelete(final Activity activity, String id, String type, final OnDeleteListener listener){
+
+
         JSONObject js=new JSONObject();
         try {
             js.put("m_id", Constants.M_id);

@@ -1,4 +1,4 @@
-package com.yunfengsi.ThirdPart.wxapi;
+package com.yunfengsi.wxapi;
 
 
 import android.app.Activity;
@@ -17,18 +17,22 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yunfengsi.Fragment.Mine_GYQD;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 
 /**
  * Created by Administrator on 2016/7/15.
+ * 微信回调页面Wxapi 包 必须在包名根目录下，不然无法回调
  */
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, View.OnClickListener {
     private static final String TAG = "WXPayEntryActivity";
@@ -70,7 +74,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
             if (resp.errCode == 0) {
                 msg.setText("支付成功");
                 if ("4".equals(mApplication.type)) {
-                    Intent intent1 = new Intent(this, ZhiFuShare.class);
+                    Intent intent1 = new Intent(this, WebInteraction.class);
                     intent1.putExtra("stu_id", mApplication.sut_id);
                     intent1.putExtra("yundou", true);
                     startActivity(intent1);
@@ -93,6 +97,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
                     Intent intent = new Intent();
                     intent.setClass(this, Mine_GYQD.class);
                     startActivity(intent);
+                }else if(mApplication.type.equals("14")){
+                    EventBus.getDefault().post(new ActivityDetail.RefreshEvent());
+
                 }
             } else if (resp.errCode == -2) {
                 msg.setText("您已取消本次支付");

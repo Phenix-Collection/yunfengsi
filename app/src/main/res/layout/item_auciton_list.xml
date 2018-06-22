@@ -5,7 +5,7 @@
     android:background="@drawable/layout_bg_sel"
     android:orientation="vertical"
     android:layout_margin="5dp"
-    android:padding="10dp">
+    android:padding="6dp">
 
 
     <ImageView

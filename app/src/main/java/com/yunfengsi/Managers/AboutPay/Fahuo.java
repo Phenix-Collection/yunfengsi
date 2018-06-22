@@ -128,13 +128,14 @@ public class Fahuo extends AppCompatActivity implements View.OnClickListener {
                 js.put("express", CompanyCode);
                 js.put("exp_name", name);
                 js.put("id",getIntent().getStringExtra("id"));
+                js.put("admin_id",PreferenceUtil.getUserId(this));
                 js.put("user_id", getIntent().getStringExtra("user_id"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             ApisSeUtil.M m = ApisSeUtil.i(js);
             LogUtil.e("绑定订单：：" + js);
-            OkGo.post(Constants.Bdexpress).tag(this)
+            OkGo.post(Constants.Deliveryexpress).tag(this)
                     .params("key", m.K())
                     .params("msg", m.M())
                     .execute(new AbsCallback<HashMap<String, String>>() {

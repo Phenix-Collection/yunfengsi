@@ -15,8 +15,8 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -34,6 +34,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -51,7 +52,6 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.LoadMoreListView;
-import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -301,7 +301,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                             public void run() {
                                 if(isRefresh&&PlListVIew.getHeaderViewsCount()==0){
                                     tv = new TextView(WallPaperComments.this);
-                                    ViewGroup.LayoutParams vl=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    AbsListView.LayoutParams vl =new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
                                     tv.setLayoutParams(vl);
                                     tv.setPadding(0,DimenUtils.dip2px(WallPaperComments.this,10),0,DimenUtils.dip2px(WallPaperComments.this,10));
                                     tv.setText(mApplication.ST("还没有评论,快来评论吧"));
@@ -327,7 +327,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                                     if (adapter.mlist.size() == 0 && Pllist.size() == 0) {//没有评论的时候
                                         tv = new TextView(WallPaperComments.this);
                                         tv.setText(mApplication.ST("还没有评论,快来评论吧"));
-                                        ViewGroup.LayoutParams vl=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        AbsListView.LayoutParams vl=new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
                                         tv.setLayoutParams(vl);
                                         tv.setPadding(0,DimenUtils.dip2px(WallPaperComments.this,10),0,DimenUtils.dip2px(WallPaperComments.this,10));
                                         if(PlListVIew.getHeaderViewsCount()==0){
@@ -415,7 +415,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
             case R.id.zixun_detail_fenxiang2://底部分享
                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                 fenxiangb.performClick();
-
+                break;
             case R.id.zixun_detail_fasong://发送提交评论
                 if (!new LoginUtil().checkLogin(this)) {
                     return;

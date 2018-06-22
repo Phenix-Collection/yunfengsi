@@ -30,8 +30,8 @@ import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
 import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Models.NianFo.NianFo;
 import com.yunfengsi.Models.ZiXun_Detail;
@@ -46,7 +46,7 @@ import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.mApplication;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -407,7 +407,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 ////                                            getIntent().setClass(Splash.this, ZiXun_Detail.class);
 ////                                            break;
 ////                                        case "2":
-////                                            getIntent().setClass(Splash.this, activity_Detail.class);
+////                                            getIntent().setClass(Splash.this, ActivityDetail.class);
 ////                                            break;
 ////                                        case "3":
 ////                                            getIntent().setClass(Splash.this, GongYangDetail.class);
@@ -416,7 +416,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 ////                                            getIntent().setClass(Splash.this, FundingDetailActivity.class);
 ////                                            break;
 ////                                        case "5":
-////                                            getIntent().setClass(Splash.this, ZhiFuShare.class);
+////                                            getIntent().setClass(Splash.this, WebInteraction.class);
 ////                                            break;
 ////
 ////                                    }
@@ -456,7 +456,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                     String url = v.getTag().toString();
                     if (url != null) {
                         if (url.contains("yfs.php") && url.contains("red")) {
-                            intent.setClass(this, ZhiFuShare.class);
+                            intent.setClass(this, WebInteraction.class);
                             intent.putExtra("type", "5");
                             startActivity(intent);
                             finish();
@@ -482,7 +482,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                                     Intent intent1 = new Intent();
                                     switch (type) {
                                         case mReceiver.HUODong:
-                                            intent1.setClass(Splash.this, activity_Detail.class);
+                                            intent1.setClass(Splash.this, ActivityDetail.class);
                                             intent1.putExtra("id", id);
                                             break;
                                         case mReceiver.GOngyang:

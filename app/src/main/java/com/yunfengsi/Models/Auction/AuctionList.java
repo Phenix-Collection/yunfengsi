@@ -30,11 +30,15 @@ import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.NumUtils;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,14 +59,19 @@ public class AuctionList extends AppCompatActivity implements SwipeRefreshLayout
     private int     endPage    = -1;
     private boolean isLoadMore = false;
     private boolean isRefresh  = false;
+    public static class RefreshEvent{
 
-
+    }
+    @Subscribe
+    public void doRefresh(RefreshEvent event){
+        onRefresh();
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.message_center);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-
+        EventBus.getDefault().register(this);
         ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("义卖");
         ((TextView) findViewById(R.id.handle_right)).setText("竞拍记录");
@@ -127,7 +136,7 @@ public class AuctionList extends AppCompatActivity implements SwipeRefreshLayout
         protected void convert(BaseViewHolder holder, final HashMap<String, String> map) {
             Glide.with(AuctionList.this)
                     .load(map.get("image"))
-                    .override(dp30, dp30 * 3 / 4)
+                    .override(dp30, dp30)
                     .placeholder(R.color.darkWhite)
                     .error(R.color.darkWhite)
                     .centerCrop()
@@ -136,15 +145,15 @@ public class AuctionList extends AppCompatActivity implements SwipeRefreshLayout
             ss.setSpan(new ForegroundColorSpan(Color.RED), 3, ss.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.setText(R.id.title, mApplication.ST(map.get("title")))
                     .setText(R.id.priceNow, ss)
-                    .setText(R.id.peopleNum, mApplication.ST(map.get("partake") + " 出价"));
+                    .setText(R.id.peopleNum, mApplication.ST(map.get("partake") + " 人出价"));
             long Lstart = TimeUtils.dataOne(map.get("start_time"));
             long Lend   = TimeUtils.dataOne(map.get("end_time"));
 
             if (Lstart > System.currentTimeMillis()) {
 
-                holder.setText(R.id.endTime, mApplication.ST("开始时间 " + TimeUtils.getTrueTimeStr(map.get("start_time"))));
+                holder.setText(R.id.endTime, mApplication.ST("开始时间 " + map.get("start_time")));
             } else if (Lstart<=System.currentTimeMillis()&&Lend> System.currentTimeMillis()) {
-                holder.setText(R.id.endTime, mApplication.ST(("结束时间 " + TimeUtils.getTrueTimeStr(map.get("end_time")))));
+                holder.setText(R.id.endTime, mApplication.ST(("结束时间 " + map.get("end_time"))));
 
             } else {
                 holder.setText(R.id.endTime, mApplication.ST("竞拍已结束"));
@@ -206,8 +215,18 @@ public class AuctionList extends AppCompatActivity implements SwipeRefreshLayout
                         }
 
                         @Override
+                        public void onError(Call call, Response response, Exception e) {
+                            super.onError(call, response, e);
+
+                        }
+
+                        @Override
                         public void onAfter(String s, Exception e) {
                             super.onAfter(s, e);
+                            if(e instanceof SocketTimeoutException){
+                                LogUtil.e("onAfter：：：："+e);
+                                ToastUtil.showToastShort("网络连接超时，请检查网络后重试");
+                            }
                             swip.setRefreshing(false);
                         }
 
@@ -222,5 +241,12 @@ public class AuctionList extends AppCompatActivity implements SwipeRefreshLayout
         isRefresh = true;
         adapter.setEnableLoadMore(true);
         getNotice();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

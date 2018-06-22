@@ -11,9 +11,8 @@ import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
-import com.unionpay.UPPayAssistEx;
 import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import org.json.JSONObject;
 
@@ -61,9 +60,8 @@ public class UpPayUtil extends AppCompatActivity {
      * 启动支付界面
      */
     public static void doStartUnionPayPlugin(Activity activity, String tn, String mode) {
-//        UPPayAssistEx.startPayByJAR(activity, PayActivity.class, null, null,
-//                tn, mode);
-        UPPayAssistEx.startPay(activity,null,null,tn,mode);
+        //支付入口
+//        UPPayAssistEx.startPay(activity,null,null,tn,mode);
     }
 
 
@@ -167,7 +165,7 @@ public class UpPayUtil extends AppCompatActivity {
                 if (str.equalsIgnoreCase("success")) {
                     msg = "支付成功！";
                     if("4".equals(type)){
-                        Intent intent1 = new Intent(this, ZhiFuShare.class);
+                        Intent intent1 = new Intent(this, WebInteraction.class);
                         intent1.putExtra("stu_id",stu_id);
                         startActivity(intent1);
                     }else if(type.equals("5")){//慈善

@@ -43,4 +43,15 @@
         android:layout_width="match_parent"
         android:layout_height="45dp" />
 
+    <TextView
+        android:id="@+id/wallpaper_manage"
+        android:text="壁纸管理"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:background="@drawable/layout_bg_sel"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+
 </LinearLayout>

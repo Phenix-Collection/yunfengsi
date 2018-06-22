@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
@@ -36,6 +35,7 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.yunfengsi.Deamon.OnePixelActivity;
+import com.yunfengsi.Managers.Base.BasePayParams;
 import com.yunfengsi.R;
 
 import java.lang.ref.WeakReference;
@@ -105,9 +105,9 @@ public class mApplication extends Application {
 
                     .debug("OkGo", Debug ? Level.SEVERE : Level.OFF, Debug)
                     //是否打开调试
-                    .setConnectTimeout(10000)               //全局的连接超时时间
-                    .setReadTimeOut(10000)                  //全局的读取超时时间
-                    .setWriteTimeOut(10000)                 //全局的写入超时时间
+                    .setConnectTimeout(8000)               //全局的连接超时时间
+                    .setReadTimeOut(8000)                  //全局的读取超时时间
+                    .setWriteTimeOut(8000)                 //全局的写入超时时间
                     //.setCookieStore(new MemoryCookieStore())                           //cookie使用内存缓存（app退出后，cookie消失）
 //                .setCookieStore(new PersistentCookieStore())                    //cookie持久化存储，如果cookie不过期，则一直有效
                     .addCommonHeaders(headers)                                         //设置全局公共头
@@ -284,15 +284,15 @@ public class mApplication extends Application {
 
     /**
      *
-     * @param context  上下文对象
-     * @param allmoney  总支付费用
-     * @param attachId  支付商品的id  多个用，链接
-     * @param title  支付标题   多个用，链接
-     * @param num    购买数量  默认1
-     * @param type   支付type  1视频    2直播 3 寺庙 4供养 5助学 6 书城 7点餐  8预约 9业务购买 11 拼团12 约参与费用 13义卖支付
-     * @param extra  供养使用  extra   如果有地址信息  则为地址id
+//     * @param context
+//     * @param allmoney  总支付费用
+//     * @param attachId  支付商品的id  多个用，链接
+//     * @param title  支付标题   多个用，链接
+//     * @param num    购买数量  默认1
+//     * @param type   支付type  1视频    2直播 3 寺庙 4供养 5助学 6 书城 7点餐  8预约 9业务购买 11 拼团12 约参与费用 13义卖支付  14 活动快速通道
+//     * @param extra  供养使用  extra   如果有地址信息  则为地址id
      */
-    public static void openPayLayout(final Activity context, final String allmoney, final String attachId, final String title, final String num, final String type, final String extra) {// TODO: 2016/12/20 打开支付窗口
+    public static void openPayLayout(final Activity context, final BasePayParams payParams) {// TODO: 2016/12/20 打开支付窗口
 
 
         AlertDialog.Builder b           = new AlertDialog.Builder(context);
@@ -313,43 +313,43 @@ public class mApplication extends Application {
         view.findViewById(R.id.tv_pay_wx).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WXPayUtils.openWXPay(context, allmoney, attachId, title, num, type, extra);
+                WXPayUtils.openWXPay(context, payParams);
                 alertDialog.dismiss();
             }
         });
-        view.findViewById(R.id.tv_pay_qq).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QpayUtil.openQQPay(context, attachId, title, allmoney, num, type, extra);
-                alertDialog.dismiss();
-            }
-        });
+//        view.findViewById(R.id.tv_pay_qq).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                QpayUtil.openQQPay(context, attachId, title, allmoney, num, type, extra);
+//                alertDialog.dismiss();
+//            }
+//        });
         view.findViewById(R.id.tv_pay_ali).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AliPayUtil.openAliPay(context, allmoney, attachId, title, num, extra, type);
+                AliPayUtil.openAliPay(context, payParams);
                 alertDialog.dismiss();
             }
         });
-        view.findViewById(R.id.tv_pay_up).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Double.valueOf(allmoney) > 5000) {
-                    Toast.makeText(context, "银联支付最高限额5000元人民币", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                ((UpPayUtil) context).allmoney = allmoney;
-                ((UpPayUtil) context).type = type;
-                ((UpPayUtil) context).num = num;
-                ((UpPayUtil) context).shop_id = attachId;
-                ((UpPayUtil) context).extra = extra;
-                ((UpPayUtil) context).title = title;
-
-                Runnable r = ((UpPayUtil) context).payRunnable;
-                new Thread(r).start();
-                alertDialog.dismiss();
-            }
-        });
+//        view.findViewById(R.id.tv_pay_up).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (Double.valueOf(allmoney) > 5000) {
+//                    Toast.makeText(context, "银联支付最高限额5000元人民币", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                ((UpPayUtil) context).allmoney = allmoney;
+//                ((UpPayUtil) context).type = type;
+//                ((UpPayUtil) context).num = num;
+//                ((UpPayUtil) context).shop_id = attachId;
+//                ((UpPayUtil) context).extra = extra;
+//                ((UpPayUtil) context).title = title;
+//
+//                Runnable r = ((UpPayUtil) context).payRunnable;
+//                new Thread(r).start();
+//                alertDialog.dismiss();
+//            }
+//        });
         alertDialog.setView(view);
         alertDialog.show();
         alertDialog.getWindow().setDimAmount(0.1f);

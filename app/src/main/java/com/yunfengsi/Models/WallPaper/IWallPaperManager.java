@@ -38,21 +38,6 @@ public class IWallPaperManager {
     }
 
 
-//    public static void goToWallPaperDetailCompat(Activity context,HashMap<String,String >map,String id, View view,boolean deleteAble,boolean isFromCollection){
-//        Intent intent = new Intent(context, WallPaperDetail.class);
-//
-//        intent.putExtra("url",map.get("image"));
-//        intent.putExtra("collect",isFromCollection);
-//        intent.putExtra("id",id);
-//        intent.putExtra("info",captureValues(view));
-//        intent.putExtra("delete",deleteAble);
-//        if(isFromCollection){
-//            context.startActivityForResult(intent,111);
-//        }else{
-//            context.startActivity(intent);
-//        }
-//        context.overridePendingTransition(0,0);
-//    }
     public static void goToWallPaperDetailCompat(Activity context, int  pos, ArrayList<HashMap<String,String >> list, View view, boolean deleteAble, boolean isFromCollection){
         Intent intent = new Intent(context, WallPaperDetail.class);
 

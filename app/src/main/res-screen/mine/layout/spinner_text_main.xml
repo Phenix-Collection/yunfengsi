@@ -5,7 +5,7 @@
     android:ellipsize="end"
     android:lines="1"
     android:padding="5dp"
-    android:textColor="@color/black"
+    android:textColor="@color/main_color"
     xmlns:tools="http://schemas.android.com/tools"
     tools:text="哈哈哈哈"
     android:textSize="16sp">

@@ -50,7 +50,7 @@ import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.Managers.CollectManager;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.AD;
@@ -80,7 +80,7 @@ import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mPLlistview;
 import com.yunfengsi.View.myWebView;
 import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1132,7 +1132,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                             Intent intent = new Intent();
 
                             if(active.contains("activityd")||active.contains("Activityd")){//跳转到活动
-                                intent.setClass(ZiXun_Detail.this, activity_Detail.class);
+                                intent.setClass(ZiXun_Detail.this, ActivityDetail.class);
                                 intent.putExtra("id", id);
                             }else if(active.contains("newsd")||active.contains("Newsd")){//跳转到另一个资讯详情
                                 intent.setClass(ZiXun_Detail.this, ZiXun_Detail.class);
@@ -1160,7 +1160,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                     tv_activity.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(ZiXun_Detail.this, ZhiFuShare.class);
+                            Intent intent = new Intent(ZiXun_Detail.this, WebInteraction.class);
                             intent.putExtra("type", "5");
                             startActivity(intent);
                         }

@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,7 +26,6 @@ import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
-import com.yunfengsi.View.mItemDecoration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,8 +65,8 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
         swip.setColorSchemeResources(R.color.main_color);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addItemDecoration(new mItemDecoration(getActivity()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
+//        recyclerView.addItemDecoration(new mItemDecoration(getActivity()));
         adapter = new fenleiAdapter(new ArrayList<HashMap<String, String>>());
         recyclerView.setAdapter(adapter);
 
@@ -108,7 +107,7 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
     }
 
     /**
-     * 获取数据
+     * 获取分类列表
      */
     private void getTitles() {
         JSONObject js=new JSONObject();
@@ -156,16 +155,17 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
     }
 
     public class fenleiAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
+        private int width;
         public fenleiAdapter(List<HashMap<String, String>> data) {
             super(R.layout.item_fenlei, data);
+            width=(getResources().getDisplayMetrics().widthPixels-DimenUtils.dip2px(getActivity(),9))>>1;
         }
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            holder.setText(R.id.type, map.get("name"))
-                    .setText(R.id.abs, "查看更多");
+            holder.setText(R.id.name, map.get("name"));
             Glide.with(getActivity()).load(map.get("image"))
-                    .override(DimenUtils.dip2px(getActivity(), 80), DimenUtils.dip2px(getActivity(), 80))
+                    .override(width, width)
                     .fitCenter().into((ImageView) holder.getView(R.id.image));
         }
     }

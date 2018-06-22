@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
@@ -30,8 +31,8 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-                MeasureSpec.AT_MOST);
+//        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+//                MeasureSpec.AT_MOST);
         isOnmeasure = true;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
@@ -61,7 +62,9 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
     private void init(Context context) {
         this.context = context;
         inflater = LayoutInflater.from(context);
+        AbsListView.LayoutParams al=new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         footer = inflater.inflate(R.layout.load_more_footer, null, false);
+        footer.setLayoutParams(al);
         footer.setVisibility(View.GONE);
         this.addFooterView(footer);
         this.setOnScrollListener(this);

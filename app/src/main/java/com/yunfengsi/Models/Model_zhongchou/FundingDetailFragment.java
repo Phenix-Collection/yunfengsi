@@ -66,10 +66,11 @@ import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Adapter.PingLunActivity;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
-import com.yunfengsi.Setting.Login;
+import com.yunfengsi.Managers.Base.BasePayParams;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.R;
+import com.yunfengsi.Setting.Login;
 import com.yunfengsi.Setting.Mine_gerenziliao;
-import com.yunfengsi.Setting.ViewPagerActivity;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.CheckNumUtil;
@@ -89,8 +90,7 @@ import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mItemDecoration;
 import com.yunfengsi.View.myWebView;
-import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -536,12 +536,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
         @android.webkit.JavascriptInterface
         public void openImage(String img) {
             if (arrayList != null) {
-                Intent intent = new Intent();
-                intent.putExtra("array", arrayList);
-                intent.putExtra("position", arrayList.indexOf(img));
-                intent.setClass(context, ViewPagerActivity.class);
-                context.startActivity(intent);
-                Log.w(TAG, "openImage: 网页图片地址" + img + "页码：" + arrayList.indexOf(img));
+                ScaleImageUtil.openBigIagmeMode(getActivity(), arrayList, arrayList.indexOf(img),true);
             }
 
         }
@@ -732,9 +727,9 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                 startActivity(intent1);
                 break;
             case R.id.btn_item_jindu://项目进度
-                Intent i = new Intent(getActivity(), ZhiFuShare.class);
+                Intent i = new Intent(getActivity(), WebInteraction.class);
                 i.putExtra("id", fundId);
-                i.putExtra(ZhiFuShare.Progress, true);
+                i.putExtra(WebInteraction.Progress, true);
                 startActivity(i);
                 break;
             case R.id.fund_detail_fenxiang:
@@ -1199,7 +1194,13 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                             return;
                         }
                         dialog.dismiss();
-                        mApplication.openPayLayout(context, currentFee.equals(others.getTag().toString()) ? String.format("%.2f", (Double.valueOf(otherNum.getText().toString()))) : String.valueOf(Integer.valueOf(currentFee)), fundId, getActivity().getIntent().getStringExtra("title") == null ? tv_fund_detail_title.getText().toString() : getActivity().getIntent().getStringExtra("title"), "1", "5", "");
+                        BasePayParams payParams=new BasePayParams();
+                        payParams.allMoney= currentFee.equals(others.getTag().toString()) ? String.format("%.2f", (Double.valueOf(otherNum.getText().toString()))) : String.valueOf(Integer.valueOf(currentFee));
+                        payParams.payId=fundId;
+                        payParams.title=getActivity().getIntent().getStringExtra("title") == null ? tv_fund_detail_title.getText().toString() : getActivity().getIntent().getStringExtra("title");
+                        payParams.num="1";
+                        payParams.payType="5";
+                        mApplication.openPayLayout(context,payParams);
                         break;
                 }
                 if (v.getId() != R.id.canclePay && v.getId() != R.id.agreeToPay) {

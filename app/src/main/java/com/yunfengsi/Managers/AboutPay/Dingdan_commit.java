@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yunfengsi.Managers.Base.BasePayParams;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.PreferenceUtil;
@@ -185,11 +186,11 @@ public class Dingdan_commit extends AppCompatActivity implements View.OnClickLis
 //                allYouhui += ((cost - money) * num);
 //            }
             allNum += num;
-            money=Double.valueOf(map.get("money"));
+            money = Double.valueOf(map.get("money"));
 //            allcost += num * cost;
             moneyAll += num * money;
             //义卖id,传义卖id  和  出价记录的列表id
-            msg.append(map.get("auct_id") + ","+map.get("id"));
+            msg.append(map.get("auct_id") + "," + map.get("id"));
 //
 
         }
@@ -249,7 +250,14 @@ public class Dingdan_commit extends AppCompatActivity implements View.OnClickLis
 //                if (isPintuan) {
 //                    mApplication.openPayLayout(this, String.format("%.2f", moneyAll), msg.toString(), AllTitle.toString(), "1", ADDRESS_ID, "11", getIntent().getLongExtra("number", 0) + "", spec_id);
 //                } else {
-                    mApplication.openPayLayout(this, String.format("%.2f", moneyAll), msg.toString(), AllTitle.toString(), allNum + "","13", ADDRESS_ID);
+                BasePayParams payParams = new BasePayParams();
+                payParams.allMoney = String.format("%.2f", moneyAll);
+                payParams.payId = msg.toString();
+                payParams.title = AllTitle.toString();
+                payParams.num = allNum + "";
+                payParams.payType = "13";
+                payParams.addressId = ADDRESS_ID;
+                mApplication.openPayLayout(this, payParams);
 //                }
 
 
@@ -361,7 +369,8 @@ public class Dingdan_commit extends AppCompatActivity implements View.OnClickLis
                 holder = (Holder) view.getTag();
             }
             holder.name.setText(map.get("title"));
-            holder.num.setText("×" + map.get("num")==null?"1":map.get("num"));
+            holder.num.setText("×" + map.get("num") == null ? "1" : map.get("num"));
+            holder.cost.setVisibility(View.INVISIBLE);
 //            if (map.get("spec") == null) {
 //                if (map.get("cost").equals("") || map.get("cost").equals("0")) {
 //                    holder.cost.setVisibility(View.INVISIBLE);
@@ -370,7 +379,7 @@ public class Dingdan_commit extends AppCompatActivity implements View.OnClickLis
 //                    holder.cost.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 //                    holder.cost.setText("￥" + String.format("%.2f", Double.valueOf(map.get("cost"))));
 //                }
-                holder.money.setText("￥" + String.format("%.2f", Double.valueOf(map.get("money"))));
+            holder.money.setText("￥" + String.format("%.2f", Double.valueOf(map.get("money"))));
 //                holder.tag.setVisibility(View.GONE);
 //            } else {
 //                HashMap<String, String> spec = AnalyticalJSON.getHashMap(map.get("spec"));

@@ -112,7 +112,7 @@ public class activity_fragment extends BaseSTFragement implements SwipeRefreshLa
             if (view.findViewById(R.id.activity_title) == null && view.findViewById(R.id.activity_item_title) == null) {
                 return;
             }
-            Intent intent = new Intent(mApplication.getInstance(), activity_Detail.class);
+            Intent intent = new Intent(mApplication.getInstance(), ActivityDetail.class);
             String Id = "";
             if (position == 0) {
                 Id = ((TextView) view.findViewById(R.id.activity_title)).getTag().toString();

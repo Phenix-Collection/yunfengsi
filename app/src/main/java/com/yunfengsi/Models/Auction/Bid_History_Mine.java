@@ -124,7 +124,7 @@ public class Bid_History_Mine extends AppCompatActivity implements SwipeRefreshL
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
         textView.setCompoundDrawablePadding(DimenUtils.dip2px(this, 10));
-        textView.setText(mApplication.ST("暂无出价记录"));
+        textView.setText(mApplication.ST("暂无竞拍记录"));
         adapter.setFooterViewAsFlow(true);
 
 
@@ -155,7 +155,7 @@ public class Bid_History_Mine extends AppCompatActivity implements SwipeRefreshL
         public MessageAdapter(Context context, List<HashMap<String, String>> data) {
             super(R.layout.item_bid_history_mine, data);
             this.context = context;
-            gray = ContextCompat.getColor(Bid_History_Mine.this, R.color.lightgray);
+            gray = ContextCompat.getColor(Bid_History_Mine.this, R.color.lightslategray);
             main = ContextCompat.getColor(Bid_History_Mine.this, R.color.main_color);
             green = ContextCompat.getColor(Bid_History_Mine.this, R.color.green);
         }

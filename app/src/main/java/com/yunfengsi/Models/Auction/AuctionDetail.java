@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -37,10 +38,13 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.ruffian.library.RTextView;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
+import com.yunfengsi.Managers.CollectManager;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.AD;
 import com.yunfengsi.Setting.Mine_gerenziliao;
@@ -51,11 +55,13 @@ import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.ImageUtil;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
+import com.yunfengsi.Utils.MD5Utls;
 import com.yunfengsi.Utils.NumUtils;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.QrUtils;
 import com.yunfengsi.Utils.ScaleImageUtil;
+import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
@@ -64,6 +70,7 @@ import com.yunfengsi.View.ScrollSpeedLinearLayoutManger;
 import com.yunfengsi.View.SlideDetailsLayout;
 import com.yunfengsi.View.myWebView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,7 +87,7 @@ import okhttp3.Response;
 /**
  * 作者：luZheng on 2018/06/08 17:11
  */
-public class AuctionDetail extends AppCompatActivity implements View.OnClickListener, BaseQuickAdapter.UpFetchListener {
+public class AuctionDetail extends AppCompatActivity implements View.OnClickListener, BaseQuickAdapter.RequestLoadMoreListener,SwipeRefreshLayout.OnRefreshListener {
     private SlideDetailsLayout slide;
     private myWebView          behind;
     private RecyclerView       comments;
@@ -122,11 +129,28 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
     private HashMap<String, String> detailMap;
     double finalPrice;
 
+    private ImageView share, collect;
+
+
+    private SwipeRefreshLayout swip;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ProgressUtil.dismiss();
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.auction_detail);
+        share = findViewById(R.id.share);
+        collect = findViewById(R.id.collect);
+        swip=findViewById(R.id.swip);
+        swip.setOnRefreshListener(this);
+        swip.setColorSchemeResources(R.color.main_color);
+
         context = this;
         id = getIntent().getStringExtra("id");
         initViews();
@@ -137,13 +161,13 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
         commentsList = new ArrayList<>();
 
         adapter = new MessageAdapter(this, commentsList);
-        adapter.setUpFetchEnable(true);
-        adapter.setUpFetchListener(this);
+        adapter.setOnLoadMoreListener(this, comments);
 
-        adapter.setEmptyView(mApplication.getEmptyView(this, 100, "暂无评论"));
+        adapter.setEmptyView(mApplication.getEmptyView(this, 70, "暂无评论"));
 
         comments.setFocusable(false);
         comments.setNestedScrollingEnabled(false);
+        comments.setAdapter(adapter);
         getPl();
         getDetail();
     }
@@ -174,21 +198,24 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                                     isLoadMore = false;
                                     if (list.size() < pageSize) {
                                         endPage = page;
-                                        adapter.addData(0, list);
-                                    } else {
-                                        adapter.addData(0, list);
+                                        adapter.loadMoreEnd(false);
+                                    }else{
+                                        adapter.loadMoreComplete();
                                     }
+                                    adapter.addData(list);
+
                                 } else {
-                                    if (comments.getAdapter() == null) {
-                                        comments.setAdapter(adapter);
-                                    }
+//                                    if (comments.getAdapter() == null) {
+//                                        comments.setAdapter(adapter);
+//                                    }
                                     if (list.size() < pageSize) {
                                         endPage = page;
                                     }
                                     adapter.setNewData(list);
                                 }
                             }
-                            comments.scrollToPosition(adapter.getData().size()-1);
+                            LogUtil.e("当前评论数量：：："+adapter.getData().size());
+
                         }
                     }
 
@@ -252,7 +279,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-                ScaleImageUtil.openBigIagmeMode(AuctionDetail.this,imageUrls,position,true);
+                ScaleImageUtil.openBigIagmeMode(AuctionDetail.this, imageUrls, position, true);
             }
         });
         behind = ((myWebView) findViewById(R.id.bebind));
@@ -334,11 +361,11 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
             public void onClick(View v) {
                 long Lstart = TimeUtils.dataOne(detailMap.get("start_time"));
                 long Lend   = TimeUtils.dataOne(detailMap.get("end_time"));
-                if(Lstart <= System.currentTimeMillis()&&System.currentTimeMillis()<Lend){
+                if (Lstart <= System.currentTimeMillis() && System.currentTimeMillis() < Lend) {
                     postBid();
-                }else if(Lstart > System.currentTimeMillis()){
+                } else if (Lstart > System.currentTimeMillis()) {
                     ToastUtil.showToastShort("竞拍尚未开始");
-                }else{
+                } else {
                     ToastUtil.showToastShort("竞拍已结束");
                 }
 
@@ -385,6 +412,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                                     priceNow.setText(String.format("%.2f", finalPrice));
                                     overPrice.setText("领先          " + String.format("%.2f", finalPrice));
                                     detailMap.put("now_price", String.format("%.2f", finalPrice));
+                                    EventBus.getDefault().post(new AuctionList.RefreshEvent());
                                     getDetail();
                                 } else {
                                     ToastUtil.showToastShort("出价失败，请重新尝试");
@@ -491,7 +519,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        if(slide.getVisibility()==View.GONE){
+                        if (slide.getVisibility() == View.GONE) {
                             slide.setAlpha(0);
                             slide.setVisibility(View.VISIBLE);
                             slide.animate().alpha(1)
@@ -504,7 +532,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                             if ("000".equals(m.get("code"))) {
                                 HashMap<String, String> map = AnalyticalJSON.getHashMap(m.get("msg"));
                                 detailMap = map;
-                                if(map.get("title")==null||"".equals(map.get("title"))){
+                                if (map.get("title") == null || "".equals(map.get("title"))) {
                                     ToastUtil.showToastShort("此商品已不存在");
                                     finish();
                                     return;
@@ -562,6 +590,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                     public void onAfter(String s, Exception e) {
                         super.onAfter(s, e);
                         ProgressUtil.dismiss();
+
                     }
                 });
     }
@@ -572,12 +601,14 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
 
         if (Lstart > System.currentTimeMillis()) {
             auctionStatus = "即将开始";
+            fenxiangb.setBackgroundResource(R.color.lightslategray);
             timeCountDown(Lend);
         } else if (Lstart < System.currentTimeMillis() && Lend > System.currentTimeMillis()) {
             auctionStatus = "竞价中";
             time_tip.setText(auctionStatus + "\n" + start + " 至 " + end);
         } else if (Lend <= System.currentTimeMillis()) {
             auctionStatus = "竞价结束";
+            fenxiangb.setBackgroundResource(R.color.lightslategray);
             time_tip.setText(auctionStatus);
         }
     }
@@ -680,27 +711,28 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
 //                                    }
                                     ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
 
-//                                    final HashMap<String, String> map     = new HashMap<>();
-//                                    String                        petname = PreferenceUtil.getUserIncetance(context).getString("pet_name", "");
-//
-//                                    map.put("ct_contents", content);
-//                                    map.put("pet_name", petname);
-//                                    if (PreferenceUtil.getUserIncetance(context).getString("role", "").equals("3")) {
-//                                        map.put("role", "3");
-//                                    } else {
-//                                        map.put("role", "0");
-//                                    }
-//                                    if (adapter.getData().size() == 0) {
-//                                        adapter.addData(map);
-//                                    } else {
-//                                        adapter.addData(map);
-//                                    }
-//                                    comments.scrollToPosition(adapter.getData().size() - 1);
+                                    final HashMap<String, String> map     = new HashMap<>();
+                                    String                        petname = PreferenceUtil.getUserIncetance(context).getString("pet_name", "");
+
+                                    map.put("ct_contents", content);
+                                    map.put("pet_name", petname);
+                                    if (PreferenceUtil.getUserIncetance(context).getString("role", "").equals("3")) {
+                                        map.put("role", "3");
+                                    } else {
+                                        map.put("role", "0");
+                                    }
+                                    if (adapter.getData().size() == 0) {
+                                        adapter.addData(map);
+                                    } else {
+                                        adapter.addData(0,map);
+                                    }
+
                                     v.setEnabled(true);
                                     PLText.setText("");
                                     imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                                     overlay.setVisibility(View.GONE);
                                     ProgressUtil.dismiss();
+                                    comments.scrollToPosition(0);
                                 }
                             });
 
@@ -729,8 +761,33 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.share:
+                String md5 = MD5Utls.stringToMD5(Constants.safeKey);
+                String m1 = md5.substring(0, 16);
+                String m2 = md5.substring(16, md5.length());
+                LogUtil.e("m1:::" + m1 + "\n" + "m2:::" + m2);
+                UMWeb umWeb = new UMWeb(Constants.FX_host_Ip + "auction" + "/id/" + m1 + id + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
+                umWeb.setTitle(detailMap.get("title"));
+                umWeb.setDescription("起拍价￥" + detailMap.get("bottom_price") + ",当前价￥" + detailMap.get("now_price") + ",市场价￥"
+                        + detailMap.get("market_price") + ",一起来义卖吧!让更多孩子有书读");
+                umWeb.setThumb(new UMImage(AuctionDetail.this, detailMap.get("image")));
+                new ShareManager().shareWeb(umWeb, AuctionDetail.this);
                 break;
             case R.id.collect:
+                String c=detailMap.get("keeps")==null||detailMap.get("keeps").equals("null")?"0":detailMap.get("keeps");
+                final int oldNum=Integer.valueOf(c);
+                CollectManager.doCollect(this, id, "5", collect, new CollectManager.OnDataArrivedListener() {
+                    @Override
+                    public void onUp() {
+                        detailMap.put("keeps",oldNum+1+"");
+                        collectNum.setText("收藏 " + detailMap.get("keeps") + "人");
+                    }
+
+                    @Override
+                    public void onDown() {
+                        detailMap.put("keeps",oldNum-1+"");
+                        collectNum.setText("收藏 " + detailMap.get("keeps") + "人");
+                    }
+                });
                 break;
             case R.id.back:
                 finish();
@@ -738,17 +795,27 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
     @Override
-    public void onUpFetch() {
-        LogUtil.e("上拉加载");
+    public void onLoadMoreRequested() {
+        isLoadMore = true;
         if (endPage != page) {
             page++;
-            isLoadMore = true;
             getPl();
         } else {
+            adapter.loadMoreEnd(false);
             LogUtil.e("加载完毕");
         }
+    }
 
+    @Override
+    public void onRefresh() {
+        page=1;
+        endPage=-1;
+        isLoadMore=false;
+        getPl();
+        getDetail();
+        swip.setRefreshing(false);
     }
 
 

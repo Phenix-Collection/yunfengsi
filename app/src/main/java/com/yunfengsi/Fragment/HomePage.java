@@ -49,8 +49,8 @@ import com.yunfengsi.Models.Auction.AuctionList;
 import com.yunfengsi.Models.BlessTree.BlessTree;
 import com.yunfengsi.Models.E_Book.BookList;
 import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Models.More.Fortune;
 import com.yunfengsi.Models.More.Meditation;
@@ -84,7 +84,7 @@ import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
 import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mItemDeraction;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -214,7 +214,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
 
                     if (url.contains("yfs.php") && url.contains("red")) {
                         Intent intent = new Intent();
-                        intent.setClass(getActivity(), ZhiFuShare.class);
+                        intent.setClass(getActivity(), WebInteraction.class);
                         intent.putExtra("url", url);
                         startActivity(intent);
 
@@ -244,7 +244,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                                 Intent intent1 = new Intent();
                                 switch (type) {
                                     case mReceiver.HUODong:
-                                        intent1.setClass(getActivity(), activity_Detail.class);
+                                        intent1.setClass(getActivity(), ActivityDetail.class);
                                         intent1.putExtra("id", id);
                                         startActivity(intent1);
                                         break;
@@ -490,6 +490,17 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         recyclerView = rootView.findViewById(R.id.recycle);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy==0){
+                    Glide.with(getActivity()).resumeRequests();
+                }else{
+                    Glide.with(getActivity()).pauseRequests();
+                }
+            }
+        });
 
         ArrayList<OrignalEntity> orignalEntities = new ArrayList<>();
         adapter = new HomeAdapter(orignalEntities);
@@ -885,7 +896,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(mApplication.getInstance(), activity_Detail.class);
+                            Intent intent = new Intent(mApplication.getInstance(), ActivityDetail.class);
                             String Id     = map1.get("id").toString();
                             if (!TextUtils.isEmpty(Id)) {
                                 intent.putExtra("id", Id);

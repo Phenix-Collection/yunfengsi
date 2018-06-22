@@ -25,6 +25,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -65,19 +66,18 @@ import com.yunfengsi.Fragment.GongYangActivity;
 import com.yunfengsi.Fragment.HomePage;
 import com.yunfengsi.Fragment.Mine;
 import com.yunfengsi.Managers.MessageCenter;
+import com.yunfengsi.Models.GongYangDetail;
+import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
-import com.yunfengsi.Models.Model_activity.activity_Detail;
 import com.yunfengsi.Models.Model_activity.activity_fragment;
 import com.yunfengsi.Models.Model_zhongchou.FundFragment;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Models.NianFo.NianFo;
-import com.yunfengsi.Models.GongYangDetail;
 import com.yunfengsi.Models.ZiXun_Detail;
-import com.yunfengsi.ThirdPart.Push.mReceiver;
 import com.yunfengsi.Setting.AD;
 import com.yunfengsi.Setting.PhoneCheck;
 import com.yunfengsi.Setting.Search;
-import com.yunfengsi.View.SideListview.Contact;
+import com.yunfengsi.ThirdPart.Push.mReceiver;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -91,11 +91,11 @@ import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.ToastUtil;
-import com.yunfengsi.Utils.UpPayUtil;
 import com.yunfengsi.Utils.Verification;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.View.SideListview.Contact;
 import com.yunfengsi.View.mAudioManager;
-import com.yunfengsi.WebShare.ZhiFuShare;
+import com.yunfengsi.WebShare.WebInteraction;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -118,7 +118,7 @@ import static com.yunfengsi.Utils.mApplication.alias1;
 import static com.yunfengsi.Utils.mApplication.alias2;
 
 
-public class MainActivity extends UpPayUtil {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ImageView          back;
     private TextView           title;
@@ -230,11 +230,15 @@ public class MainActivity extends UpPayUtil {
 
         iWakeupListener = new SimpleWakeupListener(this);
         myWakeup = new MyWakeup(this, ((IWakeupListener) iWakeupListener));
+        startWakeUp();
+
+    }
+    //开启语音唤醒
+    public void startWakeUp() {
         Map<String, Object> params = new HashMap<String, Object>();
 
         params.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin");//"assets:///WakeUp.bin" 表示WakeUp.bin文件定义在assets目录下
         myWakeup.start(params);
-
     }
 
     private Bitmap adBitmap;
@@ -289,7 +293,7 @@ public class MainActivity extends UpPayUtil {
                                             Intent intent = new Intent();
                                             if (url != null && !url.equals("")) {
                                                 if (url.contains("yfs.php") && url.contains("red")) {
-                                                    intent.setClass(MainActivity.this, ZhiFuShare.class);
+                                                    intent.setClass(MainActivity.this, WebInteraction.class);
                                                     intent.putExtra("url", map.get("gg_url"));
                                                     startActivity(intent);
                                                     return;
@@ -315,7 +319,7 @@ public class MainActivity extends UpPayUtil {
                                                             Intent intent1 = new Intent();
                                                             switch (type) {
                                                                 case mReceiver.HUODong:
-                                                                    intent1.setClass(MainActivity.this, activity_Detail.class);
+                                                                    intent1.setClass(MainActivity.this, ActivityDetail.class);
                                                                     intent1.putExtra("id", id);
                                                                     break;
                                                                 case mReceiver.GOngyang:
@@ -535,9 +539,15 @@ public class MainActivity extends UpPayUtil {
 
     /*
      通知到达事件
+     0 代表默认  1 开启语音唤醒 2停止语音唤醒
      */
     public static class NoticeEvent {
 
+        private int action=0;
+
+        public void setAction(int action) {
+            this.action = action;
+        }
     }
 
     /*
@@ -546,10 +556,16 @@ public class MainActivity extends UpPayUtil {
        */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNoticeArrived(NoticeEvent event) {
+        if(event.action==2){
+            myWakeup.stop();
 
-        LogUtil.e("改变notice图标");
-        if (notice != null) {
-            notice.setSelected(true);
+        }else if(event.action==1){
+            startWakeUp();
+        }else {
+            LogUtil.e("改变notice图标");
+            if (notice != null) {
+                notice.setSelected(true);
+            }
         }
 
     }
@@ -1150,7 +1166,7 @@ public class MainActivity extends UpPayUtil {
 //                        intent.setClass(this, ZiXun_Detail.class);
 //                        break;
 //                    case "2":
-//                        intent.setClass(this, activity_Detail.class);
+//                        intent.setClass(this, ActivityDetail.class);
 //                        break;
 //                    case "3":
 //                        intent.setClass(this, GongYangDetail.class);
@@ -1159,7 +1175,7 @@ public class MainActivity extends UpPayUtil {
 //                        intent.setClass(this, FundingDetailActivity.class);
 //                        break;
 //                    case "5":
-//                        intent.setClass(this, ZhiFuShare.class);
+//                        intent.setClass(this, WebInteraction.class);
 //                        break;
 //
 //                }

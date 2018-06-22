@@ -1,12 +1,12 @@
-package com.yunfengsi.ThirdPart.wxapi;
+package com.yunfengsi.wxapi;
 
 
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
-//
-///**
-// * Created by ntop on 15/9/4.
-// */
+
+/**
+ *微信回调页面Wxapi 包 必须在包名根目录下，不然无法回调
+ */
 public class WXEntryActivity extends WXCallbackActivity {
 
 }
