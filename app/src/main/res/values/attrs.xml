@@ -38,6 +38,20 @@
         <attr name="mustRealRed" format="boolean"/>
         <attr name="reSelectable" format="boolean"/>
     </declare-styleable>
+
+
+
+    <declare-styleable name="PieChartView">
+        <attr name="title" format="string"/>
+        <attr name="subTitle" format="string"/>
+        <attr name="titleSize" format="dimension"/>
+        <attr name="subTitleSize" format="dimension"/>
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="colorAlpha" format="float"/>
+        <attr name="isContinueMode" format="boolean"/>
+        <attr name="anim_duration" format="integer"/>
+
+    </declare-styleable>
     <!--<declare-styleable name="MyView">-->
         <!--<attr name="textColor" format="color" />-->
         <!--<attr name="textSize" format="dimension" />-->

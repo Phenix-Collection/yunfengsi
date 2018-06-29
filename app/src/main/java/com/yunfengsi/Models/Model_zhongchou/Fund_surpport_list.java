@@ -48,8 +48,6 @@ import cn.carbs.android.avatarimageview.library.AvatarImageView;
  * Created by Administrator on 2016/10/11.
  */
 public class Fund_surpport_list extends AppCompatActivity implements LoadMoreListView.OnLoadMore, View.OnClickListener {
-    private ImageView back;
-    private TextView title;
     private LoadMoreListView listView;
     private String page = "1";
     private String endPage = "";
@@ -149,11 +147,11 @@ public class Fund_surpport_list extends AppCompatActivity implements LoadMoreLis
     }
 
     private void initView() {
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setImageResource(R.drawable.back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title_title);
+        TextView title = (TextView) findViewById(R.id.title_title);
         title.setText(mApplication.ST("爱心动态"));
 
         listView = (LoadMoreListView) findViewById(R.id.fund_people_list);

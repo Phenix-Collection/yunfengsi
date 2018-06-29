@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/title_default" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <com.yunfengsi.View.PieChartView
+                android:id="@+id/main_chart"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/love"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textSize="24dp"
+                tools:text="360"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintRight_toLeftOf="@+id/reward"
+                app:layout_constraintTop_toBottomOf="@+id/main_chart"
+                />
+            <TextView
+                android:id="@+id/reward"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textSize="24dp"
+                tools:text="169"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintRight_toLeftOf="@+id/jingjin"
+                app:layout_constraintTop_toBottomOf="@+id/main_chart"
+                />
+            <TextView
+                android:id="@+id/jingjin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textSize="24dp"
+                tools:text="169"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                app:layout_constraintHorizontal_weight="1"
+
+                app:layout_constraintLeft_toRightOf="@+id/reward"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_chart"
+                />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+</merge>

@@ -27,7 +27,6 @@ public class PointMoveHelper {
     private long          downTime;
     private Activity      activity;
     private ValueAnimator va;
-    private int           screenWidth, screenHeight;
     private ViewGroup unMoveableView;
     private int marginRight  = 0;//dp
     private int marginLeft   = 0;//dp
@@ -58,16 +57,16 @@ public class PointMoveHelper {
      */
     public PointMoveHelper setMargins(int marginTop, int marginLeft, int marginRight, int marginBottom) {
         this.marginTop = DimenUtils.dip2px(activity,marginTop);
-        this.marginLeft = DimenUtils.dip2px(activity,marginLeft);;
-        this.marginRight = DimenUtils.dip2px(activity,marginRight);;
-        this.marginBottom = DimenUtils.dip2px(activity,marginBottom);;
+        this.marginLeft = DimenUtils.dip2px(activity,marginLeft);
+        this.marginRight = DimenUtils.dip2px(activity,marginRight);
+        this.marginBottom = DimenUtils.dip2px(activity,marginBottom);
         return this;
     }
 
     private void init() {
 
-        screenWidth = activity.getResources().getDisplayMetrics().widthPixels;
-        screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
+        int screenWidth  = activity.getResources().getDisplayMetrics().widthPixels;
+        int screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
         mView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(final View v, MotionEvent event) {

@@ -49,8 +49,6 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
     //选择的图片集合
     private ArrayList<String> mImages = new ArrayList<>();
     private TouGaoGridAdapter adpter;
-    private GridView          grid;
-    private EditText          userName;
 
     private int allowChooseNum = 9;
     private Spinner             classfy;
@@ -66,14 +64,14 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.wall_paper_upload);
 
 
-        grid = (GridView) findViewById(R.id.tougao_grid);
+        GridView grid = (GridView) findViewById(R.id.tougao_grid);
         classfy = findViewById(R.id.spinner_classfy);
         mImages.add("add");
         adpter = new TouGaoGridAdapter(this, mImages, true, allowChooseNum);
         adpter.setOncCancleListener(this);
         grid.setAdapter(adpter);
 
-        userName = findViewById(R.id.edt_user);
+        EditText userName = findViewById(R.id.edt_user);
         userName.setText(PreferenceUtil.getUserIncetance(this).getString("pet_name", ""));
 
         typeNames = new ArrayList<>();

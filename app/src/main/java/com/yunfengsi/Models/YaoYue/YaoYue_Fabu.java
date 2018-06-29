@@ -43,8 +43,13 @@ import okhttp3.Response;
  */
 
 public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListener {
-    private EditText edt_xuqiu, edt_peolle, edt_time, edt_content, edt_money, edt_place, edt_phone;
-    private TextView tv_commit, haveCar, Nocar;
+    private EditText edt_xuqiu;
+    private EditText edt_peolle;
+    private EditText edt_time;
+    private EditText edt_place;
+    private EditText edt_phone;
+    private TextView haveCar;
+    private TextView Nocar;
     private Date currentDate;
     private String money, address;
     //    private boolean canCommit = false;
@@ -65,8 +70,8 @@ public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListen
 
 
     private void initView() {
-        edt_content = (EditText) findViewById(R.id.edt_content);
-        edt_money = (EditText) findViewById(R.id.edt_money);
+        EditText edt_content = (EditText) findViewById(R.id.edt_content);
+        EditText edt_money   = (EditText) findViewById(R.id.edt_money);
         edt_peolle = (EditText) findViewById(R.id.edt_people_num);
         edt_place = (EditText) findViewById(R.id.edt_place);
         edt_time = (EditText) findViewById(R.id.edt_time);
@@ -78,7 +83,7 @@ public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListen
         haveCar.setOnClickListener(this);
         Nocar.setOnClickListener(this);
 
-        tv_commit = (TextView) findViewById(R.id.tv_commit);
+        TextView tv_commit = (TextView) findViewById(R.id.tv_commit);
         tv_commit.setOnClickListener(this);
         edt_time.setOnClickListener(this);
         edt_time.setFocusable(false);

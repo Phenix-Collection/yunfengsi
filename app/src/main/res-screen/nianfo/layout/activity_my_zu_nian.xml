@@ -130,5 +130,5 @@
         android:dividerHeight="5dp"
         android:fastScrollEnabled="false"
         android:padding="10dp"
-        android:scrollbars="none"></ListView>
+        android:scrollbars="none" />
 </LinearLayout>

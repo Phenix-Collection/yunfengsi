@@ -23,7 +23,6 @@ import taobe.tec.jcc.JChineseConvertor;
  */
 
 public class ST extends AppCompatActivity implements View.OnClickListener{
-    private RelativeLayout layout1,layout2;
     private ImageView img1,img2;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,8 +31,8 @@ public class ST extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.st);
         img1= (ImageView) findViewById(R.id.img1);
         img2= (ImageView) findViewById(R.id.img2);
-        layout1= (RelativeLayout) findViewById(R.id.layout1);
-        layout2= (RelativeLayout) findViewById(R.id.layout2);
+        RelativeLayout layout1 = (RelativeLayout) findViewById(R.id.layout1);
+        RelativeLayout layout2 = (RelativeLayout) findViewById(R.id.layout2);
         if(mApplication.isChina){
             img1.setVisibility(View.VISIBLE);
         }else{

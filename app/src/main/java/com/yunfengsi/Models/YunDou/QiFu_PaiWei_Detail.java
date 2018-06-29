@@ -27,9 +27,10 @@ import java.text.SimpleDateFormat;
  */
 public class QiFu_PaiWei_Detail extends AppCompatActivity {
     private ImageView imageView;
-    private String    type, address, person, time;//祈福  或者  牌位
+    private String    address;
+    private String person;
+    private String time;//祈福  或者  牌位
     private Bitmap originalSrc;
-    private int defSize = 20;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class QiFu_PaiWei_Detail extends AppCompatActivity {
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.qifu_paiwei_quan_detail);
 
-        type = getIntent().getStringExtra("type");
+        String type = getIntent().getStringExtra("type");
         address = getIntent().getStringExtra("address");
         person = getIntent().getStringExtra("person");
         time = getIntent().getStringExtra("time");
@@ -159,8 +160,9 @@ public class QiFu_PaiWei_Detail extends AppCompatActivity {
     }
 
     private int calculateTextSize(float top, float bottom,int length) {
+        int defSize  = 20;
         int textSize = defSize;
-        int space=5;
+        int space    =5;
         if(length==0){
             while ((textSize+space) *5> (bottom - top-50)) {//最大10个字  5个字换行  从右到左  上下各留白25
                 textSize--;

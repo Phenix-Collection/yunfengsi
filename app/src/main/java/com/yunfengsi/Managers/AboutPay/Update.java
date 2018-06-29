@@ -1,7 +1,6 @@
 package com.yunfengsi.Managers.AboutPay;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -36,8 +35,6 @@ import java.util.HashMap;
  * Created by Administrator on 2016/10/16.
  */
 public class Update extends AppCompatActivity implements View.OnClickListener {
-    private ImageView back;
-    private TextView  title, baocun;
     private EditText name, phone, address, youbian;
     private Spinner s1, s2;
     private ArrayList<String>    provinceList;
@@ -49,7 +46,7 @@ public class Update extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         StatusBarCompat.compat(this, Color.parseColor("#2a292f"));
+        StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.add_address);
         initView();
     }
@@ -68,12 +65,12 @@ public class Update extends AppCompatActivity implements View.OnClickListener {
         cityList = new ArrayList<>();
         citylist2 = new ArrayList<>();
         citylist2.add("城市");
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setImageResource(R.drawable.back);
         back.setOnClickListener(this);
 
-        title = (TextView) findViewById(R.id.title_title);
+        TextView title = (TextView) findViewById(R.id.title_title);
         title.setText("修改收货地址");
 
         name = (EditText) findViewById(R.id.add_address_name);
@@ -88,7 +85,7 @@ public class Update extends AppCompatActivity implements View.OnClickListener {
         address = (EditText) findViewById(R.id.add_address_address);
         youbian = (EditText) findViewById(R.id.add_address_youbian);
 
-        baocun = (TextView) findViewById(R.id.add_address_commit);
+        TextView baocun = (TextView) findViewById(R.id.add_address_commit);
         baocun.setOnClickListener(this);
         new Thread(new Runnable() {
             @Override

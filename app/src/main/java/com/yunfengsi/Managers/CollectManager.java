@@ -37,10 +37,12 @@ public class CollectManager {
     public static abstract class OnDataArrivedListener{
         void   onSuccess(){
 
-        };
+        }
+
         void   onError(){
 
-        };
+        }
+
         void onAfter(){
 
         }

@@ -31,11 +31,8 @@ import java.util.List;
 
 public class Contact extends AppCompatActivity implements View.OnClickListener{
 	private ListView sortListView;
-	private SideBar sideBar;
-	private TextView dialog;
 	private SortAdapter adapter;
-	private ClearEditText mClearEditText;
-	
+
 	/**
 	 * ����ת����ƴ������
 	 */
@@ -47,7 +44,6 @@ public class Contact extends AppCompatActivity implements View.OnClickListener{
 	 * ����ƴ��������ListView�����������
 	 */
 	private PinyinComparator pinyinComparator;
-	private ImageView back;
 	private TextView fasong;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +58,10 @@ public class Contact extends AppCompatActivity implements View.OnClickListener{
 		characterParser = CharacterParser.getInstance();
 		
 		pinyinComparator = new PinyinComparator();
-		
-		sideBar = (SideBar) findViewById(R.id.sidrbar);
-		dialog = (TextView) findViewById(R.id.dialog);
-		back= (ImageView) findViewById(R.id.back);
+
+		SideBar   sideBar = (SideBar) findViewById(R.id.sidrbar);
+		TextView  dialog  = (TextView) findViewById(R.id.dialog);
+		ImageView back    = (ImageView) findViewById(R.id.back);
 		back.setOnClickListener(this);
 		fasong= (TextView) findViewById(R.id.fasong);
 		fasong.setText(mApplication.ST("邀请"));
@@ -120,9 +116,9 @@ public class Contact extends AppCompatActivity implements View.OnClickListener{
 		Collections.sort(SourceDateList, pinyinComparator);
 		adapter = new SortAdapter(this, SourceDateList);
 		sortListView.setAdapter(adapter);
-		
-		
-		mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
+
+
+		ClearEditText mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
 		mClearEditText.setHint(mApplication.ST("请输入联系人姓名关键字"));
 		//�������������ֵ�ĸı�����������
 		mClearEditText.addTextChangedListener(new TextWatcher() {
@@ -184,7 +180,7 @@ public class Contact extends AppCompatActivity implements View.OnClickListener{
 			filterDateList.clear();
 			for(SortModel sortModel : SourceDateList){
 				String name = sortModel.getName();
-				if(name.indexOf(filterStr.toString()) != -1 || characterParser.getSelling(name).startsWith(filterStr.toString())){
+				if(name.indexOf(filterStr) != -1 || characterParser.getSelling(name).startsWith(filterStr)){
 					filterDateList.add(sortModel);
 				}
 			}

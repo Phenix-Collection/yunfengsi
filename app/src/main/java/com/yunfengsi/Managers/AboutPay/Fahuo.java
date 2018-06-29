@@ -47,8 +47,7 @@ import okhttp3.Response;
 
 public class Fahuo extends AppCompatActivity implements View.OnClickListener {
     private EditText  code;
-    private ImageView toScan;
-    private TextView  chooseCompany, commit;
+    private TextView  chooseCompany;
     private String name, CompanyCode, money;
 
     @Override
@@ -58,8 +57,8 @@ public class Fahuo extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_fahuo_info);
         findViewById(R.id.title_back).setOnClickListener(this);
         chooseCompany = (TextView) findViewById(R.id.chooseCompany);
-        commit = (TextView) findViewById(R.id.commit);
-        toScan = (ImageView) findViewById(R.id.toscan);
+        TextView  commit = (TextView) findViewById(R.id.commit);
+        ImageView toScan = (ImageView) findViewById(R.id.toscan);
         toScan.setOnClickListener(this);
         commit.setOnClickListener(this);
         code = (EditText) findViewById(R.id.code);

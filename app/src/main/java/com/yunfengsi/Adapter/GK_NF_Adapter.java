@@ -26,7 +26,6 @@ public class GK_NF_Adapter extends BaseAdapter{
     private Context context;
     private List<String> keyList;
     private String type;
-    private Hoder hoder;
     private List<String> valueList;
     public GK_NF_Adapter(Context context, List<String> list,String type){
         this.context=context;
@@ -51,14 +50,15 @@ public class GK_NF_Adapter extends BaseAdapter{
     }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        Hoder hoder;
         if(view==null){
-            hoder=new Hoder();
+            hoder =new Hoder();
             view= LayoutInflater.from(context).inflate(R.layout.mine_gk_lf_itme,null);
             hoder.mtvtime=(TextView) view.findViewById(R.id.mine_gk_lf_itme_tvtime);
             hoder.mlinearLayout=((LinearLayout) view.findViewById(R.id.layout));
             view.setTag(hoder);
         }else {
-            hoder=(Hoder) view.getTag();
+            hoder =(Hoder) view.getTag();
         }
         hoder.mlinearLayout.removeAllViews();
         String data=valueList.get(i);

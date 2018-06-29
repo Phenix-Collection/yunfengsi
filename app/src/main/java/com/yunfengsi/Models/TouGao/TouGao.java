@@ -62,9 +62,8 @@ import okhttp3.Response;
  * Created by Administrator on 2016/10/19.
  */
 public class TouGao extends AppCompatActivity implements View.OnClickListener, TouGaoGridAdapter.oncCancleListener {
-    private ImageView back, titleImg;
+    private ImageView titleImg;
     private static final int RES_CODE = 1111;
-    private TextView commit, title;
     private EditText title_edt, content_edt;
     private static final int CHOOSEPICTUE = 2;//相册
     private static final int TAKEPICTURE = 1;//相机
@@ -75,15 +74,12 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
     public String path;
     private HttpParams httpParams;
     private SharedPreferences sp;
-    private int screenWidth;
     private int a = 0;
-    private ImageView addFile;//添加附件按钮
-    private LinearLayout addFileLayout;//添加附件的空间
     //选择的图片集合
     private ArrayList<String> mImages = new ArrayList<>();
     private TouGaoGridAdapter adpter;
-    private GridView grid;
-    private File titleFile, videoFile, audioFile;
+    private File              videoFile;
+    private File audioFile;
     private PopupWindow p;
     private AlertDialog progressDialog;
     private static final int MAX_VIDEO_TIME = 30;
@@ -138,12 +134,12 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
      * 初始化控件
      */
     private void initView() {
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setOnClickListener(this);
         back.setVisibility(View.VISIBLE);
         back.setImageResource(R.drawable.back);
 
-        title = (TextView) findViewById(R.id.title_title);
+        TextView title = (TextView) findViewById(R.id.title_title);
         title.setText("投稿");
 
         ((TextView) findViewById(R.id.tip)).setText(mApplication.ST("" +
@@ -159,16 +155,16 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
         title_edt.setText(mApplication.ST(sp.getString("tougao_title", "")));
         content_edt = (EditText) findViewById(R.id.tougao_content);
         content_edt.setText(mApplication.ST(sp.getString("tougao_content", "")));
-        addFile = (ImageView) findViewById(R.id.tougao_addFile);
+        ImageView addFile = (ImageView) findViewById(R.id.tougao_addFile);
         addFile.setOnClickListener(this);
-        addFileLayout = (LinearLayout) findViewById(R.id.tougao_addFile_layout);
+        LinearLayout addFileLayout = (LinearLayout) findViewById(R.id.tougao_addFile_layout);
 
-        commit = (TextView) findViewById(R.id.tougao_commit);
+        TextView commit = (TextView) findViewById(R.id.tougao_commit);
         commit.setOnClickListener(this);
-        screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
 
 
-        grid = (GridView) findViewById(R.id.tougao_grid);
+        GridView grid = (GridView) findViewById(R.id.tougao_grid);
         mImages.add("add");
         adpter = new TouGaoGridAdapter(this, mImages, true,allowChooseNum);
         adpter.setOncCancleListener(this);
@@ -601,6 +597,7 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
                 case CHOOSEPICTUE:
                     Bitmap bm = null;
                     pictureUri = data.getData();// 选择照片的Uri 可能为null
+                    File titleFile;
                     if (pictureUri != null) {
                         //上传头像
                         path = ImageUtil.getImageAbsolutePath(mApplication.getInstance(), pictureUri);

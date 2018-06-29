@@ -68,17 +68,8 @@ import okhttp3.Response;
 public class Login extends AppCompatActivity implements OnClickListener {
     private static final String TAG = "Login";
     private UMShareAPI mshareApi;
-    //    private LinearLayout weChatLogin;
-//    private LinearLayout QQLogin;
-//    private SHARE_MEDIA platform = null;
-    private TextView zhuce;
     private EditText username, password;
-    private Button Login;
-    //    private ImageView back;
-    private TextView wangjimima;
     private String headurl;
-    private int screenWidth;
-    private ACache aCache;
     private SharedPreferences sp;
 
     private InputMethodManager imm;
@@ -105,27 +96,27 @@ public class Login extends AppCompatActivity implements OnClickListener {
             }
         });
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        aCache = ACache.get(this);
+        ACache aCache = ACache.get(this);
         mshareApi = UMShareAPI.get(this);
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
 //        weChatLogin = (LinearLayout) findViewById(R.id.weChat);
 //        weChatLogin.setOnClickListener(this);
 //        QQLogin = (LinearLayout) findViewById(R.id.QQ);
 //        QQLogin.setOnClickListener(this);
-        zhuce = (TextView) findViewById(R.id.Login_to_zhuce);
+        TextView zhuce = (TextView) findViewById(R.id.Login_to_zhuce);
         zhuce.setText(mApplication.ST("注册账号"));
         zhuce.setOnClickListener(this);
         username = (EditText) findViewById(R.id.userName_edt);
         username.setHint(mApplication.ST("手机号/PhoneNumber"));
         password = (EditText) findViewById(R.id.passWord_edt);
         password.setHint(mApplication.ST("密码/Password"));
-        Login = (Button) findViewById(R.id.Login_login);
-        Login.setText(mApplication.ST("登录"));
-        Login.setOnClickListener(this);
+        Button login = (Button) findViewById(R.id.Login_login);
+        login.setText(mApplication.ST("登录"));
+        login.setOnClickListener(this);
 //        back = (ImageView) findViewById(R.id.login_back);
 //        back.setOnClickListener(this);
-        wangjimima = (TextView) findViewById(R.id.Login_wangjimima);
+        TextView wangjimima = (TextView) findViewById(R.id.Login_wangjimima);
         wangjimima.setText(mApplication.ST("忘记密码?"));
         wangjimima.setOnClickListener(this);
         findViewById(R.id.login_bg).setBackgroundDrawable(new GlideBitmapDrawable(getResources(), ImageUtil.readBitMap(this, R.drawable.backgd)));
@@ -474,7 +465,7 @@ public class Login extends AppCompatActivity implements OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         OkGo.getInstance().cancelTag(TAG);
-        (findViewById(R.id.login_bg)).setBackgroundDrawable(null);
+        (findViewById(R.id.login_bg)).setBackground(null);
     }
 
     private Handler mLoginHandler = new Handler() {

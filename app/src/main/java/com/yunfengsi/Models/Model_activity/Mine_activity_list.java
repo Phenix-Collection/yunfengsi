@@ -72,8 +72,6 @@ import okhttp3.Response;
  * Created by Administrator on 2016/10/11.
  */
 public class Mine_activity_list extends AndroidPopupActivity implements LoadMoreListView.OnLoadMore, View.OnClickListener, AMapLocationListener, SwipeRefreshLayout.OnRefreshListener {
-    private ImageView back;
-    private TextView title;
     private LoadMoreListView listView;
     private String page = "1";
     private String endPage = "";
@@ -223,11 +221,11 @@ public class Mine_activity_list extends AndroidPopupActivity implements LoadMore
     }
 
     private void initView() {
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setImageResource(R.drawable.back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title_title);
+        TextView title = (TextView) findViewById(R.id.title_title);
         title.setText(mApplication.ST("我的活动"));
         ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("修行经历"));
         ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);

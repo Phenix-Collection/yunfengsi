@@ -51,7 +51,7 @@
         android:horizontalSpacing="2dp"
         android:numColumns="3"
         android:background="#000000"
-        android:verticalSpacing="2dp"></GridView>
+        android:verticalSpacing="2dp" />
 
     <FrameLayout
         android:layout_width="match_parent"

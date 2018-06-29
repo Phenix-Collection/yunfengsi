@@ -39,10 +39,8 @@ public class mHeadLineView extends LinearLayout {
     public static final int FUND = 1;
     public static final int GONGYANG = 2;
     private Context context;
-    private ImageView head;
     private ViewFlipper viewFlipper;
     private static final int heightDp = 80;
-    private ArrayList<HashMap<String, String>> list;//数据源
     private int type=1;
     public mHeadLineView(Context context) {
         this(context, null);
@@ -56,7 +54,7 @@ public class mHeadLineView extends LinearLayout {
         int dp20 = dip2px(context, 20);
         int dp10 = dip2px(context, 10);
         setPadding(dp10, 0, dp20, 0);
-        head = new ImageView(context);
+        ImageView head = new ImageView(context);
         viewFlipper = new ViewFlipper(context);
 
 
@@ -73,7 +71,7 @@ public class mHeadLineView extends LinearLayout {
     }
 
     public void onDataArrival(ArrayList<HashMap<String, String>> list, int type) {
-        this.list = list;
+        ArrayList<HashMap<String, String>> list1 = list;
         this.type=type;
         int num = 2;
         if (viewFlipper.isFlipping()) {

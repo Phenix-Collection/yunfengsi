@@ -31,7 +31,6 @@ public class TouGaoGridAdapter extends BaseAdapter {
     private static final String TAG = "TouGaoGridAdapter";
     //获取从选择器中选择的图片地址
     private ArrayList<String> mImgs = new ArrayList<>();
-    private WeakReference<Activity> weakReference;
     private Activity context;
     private LayoutInflater inflater;
     private int dp70;
@@ -45,7 +44,7 @@ public class TouGaoGridAdapter extends BaseAdapter {
 
     public TouGaoGridAdapter(Activity context, ArrayList<String> mImgs, boolean needChange,int Max) {
         super();
-        weakReference = new WeakReference<Activity>(context);
+        WeakReference<Activity> weakReference = new WeakReference<Activity>(context);
         this.context = weakReference.get();
         this.mImgs = mImgs;
         inflater = LayoutInflater.from(context);

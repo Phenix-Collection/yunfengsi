@@ -150,10 +150,12 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
                             if ("000".equals(map.get("code"))) {
                                 ToastUtil.showToastLong("签到成功", Gravity.CENTER);
                             } else if ("002".equals(map.get("code"))) {
-                                ToastUtil.showToastLong("该用户已经签过到了,请到个人活动产看",Gravity.CENTER);
+                                ToastUtil.showToastLong("该用户已经签过到了,请到个人活动查看",Gravity.CENTER);
                             } else if ("003".equals(map.get("code"))) {
                                 ToastUtil.showToastLong("未查到用户报名信息，该用户尚未报名",Gravity.CENTER);
                             }
+                        }else{
+                            ToastUtil.showToastShort("该活动不支持签到或签到请求失败");
                         }
                     }
 

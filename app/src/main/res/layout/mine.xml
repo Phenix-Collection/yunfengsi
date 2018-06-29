@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:showDividers="end"
     android:divider="@drawable/mdivider"
-    >
+    android:orientation="vertical"
+    android:showDividers="end|middle">
 
 
     <com.zhy.android.percent.support.PercentRelativeLayout
@@ -20,8 +19,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
 
-             />
-
+            />
 
 
         <cn.carbs.android.avatarimageview.library.AvatarImageView
@@ -29,33 +27,31 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_centerHorizontal="true"
-            android:scaleType="centerCrop"
             android:layout_marginTop="20dp"
-            android:padding="1.5px"
             android:background="@drawable/white_stroke_1dp_bg"
-            />
+            android:padding="1.5px"
+            android:scaleType="centerCrop" />
 
         <com.yunfengsi.View.UsefulImageView
+            android:id="@+id/qr"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/mine_qr_code"
-            android:id="@+id/qr"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:padding="2dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/layout_bg_sel"
-            />
+            android:padding="2dp"
+            android:src="@drawable/mine_qr_code" />
 
         <ImageView
+            android:id="@+id/level"
             android:layout_width="35dp"
             android:layout_height="wrap_content"
-            android:id="@+id/level"
-            android:adjustViewBounds="true"
             android:layout_alignBottom="@+id/mine_head"
             android:layout_alignRight="@+id/mine_head"
-            />
+            android:adjustViewBounds="true" />
+
         <TextView
             android:id="@+id/mine_petName"
             android:layout_width="wrap_content"
@@ -78,181 +74,198 @@
             app:layout_marginTopPercent="3%w" />
 
 
-
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
+    <include
+        android:id="@+id/header"
+        layout="@layout/fragment_mine_header"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:visibility="gone"
+         />
 
     <LinearLayout
+        android:id="@+id/mine_shoucang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mine_shoucang"
-        android:orientation="horizontal"
+        android:background="@drawable/layout_bg_sel"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="8dp"
-        android:visibility="gone"
-        android:background="@drawable/layout_bg_sel">
+        android:visibility="gone">
+
         <ImageView
             android:id="@+id/shoucang"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp" />
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="16dp"
             android:id="@+id/tv_shoucang"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:text="收藏"/>
+            android:gravity="center_vertical"
+            android:text="收藏"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/mine_zhifu"
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg_sel"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="8dp"
-        android:visibility="gone"
-        android:background="@drawable/layout_bg_sel">
+        android:visibility="gone">
+
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
             android:id="@+id/zhifu"
-            android:layout_marginLeft="5dp"/>
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp" />
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="16dp"
             android:id="@+id/tv_zhifu"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:text="功德"/>
+            android:gravity="center_vertical"
+            android:text="功德"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
     </LinearLayout>
+
     <LinearLayout
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/mine_gongxiu"
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg_sel"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="8dp"
-        android:visibility="gone"
-        android:background="@drawable/layout_bg_sel">
+        android:visibility="gone">
+
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
             android:id="@+id/gongxiu"
-            android:layout_marginLeft="5dp"/>
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp" />
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="16dp"
             android:id="@+id/tv_gongxiu"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:text="共修"/>
+            android:gravity="center_vertical"
+            android:text="共修"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
     </LinearLayout>
 
 
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/mine_gongke"
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg_sel"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="8dp"
-        android:visibility="gone"
-        android:background="@drawable/layout_bg_sel">
+        android:visibility="gone">
+
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
             android:id="@+id/gongke"
-            android:layout_marginLeft="5dp"/>
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp" />
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="16dp"
             android:id="@+id/tv_gongke"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:text="功课"/>
+            android:gravity="center_vertical"
+            android:text="功课"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/mine_huodong"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:visibility="gone"
-        android:background="@drawable/layout_bg_sel">
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:id="@+id/huodong"
-            android:layout_marginLeft="5dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="16dp"
-            android:id="@+id/tvhuodong"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:layout_marginLeft="10dp"
-            android:text="活动"/>
-    </LinearLayout>
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/mine_gerenshezhi"
-        android:orientation="horizontal"
+        android:background="@drawable/layout_bg_sel"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="8dp"
-        android:visibility="gone"
-        android:background="@drawable/layout_bg_sel">
+        android:visibility="gone">
+
         <ImageView
+            android:id="@+id/huodong"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:id="@+id/setting"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp" />
+
         <TextView
+            android:id="@+id/tvhuodong"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="16dp"
-            android:id="@+id/tv_shezhi"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
             android:layout_marginLeft="10dp"
-            android:text="设置"/>
+            android:gravity="center_vertical"
+            android:text="活动"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mine_gerenshezhi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bg_sel"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:id="@+id/tv_shezhi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="设置"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/mine_qiehuanzhanghao"
         android:layout_width="240dp"
         android:layout_height="35dp"
-        android:visibility="gone"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:text="退出登录"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button1_sel"
-        android:textColor="@color/white"
         android:gravity="center"
+        android:text="退出登录"
+        android:textColor="@color/white"
         android:textSize="15dp"
-        />
+        android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f2f2f2"
-        android:id="@+id/recycle">
+        android:background="#f2f2f2">
 
     </android.support.v7.widget.RecyclerView>
 

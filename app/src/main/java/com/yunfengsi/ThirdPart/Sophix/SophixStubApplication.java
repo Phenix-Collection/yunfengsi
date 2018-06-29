@@ -43,7 +43,7 @@ public class SophixStubApplication extends SophixApplication {
             appVersion = this.getPackageManager()
                              .getPackageInfo(this.getPackageName(), 0)
                              .versionName;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         final SophixManager instance = SophixManager.getInstance();
         instance.setContext(this)

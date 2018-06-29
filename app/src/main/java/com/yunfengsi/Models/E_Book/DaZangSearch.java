@@ -52,7 +52,6 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class DaZangSearch extends AppCompatActivity {
-    private RecyclerView recyclerView;
 
     private int pageSize = 10;
     private int page = 1;
@@ -74,7 +73,7 @@ public class DaZangSearch extends AppCompatActivity {
             }
         });
         final String content = getIntent().getStringExtra("content");
-        recyclerView = findViewById(R.id.results);
+        RecyclerView recyclerView = findViewById(R.id.results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);

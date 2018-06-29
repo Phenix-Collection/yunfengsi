@@ -55,8 +55,6 @@ import okhttp3.Response;
  */
 
 public class Detail_Tongzhi extends AppCompatActivity implements View.OnClickListener {
-    private ImageView back;
-    private TextView t;
     private String Id,User_id;
     private ImageView head;
     private TextView type,title,pet_name,time;
@@ -68,10 +66,10 @@ public class Detail_Tongzhi extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
         setContentView(R.layout.detail_tongzhi);
-        back= (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setOnClickListener(this);
         back.setVisibility(View.VISIBLE);
-        t= (TextView) findViewById(R.id.title_title);
+        TextView t = (TextView) findViewById(R.id.title_title);
         t.setText(mApplication.ST("通知详情"));
         Id=getIntent().getStringExtra("id");
         User_id=getIntent().getStringExtra("user_id");
@@ -143,8 +141,8 @@ public class Detail_Tongzhi extends AppCompatActivity implements View.OnClickLis
                             LogUtil.w("onResourceReady: 不是二维码   " + result);
                         } else {
                             LogUtil.w("onResourceReady: 是二维码   " + result);
-                            if (result.getText().toString().startsWith("http")) {
-                                Uri uri = Uri.parse(result.getText().toString());
+                            if (result.getText().startsWith("http")) {
+                                Uri uri = Uri.parse(result.getText());
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setData(uri);
                                 startActivity(intent);

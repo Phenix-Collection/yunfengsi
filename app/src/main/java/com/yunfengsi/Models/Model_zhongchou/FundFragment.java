@@ -360,17 +360,14 @@ public class FundFragment extends BaseSTFragement implements View.OnClickListene
      */
     @Override
     public void loadMore() {
-        p.setVisibility(View.GONE);
-        t.setText(mApplication.ST("换一换"));
-        return;
-//        if (!endPage.equals(page)) {
-//            page = String.valueOf(Integer.parseInt(page) + 1);
-//        } else {
-//            p.setVisibility(View.GONE);
-//            t.setText(mApplication.ST("没有更多数据了"));
-//            return;
-//        }
-//        getData();
+        if (!endPage.equals(page)) {
+            page = String.valueOf(Integer.parseInt(page) + 1);
+        } else {
+            p.setVisibility(View.GONE);
+            t.setText(mApplication.ST("没有更多数据了"));
+            return;
+        }
+        getData();
     }
 
     /**

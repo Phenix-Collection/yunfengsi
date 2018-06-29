@@ -1,5 +1,6 @@
 package com.yunfengsi.Models;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -72,7 +73,6 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
     private TextView  tvmoney2;
     private TextView  tvmoney3;
     private Button    bntdelect;
-    private Button    bntadd;
     private TextView  bntbuy;
     private EditText  edmoneycustom;
     private EditText  tvnum;
@@ -84,7 +84,6 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
     private SharedPreferences sp;
     private String            m1, m2, m3;
     private ImageView     fenxiang;
-    private SHARE_MEDIA[] share_list;
     private ShareAction   action;
     private static final String  TAG    = "Shopd";
     private              boolean isTrue = false;
@@ -111,7 +110,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
         */
     private TextView tv_activity;
 
-    private LinearLayout pinglun, fenxiangb;
+    private LinearLayout    fenxiangb;
     private FrameLayout     overlay;
     private ImageView       toggle;
     private TextView        audio;
@@ -187,7 +186,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                 v.setVisibility(View.GONE);
             }
         });
-        pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,7 +230,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                 getPLandSet(map);
             }
         });
-        imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
 
         beizhu = (EditText) findViewById(R.id.beizhu);
@@ -280,7 +279,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
         tvmoney3 = (TextView) findViewById(R.id.money3);
         tvqian = (TextView) findViewById(R.id.xuanzhe_qian);
         tvqian.setText(getIntent().getStringExtra("money"));
-        bntadd = (Button) findViewById(R.id.btn_count_plus);
+        Button bntadd = (Button) findViewById(R.id.btn_count_plus);
         bntdelect = (Button) findViewById(R.id.btn_count_minus);
         bntbuy = (TextView) findViewById(R.id.xuanzhe_buy);
         bntbuy.setText(mApplication.ST("供养"));
@@ -299,7 +298,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
             }
         });
         //分享
-        share_list = new SHARE_MEDIA[]{
+        SHARE_MEDIA[] share_list = new SHARE_MEDIA[]{
                 SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
         };
         getData();
@@ -376,7 +375,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (IllegalStateException e) {
+                } catch (IllegalStateException ignored) {
 
                 }
             }

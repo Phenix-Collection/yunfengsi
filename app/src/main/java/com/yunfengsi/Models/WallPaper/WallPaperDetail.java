@@ -46,6 +46,7 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 import com.ruffian.library.RTextView;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.yunfengsi.Utils.MD5Utls;
 import com.yunfengsi.View.Photo.AlxGifHelper;
 import com.yunfengsi.View.Photo.PhotoViewPager;
 import com.yunfengsi.R;
@@ -107,7 +108,6 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
     private boolean isAnimating = false;//是否正在点赞动画中
     private int animWidth, animHeight;
     private boolean netWork = true;
-    private photoAdapter adapter;
     private PhotoView    curentView;
     private int     currentPos = 0;
     private boolean isFirstIn  = true;
@@ -157,7 +157,7 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        adapter = new photoAdapter(this, paths);
+        photoAdapter adapter = new photoAdapter(this, paths);
         pager.setAdapter(adapter);
         pager.setCurrentItem(currentPos, false);
         if (currentPos == 0) {
@@ -795,11 +795,17 @@ public class WallPaperDetail extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                 Log.e(TAG, "onResourceReady:内存大小 " + resource.getByteCount());
-                File file = new File(Environment.getExternalStorageDirectory(), "wallPaper" + id + ".jpg");
+                File file = new File(Environment.getExternalStorageDirectory()+"/com.yunfengsi/book/", MD5Utls.stringToMD5("wallPaper" + id) + ".jpg");
                 Log.e(TAG, "文件地址 " + file.length());
+                if(!file.getParentFile().exists()){
+                    file.getParentFile().mkdirs();
+                }
                 try {
                     FileOutputStream fos = new FileOutputStream(file);
-                    resource.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+                    if( resource.compress(Bitmap.CompressFormat.JPEG, 100, fos)){
+                        ImageUtil.updatePhotoMedia(file,WallPaperDetail.this);
+                    }
+
                     if (fos != null) {
                         fos.close();
                     }

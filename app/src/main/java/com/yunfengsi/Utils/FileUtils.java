@@ -444,7 +444,7 @@ public class FileUtils {
             if (bis != null) {
                 try {
                     bis.close();
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
             }
         }

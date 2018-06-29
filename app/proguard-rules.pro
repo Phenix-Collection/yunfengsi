@@ -214,7 +214,7 @@
 #
 
 
-
+#
 # 删除代码中Log相关的代码
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);
@@ -252,7 +252,7 @@
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 
 #
@@ -274,16 +274,13 @@
    *;
 }
  -keepattributes EnclosingMethod
--dontwarn com.google.android.maps.**
--dontwarn android.webkit.WebView
--dontwarn com.umeng.**
--dontwarn com.tencent.weibo.sdk.**
--dontwarn com.facebook.**
+
 -keep public class javax.**
 -keep public class android.webkit.**
 -dontwarn android.support.v4.**
 
-
+-keep class com.umeng.**{*;}
+-keep class com.tencent.mm.opensdk**{*;}
 #
 #-----------------------------------------BaseAdapter---------------------------------------
 #
@@ -309,6 +306,25 @@
 -keep class jxl.** { *;}
 -keep class taobe.tec.jcc.** { *;}
 -keep class com.spreada.utils.chinese.** { *;}
+
+#语音包
+-keep class com.baidu.speech.** { *;}
+#地图包
+-keep class com.amap.api.** { *;}
+-keep class com.autonavi.aps.amapapi.model.** { *;}
+-keep class com.loc.** { *;}
+
+
+
+#-----------------------------------二维码扫描
+-keep class cn.bingoogolapple.qrcode.core.** { *;}
+-keep class cn.bingoogolapple.qrcode.zxing.** { *;}
+-keep class com.google.zxing.** { *;}
+
+
+
+
+
 #-----------------------------------------轮播图-------------------------------------
 -keep class com.youth.banner.** {
     *;

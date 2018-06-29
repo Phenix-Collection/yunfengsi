@@ -56,8 +56,6 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
     private MediaPlayer mediaPlayer;
     private long destTime = 0;
     private long allTime=45*60*1000;
-//    private long allTime=10000;
-    private TextView history;
     private boolean isFinished=false;//时间是否到期
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,7 +97,7 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
 
 
         mediaPlayer = MediaPlayer.create(this, R.raw.up_seat);
-        history= (TextView) findViewById(R.id.meditationHistory);
+        TextView history = (TextView) findViewById(R.id.meditationHistory);
         history.setOnClickListener(this);
         findViewById(R.id.layout).setBackground(ContextCompat.getDrawable(this,R.drawable.zuochan_bg));
     }

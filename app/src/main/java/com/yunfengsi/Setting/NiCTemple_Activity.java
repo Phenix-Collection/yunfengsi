@@ -30,15 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NiCTemple_Activity extends AppCompatActivity implements View.OnClickListener{
-private TextView mtvtitle;
     private EditText medit;
     private String title;
     private Intent intent;
-//    private Spinner mspinner;  //寺庙的下拉列表
-    private RelativeLayout mrelativelayout; //昵称的RelativeLayout
-   private String word;  //Edittext的值
-//    private String templename;  //Spinner选中的寺庙
-    private String httpcanshu; //请求的参数
+    private String word;  //Edittext的值
     private String httpjk;  //请求的接口名
     private SharedPreferences sp;
     private List<HashMap<String, String>> names=new ArrayList<>();
@@ -79,15 +74,15 @@ private TextView mtvtitle;
         setContentView(R.layout.activity_ni_cqian_mhua_t_);
         intent=getIntent();
         sp=getSharedPreferences("user",MODE_PRIVATE);
-        mtvtitle=(TextView) findViewById(R.id.ncqmht_title);
+        TextView mtvtitle = (TextView) findViewById(R.id.ncqmht_title);
         medit=(EditText) findViewById(R.id.ncqmht_edittext);
         medit.setHint(mApplication.ST("请输入您的昵称"));
         medit.setText(mApplication.ST(PreferenceUtil.getUserIncetance(this).getString("pet_name","")));
 //        mspinner=(Spinner)findViewById(R.id.spinner_temple);
-        mrelativelayout=(RelativeLayout)findViewById(R.id.ncqmht_relativelayout_nc);
+        RelativeLayout mrelativelayout = (RelativeLayout) findViewById(R.id.ncqmht_relativelayout_nc);
         title= getIntent().getStringExtra("title");
         if(title.equals("昵称")){
-            httpcanshu="pet_name";
+            String httpcanshu = "pet_name";
             mrelativelayout.setVisibility(View.VISIBLE);
             httpjk= Constants.User_info_xiugainc;
             medit.setText(sp.getString("pet_name",""));

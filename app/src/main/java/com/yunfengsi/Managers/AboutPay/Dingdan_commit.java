@@ -41,22 +41,18 @@ import java.util.HashMap;
  */
 public class Dingdan_commit extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "Dingdan_commit";//, youbian,province,city, phone
-    private ImageView      back;
     private LinearLayout   No_Address;
     private RelativeLayout Have_address;
-    private mPLlistview    listview;
-    private TextView       username, address, youhui, allmoney, buy;
+    private TextView       username;
+    private TextView address;
+    private TextView allmoney;
     private SharedPreferences                  sp;
-    private ArrayList<HashMap<String, String>> list;
-    private DdAdapter                          adapter;
     private Double moneyAll = 0d;
     //            , allcost = 0d, allYouhui = 0d;
     private int    allNum   = 0;
     private String        ADDRESS_ID;
-    private boolean       havaAddress;
     private StringBuilder AllTitle;
     private StringBuilder msg;
-    private boolean isPintuan = false;
     private String spec_id;
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -77,6 +73,7 @@ public class Dingdan_commit extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initData() {
+        boolean havaAddress;
         if (sp.getString("address", "").equals("")) {
             No_Address.setVisibility(View.VISIBLE);
             Have_address.setVisibility(View.GONE);
@@ -129,29 +126,29 @@ public class Dingdan_commit extends AppCompatActivity implements View.OnClickLis
     private void initView() {
         IntentFilter intentFilter = new IntentFilter("DingDan");
         registerReceiver(receiver, intentFilter);
-        isPintuan = getIntent().getBooleanExtra("KT", false);
-        list = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra("list");
+        boolean                            isPintuan = getIntent().getBooleanExtra("KT", false);
+        ArrayList<HashMap<String, String>> list      = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra("list");
         Log.w(TAG, "initView: " + getIntent().getStringArrayListExtra("list"));
         sp = getSharedPreferences("address" + PreferenceUtil.getUserId(this), MODE_PRIVATE);
-        back = (ImageView) findViewById(R.id.back);
+        ImageView back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
         No_Address = (LinearLayout) findViewById(R.id.no_address);
         No_Address.setOnClickListener(this);
         Have_address = (RelativeLayout) findViewById(R.id.have_address);
         Have_address.setOnClickListener(this);
-        listview = (mPLlistview) findViewById(R.id.dingdan_listview);
+        mPLlistview listview = (mPLlistview) findViewById(R.id.dingdan_listview);
         listview.removeFooterView(listview.footer);
         username = (TextView) findViewById(R.id.username);
 //        phone = (TextView) findViewById(phone);
         address = (TextView) findViewById(R.id.address);
 //        youbian = (TextView) findViewById(youbian);
-        youhui = (TextView) findViewById(R.id.youhui);
+        TextView youhui = (TextView) findViewById(R.id.youhui);
 //        province= (TextView) findViewById(province);
 //        city= (TextView) findViewById(city);
         allmoney = (TextView) findViewById(R.id.allmoney);
-        buy = (TextView) findViewById(R.id.dingdan_buy);
+        TextView buy = (TextView) findViewById(R.id.dingdan_buy);
         buy.setOnClickListener(this);
-        adapter = new DdAdapter(this, list);
+        DdAdapter adapter = new DdAdapter(this, list);
         listview.setAdapter(adapter);
 
         msg = new StringBuilder();
@@ -190,7 +187,7 @@ public class Dingdan_commit extends AppCompatActivity implements View.OnClickLis
 //            allcost += num * cost;
             moneyAll += num * money;
             //义卖id,传义卖id  和  出价记录的列表id
-            msg.append(map.get("auct_id") + "," + map.get("id"));
+            msg.append(map.get("auct_id")).append(",").append(map.get("id"));
 //
 
         }

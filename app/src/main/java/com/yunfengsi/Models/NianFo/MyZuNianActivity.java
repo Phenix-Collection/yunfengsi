@@ -38,7 +38,6 @@ public class MyZuNianActivity extends AppCompatActivity implements View.OnClickL
     private static final String TAG = "Recitingd";
     private RecyclerView mrecyclerview;
     private ListView mlistview;
-    private TextView mfohao;
     private TextView mcontents; //助念的内容
     private TextView mpepole; //为他助念的人数
     private TextView mfohaonum;//助念的佛号声
@@ -60,7 +59,7 @@ public class MyZuNianActivity extends AppCompatActivity implements View.OnClickL
         mrecyclerview = (RecyclerView) findViewById(R.id.activity_my_zunian_recyclerview);
         mlistview = (ListView) findViewById(R.id.activity_my_zunian_listview);
         mlistview.setHeaderDividersEnabled(false);
-        mfohao = (TextView) findViewById(R.id.activity_my_zunian_tv_fohao);
+        TextView mfohao = (TextView) findViewById(R.id.activity_my_zunian_tv_fohao);
         listviewadapter = new MyZuNian_ListView_Adapter(this, recitlist);
         mrecycleradpter = new MyZuNian_RecyclerView_Adapter(this, headlist);
         screenwidth = getBaseContext().getResources().getDisplayMetrics().widthPixels;
@@ -213,7 +212,7 @@ public class MyZuNianActivity extends AppCompatActivity implements View.OnClickL
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                }catch (IllegalStateException e){
+                }catch (IllegalStateException ignored){
 
                 }
             }

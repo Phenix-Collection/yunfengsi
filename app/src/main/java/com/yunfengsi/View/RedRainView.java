@@ -33,7 +33,8 @@ public class RedRainView extends View {
     private int count;//红包数量
     private int speed;//下落速度
     private float minSize, maxSize;//红包大小
-    private boolean mustRealRed, reSelectable, clickAble;//是否都是真红包,是否可以重复点击红包,控件是否还可以点击
+    private boolean mustRealRed;
+    private boolean clickAble;//是否都是真红包,是否可以重复点击红包,控件是否还可以点击
     private ValueAnimator animator;//控制红包动画
     private long preTime;//上一次动画结束时的时间，计算单次动画消耗时间
     private ArrayList<RedPacket> redPacketArrayList;//红包对象数列
@@ -57,7 +58,7 @@ public class RedRainView extends View {
         minSize = typedArray.getFloat(R.styleable.RedRainView_minSize, 0.7f);
         maxSize = typedArray.getFloat(R.styleable.RedRainView_maxSize, 1.2f);
         mustRealRed = typedArray.getBoolean(R.styleable.RedRainView_mustRealRed, false);
-        reSelectable = typedArray.getBoolean(R.styleable.RedRainView_reSelectable, false);
+        boolean reSelectable = typedArray.getBoolean(R.styleable.RedRainView_reSelectable, false);
         typedArray.recycle();
         init();
     }

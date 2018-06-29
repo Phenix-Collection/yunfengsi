@@ -46,7 +46,9 @@ import static com.yunfengsi.Utils.mApplication.ST;
 
 public class GanyuActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "GanyuActivity";
-    private TextView wangzhan, qq, email, gengxin, pingfen, xieyi, zhengce;
+    private TextView wangzhan;
+    private TextView qq;
+    private TextView email;
 
     private String appUrl;
     private String jishuSupprot = "";
@@ -73,10 +75,10 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
         ((TextView) findViewById(R.id.wechat)).setText(mApplication.ST("客服微信"));
         ((TextView) findViewById(R.id.banquan)).setText(mApplication.ST("Copyright 2016-2018 成都因陀罗网络科技有限公司 版权所有"));
         ((ImageView) findViewById(R.id.logo)).setImageBitmap(ImageUtil.readBitMap(this, R.drawable.indra));
-        gengxin = (TextView) findViewById(R.id.gengxin);
-        pingfen = (TextView) findViewById(R.id.pingfen);
-        xieyi = (TextView) findViewById(R.id.xieyi);
-        zhengce = (TextView) findViewById(R.id.zhengce);
+        TextView gengxin = (TextView) findViewById(R.id.gengxin);
+        TextView pingfen = (TextView) findViewById(R.id.pingfen);
+        TextView xieyi   = (TextView) findViewById(R.id.xieyi);
+        TextView zhengce = (TextView) findViewById(R.id.zhengce);
         gengxin.setText(mApplication.ST("检查更新"));
         pingfen.setText(mApplication.ST("去评分"));
         xieyi.setText(mApplication.ST("用户协议"));

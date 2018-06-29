@@ -11,9 +11,7 @@
        <android.support.v4.view.ViewPager
            android:layout_width="match_parent"
            android:layout_height="200dp"
-           android:id="@+id/fund_detail_viewPager"
-           android:layout_below="@+id/detail_l1"
-           >
+           android:id="@+id/fund_detail_viewPager">
        </android.support.v4.view.ViewPager>
        <LinearLayout
            android:layout_width="wrap_content"
@@ -126,7 +124,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#cccccccc"></View>
+            android:background="#cccccccc" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -150,7 +148,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="70dp"
-                android:background="#cccccccc"></View>
+                android:background="#cccccccc" />
 
             <LinearLayout style="@style/funding_detail_line">
 
@@ -169,7 +167,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#cccccccc"></View>
+            android:background="#cccccccc" />
     </LinearLayout>
     <!--项目详情 评论-->
     <RelativeLayout

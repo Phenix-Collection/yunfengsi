@@ -13,11 +13,10 @@ import android.view.View;
  */
 
 public class mItemDecoration extends RecyclerView.ItemDecoration {
-    private Context context;
     private Paint paint;
     public mItemDecoration(Context context) {
         super();
-        this.context=context;
+        Context context1 = context;
         paint=new Paint();
         paint.setColor(Color.parseColor("#dddddd"));
     }

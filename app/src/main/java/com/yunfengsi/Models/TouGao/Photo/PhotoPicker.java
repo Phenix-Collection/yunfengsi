@@ -55,7 +55,6 @@ import java.util.List;
  */
 public class PhotoPicker extends AppCompatActivity implements View.OnClickListener, ImageGridAdapter.onSelectedListener ,ListImageDirPopupWindow.OnImageDirSelected
 ,ImageGridAdapter.onCuptureListener {
-    private ImageView back;
     private TextView fasong, chooseFile, totalNum;
     private GridView Grid;//图片展示的view
     private int mScreenHeight;
@@ -374,7 +373,7 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
 
     private void initView() {
         allowChooseNum=getIntent().getIntExtra("max",3);
-        back = (ImageView) findViewById(R.id.photo_picker_back);
+        ImageView back = (ImageView) findViewById(R.id.photo_picker_back);
         fasong = (TextView) findViewById(R.id.photo_picker_fasong);
         chooseFile = (TextView) findViewById(R.id.photo_picker_choose_file);
         Grid = (GridView) findViewById(R.id.photo_picker_grid);

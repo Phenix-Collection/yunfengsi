@@ -51,7 +51,6 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class yundou_paihang extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
 
     private MessageAdapter adapter;
@@ -73,7 +72,7 @@ public class yundou_paihang extends AppCompatActivity implements SwipeRefreshLay
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDecoration(this));
 

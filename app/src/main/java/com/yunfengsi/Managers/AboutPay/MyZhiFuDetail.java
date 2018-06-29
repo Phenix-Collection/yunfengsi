@@ -44,10 +44,14 @@ import okhttp3.Response;
  * Created by Administrator on 2017/1/19.
  */
 public class MyZhiFuDetail extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
-    private String        snr;
-    private ImageView     Back;
-    private mItemListview listview;
-    private TextView      Title, User, Address, Phone, Time, Status, Snr, YouHui, Money_Total, Pay;
+    private String   snr;
+    private TextView User;
+    private TextView Address;
+    private TextView Time;
+    private TextView Status;
+    private TextView Snr;
+    private TextView Money_Total;
+    private TextView Pay;
     public  TextView           Total_Cost;
     private itemAdapter        adapter;
     private SwipeRefreshLayout swip;
@@ -72,12 +76,12 @@ public class MyZhiFuDetail extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.my_zhifu_detail);
-        Back = (ImageView) findViewById(R.id.title_back);
-        Back.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.back));
-        Back.setVisibility(View.VISIBLE);
-        Back.setOnClickListener(this);
-        Title = (TextView) findViewById(R.id.title_title);
-        Title.setText("订单详情");
+        ImageView back = (ImageView) findViewById(R.id.title_back);
+        back.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.back));
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(this);
+        TextView title = (TextView) findViewById(R.id.title_title);
+        title.setText("订单详情");
         initView();
         snr = getIntent().getStringExtra("snr");
         id = getIntent().getStringExtra("id");
@@ -103,15 +107,15 @@ public class MyZhiFuDetail extends AppCompatActivity implements View.OnClickList
         swip.setOnRefreshListener(this);
         User = (TextView) findViewById(R.id.username);
         Address = (TextView) findViewById(R.id.address);
-        Phone = (TextView) findViewById(R.id.phone);
+        TextView phone = (TextView) findViewById(R.id.phone);
         Time = (TextView) findViewById(R.id.time);
         Status = (TextView) findViewById(R.id.status);
         Snr = (TextView) findViewById(R.id.snr);
         Total_Cost = (TextView) findViewById(R.id.total);
-        YouHui = (TextView) findViewById(R.id.youhui);
+        TextView youHui = (TextView) findViewById(R.id.youhui);
         Money_Total = (TextView) findViewById(R.id.money_total);
         Pay = (TextView) findViewById(R.id.pay);
-        listview = (mItemListview) findViewById(R.id.listview);
+        mItemListview listview = (mItemListview) findViewById(R.id.listview);
         adapter = new itemAdapter(this, new ArrayList<HashMap<String, String>>());
         listview.setAdapter(adapter);
         isPintuan = getIntent().getBooleanExtra("KT", false);

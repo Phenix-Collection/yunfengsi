@@ -51,27 +51,27 @@ public class IRead extends AppCompatActivity implements ReadTextView.WindowListe
     PageFactory pageFactory;
 
     private RelativeLayout head, bottom;
-    private ImageView back;
-    private TextView txt_chapter, delete, size, add, day, night;
-    private ImageView share;
+    private TextView size;
+    private TextView day;
+    private TextView night;
     private int type=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_iread);
-        share=findViewById(R.id.share);
+        ImageView share = findViewById(R.id.share);
         share.setOnClickListener(this);
         page = findViewById(R.id.read);
         progress = findViewById(R.id.progress);
         head = findViewById(R.id.head);
         bottom = findViewById(R.id.bottom);
-        back = findViewById(R.id.back);
+        ImageView back = findViewById(R.id.back);
         back.setOnClickListener(this);
-        txt_chapter = findViewById(R.id.chapters);
-        delete = findViewById(R.id.delete);
+        TextView txt_chapter = findViewById(R.id.chapters);
+        TextView delete      = findViewById(R.id.delete);
         size = findViewById(R.id.textsize);
-        add = findViewById(R.id.add);
+        TextView add = findViewById(R.id.add);
         day = findViewById(R.id.day);
         night = findViewById(R.id.night);
 
@@ -175,8 +175,6 @@ public class IRead extends AppCompatActivity implements ReadTextView.WindowListe
         if (666 == requestCode && resultCode == RESULT_OK && data != null) {
             PageFactory.getInstance().setPosition(data.getIntExtra("position", 1));
             //跳转章节后进度也会变化，在此处更新进度值
-
-
         }
     }
         //纠错

@@ -32,7 +32,7 @@ public class MineManager {
     public static final String text         = "mine_text";
     public static final String CACHE_NAME   = "mine_cache";
     public static final String CACHE_VERSON = "cache_verson";
-
+    private View header;
 
     //    private ArrayList<Integer> imageList;
 //    private ArrayList<String> titles;
@@ -124,6 +124,19 @@ public class MineManager {
         }
         LogUtil.e(maps + "  @#@#@#@#@~!!@!~~是否是管理员：：："+PreferenceUtil.getUserIncetance(context).getString("role","").equals("3"));
         adapter = new Mine_GridAdapter(maps);
+
+//        header = LayoutInflater.from(context).inflate(R.layout.fragment_mine_header,null);
+//        header.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (new LoginUtil().checkLogin(context)) {
+//                    context.startActivity(new Intent(context, MemberCenter.class));
+//                }
+//            }
+//        });
+//        adapter.addHeaderView(header);
+
+
         recyclerView.setLayoutManager(new GridLayoutManager(context, 4));
         mItemDeraction mItemDeraction = new mItemDeraction(1, Color.parseColor("#f2f2f2"));
         recyclerView.addItemDecoration(mItemDeraction);
@@ -177,5 +190,7 @@ public class MineManager {
 
     }
 
-
+    public View getHeader() {
+        return header;
+    }
 }

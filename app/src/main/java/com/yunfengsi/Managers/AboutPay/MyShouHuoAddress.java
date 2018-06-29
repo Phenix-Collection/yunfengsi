@@ -44,7 +44,7 @@ public class MyShouHuoAddress extends AppCompatActivity implements View.OnClickL
     private static final String TAG = "MyShouHuoAddress";
     private ListView  listView;
     private ImageView tip;
-    private ImageView back, add;
+    private ImageView back;
     private SharedPreferences             sp;
     private List<HashMap<String, String>> list;
     private mAdapter                      adapter;
@@ -154,7 +154,6 @@ public class MyShouHuoAddress extends AppCompatActivity implements View.OnClickL
         swipeRefreshLayout.setOnRefreshListener(this);
         list = new ArrayList<>();
         listView = (ListView) findViewById(R.id.mshouhuo_listview);
-         StatusBarCompat.compat(this, Color.parseColor("#2a292f"));
         sp = getSharedPreferences("user", MODE_PRIVATE);
         back = (ImageView) findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
@@ -162,7 +161,7 @@ public class MyShouHuoAddress extends AppCompatActivity implements View.OnClickL
         back.setOnClickListener(this);
         ((TextView) findViewById(R.id.title_title)).setText("我的收货地址");
 
-        add = (ImageView) findViewById(R.id.title_image2);
+        ImageView add = (ImageView) findViewById(R.id.title_image2);
         add.setVisibility(View.VISIBLE);
         add.setImageResource(R.drawable.home_add_more);
         add.setOnClickListener(this);
@@ -309,7 +308,7 @@ public class MyShouHuoAddress extends AppCompatActivity implements View.OnClickL
             }
             SpannableString     ss  =new SpannableString("收  货  人：" + map.get("receiver"));
             SpannableString     ss1 =new SpannableString("联系方式：" + map.get("phone"));
-            SpannableString     ss2 =new SpannableString("详细地址：" + map.get("address"));
+            SpannableString     ss2 =new SpannableString("详细地址：" + map.get("province")+map.get("city")+map.get("address"));
             ForegroundColorSpan f   =new ForegroundColorSpan(Color.parseColor("#999999"));
             ss.setSpan(f,8,ss.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             ss1.setSpan(f,5,ss1.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);

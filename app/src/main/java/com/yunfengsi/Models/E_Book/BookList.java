@@ -89,12 +89,11 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
 
     //    private final BookCollectionShadow myCollection = new BookCollectionShadow();
 
-    private TextView fojing, dazang;
+    private TextView                   dazang;
     private RecyclerView               treeRecycle;
     private ArrayList<MultiItemEntity> mainList;
     private TreeAdapter                treeAdapter;
     private EditText                   edit;
-    private TextView                   search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         mApplication.getInstance().addActivity(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         edit = findViewById(R.id.search_edit);
-        search = findViewById(R.id.search);
+        TextView search = findViewById(R.id.search);
         search.setOnClickListener(this);
         ((ImageView) findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +110,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
                 finish();
             }
         });
-        fojing = findViewById(R.id.fojing);
+        TextView fojing = findViewById(R.id.fojing);
         fojing.setOnClickListener(this);
         fojing.setEnabled(false);
         dazang = findViewById(R.id.dazang);
@@ -164,28 +163,10 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         }
 
 
-        Delete();
+
     }
 
-    private void Delete() {
-        JSONObject js=new JSONObject();
-        try {
-            js.put("m_id",Constants.M_id);
-            js.put("id","3296,3295");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        LogUtil.e("删除：："+js);
-        ApisSeUtil.M m=ApisSeUtil.i(js);
-        OkGo.post(Constants.PendingCommentDelete).params("key",m.K())
-                .params("msg",m.M())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(String s, Call call, Response response) {
 
-                    }
-                });
-    }
 
     @Override
     protected void onResume() {
@@ -996,11 +977,10 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
     }
 
     private void clickBook(final String id, final String title, String url) {
-        File file = new File(getExternalFilesDir(getPackageName()), title + ".txt");
+        File file = new File(getExternalFilesDir("book"), title + ".txt");
 //                    File file=new File(Environment.getExternalStorageDirectory(),"金刚经_314.txt");
         LogUtil.e("file是否存在：：：：" + file.exists() + " 编码格式：：：" + FileUtils.getFileEncode2(file.getPath()));
         if (file.exists()) {
-//                        HwTxtPlayActivity.loadTxtFile(BookList.this,file.getPath());
             Book book = new Book();
             book.setAccessTime(System.currentTimeMillis());
             book.setBookName(title);
@@ -1011,13 +991,11 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
             intent.putExtra("book", book);
             intent.putExtra("type", 1);
             intent.putExtra("id", id);
-//            Intent intent = new Intent(BookList.this, Read.class);
-//            intent.putExtra("title", title + ".txt");
-//            intent.putExtra("path", file.getPath());
             startActivity(intent);
 
         } else {
-            OkGo.get(url).execute(new FileCallback(getExternalFilesDir(getPackageName()).getAbsolutePath(), title + ".txt") {
+            //下载书籍并打开
+            OkGo.get(url).execute(new FileCallback(getExternalFilesDir("book").getAbsolutePath(), title + ".txt") {
                 @Override
                 public void onSuccess(File file, Call call, Response response) {
                     LogUtil.e("file:::" + file.length() + "   filele:::" + file.getName() + " 编码格式：：：" + FileUtils.getFileEncode(file.getPath()));

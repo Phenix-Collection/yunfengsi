@@ -42,8 +42,6 @@ public class ImageGridAdapter extends BaseAdapter {
     private List<String> mShowImages = new LinkedList<String>();
     //文件夹路径
     private String mDirPath;
-    //上下文对象
-    private WeakReference<Context> w;//若引用
     private Context context;
     //    是否是加载的图片最多的文件夹
 //    private boolean isMostNumDir;
@@ -63,7 +61,7 @@ public class ImageGridAdapter extends BaseAdapter {
 
     public ImageGridAdapter(Context context, List<String> mDatas, String dirPath, int hasSelectedSize,int Max) {
         super();
-        w = new WeakReference<Context>(context);
+        WeakReference<Context> w = new WeakReference<Context>(context);
         mShowImages.add(0, "add");
         this.mShowImages.addAll(mDatas);
         this.mDirPath = dirPath;

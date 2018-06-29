@@ -13,7 +13,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -46,7 +45,6 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.yunfengsi.R;
-import com.yunfengsi.View.ErWeiMa.QRCodeUtil;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -59,6 +57,7 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
+import com.yunfengsi.View.ErWeiMa.QRCodeUtil;
 import com.yunfengsi.View.RedRainView;
 
 import org.json.JSONException;
@@ -115,11 +114,7 @@ public class RedPacket extends AppCompatActivity {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         BitmapDrawable bt = new BitmapDrawable(resource);
-                        if (Build.VERSION.SDK_INT >= 16) {
-                            redRainView.setBackground(bt);
-                        } else {
-                            redRainView.setBackgroundDrawable(bt);
-                        }
+                        redRainView.setBackground(bt);
                     }
                 });
 
@@ -211,7 +206,6 @@ public class RedPacket extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        ;
                         ApisSeUtil.M m = ApisSeUtil.i(js);
 
                         OkGo.post(Constants.RedMoney).params("key", m.K())
@@ -603,7 +597,6 @@ public class RedPacket extends AppCompatActivity {
         } else {
             ToastUtil.showToastShort("二维码保存失败");
         }
-        ;
     }
 
     private void getInfo() {
@@ -642,11 +635,7 @@ public class RedPacket extends AppCompatActivity {
                                                 @Override
                                                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                                     BitmapDrawable bt = new BitmapDrawable(resource);
-                                                    if (Build.VERSION.SDK_INT >= 16) {
-                                                        redRainView.setBackground(bt);
-                                                    } else {
-                                                        redRainView.setBackgroundDrawable(bt);
-                                                    }
+                                                    redRainView.setBackground(bt);
                                                 }
                                             });
                                 } else if ("002".equals(map.get("code"))) {//已拆开，未领取

@@ -73,7 +73,7 @@ public class QrUtils {
                     activity.runOnUiThread(new Runnable() {
                         public void run() {
                             Log.w(TAG, "run: 扫描二位码后的结果："+result );
-                            if (null != result&&result.getText().toString().startsWith("http")) {
+                            if (null != result&& result.getText().startsWith("http")) {
                                 Uri uri = Uri.parse(result.getText());
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setData(uri);
@@ -122,7 +122,7 @@ public class QrUtils {
         try {
             Log.w(TAG, "parseQRcodeBitmap: 二进制图片——："+binaryBitmap.toString()+"   解析转换类型："+hints );
             result = reader.decode(binaryBitmap, hints);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return result;
     }

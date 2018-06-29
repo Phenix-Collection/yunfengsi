@@ -6,7 +6,6 @@
     android:paddingLeft="70dp"
     android:paddingRight="10dp"
     android:paddingTop="5dp"
-    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical"
     android:background="@drawable/layout_bg_sel"
     android:id="@+id/chapter"

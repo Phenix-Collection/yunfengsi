@@ -222,8 +222,7 @@ public class ACache {
 	public JSONObject getAsJSONObject(String key) {
 		String JSONString = getAsString(key);
 		try {
-			JSONObject obj = new JSONObject(JSONString);
-			return obj;
+			return new JSONObject(JSONString);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -268,8 +267,7 @@ public class ACache {
 	public JSONArray getAsJSONArray(String key) {
 		String JSONString = getAsString(key);
 		try {
-			JSONArray obj = new JSONArray(JSONString);
-			return obj;
+			return new JSONArray(JSONString);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -403,7 +401,7 @@ public class ACache {
 		} finally {
 			try {
 				oos.close();
-			} catch (IOException e) {
+			} catch (IOException ignored) {
 			}
 		}
 	}
@@ -422,8 +420,7 @@ public class ACache {
 			try {
 				bais = new ByteArrayInputStream(data);
 				ois = new ObjectInputStream(bais);
-				Object reObject = ois.readObject();
-				return reObject;
+				return ois.readObject();
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;

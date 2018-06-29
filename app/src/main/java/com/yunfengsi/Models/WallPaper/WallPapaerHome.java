@@ -34,11 +34,6 @@ import java.util.ArrayList;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class WallPapaerHome extends AppCompatActivity implements View.OnClickListener {
-    private TabLayout            tabLayout;
-    private ImageView            back;
-    private ViewPager            viewPager;
-    private WallPaperPageAdapter adapter;
-    private ArrayList<Fragment>  list;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,9 +43,9 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
 
 
         setContentView(R.layout.wall_page_home);
-        tabLayout = findViewById(R.id.tab);
-        viewPager = findViewById(R.id.viewpager);
-        back = findViewById(R.id.back);
+        TabLayout tabLayout = findViewById(R.id.tab);
+        ViewPager viewPager = findViewById(R.id.viewpager);
+        ImageView back      = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +62,7 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        list = new ArrayList<>();
+        ArrayList<Fragment> list = new ArrayList<>();
         list.add(new RecommendFragment());
         RecommendFragment newest=new RecommendFragment();
         Bundle b=new Bundle();
@@ -76,7 +71,7 @@ public class WallPapaerHome extends AppCompatActivity implements View.OnClickLis
         list.add(newest);
         list.add(new WallPagerClassification());
 
-        adapter = new WallPaperPageAdapter(getSupportFragmentManager(), list);
+        WallPaperPageAdapter adapter = new WallPaperPageAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
 

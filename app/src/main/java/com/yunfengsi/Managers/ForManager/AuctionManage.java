@@ -54,7 +54,6 @@ import okhttp3.Response;
 public class AuctionManage extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
     private int     pageSize   = 5;
@@ -82,7 +81,7 @@ public class AuctionManage extends AppCompatActivity implements SwipeRefreshLayo
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.addItemDecoration(new mItemDecoration(this));
 

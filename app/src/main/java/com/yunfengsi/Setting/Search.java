@@ -200,7 +200,6 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     private listAdapter adapter;
     private static final String TAG = "Search";
     private              String url = Constants.News_Search_Ip;//搜索的接口地址
-    private ImageView back;
     private EditText  input;
     private TextView  sousuo, zixun, huodong, gongyang, zhongchou, removeAll;
     private ListView                      listView;
@@ -242,7 +241,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     private void initView() {
         listList = new ArrayList<>();
         adapter = new listAdapter(this, listList);
-        back = (ImageView) findViewById(R.id.search_back);
+        ImageView back = (ImageView) findViewById(R.id.search_back);
         back.setOnClickListener(this);
         sousuo = (TextView) findViewById(R.id.search_sousuo);//搜索按钮
         sousuo.setText(mApplication.ST("搜索"));
@@ -357,6 +356,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+
 
         sousuo.setOnClickListener(this);
         zixun.setOnClickListener(this);
@@ -654,12 +654,14 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 }
                 final ImageView img = holder.image;
                 Glide.with(context).load(map.get("image"))
+
                         .asBitmap().override(DimenUtils.dip2px(Search.this, 120), DimenUtils.dip2px(Search.this, 90)).centerCrop()
+                        .placeholder(R.color.huise)
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                                 RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(getResources(), resource);
-                                rbd.setCornerRadius(5);
+                                rbd.setCornerRadius(DimenUtils.dip2px(context,2));
                                 img.setImageDrawable(rbd);
                             }
                         });

@@ -135,7 +135,7 @@
         <com.yunfengsi.View.mPLlistview
             android:id="@+id/zixun_item_plListview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:dividerHeight="1dp"
             android:divider="#e6e6e6"
             android:background="@color/white"

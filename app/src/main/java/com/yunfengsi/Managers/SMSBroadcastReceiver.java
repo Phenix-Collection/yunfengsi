@@ -19,7 +19,6 @@ import java.util.Date;
 
 public class SMSBroadcastReceiver extends BroadcastReceiver {
     private onMessgeReceiveListener listener;
-    private String TAG="SMSBroadcastReceiver";
     private EditText input;
 
     public SMSBroadcastReceiver(EditText editText) {
@@ -38,6 +37,7 @@ public class SMSBroadcastReceiver extends BroadcastReceiver {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = simpleDateFormat.format(timeDate);
 
+            String TAG = "SMSBroadcastReceiver";
             Log.e(TAG, "onReceive: 短信来自:" + sender);
             Log.e(TAG, "onReceive: 短信内容:" + content);
             Log.e(TAG, "onReceive: 短信时间:" + time);

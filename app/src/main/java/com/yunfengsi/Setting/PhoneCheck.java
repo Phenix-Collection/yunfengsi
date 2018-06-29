@@ -37,8 +37,7 @@ import java.util.Map;
  */
 public class PhoneCheck extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PhoneCheck";
-    private ImageView back;
-    private TextView getMid, commit;
+    private TextView getMid;
     private EditText phone, MID;
     private String YZM;
     private ProgressDialog progressDialog;
@@ -55,11 +54,11 @@ public class PhoneCheck extends AppCompatActivity implements View.OnClickListene
     private void initView() {
         sp = getSharedPreferences("user", MODE_PRIVATE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("手机号绑定"));
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         getMid = (TextView) findViewById(R.id.Zhuce_getMid);
-        commit = (TextView) findViewById(R.id.zhuce_commit);
+        TextView commit = (TextView) findViewById(R.id.zhuce_commit);
         phone = (EditText) findViewById(R.id.Zhuce_phonenum);
         MID = (EditText) findViewById(R.id.Zhuce_Mid);
         getMid.setOnClickListener(this);

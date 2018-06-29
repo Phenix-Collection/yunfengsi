@@ -119,7 +119,6 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
 
 
     private View         rootView;
-    private RecyclerView items, recyclerView;
     //    private LoadMoreListView2 listView2;
 //    private ziXun_List_Adapter adapter;
     private static final String   CACHE_NAME    = ItemManager.CaCheName;
@@ -171,7 +170,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
     private void initView(LayoutInflater inflater) {
         EventBus.getDefault().register(this);//注册事件管理器
         head = (LinearLayout) inflater.inflate(R.layout.head_homepage, null);
-        items = (RecyclerView) head.findViewById(R.id.items);
+        RecyclerView items = (RecyclerView) head.findViewById(R.id.items);
 
 
         swip = rootView.findViewById(R.id.swip);
@@ -220,7 +219,6 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
 
                         return;
                     }
-                    ;
                     if (url.equals(Constants.Help)) {
                         Intent intent = new Intent();
                         intent.setClass(getActivity(), AD.class);
@@ -487,16 +485,18 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         textView.setTextColor(Color.BLACK);
         textView.setText("暂无最新图文");
 
-        recyclerView = rootView.findViewById(R.id.recycle);
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycle);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dy==0){
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState==RecyclerView.SCROLL_STATE_IDLE){
+                    //静止状态  开始加载图片
                     Glide.with(getActivity()).resumeRequests();
                 }else{
+                    //停止加载
                     Glide.with(getActivity()).pauseRequests();
                 }
             }
@@ -539,12 +539,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                         intent.putExtra("active_url", active);
                     }
                 }
-//                if (null != view.findViewById(R.id.zixun_item_sourse)) {
-//                    String active = view.findViewById(R.id.zixun_item_sourse).getTag().toString();
-//                    if (!active.equals("")) {
-//                        intent.putExtra("active_url", active);
-//                    }
-//                }
+
 
                 startActivity(intent);
             }
@@ -611,7 +606,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                     Glide.with(getActivity()).load(bean.getImage())
                             .asBitmap()
 //                            .skipMemoryCache(true)
-                            .override(DimenUtils.dip2px(getActivity(), 136), DimenUtils.dip2px(getActivity(), 102))
+                            .override(DimenUtils.dip2px(getActivity(), 120), DimenUtils.dip2px(getActivity(), 90))
                             .centerCrop()
                             .into(new BitmapImageViewTarget(((ImageView) holder.getView(R.id.hot_two_item_image))) {
                                 @Override

@@ -110,8 +110,7 @@ public class RSAUtils {
         // 解密数据
         Cipher cp = Cipher.getInstance(ECB_PKCS1_PADDING);
         cp.init(Cipher.DECRYPT_MODE, keyPrivate);
-        byte[] arr = cp.doFinal(encrypted);
-        return arr;
+        return cp.doFinal(encrypted);
     }
 }
 

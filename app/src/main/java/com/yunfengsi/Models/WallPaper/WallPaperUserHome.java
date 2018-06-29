@@ -40,9 +40,7 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class WallPaperUserHome extends AppCompatActivity implements View.OnClickListener {
-    private TabLayout            tabLayout;
     private ViewPager            viewPager;
-    private WallPaperPageAdapter adapter;
     private ImageView head;
     private TextView name;
     UserHomeFragment mine, verify, collection,Other;
@@ -52,7 +50,7 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.wall_paper_mine);
-        tabLayout = findViewById(R.id.tab);
+        TabLayout tabLayout = findViewById(R.id.tab);
         viewPager = findViewById(R.id.viewpager);
         head=findViewById(R.id.head);
         name=findViewById(R.id.pet_name);
@@ -99,7 +97,7 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
         }
 
 
-        adapter = new WallPaperPageAdapter(getSupportFragmentManager(), fragments);
+        WallPaperPageAdapter adapter = new WallPaperPageAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
 

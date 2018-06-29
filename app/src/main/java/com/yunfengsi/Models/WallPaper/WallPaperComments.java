@@ -1,5 +1,6 @@
 package com.yunfengsi.Models.WallPaper;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -48,7 +49,6 @@ import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
-import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.LoadMoreListView;
@@ -88,7 +88,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
     private String             currentId;
     private boolean isPLing = false;
 
-    private LinearLayout pinglun, fenxiangb;
+    private LinearLayout    fenxiangb;
     private FrameLayout     overlay;
     private ImageView       toggle;
     private TextView        audio;
@@ -181,7 +181,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                 v.setVisibility(View.GONE);
             }
         });
-        pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,7 +232,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
         PlListVIew = (LoadMoreListView) findViewById(R.id.listview);
         PlListVIew.setLoadMoreListen(this);
 
-        imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         t = (TextView) (PlListVIew.footer.findViewById(R.id.load_more_text));
         p = (ProgressBar) (PlListVIew.footer.findViewById(R.id.load_more_bar));
@@ -464,40 +464,40 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                                                     YunDouAwardDialog.show(WallPaperComments.this, "每日评论", hashMap.get("yundousum"));
                                                 }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                                final HashMap<String, String> map       = new HashMap<>();
-                                                String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-                                                final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-                                                String                        petname   = sp.getString("pet_name", "");
-                                                String                        diazannum = "0";
-                                                map.put("user_image", headurl);
-                                                map.put("ct_contents", content);
-                                                map.put("pet_name", petname);
-                                                map.put("ct_ctr", diazannum);
-                                                map.put("level", sp.getString("level", "0"));
-                                                map.put("ct_time", time);
-                                                if (sp.getString("role", "").equals("3")) {
-                                                    map.put("role", "3");
-                                                } else {
-                                                    map.put("role", "0");
-                                                }
-
-                                                map.put("id", hashMap.get("id"));
-                                                map.put("reply", new JSONArray().toString());
-                                                map.put("level", sp.getString("level", "0"));
-                                                PlListVIew.setFocusable(true);
-                                                if (adapter.mlist.size() == 0) {
-                                                    adapter.mlist.add(0, map);
-                                                    adapter.flagList.add(0, false);
-                                                    PlListVIew.removeHeaderView(tv);
-                                                    PlListVIew.setAdapter(adapter);
-
-                                                } else {
-                                                    adapter.mlist.add(0, map);
-                                                    adapter.flagList.add(0, false);
-                                                    adapter.notifyDataSetChanged();
-
-                                                }
-                                                PlListVIew.setSelection(0);
+//                                                final HashMap<String, String> map       = new HashMap<>();
+//                                                String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
+//                                                final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
+//                                                String                        petname   = sp.getString("pet_name", "");
+//                                                String                        diazannum = "0";
+//                                                map.put("user_image", headurl);
+//                                                map.put("ct_contents", content);
+//                                                map.put("pet_name", petname);
+//                                                map.put("ct_ctr", diazannum);
+//                                                map.put("level", sp.getString("level", "0"));
+//                                                map.put("ct_time", time);
+//                                                if (sp.getString("role", "").equals("3")) {
+//                                                    map.put("role", "3");
+//                                                } else {
+//                                                    map.put("role", "0");
+//                                                }
+//
+//                                                map.put("id", hashMap.get("id"));
+//                                                map.put("reply", new JSONArray().toString());
+//                                                map.put("level", sp.getString("level", "0"));
+//                                                PlListVIew.setFocusable(true);
+//                                                if (adapter.mlist.size() == 0) {
+//                                                    adapter.mlist.add(0, map);
+//                                                    adapter.flagList.add(0, false);
+//                                                    PlListVIew.removeHeaderView(tv);
+//                                                    PlListVIew.setAdapter(adapter);
+//
+//                                                } else {
+//                                                    adapter.mlist.add(0, map);
+//                                                    adapter.flagList.add(0, false);
+//                                                    adapter.notifyDataSetChanged();
+//
+//                                                }
+//                                                PlListVIew.setSelection(0);
                                                 v.setEnabled(true);
 //                                                firstNum += 1;
 //                                                plNum.setText(mApplication.ST("评论 " + firstNum));

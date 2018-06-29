@@ -53,7 +53,6 @@ import okhttp3.Response;
  * 作者：luZheng on 2018/06/07 10:10
  */
 public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
-    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
     private int     pageSize   = 10;
@@ -61,8 +60,6 @@ public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLa
     private int     endPage    = -1;
     private boolean isLoadMore = false;
     private boolean isRefresh  = false;
-
-    private LinearLayout display, delete;
 
     private ArrayList<HashMap<String, String>> classificationList;
 
@@ -88,8 +85,8 @@ public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLa
                 finish();
             }
         });
-        display = findViewById(R.id.display);
-        delete = findViewById(R.id.delete);
+        LinearLayout display = findViewById(R.id.display);
+        LinearLayout delete  = findViewById(R.id.delete);
 
         display.setOnClickListener(this);
         delete.setOnClickListener(this);
@@ -100,7 +97,7 @@ public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLa
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView        recyclerView        = (RecyclerView) findViewById(R.id.recycle);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);

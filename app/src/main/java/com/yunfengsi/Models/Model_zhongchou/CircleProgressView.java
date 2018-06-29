@@ -26,16 +26,10 @@ public class CircleProgressView extends View {
 
     private Object progress=0;//进度条的递增值
 
-    private final int mCircleLineStrokeWidth = 8;//线条粗细
-
-    private final int mTxtStrokeWidth = 2;//文字字体粗细
-
     //画圆所在的矩形区域
     private final RectF mRectF;
 
     private Paint mPaint;
-
-    private final Context mContext;
 
     private String mTxHint1;
 
@@ -55,7 +49,7 @@ public class CircleProgressView extends View {
     public CircleProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mContext = context;
+        Context mContext = context;
         mRectF = new RectF();
         mPaint = new Paint();
     }
@@ -76,13 +70,14 @@ public class CircleProgressView extends View {
         mPaint.setAntiAlias(true);//抗锯齿效果
         mPaint.setColor(Color.rgb(0xe9,0xe9,0xe9));
         canvas.drawColor(Color.TRANSPARENT);
+        int mCircleLineStrokeWidth = 8;
         mPaint.setStrokeWidth(mCircleLineStrokeWidth);//设置画笔宽度
         mPaint.setStyle(Paint.Style.STROKE);
         //位置
-        mRectF.left=mCircleLineStrokeWidth/2;//左上角x
-        mRectF.top=mCircleLineStrokeWidth/2;//左上角y
-        mRectF.right=width-mCircleLineStrokeWidth/2;//左下角x
-        mRectF.bottom=height-mCircleLineStrokeWidth/2;//右下角y
+        mRectF.left= mCircleLineStrokeWidth /2;//左上角x
+        mRectF.top= mCircleLineStrokeWidth /2;//左上角y
+        mRectF.right=width- mCircleLineStrokeWidth /2;//左下角x
+        mRectF.bottom=height- mCircleLineStrokeWidth /2;//右下角y
 
         //绘制圆圈，进度条圆环的颜色
         //圆弧外轮廓矩形区域，起始角度，扫过的角度，true(绘制扇形),画板属性
@@ -96,6 +91,7 @@ public class CircleProgressView extends View {
         }
         //绘制进度文案显示
         String text="";
+        int    mTxtStrokeWidth = 2;
         mPaint.setStrokeWidth(mTxtStrokeWidth);
         if(isIntText){
             if(progress instanceof Integer){

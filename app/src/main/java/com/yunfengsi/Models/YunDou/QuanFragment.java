@@ -39,8 +39,6 @@ import java.util.List;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class QuanFragment extends Fragment implements DuiHuanContract.IFView {
-    private View view;
-    private RecyclerView recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter adapter;
 
@@ -48,7 +46,7 @@ public class QuanFragment extends Fragment implements DuiHuanContract.IFView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_quan_duihuan,container,false);
+        View view = inflater.inflate(R.layout.fragment_quan_duihuan, container, false);
         swip = (SwipeRefreshLayout) view.findViewById(R.id.swip);
         quanPresenter=new QuanFramgentPresenterImpl(this);
         EventBus.getDefault().register(this);
@@ -56,7 +54,7 @@ public class QuanFragment extends Fragment implements DuiHuanContract.IFView {
         swip.setColorSchemeResources(R.color.main_color);
 
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new mItemDecoration(getActivity()));
 

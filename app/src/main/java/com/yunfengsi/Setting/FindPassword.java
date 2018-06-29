@@ -43,7 +43,6 @@ import java.util.HashMap;
 public class FindPassword extends AppCompatActivity implements View.OnClickListener {
     private EditText phoneNum, newWord, word2, Mid;
     private TextView getMid;
-    private Button button;
     private String YZM;
     private String code="86";
     /*
@@ -109,7 +108,7 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
         Mid.setHint(mApplication.ST("请输入验证码"));
         getMid = (TextView) findViewById(R.id.login_wangjimima_getMid);
         getMid.setText(mApplication.ST("获取验证码"));
-        button = (Button) findViewById(R.id.login_wangjimima_submit);
+        Button button = (Button) findViewById(R.id.login_wangjimima_submit);
         button.setText(mApplication.ST("提交信息"));
         imm= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         findViewById(R.id.findPassWord_back).setOnClickListener(this);

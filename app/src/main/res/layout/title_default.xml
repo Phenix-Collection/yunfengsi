@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/main_color"
-    >
 
+    >
     <ImageView
         android:id="@+id/title_back"
         android:layout_width="40dp"
@@ -16,7 +16,7 @@
         android:src="@drawable/back"
         android:background="@drawable/back_sel"
         android:visibility="gone"
-        android:clickable="true"
+        app:layout_constraintLeft_toLeftOf="parent"
         />
     <TextView
         android:id="@+id/title_title"
@@ -24,29 +24,35 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:textColor="@color/white"/>
     <ImageView
         android:id="@+id/title_image2"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
         android:scaleType="centerCrop"
         android:background="@drawable/back_sel"
         android:padding="10dp"
+        app:layout_constraintRight_toRightOf="parent"
         android:visibility="gone"/>
 
     <com.ruffian.library.RTextView
         android:id="@+id/handle_right"
         android:gravity="center"
-        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:textSize="16sp"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
+        app:layout_constraintRight_toRightOf="parent"
         android:visibility="gone"
         app:text_color_normal="@color/white"
         app:text_color_pressed="@color/light_huise"
         />
-</RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -120,7 +120,6 @@ import static com.yunfengsi.Utils.mApplication.alias2;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private ImageView          back;
     private TextView           title;
     public  ViewPager          pager;
     public  TabLayout          tabLayout;
@@ -129,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
     public  List<Fragment>     list;
     private ImageView          add;
     private PopupWindow        pp;//加号弹出窗口
-    private SHARE_MEDIA[]      share_list;
     private ShareAction        action;
     private AlertDialog        backDialog;
     private String             appUrl;
@@ -142,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity                       activity;
     public        ImageView                          notice;
     private       android.support.v7.app.AlertDialog dialog;
-    private       SimpleWakeupListener               iWakeupListener;//语音唤醒
     public        MyWakeup                           myWakeup;
 
     KeepLiveWakeLockReceiver receiver1;//开锁屏监听
@@ -228,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAudio() {
         initPermission();
 
-        iWakeupListener = new SimpleWakeupListener(this);
+        SimpleWakeupListener iWakeupListener = new SimpleWakeupListener(this);
         myWakeup = new MyWakeup(this, ((IWakeupListener) iWakeupListener));
         startWakeUp();
 
@@ -298,7 +295,6 @@ public class MainActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     return;
                                                 }
-                                                ;
                                                 if (url.equals(Constants.Help)) {
                                                     intent.setClass(MainActivity.this, AD.class);
                                                     intent.putExtra("bangzhu", true);
@@ -618,7 +614,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         //分享
-        share_list = new SHARE_MEDIA[]{
+        SHARE_MEDIA[] share_list = new SHARE_MEDIA[]{
                 SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
                 SHARE_MEDIA.SINA
         };
@@ -660,7 +656,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         title = (TextView) findViewById(R.id.title_title);
         pager = (ViewPager) findViewById(R.id.home_viewpager);
         tabLayout = (TabLayout) findViewById(R.id.home_bottom_tablayout);
@@ -705,7 +701,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //为tab注册选中事件
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 ((TextView) tab.getCustomView().findViewById(R.id.home_tab_text)).setTextColor(getResources().getColor(R.color.main_color));

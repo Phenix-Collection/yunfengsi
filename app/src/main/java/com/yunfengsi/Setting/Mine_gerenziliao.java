@@ -163,7 +163,7 @@ public class Mine_gerenziliao extends AppCompatActivity implements OnClickListen
                         });
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }catch ( IllegalStateException e){
+                    }catch ( IllegalStateException ignored){
 
                     }
                 }

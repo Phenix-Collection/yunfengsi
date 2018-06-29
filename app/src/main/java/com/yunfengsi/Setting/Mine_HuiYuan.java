@@ -31,7 +31,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.request.BaseRequest;
 import com.yunfengsi.Managers.Base.BaseSTActivity;
-import com.yunfengsi.Models.ZiXun_Detail;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -142,6 +141,7 @@ public class Mine_HuiYuan extends BaseSTActivity implements View.OnClickListener
                                     int sc = Integer.valueOf(s1);
                                     String le=PreferenceUtil.getUserIncetance(Mine_HuiYuan.this)
                                             .getString("level","0");
+                                    LogUtil.e("当前会员等级：："+le);
                                     if (le.equals("0")) {
                                         next = 120;
                                         level = 0;
@@ -308,8 +308,8 @@ public class Mine_HuiYuan extends BaseSTActivity implements View.OnClickListener
                             LogUtil.w("onResourceReady: 不是二维码   " + result);
                         } else {
                             LogUtil.w("onResourceReady: 是二维码   " + result);
-                            if (result.getText().toString().startsWith("http")) {
-                                Uri uri = Uri.parse(result.getText().toString());
+                            if (result.getText().startsWith("http")) {
+                                Uri uri = Uri.parse(result.getText());
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setData(uri);
                                 startActivity(intent);

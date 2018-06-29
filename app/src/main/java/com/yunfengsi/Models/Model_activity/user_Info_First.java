@@ -39,7 +39,6 @@ import okhttp3.Response;
  */
 
 public class user_Info_First extends AppCompatActivity  implements View.OnClickListener{
-    private ImageView imgBack;
     private myWebView webContent;
     private TextView  tvCommit;
     private static final String TAG = "user_Info_First";
@@ -50,7 +49,7 @@ public class user_Info_First extends AppCompatActivity  implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_ziliaowanshan);
 
-        imgBack= (ImageView) findViewById(R.id.back);
+        ImageView imgBack = (ImageView) findViewById(R.id.back);
         imgBack.setOnClickListener(this);
         webContent= (myWebView) findViewById(R.id.user_info);
         WebSettings webSettings = webContent.getSettings();

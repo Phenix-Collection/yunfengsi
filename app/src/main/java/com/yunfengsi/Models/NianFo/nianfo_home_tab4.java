@@ -322,7 +322,7 @@ public class nianfo_home_tab4 extends AppCompatActivity implements View.OnClickL
                                     map.put("user_id", PreferenceUtil.getUserIncetance(nianfo_home_tab4.this).getString("user_id",""));
                                     map.put("rtg_userid", PreferenceUtil.getUserIncetance(nianfo_home_tab4.this).getString("user_id",""));
                                     adapter.list.add(0, map);
-                                    adapter.addList(adapter.list);
+//                                    adapter.addList(adapter.list);
                                     adapter.sba.add(0,true);
                                     if (handler != null) {
                                         handler.post(new Runnable() {

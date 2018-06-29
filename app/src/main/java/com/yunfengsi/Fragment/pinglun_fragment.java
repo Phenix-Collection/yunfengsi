@@ -61,7 +61,6 @@ public class pinglun_fragment extends Fragment implements SwipeRefreshLayout.OnR
     private String endPage = "";
     private boolean isRefresh=true;
     private boolean isFirstIn = true;
-    private ArrayList<HashMap<String, String>> list;
     private PL_List_Adapter adapter;
     //无评论时的header
     private TextView tv;
@@ -91,7 +90,7 @@ public class pinglun_fragment extends Fragment implements SwipeRefreshLayout.OnR
 
         listView = (LoadMoreListView) view.findViewById(R.id.listview);
         listView.setLoadMoreListen(this);
-        list = new ArrayList<>();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
         adapter = new PL_List_Adapter(getActivity());
         adapter.setOnHuifuListener(this);
         adapter.setToDetail(true);

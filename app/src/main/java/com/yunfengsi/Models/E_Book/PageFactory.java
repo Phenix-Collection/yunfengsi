@@ -26,8 +26,7 @@ import java.util.ArrayList;
  * Created by Will on 2016/2/2.
  */
 public class PageFactory {
-    private int screenHeight, screenWidth;//实际屏幕尺寸
-    private int pageHeight, pageWidth;//文字排版页面尺寸
+    private int pageHeight;
     private int lineNumber;//行数
     private int fileLength;//映射到内存中Book的字节数
     private int fontSize;
@@ -73,12 +72,12 @@ public class PageFactory {
         mView = view;
         this.progress = progress;
         ((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        screenHeight = metrics.heightPixels;
-        screenWidth = metrics.widthPixels;
+        int screenHeight = metrics.heightPixels;
+        int screenWidth  = metrics.widthPixels;
         fontSize = spHelper.getFontSize();
         mView.setTextSize(fontSize);
         pageHeight = screenHeight - DimenUtils.dip2px(mContext, 25);
-        pageWidth = screenWidth;
+        int pageWidth = screenWidth;
         lineNumber = pageHeight / mView.getLineHeight() - 1;
 
 

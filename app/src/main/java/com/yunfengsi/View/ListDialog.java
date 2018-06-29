@@ -70,7 +70,6 @@ public class ListDialog {
     }
 
     private int defaultTextsize   = 18;//textSize for default list item ;
-    private int defaultItemHeight = 45;//height for default list item ;
 
     public ListDialog setDialogHeight(int dialogHeight) {
         wl.height = dialogHeight;
@@ -317,7 +316,8 @@ public class ListDialog {
             textView.setBackgroundColor(Color.WHITE);
             textView.setGravity(android.view.Gravity.CENTER);
             textView.setTextSize(defaultTextsize);
-            ViewGroup.LayoutParams vl = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(denisty * defaultItemHeight));
+            int                    defaultItemHeight = 45;
+            ViewGroup.LayoutParams vl                = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(denisty * defaultItemHeight));
             textView.setLayoutParams(vl);
 
             return new viewHolder(textView);

@@ -16,11 +16,10 @@ public class WakeUpResult {
     private String desc;
     private int errorCode;
 
-    private static int ERROR_NONE = 0;
-
     private static final String TAG = "WakeUpResult";
 
     public boolean hasError() {
+        int ERROR_NONE = 0;
         return errorCode != ERROR_NONE;
     }
 

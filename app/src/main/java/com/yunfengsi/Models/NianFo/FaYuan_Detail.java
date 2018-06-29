@@ -48,37 +48,34 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 public class FaYuan_Detail extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
-    private TextView mtvtitle;
-    private TextView mtvdidian;
-    private TextView mtvtime;
-    private TextView mtvleijione;
-    private TextView mtvpintaitwo;
-    private TextView mtvleijithree;
-    private TextView mtvhead;
+    private TextView     mtvtitle;
+    private TextView     mtvdidian;
+    private TextView     mtvtime;
+    private TextView     mtvleijione;
+    private TextView     mtvpintaitwo;
+    private TextView     mtvleijithree;
+    private TextView     mtvhead;
     private RecyclerView mlistview;
-    private ImageView mimageback;
+    private ImageView    mimageback;
 
 
-    private SharedPreferences sp;
+    private SharedPreferences       sp;
     private HashMap<String, String> listhashMap;
-    private ArrayList<Integer> arrayList;
-    private fdAdapter adapter;
+    private ArrayList<Integer>      arrayList;
+    private fdAdapter               adapter;
     private static final String TAG = "GYMX";
-    private String type, type_String;
-    private String url;
-    private List<String> keyList;
-    private List<String> valueList;
-    private RelativeLayout bg_layout;
-    private String digit;//单位后缀
-    private String targetTime;
+    private String type;
+    private String         url;
+    private String         digit;//单位后缀
+    private String         targetTime;
     //Hodler hodler;
-    private String sb2;
+    private String         sb2;
 
     public void init() {
 //        ((TextView) findViewById(R.id.leiji)).setText(mApplication.ST("累计"));
 //        ((TextView) findViewById(R.id.pingtai)).setText(mApplication.ST("平台"));
-        keyList = new ArrayList<>();
-        valueList = new ArrayList<>();
+        List<String> keyList   = new ArrayList<>();
+        List<String> valueList = new ArrayList<>();
 //        mtvhead = (TextView) findViewById(R.id.activity_lf_tvhead);
         mtvtitle = (TextView) findViewById(R.id.activity_lf_title);
         swip = (SwipeRefreshLayout) findViewById(R.id.swip);
@@ -93,17 +90,17 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
         mlistview.setLayoutManager(new LinearLayoutManager(this));
 //        mlistview.addItemDecoration(new mItemDecoration(this));
         mimageback = (ImageView) findViewById(R.id.activity_lf_imageback);
-        bg_layout = (RelativeLayout) findViewById(R.id.activity_lf_layoutzx);
+        RelativeLayout bg_layout = (RelativeLayout) findViewById(R.id.activity_lf_layoutzx);
 
 
     }
 
     private String id;
-    private static final int PAGESIZE = 10;
-    private int page = 1;
-    private int endPage = 0;
-    private boolean isLoadMore = false;
-    private boolean isRefresh = false;
+    private static final int     PAGESIZE   = 10;
+    private              int     page       = 1;
+    private              int     endPage    = 0;
+    private              boolean isLoadMore = false;
+    private              boolean isRefresh  = false;
     private SwipeRefreshLayout swip;
 
     @Override
@@ -121,7 +118,7 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
             case "1":
 //                url = Constants.Mine_GK_NF;
 //                Log.w(TAG, "getweb: url" + url);
-                type_String = "buddha";
+                String type_String = "buddha";
                 sb2 = "念";
                 digit = "声";
                 break;
@@ -161,9 +158,9 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
                     getweb();
                 }
             }
-        },mlistview);
+        }, mlistview);
         TextView textView = new TextView(this);
-        Drawable d = ContextCompat.getDrawable(this, R.drawable.load_nothing);
+        Drawable d        = ContextCompat.getDrawable(this, R.drawable.load_nothing);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
         textView.setCompoundDrawablePadding(DimenUtils.dip2px(this, 10));
@@ -233,16 +230,17 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
                     final String data = OkGo.post(Constants.Fayuan_Info_Detail_Ip).tag(TAG).params("key", m.K())
                             .params("msg", m.M())
                             .execute().body().string();
+                    LogUtil.e("获取到的数据：：："+data);
                     if (!data.equals("")) {
                         listhashMap = AnalyticalJSON.getHashMap(data);
                         if (listhashMap != null) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    String t1 = "发愿目标\n" + NumUtils.getNumStr(listhashMap.get("target_num")) + digit;
-                                    String num=(NumUtils.getNumStr(Long.valueOf(listhashMap.get("num"))>=Long.valueOf(listhashMap.get("target_num"))?listhashMap.get("target_num"):listhashMap.get("num")));
-                                    String t2 = "已达成\n" + num + digit;
-                                    SpannableString s1 = new SpannableString(t1);
+                                    String          t1  = "发愿目标\n" + NumUtils.getNumStr(listhashMap.get("target_num")) + digit;
+                                    String          num = (NumUtils.getNumStr(Long.valueOf(listhashMap.get("num")) >= Long.valueOf(listhashMap.get("target_num")) ? listhashMap.get("target_num") : listhashMap.get("num")));
+                                    String          t2  = "已达成\n" + num + digit;
+                                    SpannableString s1  = new SpannableString(t1);
                                     s1.setSpan(new AbsoluteSizeSpan(28, true), s1.length() - NumUtils.getNumStr(listhashMap.get("target_num")).length() - 1, s1.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                     s1.setSpan(new ForegroundColorSpan(Color.parseColor("#777777")), s1.length() - NumUtils.getNumStr(listhashMap.get("target_num")).length() - 1, s1.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                                     mtvleijione.setText(s1);
@@ -256,12 +254,11 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
                                         if (isRefresh) {
                                             adapter.setNewData(list);
                                             isRefresh = false;
-                                            swip.setRefreshing(false);
                                         } else if (isLoadMore) {
                                             isLoadMore = false;
                                             if (list.size() < PAGESIZE) {
                                                 ToastUtil.showToastShort("加载完毕", Gravity.CENTER);
-//                                endPage = page;
+                                                endPage = page;
                                                 adapter.addData(list);
                                                 adapter.loadMoreEnd(false);
                                             } else {
@@ -269,16 +266,15 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
                                                 adapter.loadMoreComplete();
                                             }
                                         }
-
-                                        swip.setRefreshing(false);
                                     }
+                                    swip.setRefreshing(false);
                                 }
                             });
                         }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (IllegalStateException e) {
+                } catch (IllegalStateException ignored) {
 
                 }
             }
@@ -292,7 +288,7 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
         OkGo.getInstance().cancelTag(TAG);
     }
 
-    public class fdAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
+    public class fdAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
         private String digit, sb2;
 
         public fdAdapter(List<HashMap<String, String>> data, String digit, String sb2) {
@@ -303,8 +299,8 @@ public class FaYuan_Detail extends AppCompatActivity implements View.OnClickList
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            holder.setText(R.id.itme_tvnianjingnum, NumUtils.getNumStr(map.get("ls_nfnum"))  + digit)
-            .setText(R.id.itme_tvnianjingname,type);
+            holder.setText(R.id.itme_tvnianjingnum, NumUtils.getNumStr(map.get("ls_nfnum")) + digit)
+                    .setText(R.id.itme_tvnianjingname, type);
             holder.setText(R.id.itme_tvnianjingtime, TimeUtils.getTrueTimeStr(map.get("ls_time")));
         }
     }

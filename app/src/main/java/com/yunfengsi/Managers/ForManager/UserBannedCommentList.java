@@ -49,7 +49,6 @@ import okhttp3.Response;
 public class UserBannedCommentList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
     private int     pageSize   = 10;
@@ -79,7 +78,7 @@ public class UserBannedCommentList extends AppCompatActivity implements SwipeRef
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());

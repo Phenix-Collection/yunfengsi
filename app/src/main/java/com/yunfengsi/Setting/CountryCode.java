@@ -40,19 +40,11 @@ import java.util.List;
 public class CountryCode extends AppCompatActivity implements View.OnClickListener, JXl.ExcelLoadedListener {
 
     private RecyclerView sortListView;
-    private SideBar sideBar;
-    private TextView dialog;
     private countryAdapter adapter;
-    private ClearEditText mClearEditText;
 
 
     private CharacterParser characterParser;
     private List<JXl.CountryModel> SourceDateList;
-
-    private ImageView back;
-    private TextView title;
-
-    private JXl jxl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,15 +55,15 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
     }
 
     private void initView() {
-        jxl = new JXl(this);
+        JXl jxl = new JXl(this);
         characterParser = CharacterParser.getInstance();
 
 
-        sideBar = (SideBar) findViewById(R.id.sidrbar);
-        dialog = (TextView) findViewById(R.id.dialog);
-        back = (ImageView) findViewById(R.id.back);
+        SideBar   sideBar = (SideBar) findViewById(R.id.sidrbar);
+        TextView  dialog  = (TextView) findViewById(R.id.dialog);
+        ImageView back    = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         title.setText(mApplication.ST("国家代码"));
         sideBar.setTextView(dialog);
 
@@ -126,8 +118,7 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
         // ����a-z��������Դ����
 
 
-
-        mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
+        ClearEditText mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
         mClearEditText.setHint(mApplication.ST("搜索"));
         Drawable d = ContextCompat.getDrawable(this, R.drawable.search_gray);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 20), DimenUtils.dip2px(this, 20));
@@ -220,7 +211,7 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
             filterDateList.clear();
             for (JXl.CountryModel model : SourceDateList) {
                 String name = model.getChinaName();
-                if (name.indexOf(filterStr.toString()) != -1 || characterParser.getSelling(name).startsWith(filterStr.toString())) {
+                if (name.indexOf(filterStr) != -1 || characterParser.getSelling(name).startsWith(filterStr)) {
                     filterDateList.add(model);
                 }
             }

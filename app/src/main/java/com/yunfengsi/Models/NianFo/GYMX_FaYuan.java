@@ -56,26 +56,26 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
     private TextView mtvtime;
 
     private RecyclerView mlistview;
-    private ImageView mimageback;
+    private ImageView    mimageback;
 
 
-    private SharedPreferences sp;
+    private SharedPreferences       sp;
     private HashMap<String, String> map;
-    private ArrayList<Integer> arrayList;
-    private FayuanAdapter adapter;
+    private ArrayList<Integer>      arrayList;
+    private FayuanAdapter           adapter;
     private static final String TAG = "GYMX";
 
     private List<String> keyList;
     private List<String> valueList;
-    private String digit;//单位后缀
+    private String       digit;//单位后缀
     //Hodler hodler;
-    private TextView pingtai1, pingtai2, pingtai3, geren1, geren2, geren3;
+    private TextView     pingtai1, pingtai2, pingtai3, geren1, geren2, geren3;
     private String targetTime;
-    private static final int PAGESIZE = 10;
-    private int page = 1;
-    private int endPage = 0;
-    private boolean isLoadMore = false;
-    private boolean isRefresh = false;
+    private static final int     PAGESIZE   = 10;
+    private              int     page       = 1;
+    private              int     endPage    = 0;
+    private              boolean isLoadMore = false;
+    private              boolean isRefresh  = false;
     private SwipeRefreshLayout swip;
 
     public void init() {
@@ -107,9 +107,9 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
                     getList();
                 }
             }
-        },mlistview);
+        }, mlistview);
         TextView textView = new TextView(this);
-        Drawable d = ContextCompat.getDrawable(this, R.drawable.load_nothing);
+        Drawable d        = ContextCompat.getDrawable(this, R.drawable.load_nothing);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
         textView.setCompoundDrawablePadding(DimenUtils.dip2px(this, 10));
@@ -122,10 +122,10 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter a, View view, int i) {
-                Intent intent=new Intent(GYMX_FaYuan.this,FaYuan_Detail.class);
-                intent.putExtra("id",adapter.getData().get(i).get("id"));
-                intent.putExtra("type",adapter.getData().get(i).get("name"));
-                intent.putExtra("type_id",adapter.getData().get(i).get("type"));
+                Intent intent = new Intent(GYMX_FaYuan.this, FaYuan_Detail.class);
+                intent.putExtra("id", adapter.getData().get(i).get("id"));
+                intent.putExtra("type", adapter.getData().get(i).get("name"));
+                intent.putExtra("type_id", adapter.getData().get(i).get("type"));
                 startActivity(intent);
             }
         });
@@ -243,7 +243,7 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (IllegalStateException e) {
+                } catch (IllegalStateException ignored) {
 
                 }
             }
@@ -277,7 +277,7 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
                                     isLoadMore = false;
                                     if (list.size() < PAGESIZE) {
                                         ToastUtil.showToastShort("发愿记录加载完毕", Gravity.CENTER);
-//                                endPage = page;
+                                        endPage = page;
                                         adapter.addData(list);
                                         adapter.loadMoreEnd(false);
                                     } else {
@@ -285,6 +285,8 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
                                         adapter.loadMoreComplete();
                                     }
                                 }
+                            }else{
+                                adapter.loadMoreEnd(false);
                             }
                         }
                         swip.setRefreshing(false);
@@ -301,18 +303,18 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
         getList();
     }
 
-    public class FayuanAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
+    public class FayuanAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
         public FayuanAdapter(List<HashMap<String, String>> data) {
             super(R.layout.fayuan_detail_item, data);
         }
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
-            String t1 = TimeUtils.getTrueTimeStr(map.get("time")) + "发愿:\n";
-            String t2 = "";
-            String t3 = "";
-            long target = 0;
-            long num = 0;
+            String t1     = TimeUtils.getTrueTimeStr(map.get("time")) + "发愿:\n";
+            String t2     = "";
+            String t3     = "";
+            long   target = 0;
+            long   num    = 0;
             if (map.get("target_num") == null || map.get("target_num").equals("")) {
                 target = 0;
             } else {
@@ -321,9 +323,9 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
             if (map.get("num") == null || map.get("num").equals("")) {
                 num = 0;
             } else {
-                if(num>=target){
-                    num=Long.valueOf(map.get("target_num"));
-                }else{
+                if (num >= target) {
+                    num = Long.valueOf(map.get("target_num"));
+                } else {
                     num = Long.valueOf(map.get("num"));
                 }
 
@@ -331,48 +333,48 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
             if ("1".equals(map.get("type"))) {
                 t2 = "念" + map.get("name") + target + "声\n";
                 t3 = "已达成 " + num + " 声   " +
-                        (target-num<=0?("完成于"+TimeUtils.getTrueTimeStr(map.get("wc_time"))):("剩余 " + (target - num) + " 声"));
+                        (target - num <= 0 ? ("完成于" + TimeUtils.getTrueTimeStr(map.get("wc_time"))) : ("剩余 " + (target - num) + " 声"));
             } else if ("2".equals(map.get("type"))) {
                 t2 = "诵" + map.get("name") + target + "部\n";
                 t3 = "已达成 " + num + " 部   " +
-                        (target-num<=0?("完成于"+TimeUtils.getTrueTimeStr(map.get("wc_time"))):("剩余 " + (target - num) + " 部"));
+                        (target - num <= 0 ? ("完成于" + TimeUtils.getTrueTimeStr(map.get("wc_time"))) : ("剩余 " + (target - num) + " 部"));
             } else if ("3".equals(map.get("type"))) {
                 t2 = "持" + map.get("name") + target + "遍\n";
                 t3 = "已达成 " + num + " 遍   " +
-                        (target-num<=0?("完成于"+TimeUtils.getTrueTimeStr(map.get("wc_time"))):("剩余 " + (target - num) + " 遍"));
+                        (target - num <= 0 ? ("完成于" + TimeUtils.getTrueTimeStr(map.get("wc_time"))) : ("剩余 " + (target - num) + " 遍"));
             }
-            SpannableStringBuilder ssb=new SpannableStringBuilder(t1);
-            SpannableString s2=new SpannableString(t2);
-            s2.setSpan(new ForegroundColorSpan(Color.BLACK),0,s2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableStringBuilder ssb = new SpannableStringBuilder(t1);
+            SpannableString        s2  = new SpannableString(t2);
+            s2.setSpan(new ForegroundColorSpan(Color.BLACK), 0, s2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ssb.append(s2);
-            SpannableString s3=new SpannableString(t3);
-            s3.setSpan(new ForegroundColorSpan(ContextCompat.getColor(GYMX_FaYuan.this,R.color.wordhuise)),0,s3.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString s3 = new SpannableString(t3);
+            s3.setSpan(new ForegroundColorSpan(ContextCompat.getColor(GYMX_FaYuan.this, R.color.wordhuise)), 0, s3.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ssb.append(s3);
-            holder.setText(R.id.content,ssb);
-            long targetTime=0;
-            long now=0;
-            if(target>num){//进行中
-                if(map.get("end_time")==null||map.get("end_time").equals("")){
-                    now=System.currentTimeMillis();
-                    targetTime=0;
-                }else{
-                    targetTime=TimeUtils.dataOne(map.get("end_time"));
-                    now=System.currentTimeMillis();
+            holder.setText(R.id.content, ssb);
+            long targetTime = 0;
+            long now        = 0;
+            if (target > num) {//进行中
+                if (map.get("end_time") == null || map.get("end_time").equals("")) {
+                    now = System.currentTimeMillis();
+                    targetTime = 0;
+                } else {
+                    targetTime = TimeUtils.dataOne(map.get("end_time"));
+                    now = System.currentTimeMillis();
                 }
-                if(targetTime-now>0){//进行中
-                    Long offset=(targetTime-now)/1000/60/60/24;
-                    int days=offset.intValue();
-                    holder.setText(R.id.status,"还剩\n"+days+"天");
+                if (targetTime - now > 0) {//进行中
+                    Long offset = (targetTime - now) / 1000 / 60 / 60 / 24;
+                    int  days   = offset.intValue();
+                    holder.setText(R.id.status, "还剩\n" + days + "天");
                     holder.getView(R.id.status).setBackground(null);
-                }else{
+                } else {
 //                    holder.setText(R.id.status,mApplication.ST("失败"));
                     holder.getView(R.id.status).setBackgroundResource(R.drawable.fail);
 
                 }
-            }else{//已完成
+            } else {//已完成
 //                holder.setText(R.id.status,mApplication.ST("已完成"));
                 holder.getView(R.id.status).setBackgroundResource(R.drawable.complete);
-           }
+            }
 
 
         }

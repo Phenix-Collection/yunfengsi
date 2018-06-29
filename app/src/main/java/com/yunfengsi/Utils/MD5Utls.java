@@ -9,11 +9,11 @@ public class MD5Utls {
     public  static String stringToMD5(String s){
         String resultString = null;
         try {
-            resultString = new String(s);
+            resultString = s;
             MessageDigest md = MessageDigest.getInstance("MD5");
             resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
         }
-        catch (Exception ex) {
+        catch (Exception ignored) {
 
         }
         return resultString;

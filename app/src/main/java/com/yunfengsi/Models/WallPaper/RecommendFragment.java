@@ -39,9 +39,7 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class RecommendFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private View view;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView recyclerView;
     private RecommendPagerAdapter adapter;
     private int pageSize = 9;
     private int page = 1;
@@ -52,13 +50,13 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_recommend_wallpager, container, false);
+        View view = inflater.inflate(R.layout.fragment_recommend_wallpager, container, false);
 
         swipeRefreshLayout = view.findViewById(R.id.swip);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        recyclerView = view.findViewById(R.id.recycle);
+        RecyclerView recyclerView = view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         ArrayList<HashMap<String, String>> list = new ArrayList<>();

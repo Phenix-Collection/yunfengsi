@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="7dp">
@@ -36,7 +37,6 @@
                 android:id="@+id/fund_list_item_Tosurpport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/back_sel"
                 android:padding="8dp"
                 android:textColor="@color/red"
@@ -68,7 +68,8 @@
                 android:layout_height="100dp"
                 android:orientation="vertical">
 
-                <LinearLayout style="@style/funding_list_tv_money_line">
+                <LinearLayout style="@style/funding_list_tv_money_line"
+                    tools:ignore="DisableBaselineAlignment">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -113,9 +114,10 @@
                     android:background="@drawable/dashed_line"
                     android:layerType="software"
 
-                    ></View>
+                    />
 
-                <LinearLayout style="@style/funding_list_tv_money_line">
+                <LinearLayout style="@style/funding_list_tv_money_line"
+                    tools:ignore="DisableBaselineAlignment">
 
                     <LinearLayout
                         android:layout_width="0dp"

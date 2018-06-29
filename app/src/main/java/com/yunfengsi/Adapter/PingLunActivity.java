@@ -1,5 +1,6 @@
 package com.yunfengsi.Adapter;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -50,25 +51,24 @@ import okhttp3.Response;
  */
 public class PingLunActivity extends AndroidPopupActivity implements View.OnClickListener {
     private static final String TAG = "PingLunActivity";
-    private ImageView back;
-    private TextView title;
     private String page = "1";
     private String endPage = "";
     private AvatarImageView head;
-    private ImageView article_head;
-    private TextView name, time, dianzanNum, content, article_title;
-    private mPLlistview PlListVIew;
-    private PL_List_Adapter adapter;
+    private TextView name;
+    private TextView time;
+    private TextView dianzanNum;
+    private TextView content;
+    private mPLlistview                        PlListVIew;
+    private PL_List_Adapter                    adapter;
     private ArrayList<HashMap<String, String>> Pllist;
 //    private ImageView tip;
     //无评论时的header
-    private TextView tv;
-    private InputMethodManager imm;
-    private String pLId;
-    private EditText PLText;
-    private TextView fasong;
-    private SharedPreferences sp;
-    private Drawable dianzan, dianzan1;
+    private TextView                           tv;
+    private InputMethodManager                 imm;
+    private String                             pLId;
+    private EditText                           PLText;
+    private SharedPreferences                  sp;
+    private Drawable                           dianzan1;
 
     @Override
     public void onClick(final View v) {
@@ -252,18 +252,18 @@ public class PingLunActivity extends AndroidPopupActivity implements View.OnClic
         PLText = (EditText) findViewById(R.id.zixun_item_input);
         PLText.setHint(mApplication.ST("请输入您的回复"));
         sp = PreferenceUtil.getUserIncetance(this);
-        fasong = (TextView) findViewById(R.id.zixun_item_fasong);
+        TextView fasong = (TextView) findViewById(R.id.zixun_item_fasong);
         fasong.setText(mApplication.ST("发送"));
         fasong.setOnClickListener(this);
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         back.setImageResource(R.drawable.back);
-        title = (TextView) findViewById(R.id.title_title);
+        TextView title = (TextView) findViewById(R.id.title_title);
         title.setText(mApplication.ST("回复详情"));
         time = (TextView) findViewById(R.id.PL_item_time);
         time.setText(TimeUtils.getTrueTimeStr(getIntent().getStringExtra("time")));
-        imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         head = (AvatarImageView) findViewById(R.id.PL_item_Head);
 
         Glide.with(this).load(getIntent().getStringExtra("user_image")).override(DimenUtils.dip2px(this, 50), DimenUtils.dip2px(this, 50))
@@ -273,7 +273,7 @@ public class PingLunActivity extends AndroidPopupActivity implements View.OnClic
         dianzanNum = (TextView) findViewById(R.id.Pl_item_DianZan_num);
         dianzanNum.setText(getIntent().getStringExtra("num"));
         dianzanNum.setOnClickListener(this);
-        dianzan = ContextCompat.getDrawable(this, R.drawable.dianzan);
+        Drawable dianzan = ContextCompat.getDrawable(this, R.drawable.dianzan);
         dianzan1 = ContextCompat.getDrawable(this, R.drawable.dianzan1);
         dianzan.setBounds(0, 0, DimenUtils.dip2px(this, 15), DimenUtils.dip2px(this, 15));
         dianzan1.setBounds(0, 0, DimenUtils.dip2px(this, 15), DimenUtils.dip2px(this, 15));
@@ -287,8 +287,8 @@ public class PingLunActivity extends AndroidPopupActivity implements View.OnClic
         pLId = getIntent().getStringExtra("id");
         content = (TextView) findViewById(R.id.Pl_item_Content);
         content.setText(getIntent().getStringExtra("content"));
-        article_head = (ImageView) findViewById(R.id.article_head);
-        article_title = (TextView) findViewById(R.id.article_title);
+        ImageView article_head  = (ImageView) findViewById(R.id.article_head);
+        TextView  article_title = (TextView) findViewById(R.id.article_title);
         PlListVIew = (mPLlistview) findViewById(R.id.zixun_item_plListview);
         PlListVIew.setFooterDividersEnabled(false);
 

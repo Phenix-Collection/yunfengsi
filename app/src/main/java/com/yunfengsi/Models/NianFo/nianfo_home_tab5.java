@@ -54,7 +54,6 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
     private static final String TAG = "nianfo_home_tab5";
     private LoadMoreListView listView;
     private EditText editText;
-    private TextView textView;
     private nianfo_home_chanhui_adapter adapter;
     private List<HashMap<String ,String >>list;
     private SharedPreferences sp;
@@ -101,7 +100,7 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
         swip.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
 
-        textView= (TextView) findViewById(R.id.nianfo_home_chanhui_commit);
+        TextView textView = (TextView) findViewById(R.id.nianfo_home_chanhui_commit);
         textView.setText(mApplication.ST("提交忏悔"));
         sp=getSharedPreferences("user", Context.MODE_PRIVATE);
         list=new ArrayList<>();
@@ -327,7 +326,7 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
                                     map.put("cfs_likes","0");
                                     map.put("user_id",sp.getString("user_id",""));
                                     adapter.list.add(0,map);
-
+                                    adapter.sba.add(0,true);
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {

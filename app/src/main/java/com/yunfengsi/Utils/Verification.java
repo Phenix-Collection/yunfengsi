@@ -2,7 +2,6 @@ package com.yunfengsi.Utils;
 
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -20,7 +19,6 @@ import com.yunfengsi.BuildConfig;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,8 +84,7 @@ public class Verification {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        int version = packInfo.versionCode;
-        return version;
+        return packInfo.versionCode;
     }
 
     /**
@@ -143,8 +140,7 @@ public class Verification {
                 break;
             }
         }
-        boolean isRight = isLetter;
-        return isRight;
+        return isLetter;
 
     }
 

@@ -63,7 +63,6 @@ public class WebInteraction extends AppCompatActivity {
     private static final String URL = "http://indrah.cn" + "/" + Constants.NAME_LOW + ".php/Index/shareg";
     private static final String URL2 = "http://indrah.cn" + "/" + Constants.NAME_LOW + ".php/Index/sharegx";
     private String stu_id = "";
-    private TextView name;
     public static final String ISFORM = "form";
     public static final String Progress = "progress";
 
@@ -81,7 +80,7 @@ public class WebInteraction extends AppCompatActivity {
 
         setContentView(R.layout.enter_wrap);
         webView = (WebView) findViewById(R.id.enter_wrap_web);
-        name = (TextView) findViewById(R.id.ad_name);
+        TextView name = (TextView) findViewById(R.id.ad_name);
 
         if (getIntent().getBooleanExtra(Progress, false)) {//项目进度
 //           https://indrah.cn/yfs.php/Index/cfgload/id/xx

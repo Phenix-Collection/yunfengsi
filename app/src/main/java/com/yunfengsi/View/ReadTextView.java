@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yunfengsi.Models.E_Book.PageFactory;
 import com.yunfengsi.R;
@@ -24,7 +23,6 @@ import static android.content.Context.CLIPBOARD_SERVICE;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class ReadTextView extends TextView{
-    private Context context;
     private  PageFactory pageFactory;
     private TextView progress;
     private long downTime=0;
@@ -34,7 +32,7 @@ public class ReadTextView extends TextView{
     public ReadTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.setFreezesText(true);
-        this.context=context;
+        Context context1 = context;
         modeCallback=new MyActionModeCallback(this);
         setCustomSelectionActionModeCallback(modeCallback);
     }
@@ -220,7 +218,7 @@ public class ReadTextView extends TextView{
      * 用枚举来区分是复制还是剪切
      */
     public enum SelectMode{
-        COPY,CUT;
+        COPY,CUT
     }
 
 }

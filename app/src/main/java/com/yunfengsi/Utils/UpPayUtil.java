@@ -27,15 +27,12 @@ import okhttp3.Response;
  */
 public class UpPayUtil extends AppCompatActivity {
     private static final String TAG = "UpPayUtil";
-    private static String mMode = "00";//设置测试模式:01为测试 00为正式环境
     private static final String TN_URL_01 = "http://indranet.cn/"+Constants.NAME_LOW+".php/Unionpay/unionpay_app" ;//自己后台需要实现的给予我们app的tn号接口
-    private WeakReference<Activity> weakReference;
-    private static  String stu_id = "";
     public static String  allmoney,title,num,shop_id,type,extra;
     private   Handler mHandler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
-            weakReference=new WeakReference<Activity>(UpPayUtil.this);
+            WeakReference<Activity> weakReference = new WeakReference<Activity>(UpPayUtil.this);
             String tn = "";
             if (msg.obj == null || ((String) msg.obj).length() == 0) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(weakReference.get());
@@ -51,6 +48,7 @@ public class UpPayUtil extends AppCompatActivity {
                 builder.create().show();
             } else {
                 tn = (String) msg.obj;
+                String mMode = "00";
                 doStartUnionPayPlugin(weakReference.get(), tn, mMode);
             }
         }
@@ -166,7 +164,8 @@ public class UpPayUtil extends AppCompatActivity {
                     msg = "支付成功！";
                     if("4".equals(type)){
                         Intent intent1 = new Intent(this, WebInteraction.class);
-                        intent1.putExtra("stu_id",stu_id);
+                        String stu_id  = "";
+                        intent1.putExtra("stu_id", stu_id);
                         startActivity(intent1);
                     }else if(type.equals("5")){//慈善
                         Intent intent=new Intent("Mine");

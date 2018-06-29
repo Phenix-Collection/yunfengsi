@@ -41,6 +41,7 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.mApplication;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +60,6 @@ import okhttp3.Response;
 public class Bid_History_Mine extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
     private int     pageSize   = 5;
@@ -67,6 +67,15 @@ public class Bid_History_Mine extends AppCompatActivity implements SwipeRefreshL
     private int     endPage    = -1;
     private boolean isLoadMore = false;
     private boolean isRefresh  = false;
+
+    public static class DoRefreshEvent{
+
+    }
+    @Subscribe
+    public void doRefresh(DoRefreshEvent event){
+        onRefresh();
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,7 +107,7 @@ public class Bid_History_Mine extends AppCompatActivity implements SwipeRefreshL
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.addItemDecoration(new mItemDecoration(this));
 

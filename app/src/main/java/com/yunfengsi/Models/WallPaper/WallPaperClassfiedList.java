@@ -18,7 +18,6 @@ import java.util.HashMap;
  */
 public class WallPaperClassfiedList extends AppCompatActivity {
     private Fragment fragment;
-    private String   id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class WallPaperClassfiedList extends AppCompatActivity {
             }
         });
         HashMap<String, String> map = (HashMap<String, String>) getIntent().getSerializableExtra("map");
-        id = map.get("id");
+        String                  id  = map.get("id");
         ((TextView) findViewById(R.id.title)).setText(map.get("name"));
 
 

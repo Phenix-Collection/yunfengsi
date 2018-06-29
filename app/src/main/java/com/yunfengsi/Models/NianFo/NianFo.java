@@ -44,13 +44,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NianFo extends AndroidPopupActivity implements View.OnClickListener {
-    private ListView mgridview;
-//    private ViewPager viewPager;//轮播
-//    private LinearLayout PointLayou;//轮播图圆点layout
-    private ArrayList<String> imageList;
-    private int screeWidth, dp10, dp180, dp7;
     private PopupWindow pp;//加号弹出窗口
-    private ImageView search;
     private ShareAction action;
 
     private String jishuSupprot = "";
@@ -106,16 +100,16 @@ public class NianFo extends AndroidPopupActivity implements View.OnClickListener
 //        PointLayou = (LinearLayout)findViewById(R.id.activity_detail_circlePoint_layout);
         //图片地址数组
         sp=getSharedPreferences("user",Context.MODE_PRIVATE);
-        imageList = new ArrayList<>();
-        mgridview = (ListView) findViewById(R.id.nianfo_home_gridview);
-        dp10 = DimenUtils.dip2px(this, 10);
-        dp180 = DimenUtils.dip2px(this, 150);
-        dp7 = DimenUtils.dip2px(this, 7);
-        screeWidth = getResources().getDisplayMetrics().widthPixels;
+        ArrayList<String> imageList  = new ArrayList<>();
+        ListView          mgridview  = (ListView) findViewById(R.id.nianfo_home_gridview);
+        int               dp10       = DimenUtils.dip2px(this, 10);
+        int               dp180      = DimenUtils.dip2px(this, 150);
+        int               dp7        = DimenUtils.dip2px(this, 7);
+        int               screeWidth = getResources().getDisplayMetrics().widthPixels;
         findViewById(R.id.Share).setOnClickListener(this);
 //        add = (ImageView)findViewById(R.id.main_more);
 //        add.setOnClickListener(this);
-        search = (ImageView)findViewById(R.id.main_search);
+        ImageView search = (ImageView) findViewById(R.id.main_search);
         search.setOnClickListener(this);
         ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
         //为每个格子添加内容
@@ -215,7 +209,6 @@ public class NianFo extends AndroidPopupActivity implements View.OnClickListener
             Glide.with(context).load((Integer) l.get(position).get("ItemImage")).override(
                     hei - DimenUtils.dip2px(context, 20), hei - DimenUtils.dip2px(context, 20))
                     .into(i);
-            ;
             ((TextView) view.findViewById(R.id.title)).setText(String.valueOf(l.get(position).get("title")));
 
             return view;

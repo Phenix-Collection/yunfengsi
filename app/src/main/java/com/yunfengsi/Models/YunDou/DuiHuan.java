@@ -17,7 +17,6 @@ import com.yunfengsi.Utils.mApplication;
 
 public class DuiHuan extends AppCompatActivity implements DuiHuanContract.IView {
 
-    private DuiHuanPresenterImpl duiHuanPresenter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     @Override
@@ -42,7 +41,7 @@ public class DuiHuan extends AppCompatActivity implements DuiHuanContract.IView 
                 startActivity(new Intent(DuiHuan.this,MyQuan.class));
             }
         });
-        duiHuanPresenter = new DuiHuanPresenterImpl(this);
+        DuiHuanPresenterImpl duiHuanPresenter = new DuiHuanPresenterImpl(this);
         tabLayout=findViewById(R.id.tab);
         viewPager=findViewById(R.id.viewpager);
 

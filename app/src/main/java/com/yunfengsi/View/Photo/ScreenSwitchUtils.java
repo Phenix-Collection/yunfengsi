@@ -35,36 +35,6 @@ public class ScreenSwitchUtils {
     private Sensor sensor1;
     private OrientationSensorListener1 listener1;
 
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 888:
-                    int orientation = msg.arg1;
-                    if (orientation > 45 && orientation < 135) {
-
-                    } else if (orientation > 135 && orientation < 225) {
-
-                    } else if (orientation > 225 && orientation < 315) {
-                        if (isPortrait) {
-                            Log.e("LuZheng", "切换成横屏");
-                            mActivity.setRequestedOrientation(0);
-                            isPortrait = false;
-                        }
-                    } else if ((orientation > 315 && orientation < 360) || (orientation > 0 && orientation < 45)) {
-                        if (!isPortrait) {
-                            Log.e("LuZheng","切换成竖屏");
-                            mActivity.setRequestedOrientation(1);
-                            isPortrait = true;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-        };
-    };
-
     /** 返回ScreenSwitchUtils单例 **/
     public static ScreenSwitchUtils init(Context context) {
         if (mInstance == null) {
@@ -82,6 +52,35 @@ public class ScreenSwitchUtils {
         // 注册重力感应器,监听屏幕旋转
         sm = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Handler mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 888:
+                        int orientation = msg.arg1;
+                        if (orientation > 45 && orientation < 135) {
+
+                        } else if (orientation > 135 && orientation < 225) {
+
+                        } else if (orientation > 225 && orientation < 315) {
+                            if (isPortrait) {
+                                Log.e("LuZheng", "切换成横屏");
+                                mActivity.setRequestedOrientation(0);
+                                isPortrait = false;
+                            }
+                        } else if ((orientation > 315 && orientation < 360) || (orientation > 0 && orientation < 45)) {
+                            if (!isPortrait) {
+                                Log.e("LuZheng", "切换成竖屏");
+                                mActivity.setRequestedOrientation(1);
+                                isPortrait = true;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        };
         listener = new OrientationSensorListener(mHandler);
 
         // 根据 旋转之后/点击全屏之后 两者方向一致,激活sm.

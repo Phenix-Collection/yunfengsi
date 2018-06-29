@@ -27,7 +27,6 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
     public boolean isScorlling;
     private OnLoadMore onLoadMore;
     private Context context;
-    private LayoutInflater inflater;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -61,7 +60,7 @@ public class LoadMoreListView extends ListView implements OnScrollListener {
     @SuppressLint("InflateParams")
     private void init(Context context) {
         this.context = context;
-        inflater = LayoutInflater.from(context);
+        LayoutInflater           inflater = LayoutInflater.from(context);
         AbsListView.LayoutParams al=new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         footer = inflater.inflate(R.layout.load_more_footer, null, false);
         footer.setLayoutParams(al);

@@ -55,9 +55,8 @@ import okhttp3.Response;
  */
 
 public class Fortune extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
-    private ImageView back;
     private ImageView qiantong, qian_small, qian;
-    private TextView auto, history;
+    private TextView auto;
     private TextView tip;
     private int width, height;
     private SensorManager sensorManager;
@@ -70,7 +69,6 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
     private boolean isRegist = false;//是否注册加速度传感器
     private boolean isAutoIng=false;//是否正在自动摇签
     private int streamid;//音效流
-    private int limit = 14;
 
     @Override
     protected void onDestroy() {
@@ -88,7 +86,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fortune);
         mApplication.getInstance().addActivity(this);
-        back = (ImageView) findViewById(R.id.back);
+        ImageView back = (ImageView) findViewById(R.id.back);
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("卜事"));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +99,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         auto = (TextView) findViewById(R.id.autoFortune);
         auto.setText(mApplication.ST("自动摇签"));
         auto.setOnClickListener(this);
-        history = (TextView) findViewById(R.id.fortuneHistory);
+        TextView history = (TextView) findViewById(R.id.fortuneHistory);
         history.setText(mApplication.ST("摇签记录"));
         history.setOnClickListener(this);
         qian_small.setImageDrawable(drawable);
@@ -174,6 +172,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         //如果传感器类型为加速度传感器，则判断是否为摇一摇
         if (sensorType == Sensor.TYPE_ACCELEROMETER) {
             LogUtil.i("摇一摇");
+            int limit = 14;
             if (Build.VERSION.SDK_INT >= 21) {
                 limit = 11;
             } else {
@@ -310,6 +309,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onClick(View view) {
 

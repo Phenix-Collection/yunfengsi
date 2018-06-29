@@ -65,12 +65,10 @@ public class nianfo_home_tab1 extends Activity implements View.OnClickListener ,
     private SwipeRefreshLayout swip;
     private boolean isRefresh=false;
     private ArrayList<HashMap<String, String>> typelist;
-    private int screeWidth;
-    private SharedPreferences sp;
-    private TextView username;
-    private EditText type;
-    private TextView commit, num;
-    private TextView chengji;
+    private SharedPreferences                  sp;
+    private TextView                           username;
+    private EditText                           type;
+    private TextView                           num;
     private Handler handler = new Handler();
     private nianfo_home_tab1 c;
     private InputMethodManager imm;
@@ -93,12 +91,12 @@ public class nianfo_home_tab1 extends Activity implements View.OnClickListener ,
         type = (EditText) findViewById(R.id.nianfo_home_tab1_type);
         type.setFocusable(false);
         imm= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        screeWidth = getResources().getDisplayMetrics().widthPixels;
+        int screeWidth = getResources().getDisplayMetrics().widthPixels;
         sp = getSharedPreferences("user", Context.MODE_PRIVATE);
         username = (TextView) findViewById(R.id.nianfo_home_tab1_mName);
-        commit = (TextView) findViewById(R.id.nianfo_home_tab1_commit);
+        TextView commit = (TextView) findViewById(R.id.nianfo_home_tab1_commit);
         num = (EditText) findViewById(R.id.nianfo_home_tab1_num);
-        chengji = (TextView) findViewById(R.id.nianfo_home_tab1_chaxunchengji);
+        TextView chengji = (TextView) findViewById(R.id.nianfo_home_tab1_chaxunchengji);
         username.setText(sp.getString("pet_name", ""));
         swip.post(new Runnable() {
             @Override

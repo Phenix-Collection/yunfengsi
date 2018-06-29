@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
@@ -32,7 +33,6 @@ public class ShareManager {
 //            ,SHARE_MEDIA.FACEBOOK
 //            , SHARE_MEDIA.TWITTER
     };
-    private static WeakReference<Activity> weakReference;
     private Activity context;
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
@@ -95,12 +95,22 @@ public class ShareManager {
     public void shareWeb(final UMWeb umObject, Activity activity) {
 
 //        UmengTool.getSignature(activity);
-        weakReference=new WeakReference<Activity>(activity);
+        WeakReference<Activity> weakReference = new WeakReference<Activity>(activity);
         context = weakReference.get();
-        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(context,new String []{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
-            return;
+
+        if(Build.VERSION.SDK_INT>=23){
+
+            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.GET_ACCOUNTS};
+            for(String permission :mPermissionList){
+                if(!(ActivityCompat.checkSelfPermission(context,permission)== PackageManager.PERMISSION_GRANTED)){
+                    ActivityCompat.requestPermissions(context,mPermissionList,123);
+                    return;
+                }
+            }
+
+
         }
+
         ShareAction action = new ShareAction(context);
         String url=umObject.toUrl();//
         LogUtil.e("包名：："+activity.getPackageName());
@@ -113,12 +123,13 @@ public class ShareManager {
         umWeb.setDescription(umObject.getDescription());
         umWeb.setThumb(umObject.getThumbImage());
         action.setDisplayList(share_list)
-                .addButton("umeng_socialize_clip_link", "umeng_socialize_clip_link", "umeng_socialize_copyurl", "umeng_socialize_copyurl")
+
+                .addButton("复制链接", "", "umeng_socialize_copyurl", "复制链接")
                 .setShareboardclickCallback(new ShareBoardlistener() {
                     @Override
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
                         if (share_media == null) {
-                            if (snsPlatform.mKeyword.equals("umeng_socialize_clip_link")) {
+                            if (snsPlatform.mShowWord.equals("复制链接")) {
                                 android.text.ClipboardManager clipboardManager = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                                 clipboardManager.setText(umWeb.toUrl());
                                 Toast.makeText(context, "分享链接已复制", Toast.LENGTH_LONG).show();

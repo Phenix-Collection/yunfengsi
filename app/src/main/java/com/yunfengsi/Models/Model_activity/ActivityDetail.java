@@ -104,7 +104,9 @@ import okhttp3.Response;
  * Created by Administrator on 2016/10/7.
  */
 public class ActivityDetail extends AndroidPopupActivity implements View.OnClickListener, PL_List_Adapter.onHuifuListener {
-    private ImageView back, rightImg, shoucang, dianzanImg;
+    private ImageView rightImg;
+    private ImageView shoucang;
+    private ImageView dianzanImg;
     private TextView dianzanText, title, fabuTime, faqidanwei, huodongdidian, huodongTime, peopleNum, Tobaoming, content, FaSong;
     private EditText     PLText;
     private LinearLayout dianzan;
@@ -118,7 +120,6 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
     private ArrayList<String> imageList;
     //    private ViewPager viewPager;//轮播
     private Banner            banner;
-    private int               screeWidth, dp10, dp180, dp7;
     private PL_List_Adapter    adapter;
     private SharedPreferences  sp;
     private InputMethodManager imm;
@@ -134,7 +135,6 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         */
     private TextView     tv_activity;
 
-    private LinearLayout pinglun, fenxiangb;
     private FrameLayout     overlay;
     private ImageView       toggle;
     private TextView        audio;
@@ -250,7 +250,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                 v.setVisibility(View.GONE);
             }
         });
-        pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,7 +263,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
 
             }
         });
-        fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
+        LinearLayout fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,12 +282,12 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         sp = getSharedPreferences("user", MODE_PRIVATE);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        screeWidth = getResources().getDisplayMetrics().widthPixels;
-        dp10 = DimenUtils.dip2px(this, 10);
+        int screeWidth = getResources().getDisplayMetrics().widthPixels;
+        int dp10       = DimenUtils.dip2px(this, 10);
         adapter = new PL_List_Adapter(this);
         adapter.setOnHuifuListener(this);
-        dp180 = DimenUtils.dip2px(this, 180);
-        dp7 = DimenUtils.dip2px(this, 7);
+        int dp180 = DimenUtils.dip2px(this, 180);
+        int dp7   = DimenUtils.dip2px(this, 7);
         //图片地址数组
         imageList = new ArrayList<>();
         //轮播图圆点layout
@@ -295,7 +295,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         //活动Id
         Id = getIntent().getStringExtra("id");
         //返回按钮
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
 
@@ -603,14 +603,15 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
 
                                         }
                                         LogUtil.e("code::::"+totalMap.get("code"));
-                                        if ("2".equals(map.get("actquick"))) {
-                                            //该活动拥有显示快速通道的权利，最后一次确定是否显示
-                                            //如果有权利显示，则根据前面判断确定
-
-                                        } else {
+//                                        if ("2".equals(map.get("actquick"))) {
+//                                            //该活动拥有显示快速通道的权利，最后一次确定是否显示
+//                                            //如果有权利显示，则根据前面判断确定
+//
+//                                        } else {
                                             //如果没有权利显示，则直接隐藏
+                                        // TODO: 2018/6/23 功能未完善  暂时隐藏
                                             quickChannel.setVisibility(View.GONE);
-                                        }
+//                                        }
                                         peopleNum.append(mApplication.ST("已报名人数:" + map.get("enrollment")));//已报名人数
                                         dianzanText.setText(map.get("likes"));
                                         ((TextView) findViewById(R.id.p1)).setText(mApplication.ST("评论 " + map.get("act_comment")));
@@ -1438,13 +1439,17 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                     @Override
                     public void onPageFinished(WebView view, String url) {
                         super.onPageFinished(view, url);
-
+                        if(!dialog.isShowing()){
+                            dialog.show();
+                        }
                     }
 
                     @Override
                     public void onPageCommitVisible(WebView view, String url) {
                         super.onPageCommitVisible(view, url);
-                        dialog.show();
+                        if(!dialog.isShowing()){
+                            dialog.show();
+                        }
                     }
                 });
 

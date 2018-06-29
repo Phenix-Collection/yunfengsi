@@ -54,9 +54,7 @@ import okhttp3.Response;
  */
 
 public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
-    private TextView title;
     private SwipeRefreshLayout swip;
-    private RecyclerView recyclerView;
     private mJiLuAdapter adapter;
     private int page = 1;
     private int endPage = -1;
@@ -85,11 +83,11 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
     }
 
     private void initView() {
-        title = (TextView) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         swip = (SwipeRefreshLayout) findViewById(R.id.swip);
         swip.setColorSchemeResources(R.color.main_color);
         swip.setOnRefreshListener(this);
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDeraction(1, Color.parseColor("#b6b6b6")));
         adapter = new mJiLuAdapter(this, new ArrayList<HashMap<String, String>>());
@@ -114,7 +112,7 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
                     getData();
                 }
             }
-        },recyclerView);
+        }, recyclerView);
         TextView textView = new TextView(this);
         textView.setText(mApplication.ST("暂无数据\n下拉刷新"));
         Drawable drawable = ActivityCompat.getDrawable(this, R.drawable.load_nothing);
@@ -242,7 +240,7 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
             String h = String.valueOf(Html.fromHtml(map.get("abstract")));
             holder.setText(R.id.title, mApplication.ST(map.get("title")))
                     .setText(R.id.info, mApplication.ST(h))
-                    .setText(R.id.money_num, mApplication.ST("我支持了" + map.get("money")) + "元  " + "我参与了" + map.get("shop_num") + "次")
+                    .setText(R.id.money_num, mApplication.ST("我支持了" + String.format("%.2f",Double.valueOf(map.get("money")))) + "元  " + "我参与了" + map.get("shop_num") + "次")
                     .setText(R.id.people, mApplication.ST("总支持人数:" + map.get("cy_people") + "人"));
             Glide.with(context).load(map.get("image"))
                     .override(DimenUtils.dip2px(context, 120), DimenUtils.dip2px(context, 90))

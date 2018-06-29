@@ -47,7 +47,6 @@ import okhttp3.Response;
 public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLayout.OnRefreshListener {
     private GridView                      mlistview;
     private List<HashMap<String, String>> list;
-    private Hoder                         hoder;
     private SwipeRefreshLayout            swip;
     private boolean                       isRefresh;
     private String  page      = "1";
@@ -77,6 +76,7 @@ public class GongYangActivity extends BaseSTFragement implements SwipeRefreshLay
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
+            Hoder hoder;
             if (view == null) {
                 hoder = new Hoder();
                 view = LayoutInflater.from(mApplication.getInstance()).inflate(R.layout.list_itme2, null);

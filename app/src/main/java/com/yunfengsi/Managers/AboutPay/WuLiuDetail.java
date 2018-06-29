@@ -51,10 +51,8 @@ import okhttp3.Response;
 
 public class WuLiuDetail extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
-    private ImageView back;
     private TextView  status, company, code;
     private SwipeRefreshLayout swip;
-    private RecyclerView recyclerView;
     private wuliuAdapter adapter;
 
     @Override
@@ -62,12 +60,12 @@ public class WuLiuDetail extends AppCompatActivity implements SwipeRefreshLayout
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
         setContentView(R.layout.activity_wuliu_detail);
-        back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = (ImageView) findViewById(R.id.title_back);
         status = (TextView) findViewById(R.id.status);
         company = (TextView) findViewById(R.id.company);
         code = (TextView) findViewById(R.id.WlCode);
         swip = (SwipeRefreshLayout) findViewById(R.id.swip);
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mWuLiuDecoration(this));
         swip.setOnRefreshListener(this);

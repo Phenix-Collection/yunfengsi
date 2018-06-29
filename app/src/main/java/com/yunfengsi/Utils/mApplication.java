@@ -30,10 +30,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.spreada.utils.chinese.ZHConverter;
-import com.umeng.socialize.Config;
+import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.yunfengsi.BuildConfig;
 import com.yunfengsi.Deamon.OnePixelActivity;
 import com.yunfengsi.Managers.Base.BasePayParams;
 import com.yunfengsi.R;
@@ -47,7 +49,6 @@ import java.util.logging.Level;
  * Created by Administrator on 2016/9/12.
  */
 public class mApplication extends Application {
-    private int caheM;
     private static final String TAG = "mApplication";
     private static mApplication application;
     private static mApplication mainApplication;
@@ -57,7 +58,7 @@ public class mApplication extends Application {
     public static String  title   = "";
     public static String  type    = "";
     //    public   ShareBoardConfig config;//分享面板配置
-    public static boolean Debug   = true;
+    public static boolean Debug   = BuildConfig.DEBUG;
     public static boolean isChina = true;
 
     //    public static String gg_url="",gg_image="";//首页广告弹窗 背景图  ggimage   跳转链接  ggurl
@@ -82,7 +83,7 @@ public class mApplication extends Application {
         if (getPackageName().equals(curProcess)) {//如果当前进程是主进程，才初始化图片和网络，分享框架
             //Glide
             int maxMemory = (int) Runtime.getRuntime().maxMemory();
-            caheM = maxMemory / 8;
+            int caheM     = maxMemory / 8;
             GlideBuilder gb = new GlideBuilder(this);
             gb.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
             gb.setMemoryCache(new LruResourceCache(caheM));
@@ -113,26 +114,27 @@ public class mApplication extends Application {
                     .addCommonHeaders(headers)                                         //设置全局公共头
                     .addCommonParams(params);
 
-            UMShareAPI.get(this);//初始化友盟
+            UMConfigure.init(this, "58b7f0b57f2c74437b00047c"
+                    , "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+
             PlatformConfig.setWeixin("wxd33fe2dd9a8d2b6b", "5c43f64262abc1e2f0b18434afff7919");
 //        PlatformConfig.setWeixin("wx7f8b711548c749fb","6159914840766b002a4542c899c9fba3");//公众号数据  测试
             PlatformConfig.setQQZone("1105643311", "QPle8NDkjehWHPx8");
             PlatformConfig.setSinaWeibo("2018815414", "9bc9e490e67fe21e177b69eed248cb4f", "https://api.weibo.com/oauth2/default.html");//
-            PlatformConfig.setTwitter("Z9vhrsa91vvyahIKTDffPxuY7", "w0OsXsQ9N4DUIdfL6uAlFbI5ZdQ1m4MUAHsjMUSVH7mTXm2pl2");//
 
-//        config = new ShareBoardConfig();
-//        config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_BOTTOM);
-//        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_CIRCULAR);
-//        config.setCancelButtonVisibility(true);
-            Config.DEBUG = Debug;
-            com.umeng.socialize.utils.Log.LOG = Debug;
-            UMShareConfig config = new UMShareConfig();
-            config.isOpenShareEditActivity(true);
+            ShareBoardConfig config = new ShareBoardConfig();
+            config.setShareboardPostion(ShareBoardConfig.SHAREBOARD_POSITION_BOTTOM);
+            config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_CIRCULAR);
+            config.setCancelButtonVisibility(true);
+            UMShareConfig config1 = new UMShareConfig();
+            config1.isOpenShareEditActivity(true);
 
-            UMShareAPI.get(this).setShareConfig(config);
+            UMShareAPI.get(this).setShareConfig(config1);
+
+
             isChina = PreferenceUtil.getSettingIncetance(this).getBoolean("isChina", true);
 
-            mainApplication=this;
+            mainApplication = this;
         }
 
         /**
@@ -168,6 +170,7 @@ public class mApplication extends Application {
 
     /**
      * 获取当前进程对象
+     *
      * @return
      */
     public static mApplication getInstance() {
@@ -176,6 +179,7 @@ public class mApplication extends Application {
 
     /**
      * 获取主进程对象
+     *
      * @return
      */
     public static mApplication getMainInstance() {
@@ -283,14 +287,13 @@ public class mApplication extends Application {
     }
 
     /**
-     *
-//     * @param context
-//     * @param allmoney  总支付费用
-//     * @param attachId  支付商品的id  多个用，链接
-//     * @param title  支付标题   多个用，链接
-//     * @param num    购买数量  默认1
-//     * @param type   支付type  1视频    2直播 3 寺庙 4供养 5助学 6 书城 7点餐  8预约 9业务购买 11 拼团12 约参与费用 13义卖支付  14 活动快速通道
-//     * @param extra  供养使用  extra   如果有地址信息  则为地址id
+     * //     * @param context
+     * //     * @param allmoney  总支付费用
+     * //     * @param attachId  支付商品的id  多个用，链接
+     * //     * @param title  支付标题   多个用，链接
+     * //     * @param num    购买数量  默认1
+     * //     * @param type   支付type  1视频    2直播 3 寺庙 4供养 5助学 6 书城 7点餐  8预约 9业务购买 11 拼团12 约参与费用 13义卖支付  14 活动快速通道
+     * //     * @param extra  供养使用  extra   如果有地址信息  则为地址id
      */
     public static void openPayLayout(final Activity context, final BasePayParams payParams) {// TODO: 2016/12/20 打开支付窗口
 

@@ -22,17 +22,15 @@ import com.yunfengsi.Utils.mApplication;
 public class gerenshezhi extends BaseSTActivity implements View.OnClickListener{
      private TextView mtvhuancz;
     private AlertDialog customDia;
-    private   View viewDia;
-    private ACache aCache;
-    private SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerenshezhi);
         mApplication.getInstance().addActivity(this);
         StatusBarCompat.compat(this, ContextCompat.getColor(this,R.color.main_color));
-        aCache=ACache.get(this);
-        sp=getSharedPreferences("user",MODE_PRIVATE);
+        ACache            aCache = ACache.get(this);
+        SharedPreferences sp     = getSharedPreferences("user", MODE_PRIVATE);
         mtvhuancz=(TextView) findViewById(R.id.shez_huanczi_tv);
         try {
             mtvhuancz.setText(CleanMessageUtil.getTotalCacheSize(this));
@@ -111,7 +109,7 @@ public class gerenshezhi extends BaseSTActivity implements View.OnClickListener{
                 if(mtvhuancz.getText().toString().equals("0.00M")){
                     Toast.makeText(mApplication.getInstance(),mApplication.ST("当前没有缓存数据"),Toast.LENGTH_SHORT).show();
                 }else {
-                    viewDia= LayoutInflater.from(this).inflate(R.layout.qingchu_dialog, null);
+                    View viewDia = LayoutInflater.from(this).inflate(R.layout.qingchu_dialog, null);
                     ((TextView) viewDia.findViewById(R.id.info)).setText(mApplication.ST("是否清除当前缓存"));
                     ((TextView) viewDia.findViewById(R.id.qingchu_dialog_no)).setText(mApplication.ST("下次再说"));
                     ((TextView) viewDia.findViewById(R.id.qingchu_dialog_yes)).setText(mApplication.ST("清除"));

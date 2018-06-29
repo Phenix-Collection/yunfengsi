@@ -16,12 +16,11 @@ public class tabPagerAdapter extends FragmentPagerAdapter {
 
     private ArrayList<Fragment> list;
     private ArrayList<String> titles;
-    private Context context;
     private LayoutInflater inflater;
     public tabPagerAdapter(Context context,FragmentManager fm, ArrayList<Fragment> list) {
         super(fm);
         this.list = list;
-        this.context=context;
+        Context context1 = context;
         inflater=LayoutInflater.from(context);
     }
 

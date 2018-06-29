@@ -65,12 +65,8 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ZhuCe";
     private EditText phonenum, password, Mid, password2;
     private TextView getMid;
-    private Button submit;
     private String YZM;
-//    public  ZhuCe instance;
-    private ImageView headImage;
     private SharedPreferences sp;
-    private ImageView back;
     /*
     手机号码 邮箱
      */
@@ -140,9 +136,9 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
         yanzhenLayout = (LinearLayout) findViewById(R.id.yanzhen_layout);
         password2 = (EditText) findViewById(R.id.Zhuce_password2);
         password2.setHint(mApplication.ST("确认密码/Password"));
-        back = (ImageView) findViewById(R.id.zhuce_back);
+        ImageView back = (ImageView) findViewById(R.id.zhuce_back);
         back.setOnClickListener(this);
-        headImage = (ImageView) findViewById(R.id.activity_register_imageview);
+        ImageView headImage = (ImageView) findViewById(R.id.activity_register_imageview);
         phonenum = (EditText) findViewById(R.id.Zhuce_phonenum);
         phonenum.setHint(mApplication.ST("手机号码/PhoneNumber"));
         password = (EditText) findViewById(R.id.Zhuce_password);
@@ -152,7 +148,7 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
         getMid = (TextView) findViewById(R.id.Zhuce_getMid);
         getMid.setHint(mApplication.ST("获取验证码"));
         getMid.setOnClickListener(this);
-        submit = (Button) findViewById(R.id.Zhuce_submit);
+        Button submit = (Button) findViewById(R.id.Zhuce_submit);
         submit.setText(mApplication.ST("注册"));
         submit.setOnClickListener(this);
         headImage.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.indra));
@@ -164,7 +160,7 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
             code=PreferenceUtil.getSettingIncetance(this).getString("code","");
             t.setText(mApplication.ST("国家/地区: "+PreferenceUtil.getSettingIncetance(this).getString("country","")+"   +"+code));
         }
-        (findViewById(R.id.zhuce_main)).setBackgroundDrawable(new GlideBitmapDrawable(getResources(), ImageUtil.readBitMap(this, R.drawable.backgd)));
+        (findViewById(R.id.zhuce_main)).setBackground(new GlideBitmapDrawable(getResources(), ImageUtil.readBitMap(this, R.drawable.backgd)));
 
 
 //        registerReceiver(smsReceiver,new IntentFilter(Constants.SMS_RECEIVED_ACTION));

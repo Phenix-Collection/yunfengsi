@@ -105,7 +105,7 @@ public class HttpHelper {
          * @param result
          *            数据请求返回数据
          */
-        public void successCallback(int tab, String result);
+        void successCallback(int tab, String result);
 
         /**
          * 数据请求失败回调函数
@@ -113,6 +113,6 @@ public class HttpHelper {
          * @param tab
          *            标记
          */
-        public void errorCallback(int tab);
+        void errorCallback(int tab);
     }
 }

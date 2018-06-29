@@ -41,7 +41,7 @@ public class IOUtil {
             // 将对象写入字节流
             oos.writeObject(tempList);
             // 将字节流编码成base64的字符串
-            String tempBase64 = new String(com.umeng.socialize.net.utils.Base64.encodeBase64(baos.toByteArray(),false));
+            String tempBase64 = new String(Base64.encode(baos.toByteArray(),0));
             SharedPreferences.Editor editor = sps.edit();
             editor.putString(tempName, tempBase64);
             editor.commit();
@@ -71,7 +71,7 @@ public class IOUtil {
             return null;
         }
         // 读取字节
-        byte[] base64 = com.umeng.socialize.net.utils.Base64.decodeBase64(tempBase64);
+        byte[] base64 = Base64.decode(tempBase64,Base64.DEFAULT);
         // 封装到字节流
         ByteArrayInputStream bais = new ByteArrayInputStream(base64);
         try {

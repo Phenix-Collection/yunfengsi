@@ -68,22 +68,4 @@ public class IAuctionRecyclerView extends RecyclerView {
 
 
 
-    @Override
-    public void onScrollStateChanged(int state) {
-        super.onScrollStateChanged(state);
-        LogUtil.e("滑动状态：：："+state);
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        LogUtil.e("onScrollChanged：：："+t);
-
-    }
-
-    @Override
-    public void onScrolled(int dx, int dy) {
-        super.onScrolled(dx, dy);
-        LogUtil.e("dy:::::::    "+dy);
-    }
 }

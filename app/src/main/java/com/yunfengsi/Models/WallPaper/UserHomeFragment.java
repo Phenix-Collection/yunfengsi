@@ -54,9 +54,7 @@ import okhttp3.Response;
  * 壁纸用户中心统一fragment
  */
 public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private View                  view;
     private SwipeRefreshLayout    swipeRefreshLayout;
-    private RecyclerView          recyclerView;
     private RecommendPagerAdapter adapter;
     private int     pageSize   = 9;
     private int     page       = 1;
@@ -78,13 +76,13 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_recommend_wallpager, container, false);
+        View view = inflater.inflate(R.layout.fragment_recommend_wallpager, container, false);
 
         swipeRefreshLayout = view.findViewById(R.id.swip);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        recyclerView = view.findViewById(R.id.recycle);
+        RecyclerView recyclerView = view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 //        StaggeredGridLayoutManager layoutManager=new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
 //        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);

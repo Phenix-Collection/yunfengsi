@@ -18,13 +18,10 @@ import com.yunfengsi.Utils.mApplication;
  * Created by Administrator on 2016/8/4.
  */
 public class NianFo_Detail extends FragmentActivity implements View.OnClickListener {
-    private LinearLayout right_Fragment;
     private TextView tab1, tab2, tab3;
     private FragmentTransaction transaction;
     private android.support.v4.app.Fragment contentFragment;
     private FragmentManager manager;
-    private ListView list;
-    private String type;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,18 +29,18 @@ public class NianFo_Detail extends FragmentActivity implements View.OnClickListe
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.niaofo_detail);
         ((TextView) findViewById(R.id.nianfo_detail_title)).setText(mApplication.ST("共修明细"));
-        right_Fragment = (LinearLayout) findViewById(R.id.niaofo_detail_fragment);
+        LinearLayout right_Fragment = (LinearLayout) findViewById(R.id.niaofo_detail_fragment);
         tab1 = (TextView) findViewById(R.id.nianfo_detail_tab1);
         tab1.setText(mApplication.ST("念佛"));
         tab2 = (TextView) findViewById(R.id.nianfo_detail_tab2);
         tab2.setText(mApplication.ST("诵经"));
         tab3 = (TextView) findViewById(R.id.nianfo_detail_tab3);
         tab3.setText(mApplication.ST("持咒"));
-        list = (ListView) findViewById(R.id.niaofo_detail_list);
+        ListView list = (ListView) findViewById(R.id.niaofo_detail_list);
         findViewById(R.id.nianfo_detail_back).setOnClickListener(this);
         manager = getSupportFragmentManager();
         transaction = manager.beginTransaction();
-        type = getIntent().getStringExtra("type");
+        String type = getIntent().getStringExtra("type");
         //默认念佛为选中
         if (type.equals("念佛")) {
             contentFragment = new Nianfo_Detail_Fragment();

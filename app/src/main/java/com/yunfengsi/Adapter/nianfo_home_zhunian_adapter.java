@@ -67,7 +67,6 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
     public List<HashMap<String, String>> list;
     private Context context;
     private SharedPreferences sp;
-    private int screenWidth;
     public List<HashMap<String, String>> list1;
     private static final String TAG = "chanhui_adapter";
     private ArrayList<HashMap<String, String>> typelist;
@@ -80,7 +79,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
         list = new ArrayList<>();
         list1 = new ArrayList<>();
         sp = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
         imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 

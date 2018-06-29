@@ -57,9 +57,7 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
     public List<HashMap<String, String>> list;
     private Context context;
     private SharedPreferences sp;
-    private int screenWidth;
     public List<HashMap<String, String>> list1;
-    private int currentIndex;
     viewHolder holder;
     public ArrayList<Boolean> sba;
     private static final String TAG = "chanhui_adapter";
@@ -69,7 +67,7 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
         this.context = context;
         list = new ArrayList<>();
         sp = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
         sp = PreferenceUtil.getUserIncetance(context);
     }
 
@@ -116,7 +114,7 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
 
 //        View view = convertView;
 
-        currentIndex = position;
+        int                           currentIndex = position;
         final HashMap<String, String> map = list.get(position);
 //        if (view == null) {
             holder = new viewHolder();

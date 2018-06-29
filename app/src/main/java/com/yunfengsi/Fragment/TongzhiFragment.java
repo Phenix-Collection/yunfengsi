@@ -58,10 +58,8 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private static final String pingtuan = "1";
     private static final String guanzhu = "2";
     private SwipeRefreshLayout swip;
-    private RecyclerView recyclerView;
     private DingdanAdapter adapter;
     private int page = 1;
-    private int endPage = 0;
     private boolean isLoadMore = false;
     private boolean isRefresh = false;
     private static final String TAG = "PinTuanFragment";
@@ -87,7 +85,7 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
         swip = (SwipeRefreshLayout) view.findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new mItemDecoration(getActivity()));
         TextView textView = new TextView(getActivity());
@@ -196,7 +194,7 @@ public class TongzhiFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onRefresh() {
         page = 1;
-        endPage = -1;
+        int endPage = -1;
         isRefresh = true;
       adapter.setEnableLoadMore(true);
         getData();

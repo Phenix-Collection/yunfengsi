@@ -58,7 +58,6 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
     private SwipeRefreshLayout refreshLayout;
     private boolean isRefresh;
     private boolean isFirstIn = true;
-    private View view;
 
     private ImageView tip;
 //    private ValueAnimator valueAnimator;
@@ -67,7 +66,7 @@ public class ZiXun extends BaseSTFragement implements OnClickListener, OnRefresh
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.zixun_list, container, false);
+        View view = inflater.inflate(R.layout.zixun_list, container, false);
 
         if (isFirstIn) {
             initView(view);

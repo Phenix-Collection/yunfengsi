@@ -32,6 +32,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -131,7 +132,6 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     private int               screenWidth;
     public  String            path;
     private File              Headfile;
-    private int               screenHeight;
     //    private TextView tab2, tab3;
 //    private ViewPager viewpager;
 //    private FragmentManager fm;
@@ -147,14 +147,14 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     private LinearLayout lyfour;
     private LinearLayout lyfive;
     private ImageView    Msg;
-    private TextView     tvone;
-    private TextView     tvtwo;
-    private TextView     tvthree;
-    private TextView     tvfour;
-    private TextView     tvfive, tv6;
+
+
+    //我的云豆
+    private FrameLayout header;
+
+
 
     private MineManager  mineManager;
-    private RecyclerView recyclerView;
     private Intent intent = new Intent();
     private ImageView level;
     private boolean           isAgreeed    = false;//是否同意隐私政策
@@ -182,9 +182,9 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         sp = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         LogUtil.e("当前账号Id:" + sp.getString("user_id", ""));
         screenWidth = getResources().getDisplayMetrics().widthPixels;
-        screenHeight = getResources().getDisplayMetrics().heightPixels;
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
         aCache = ACache.get(mApplication.getInstance());
-        recyclerView = (RecyclerView) v.findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycle);
         mineManager = new MineManager(getActivity(), recyclerView);
         isAgreeed = sp.getString("agree_status", "").equals("0") || sp.getString("agree_status", "").equals("") ? false : true;
 
@@ -195,6 +195,16 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         if (!new LoginUtil().checkLogin(getActivity())) {
             v.findViewById(R.id.qr).setVisibility(View.GONE);
         }
+
+//        header=v.findViewById(R.id.header);
+//        header.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (new LoginUtil().checkLogin(getActivity())) {
+//                    startActivity(new Intent(getActivity(), MemberCenter.class));
+//                }
+//            }
+//        });
 
         mineManager.setOnitemClickListener(onItemClickListener);
         ((ImageView) v.findViewById(R.id.mine_gerenbeijing)).setImageBitmap(ImageUtil.readBitMap(getActivity(), R.drawable.mine_banner));
@@ -253,7 +263,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
             HashMap<String, Object> map = mineManager.getMaps().get(position);
 
-            switch (map.get(mineManager.text).toString()) {
+            switch (map.get(MineManager.text).toString()) {
                 case "义卖":
                     startActivity(new Intent(getActivity(), AuctionList.class));
                     break;
@@ -402,13 +412,13 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     };
     public void openGongke() {
         View vi = LayoutInflater.from(getActivity()).inflate(R.layout.mine_gongke_fragment, null);
-        tvone = (TextView) vi.findViewById(R.id.mine_gongke_fragment_oneitme);
+        TextView tvone = (TextView) vi.findViewById(R.id.mine_gongke_fragment_oneitme);
 
-        tvtwo = (TextView) vi.findViewById(R.id.mine_gongke_fragment_twoitme);
-        tvthree = (TextView) vi.findViewById(R.id.mine_gongke_fragment_threeitme);
-        tvfour = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fouritme);
-        tvfive = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fiveitme);
-        tv6 = (TextView) vi.findViewById(R.id.mine_gongke_fragment_sixitme);
+        TextView tvtwo   = (TextView) vi.findViewById(R.id.mine_gongke_fragment_twoitme);
+        TextView tvthree = (TextView) vi.findViewById(R.id.mine_gongke_fragment_threeitme);
+        TextView tvfour  = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fouritme);
+        TextView tvfive  = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fiveitme);
+        TextView tv6     = (TextView) vi.findViewById(R.id.mine_gongke_fragment_sixitme);
         TextView cancle = (TextView) vi.findViewById(R.id.dismiss);
         cancle.setText(mApplication.ST("取消"));
         tvone.setText(mApplication.ST("念佛"));
@@ -526,10 +536,11 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(level);
                                                 break;
 
-                                            default:
-                                                editor.putString("level", map.get("level"));
+
+
                                         }
-                                        editor.apply();
+                                        editor.putString("level", map.get("level"));
+                                        editor.commit();
                                     } else {
                                         LogUtil.e("获取等级信息失败");
                                     }
@@ -591,7 +602,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                             Glide.with(Mine.this).load(map.get("user_image")).asBitmap().override(90, 90).into(new BitmapImageViewTarget(head) {
                                                 @Override
                                                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                                    aCache.put("head" + sp.getString("user_id", ""), resource);
+                                                    aCache.put("head_" + sp.getString("user_id", ""), resource);
                                                     head.setImageBitmap(resource);
                                                 }
                                             });
@@ -836,7 +847,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                     if (resource != null) {
-                        aCache.put("head" + sp.getString("user_id", ""), resource);
+                        aCache.put("head_" + sp.getString("user_id", ""), resource);
                         head.setImageBitmap(resource);
                     }
                 }
@@ -1024,7 +1035,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                     @Override
                     public void run() {
                         super.run();
-                        final Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(builder.toString(), DimenUtils.dip2px(getActivity(),300),Color.BLACK,aCache.getAsBitmap("head"+PreferenceUtil.getUserId(getActivity())));
+                        final Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(builder.toString(), DimenUtils.dip2px(getActivity(),240),Color.BLACK,aCache.getAsBitmap("head_"+PreferenceUtil.getUserId(getActivity())));
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -1036,8 +1047,8 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                 dialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
                                 dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
                                 WindowManager.LayoutParams wl = dialog.getWindow().getAttributes();
-                                wl.width = DimenUtils.dip2px(getActivity(), 320);
-                                wl.height = DimenUtils.dip2px(getActivity(), 320);
+                                wl.width = DimenUtils.dip2px(getActivity(), 240);
+                                wl.height = DimenUtils.dip2px(getActivity(), 240);
                                 dialog.getWindow().setAttributes(wl);
                                 dialog.show();
                             }

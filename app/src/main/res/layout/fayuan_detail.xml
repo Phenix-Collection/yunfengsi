@@ -69,8 +69,6 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:ellipsize="end"
-                android:layout_alignLeft="@+id/activity_lf_time"
-                android:layout_below="@+id/activity_lf_time"
                 android:textColor="@color/wordhuise"
                 tools:text="个人累计"
                 android:layout_marginBottom="10dp"

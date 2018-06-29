@@ -3,15 +3,23 @@ package com.yunfengsi.Audio_BD.WakeUp;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import com.baidu.speech.EventListener;
 import com.baidu.speech.asr.SpeechConstant;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
@@ -31,6 +39,7 @@ import com.yunfengsi.Models.NianFo.nianfo_home_tab6;
 import com.yunfengsi.Models.TouGao.TouGao;
 import com.yunfengsi.Models.WallPaper.WallPapaerHome;
 import com.yunfengsi.Models.WallPaper.WallPaperUpload;
+import com.yunfengsi.Models.WallPaper.WallPaperUserHome;
 import com.yunfengsi.Models.YunDou.DuiHuan;
 import com.yunfengsi.Models.YunDou.MyQuan;
 import com.yunfengsi.Models.YunDou.YunDouHome;
@@ -42,8 +51,13 @@ import com.yunfengsi.Setting.Mine_HuiYuan;
 import com.yunfengsi.Setting.Month_Detail;
 import com.yunfengsi.Setting.Search;
 import com.yunfengsi.Setting.gerenshezhi;
+import com.yunfengsi.Utils.AnalyticalJSON;
+import com.yunfengsi.Utils.ApisSeUtil;
+import com.yunfengsi.Utils.Constants;
+import com.yunfengsi.Utils.JsUtil;
 import com.yunfengsi.Utils.LogUtil;
 import com.yunfengsi.Utils.LoginUtil;
+import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.WakeLockUtil;
 import com.yunfengsi.Utils.mApplication;
 
@@ -52,6 +66,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by fujiayi on 2017/6/21.
@@ -74,7 +91,6 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
     private static final String  OhNo          = "不好意思，师父没听懂你的意思";
     private              String  text          = DefaultAnswer;
     private              boolean isRecognize   = false;
-    private              boolean isWakeUp      = false;
 
     private SoundPool                soundPool;
     private MediaPlayer              mediaPlayer;
@@ -111,7 +127,7 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
 
     @Override
     public void onSuccess(String word, WakeUpResult result) {
-        isWakeUp = true;
+        boolean isWakeUp = true;
         text = DefaultAnswer;
         LogUtil.e("唤醒成功，唤醒词：" + word + "    语音回复：：" + text);
         ibdRcognize.cancel();
@@ -419,6 +435,10 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
                 text = OK;
                 context.startActivity(new Intent(context, NianFo.class));
 
+            } else if (result.contains("云峰寺简介")) {
+                text = OK;
+                showAboutApp();
+
             } else if (result.contains("搜索")) {
                 text = OK;
                 Intent intent = new Intent(context, Search.class);
@@ -427,30 +447,36 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
             } else if (result.contains("设置")) {
                 text = OK;
                 context.startActivity(new Intent(context, gerenshezhi.class));
-            }else if (result.contains("排行榜")) {
+            } else if (result.contains("排行榜")) {
                 text = OK;
                 context.startActivity(new Intent(context, yundou_paihang.class));
-            } else if (result.contains("祈福券")||result.contains("牌位券")) {
+            } else if (result.contains("祈福券") || result.contains("牌位券")) {
                 text = OK;
                 context.startActivity(new Intent(context, DuiHuan.class));
-            } else if (result.contains("壁纸")) {
-                text = OK;
-                context.startActivity(new Intent(context, WallPapaerHome.class));
             } else if (result.contains("上传壁纸")) {
                 text = OK;
-                context.startActivity(new Intent(context, WallPaperUpload.class));
+                if (new LoginUtil().checkLogin(context)) {
+                    context.startActivity(new Intent(context, WallPaperUpload.class));
+                }
+
             } else if (result.contains("我的壁纸") || result.contains("管理壁纸")) {
+                text = OK;
+                if (new LoginUtil().checkLogin(context)) {
+                    context.startActivity(new Intent(context, WallPaperUserHome.class));
+                }
+
+            } else if (result.contains("壁纸")) {
                 text = OK;
                 context.startActivity(new Intent(context, WallPapaerHome.class));
             } else if (result.contains("客服")) {
                 text = OK;
                 Intent i2 = new Intent(context, GanyuActivity.class);
                 context.startActivity(i2);
-            } else if (result.contains("义卖")||result.contains("拍卖")||result.contains("竞拍")) {
+            } else if (result.contains("义卖") || result.contains("拍卖") || result.contains("竞拍")) {
                 text = OK;
                 Intent i2 = new Intent(context, AuctionList.class);
                 context.startActivity(i2);
-            }else if (result.contains("祈愿树") || result.contains("许愿") || result.contains("祈愿")) {
+            } else if (result.contains("祈愿树") || result.contains("许愿") || result.contains("祈愿")) {
                 text = OK;
                 Intent i2 = new Intent(context, BlessTree.class);
                 context.startActivity(i2);
@@ -463,7 +489,7 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
                 Intent i2 = new Intent(context, BookList.class);
                 i2.putExtra("type", 2);
                 context.startActivity(i2);
-            } else if (result.contains("活动") || result.contains("报名")||result.contains("短期出家")) {
+            } else if (result.contains("活动") || result.contains("报名") || result.contains("短期出家")) {
                 text = OK;
                 ((MainActivity) context).pager.setCurrentItem(1);
                 Intent i2 = new Intent(context, MainActivity.class);
@@ -574,5 +600,66 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
             }
 
         }
+    }
+
+    private void showAboutApp() {
+        JSONObject js = new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+        LogUtil.e("获取关于云峰寺：：" + js);
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(Constants.AboutApp)
+                .params("key", m.K())
+                .params("msg", m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
+                        if (map != null && !map.get("aboutapp").equals("")) {
+                            View          view   = LayoutInflater.from(context).inflate(R.layout.activity_confirm_dialog, null);
+                            final WebView web    = (WebView) view.findViewById(R.id.web);
+                            TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                            cancle.setText(mApplication.ST("确定"));
+                            final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                            baoming.setEnabled(false);
+                            baoming.setVisibility(View.GONE);
+
+                            web.loadDataWithBaseURL("", map.get("aboutapp")
+                                    , "text/html", "UTF-8", null);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setView(view);
+
+                            final AlertDialog dialog = builder.create();
+                            cancle.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    web.destroy();
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.setCancelable(false);
+                            web.setWebViewClient(new WebViewClient() {
+                                @Override
+                                public void onPageFinished(WebView view, String url) {
+                                    super.onPageFinished(view, url);
+                                    dialog.show();
+                                    JsUtil.imgReset(web);
+                                }
+                            });
+
+
+                        } else {
+                            ToastUtil.showToastShort("暂无云峰寺简介");
+                        }
+//
+                    }
+
+
+                });
     }
 }

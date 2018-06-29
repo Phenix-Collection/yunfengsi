@@ -44,7 +44,6 @@ import okhttp3.Response;
  */
 public class Activity_ShouCang extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener ,LoadMoreListView.OnLoadMore{
     public ImageView back, tip;
-    private TextView           title;
     private SwipeRefreshLayout swipeRefreshLayout;
     public LoadMoreListView   listView;
     private SharedPreferences  sp;
@@ -60,7 +59,7 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
 
 
     private EditText input;
-    private TextView search;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,7 +184,7 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
 
     private void initView() {
         input=findViewById(R.id.search_edit);
-        search=findViewById(R.id.search);
+        TextView search = findViewById(R.id.search);
         search.setOnClickListener(this);
         EventBus.getDefault().register(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
@@ -193,7 +192,7 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         back.setImageResource(R.drawable.back);
-        title = (TextView) findViewById(R.id.title_title);
+        TextView title = (TextView) findViewById(R.id.title_title);
         title.setText(mApplication.ST("收藏"));
         tip = (ImageView) findViewById(R.id.shoucang_tip);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swip);

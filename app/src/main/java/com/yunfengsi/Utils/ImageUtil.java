@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,13 +17,12 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.util.LruCache;
+import android.support.v4.content.FileProvider;
 import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
@@ -204,8 +204,7 @@ public class ImageUtil {
     public static byte[] Bitmap2StrByBase64(Bitmap bit) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bit.compress(Bitmap.CompressFormat.JPEG, 90, bos);
-        byte[] bytes = bos.toByteArray();
-        return bytes;
+        return bos.toByteArray();
 //        "data:image/jpeg;base64,"+(Base64.encodeToString(bytes, Base64.DEFAULT))
     }
 
@@ -360,54 +359,19 @@ public class ImageUtil {
         return null;
     }
 
-    public void showImageByAsynTask(LruCache<String, Bitmap> lruCache, ImageView imageView, String url) {
 
-        new mAsynTask(lruCache, imageView, url).execute(url);
+    //更新图库
+    public static void updatePhotoMedia(File file ,Context context){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            intent.setData(FileProvider.getUriForFile(context,context.getPackageName()+".fileProvider",file));
+        }else{
+            intent.setData(Uri.fromFile(file));
+        }
+        context.sendBroadcast(intent);
+        LogUtil.e("更新图库");
     }
-
-    public class mAsynTask extends AsyncTask<String, Void, Bitmap> {
-
-        String url;
-        ImageView imageView;
-        LruCache<String, Bitmap> lruCache;
-
-        public mAsynTask(LruCache<String, Bitmap> lruCache, ImageView imageView, String url) {
-            this.url = url;
-            this.imageView = imageView;
-            this.lruCache = lruCache;
-
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            Bitmap bitmap = getImageFromUrl(params[0]);
-            return bitmap;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-
-            int pheight = imageView.getHeight();
-            int pwidth = imageView.getWidth();
-            if (pheight > 0 && pwidth > 0) {
-                bitmap = ThumbnailUtils.extractThumbnail(bitmap, pheight, pwidth);
-                Log.v("this", bitmap.getHeight() + "  " + bitmap.getWidth() + "");
-            }
-            lruCache.put(url, bitmap);
-
-            if (imageView.getTag() != null && imageView.getTag().equals(url)) {
-                imageView.setImageBitmap(bitmap);
-            }
-
-        }
-    }
-
 
     public static Bitmap scaleWithWH(Bitmap src, double w, double h) {
         if (w == 0 || h == 0 || src == null) {

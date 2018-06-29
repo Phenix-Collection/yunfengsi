@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -114,17 +115,17 @@ import static android.view.View.VISIBLE;
  */
 public class FundingDetailFragment extends android.app.Fragment implements View.OnClickListener,
         HttpHelper.HttpUtilHelperCallback, PL_List_Adapter.onHuifuListener {
-    private String page = "1";
+    private String page    = "1";
     private String endPage = "";
     //    private PL_List_Adapter adapter;
-    private SharedPreferences sp;
+    private SharedPreferences  sp;
     private InputMethodManager imm;
-    private TextView tv;//评论的头部
-    private View view;
-    private TextView tv_fund_detail_title;//众筹详情标题页
-    private TextView tv_support_count;//众筹点赞数
-    private TextView tv_money_goal;//目标金额
-    private TextView tv_money_get;//已筹金额
+    private TextView           tv;//评论的头部
+    private View               view;
+    private TextView           tv_fund_detail_title;//众筹详情标题页
+    private TextView           tv_support_count;//众筹点赞数
+    private TextView           tv_money_goal;//目标金额
+    private TextView           tv_money_get;//已筹金额
 
     private CircleProgressView circle_people_num;//支持人数
     private CircleProgressView circle_funding_percent;//目标金额达成率
@@ -132,8 +133,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 
 
     private ShareAction action;
-    private TextView btn_item_detail;//项目详情
-    private TextView btn_item_comments;//众筹状态
+    private TextView    btn_item_comments;//众筹状态
 
     //项目详情
     private myWebView content;
@@ -143,26 +143,21 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 
     private static final String TAG = "Crowdfundingd";
 
-    //标题栏详情
-    private TextView tv_title_name;
-
     private HttpHelper httpHelper;//网络请求
-    private static final int GET_FUND_DETAIL = 0;//请求众筹详情的标识
+    private static final int GET_FUND_DETAIL   = 0;//请求众筹详情的标识
     private static final int GET_FUND_COMMENTS = 1;//请求众筹评论的标识
-    private Intent intent;//接受众筹Id
 
     private ArrayList<String> imageUrlList = new ArrayList<>();
     private String currentFee;
-    public String fundId;
+    public  String fundId;
 
 
     //评论收藏底部
     private EditText PLText;
     private TextView fasong;
 
-    private boolean needTochange;
+    private boolean   needTochange;
     private ImageView fenxiang;
-    private int screeWidth, dp10, dp200, dp7;
     /**图片轮播*/
     /**
      * 图片轮番播放
@@ -173,38 +168,52 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 
 
     private LinearLayout currentLayout;
-    private int currentPosition;
-    private String currentId;
+    private int          currentPosition;
+    private String       currentId;
     private boolean isPLing = false;
     /*
       活动按钮
        */
     private TextView tv_activity;
 
-    private LinearLayout pinglun, fenxiangb;
-    private FrameLayout overlay;
-    private ImageView toggle;
-    private TextView audio;
-    private IBDRcognizeImpl ibdRcognize;
-    private UMWeb umWeb;
+    private LinearLayout      fenxiangb;
+    private FrameLayout       overlay;
+    private ImageView         toggle;
+    private TextView          audio;
+    private IBDRcognizeImpl   ibdRcognize;
+    private UMWeb             umWeb;
     private ArrayList<String> arrayList;
     JSONObject object;
 
     private LinearLayout dianzan;
-    private ImageView dianzanImg;
-    private TextView dianzanText;
+    private ImageView    dianzanImg;
+    private TextView     dianzanText;
 
 
     private ShuChengAdapter ad;
     private int firstNum = 0;
     private TextView plNum;
-    private View head;
-
+    private View     head;
+    private SwipeRefreshLayout swip;
+    private boolean isRefresh=true;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_funding_deatil, null);
 
+        swip=view.findViewById(R.id.swip);
+        swip.setColorSchemeResources(R.color.main_color);
+        swip.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                isRefresh=true;
+                page="1";
+                endPage="";
+                getFundingDetail(fundId);
+                getFundingComments(fundId);
+                swip.setRefreshing(false);
+            }
+        });
         initViews();
         initEvents();
         initDatas();
@@ -214,7 +223,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 
 
     private void initViews() {
-        ((ImageView) view.findViewById(R.id.tip)).setImageBitmap(ImageUtil.readBitMap(getActivity(),R.drawable.load_neterror));
+        ((ImageView) view.findViewById(R.id.tip)).setImageBitmap(ImageUtil.readBitMap(getActivity(), R.drawable.load_neterror));
         view.findViewById(R.id.tip).setOnClickListener(this);
         ad = new ShuChengAdapter(getActivity(), new ArrayList<HashMap<String, String>>());
         ad.setOnHuifuListener(this);
@@ -226,7 +235,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
         imageView.setLayoutParams(vl);
         imageView.setPadding(0, DimenUtils.dip2px(getActivity(), 20), 0, DimenUtils.dip2px(getActivity(), 20));
         ad.setEmptyView(imageView);
-        ad.setHeaderFooterEmpty(true,true);
+        ad.setHeaderFooterEmpty(true, true);
 
         ad.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         head = LayoutInflater.from(getActivity()).inflate(R.layout.fund_header, null);
@@ -235,9 +244,9 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
         PLText = (EditText) view.findViewById(R.id.fund_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
         ImageView pinglun_image = view.findViewById(R.id.pinglun_image);
-        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(getActivity(),25),DimenUtils.dip2px(getActivity(),25))
+        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(getActivity(), 25), DimenUtils.dip2px(getActivity(), 25))
                 .into(pinglun_image);
-        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(getActivity(),25),DimenUtils.dip2px(getActivity(),25))
+        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(getActivity(), 25), DimenUtils.dip2px(getActivity(), 25))
                 .into((ImageView) (view.findViewById(R.id.fenxiang_image)));
         toggle = (ImageView) view.findViewById(R.id.toggle_audio_word);
         audio = (TextView) view.findViewById(R.id.audio_button);
@@ -260,9 +269,9 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        if(ibdRcognize==null){
-                            ibdRcognize=new IBDRcognizeImpl(getActivity());
-                            ibdRcognize.attachView(PLText,audio,toggle);
+                        if (ibdRcognize == null) {
+                            ibdRcognize = new IBDRcognizeImpl(getActivity());
+                            ibdRcognize.attachView(PLText, audio, toggle);
                         }
                         view.setSelected(true);
                         audio.setText("松开完成识别");
@@ -287,7 +296,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                 v.setVisibility(View.GONE);
             }
         });
-        pinglun = (LinearLayout) view.findViewById(R.id.pinglun);
+        LinearLayout pinglun = (LinearLayout) view.findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,10 +318,10 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                 }
             }
         });
-        screeWidth = getResources().getDisplayMetrics().widthPixels;
-        dp10 = DimenUtils.dip2px(getActivity(), 10);
-        dp200 = DimenUtils.dip2px(getActivity(), 200);
-        dp7 = DimenUtils.dip2px(getActivity(), 7);
+        int screeWidth = getResources().getDisplayMetrics().widthPixels;
+        int dp10       = DimenUtils.dip2px(getActivity(), 10);
+        int dp200      = DimenUtils.dip2px(getActivity(), 200);
+        int dp7        = DimenUtils.dip2px(getActivity(), 7);
         banner = (Banner) head.findViewById(R.id.banner);
         banner.setDelayTime(3000);
         banner.setImageLoader(new ImageLoader() {
@@ -328,7 +337,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
             @Override
             public void OnBannerClick(int position) {
                 if (imageUrlList != null) {
-                    ScaleImageUtil.openBigIagmeMode(getActivity(), imageUrlList, position,true);
+                    ScaleImageUtil.openBigIagmeMode(getActivity(), imageUrlList, position, true);
                 }
             }
         });
@@ -343,8 +352,16 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 //        mViewFlow = (ViewFlow) view.findViewById(R.id.viewflow);
 //        mFlowIndicator = (CircleFlowIndicator) view.findViewById(R.id.viewflowindic);
 
-        tv_title_name = (TextView) getActivity().findViewById(R.id.tv_title_name);
+        TextView tv_title_name = (TextView) getActivity().findViewById(R.id.tv_title_name);
         tv_title_name.setText(mApplication.ST("助学详情"));
+        tv_title_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(PlListVIew.getScaleY()>0){
+                    PlListVIew.smoothScrollToPosition(0);
+                }
+            }
+        });
 
         tv_fund_detail_title = (TextView) head.findViewById(R.id.tv_fund_detail_title);
         tv_fund_detail_title.setText(mApplication.ST("正在加载数据，请稍等"));
@@ -359,7 +376,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
         tv_money_get = (TextView) head.findViewById(R.id.tv_money_get);
 
 
-        btn_item_detail = (TextView) head.findViewById(R.id.btn_item_detail);
+        TextView btn_item_detail = (TextView) head.findViewById(R.id.btn_item_detail);
         btn_item_detail.setText(mApplication.ST("项目详情"));
         btn_item_detail.setSelected(true);
         btn_item_comments = (TextView) view.findViewById(R.id.fund_status);
@@ -431,8 +448,8 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                             LogUtil.w("onResourceReady: 不是二维码   " + result);
                         } else {
                             LogUtil.w("onResourceReady: 是二维码   " + result);
-                            if (result.getText().toString().startsWith("http")) {
-                                Uri uri = Uri.parse(result.getText().toString());
+                            if (result.getText().startsWith("http")) {
+                                Uri    uri    = Uri.parse(result.getText());
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setData(uri);
                                 startActivity(intent);
@@ -445,6 +462,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
             }
         });
         PlListVIew = (RecyclerView) view.findViewById(R.id.pull_to_comments);
+
         PlListVIew.setLayoutManager(new LinearLayoutManager(getActivity()));
         PlListVIew.addItemDecoration(new mItemDecoration(getActivity()));
         ad.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -458,7 +476,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                     getFundingComments(fundId);
                 }
             }
-        },PlListVIew);
+        }, PlListVIew);
 
         ad.addHeaderView(head, 0);
         ad.setIsHuifu(false);
@@ -536,7 +554,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
         @android.webkit.JavascriptInterface
         public void openImage(String img) {
             if (arrayList != null) {
-                ScaleImageUtil.openBigIagmeMode(getActivity(), arrayList, arrayList.indexOf(img),true);
+                ScaleImageUtil.openBigIagmeMode(getActivity(), arrayList, arrayList.indexOf(img), true);
             }
 
         }
@@ -571,14 +589,14 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
     private void initDatas() {
 
 
-        intent = getActivity().getIntent();
+        Intent intent = getActivity().getIntent();
         fundId = intent.getStringExtra("id");
 
         if (!TextUtils.isEmpty(fundId)) {
+
             getFundingDetail(fundId);
             getFundingComments(fundId);
         }
-
 
 
     }
@@ -590,6 +608,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 
         circle_people_num.setTrendsProgress(false);//不动态加载
         circle_people_num.setmTxCenterEnd("人");
+        circle_people_num.setOnClickListener(this);
 
         circle_time_rest.setProgress(100);
         circle_time_rest.setTrendsProgress(false);
@@ -687,8 +706,8 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if(!"0".equals(map.get("yundousum"))){
-                                                    YunDouAwardDialog.show(getActivity(),"每日点赞",map.get("yundousum"));
+                                                if (!"0".equals(map.get("yundousum"))) {
+                                                    YunDouAwardDialog.show(getActivity(), "每日点赞", map.get("yundousum"));
                                                 }
                                                 dianzanText.setText((Integer.valueOf(dianzanText.getText().toString()) + 1) + "");
                                                 tv_support_count.setText(mApplication.ST(Integer.valueOf(dianzanText.getText().toString()) + "人赞过"));
@@ -721,6 +740,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 
 
                 break;
+            case R.id.circle_people_num:
             case R.id.btn_item_dongtai://项目动态
                 Intent intent1 = new Intent(mApplication.getInstance(), Fund_surpport_list.class);
                 intent1.putExtra("id", fundId);
@@ -782,15 +802,15 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if(!"0".equals(hashMap.get("yundousum"))){
-                                                    YunDouAwardDialog.show(getActivity(),"每日评论",hashMap.get("yundousum"));
+                                                if (!"0".equals(hashMap.get("yundousum"))) {
+                                                    YunDouAwardDialog.show(getActivity(), "每日评论", hashMap.get("yundousum"));
                                                 }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                                final HashMap<String, String> map = new HashMap<>();
-                                                String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-                                                final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-                                                String petname = sp.getString("pet_name", "");
-                                                String diazannum = "0";
+                                                final HashMap<String, String> map       = new HashMap<>();
+                                                String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
+                                                final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
+                                                String                        petname   = sp.getString("pet_name", "");
+                                                String                        diazannum = "0";
                                                 map.put("user_image", headurl);
                                                 map.put("ct_contents", content);
                                                 map.put("pet_name", petname);
@@ -805,7 +825,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                                                 map.put("id", hashMap.get("id"));
                                                 map.put("reply", new JSONArray().toString());
                                                 map.put("level", sp.getString("level", "0"));
-                                                ad.addData(0,map);
+                                                ad.addData(0, map);
                                                 ad.flagList.add(0, false);
 
 
@@ -851,7 +871,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                         public void run() {
                             try {
                                 final String content = PLText.getText().toString();
-                                JSONObject js = new JSONObject();
+                                JSONObject   js      = new JSONObject();
                                 try {
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("ct_contents", content);
@@ -872,16 +892,16 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                                                 if (currentLayout.getVisibility() == View.GONE) {
                                                     currentLayout.setVisibility(View.VISIBLE);
                                                 }
-                                                if(!"0".equals(hashMap.get("yundousum"))){
-                                                    YunDouAwardDialog.show(getActivity(),"每日评论",hashMap.get("yundousum"));
+                                                if (!"0".equals(hashMap.get("yundousum"))) {
+                                                    YunDouAwardDialog.show(getActivity(), "每日评论", hashMap.get("yundousum"));
                                                 }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                                TextView textView = new TextView(getActivity());
+                                                TextView                  textView     = new TextView(getActivity());
                                                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                                 layoutParams.setMargins(0, DimenUtils.dip2px(getActivity(), 5), 0, DimenUtils.dip2px(getActivity(), 5));
                                                 textView.setLayoutParams(layoutParams);
-                                                String pet_name = sp.getString("pet_name", "");
-                                                SpannableStringBuilder ssb = new SpannableStringBuilder(pet_name + ":" + content);
+                                                String                 pet_name = sp.getString("pet_name", "");
+                                                SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + content);
                                                 ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                                                 textView.setText(ssb);
                                                 currentLayout.addView(textView);
@@ -893,7 +913,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                                                 fasong.setEnabled(true);
                                                 isPLing = false;
                                                 try {
-                                                    JSONArray jsonArray = new JSONArray(ad.getData().get(currentPosition).get("reply"));
+                                                    JSONArray  jsonArray  = new JSONArray(ad.getData().get(currentPosition).get("reply"));
                                                     JSONObject jsonObject = new JSONObject();
                                                     jsonObject.put("id", hashMap.get("id"));
                                                     jsonObject.put("pet_name", pet_name);
@@ -984,8 +1004,8 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                     circle_people_num.setDrawProgress(Integer.parseInt(obj_result.getString("cy_people")));//设置中间绘制数字
                     //计算剩余天数
                     dianzanText.setText(obj_result.getString("likes"));
-                    Double t = (((TimeUtils.dataOne(obj_result.getString("end_time")) - System.currentTimeMillis())) / 1000 / 60 / 60 / 24d);
-                    int t1 = ((Double) Math.ceil(t)).intValue();
+                    Double t  = (((TimeUtils.dataOne(obj_result.getString("end_time")) - System.currentTimeMillis())) / 1000 / 60 / 60 / 24d);
+                    int    t1 = ((Double) Math.ceil(t)).intValue();
                     circle_time_rest.setIsINT(true);
                     if (t <= 0) {
                         btn_item_comments.setText(mApplication.ST("已结束"));
@@ -1008,19 +1028,21 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                     int goal_money = db.intValue();
                     Log.e(TAG, "successCallback: " + "   1-=-=-=->" + get_money + "   2=-=-=>" + goal_money + "    percent-=-=>" +
                             (get_money * 100 / goal_money));
-                    int p = ((get_money * 100 / goal_money) + "").lastIndexOf(".");
+                    int p        = ((get_money * 100 / goal_money) + "").lastIndexOf(".");
                     int progress = Integer.valueOf(((get_money * 100 / goal_money) + "").substring(0, p));
                     circle_funding_percent.setProgress(progress);
 
                     tv_money_get.setText("￥" + obj_result.getString("sen_money") + "\n达成金额");
 
-                    String md5 = MD5Utls.stringToMD5(Constants.safeKey);
-                    String m1 = md5.substring(0, 16);
-                    String m2 = md5.substring(16, md5.length());
-                    umWeb = new UMWeb(Constants.FX_host_Ip + TAG + "/id/" + m1 + fundId + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
-                    umWeb.setTitle(mApplication.ST(obj_result.getString("title")));
-                    umWeb.setDescription(mApplication.ST(String.valueOf(Html.fromHtml(obj_result.getString("abstract"))) + "\n已筹金额:" + obj_result.getString("sen_money") + "\n目标金额：" + db.toPlainString()));
-                    umWeb.setThumb(new UMImage(mApplication.getInstance(), obj_result.getString("image")));
+                        String md5 = MD5Utls.stringToMD5(Constants.safeKey);
+                        String m1  = md5.substring(0, 16);
+                        String m2  = md5.substring(16, md5.length());
+                        umWeb = new UMWeb(Constants.FX_host_Ip + TAG + "/id/" + m1 + fundId + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
+                        umWeb.setTitle(mApplication.ST(obj_result.getString("title")));
+                        umWeb.setDescription(mApplication.ST(String.valueOf(Html.fromHtml(obj_result.getString("abstract"))) + "\n已筹金额:" + obj_result.getString("sen_money") + "\n目标金额：" + db.toPlainString()));
+                        umWeb.setThumb(new UMImage(mApplication.getInstance(), obj_result.getString("image")));
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1034,23 +1056,33 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                 ArrayList<HashMap<String, String>> Pllist = AnalyticalJSON.getList(result, "comment");
                 PlListVIew.setFocusable(false);
                 if (Pllist != null) {
-                    if (Pllist.size() != 10) {
-                        endPage = page;
-                        ad.addData(Pllist);
+                    if(isRefresh){
+                        isRefresh=false;
+                        ad.setNewData(Pllist);
+                        ad.flagList.clear();
+                        for (int i = 0; i < Pllist.size(); i++) {
+                            ad.flagList.add(false);
+                        }
+                    }else{
+                        if (Pllist.size() != 10) {
+                            endPage = page;
+                            ad.addData(Pllist);
+                            ad.loadMoreEnd(false);
+                        } else {
+                            ad.loadMoreComplete();
+                            ad.addData(Pllist);
+
+                        }
+                        boolean flag = false;
+                        for (int i = 0; i < Pllist.size(); i++) {
+                            ad.flagList.add(flag);
+                        }
+                    }
+
+                } else {
+                    if ("null".equals(result)) {
                         ad.loadMoreEnd(false);
                     } else {
-                        ad.loadMoreComplete();
-                        ad.addData(Pllist);
-
-                    }
-                    boolean flag = false;
-                    for (int i = 0; i < Pllist.size(); i++) {
-                        ad.flagList.add(flag);
-                    }
-                }else{
-                    if("null".equals(result)){
-                        ad.loadMoreEnd(false);
-                    }else{
                         ad.loadMoreFail();
                     }
 
@@ -1077,7 +1109,8 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
      * 加载轮播图片并加载小圆点
      */
     private void setUrlToImage(final JSONObject js) {
-        String image = null;
+        imageUrlList.clear();
+        String image  = null;
         String image1 = null;
         String image2 = null;
         try {
@@ -1107,24 +1140,24 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
     //调起支付  需要在上下文设置currentFee变量，并为每个item设置tag识别
     public void showPayDialog(final Activity context) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        final View view = LayoutInflater.from(context).inflate(R.layout.pay_choose_num_dialog, null);
-        final TextView one = (TextView) view.findViewById(R.id.one);
-        final TextView five = (TextView) view.findViewById(R.id.five);
-        final TextView ten = (TextView) view.findViewById(R.id.ten);
-        final TextView twelve = (TextView) view.findViewById(R.id.twelve);
-        final TextView fifty = (TextView) view.findViewById(R.id.fifty);
-        final TextView one_han = (TextView) view.findViewById(R.id.han);
-        final TextView two_han = (TextView) view.findViewById(R.id.two_han);
-        final TextView five_han = (TextView) view.findViewById(R.id.five_han);
-        final TextView others = (TextView) view.findViewById(R.id.others);
-        final EditText otherNum = (EditText) view.findViewById(R.id.otherNum);
-        final Button agreeTOPay = (Button) view.findViewById(R.id.agreeToPay);
-        final RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.otherlayout);
-        int dimens = DimenUtils.dip2px(context, 10);
+        AlertDialog.Builder  builder    = new AlertDialog.Builder(context);
+        final View           view       = LayoutInflater.from(context).inflate(R.layout.pay_choose_num_dialog, null);
+        final TextView       one        = (TextView) view.findViewById(R.id.one);
+        final TextView       five       = (TextView) view.findViewById(R.id.five);
+        final TextView       ten        = (TextView) view.findViewById(R.id.ten);
+        final TextView       twelve     = (TextView) view.findViewById(R.id.twelve);
+        final TextView       fifty      = (TextView) view.findViewById(R.id.fifty);
+        final TextView       one_han    = (TextView) view.findViewById(R.id.han);
+        final TextView       two_han    = (TextView) view.findViewById(R.id.two_han);
+        final TextView       five_han   = (TextView) view.findViewById(R.id.five_han);
+        final TextView       others     = (TextView) view.findViewById(R.id.others);
+        final EditText       otherNum   = (EditText) view.findViewById(R.id.otherNum);
+        final Button         agreeTOPay = (Button) view.findViewById(R.id.agreeToPay);
+        final RelativeLayout layout     = (RelativeLayout) view.findViewById(R.id.otherlayout);
+        int                  dimens     = DimenUtils.dip2px(context, 10);
         builder.setView(view, 0, dimens, 0, dimens);
         final AlertDialog dialog = builder.create();
-        Window window = dialog.getWindow();
+        Window            window = dialog.getWindow();
         window.setBackgroundDrawable(new ColorDrawable(0x00000000));
         window.setWindowAnimations(R.style.dialogWindowAnim);
         WindowManager.LayoutParams wl = window.getAttributes();
@@ -1194,13 +1227,13 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                             return;
                         }
                         dialog.dismiss();
-                        BasePayParams payParams=new BasePayParams();
-                        payParams.allMoney= currentFee.equals(others.getTag().toString()) ? String.format("%.2f", (Double.valueOf(otherNum.getText().toString()))) : String.valueOf(Integer.valueOf(currentFee));
-                        payParams.payId=fundId;
-                        payParams.title=getActivity().getIntent().getStringExtra("title") == null ? tv_fund_detail_title.getText().toString() : getActivity().getIntent().getStringExtra("title");
-                        payParams.num="1";
-                        payParams.payType="5";
-                        mApplication.openPayLayout(context,payParams);
+                        BasePayParams payParams = new BasePayParams();
+                        payParams.allMoney = currentFee.equals(others.getTag().toString()) ? String.format("%.2f", (Double.valueOf(otherNum.getText().toString()))) : String.valueOf(Integer.valueOf(currentFee));
+                        payParams.payId = fundId;
+                        payParams.title = getActivity().getIntent().getStringExtra("title") == null ? tv_fund_detail_title.getText().toString() : getActivity().getIntent().getStringExtra("title");
+                        payParams.num = "1";
+                        payParams.payType = "5";
+                        mApplication.openPayLayout(context, payParams);
                         break;
                 }
                 if (v.getId() != R.id.canclePay && v.getId() != R.id.agreeToPay) {
@@ -1324,18 +1357,18 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
         }
     }
 
-    public static class ShuChengAdapter extends BaseQuickAdapter<HashMap<String, String>,BaseViewHolder> {
+    public static class ShuChengAdapter extends BaseQuickAdapter<HashMap<String, String>, BaseViewHolder> {
 
-        public List<HashMap<String, String>> mlist;
-        private int screenwidth;
-        private Context context;
+        public  List<HashMap<String, String>> mlist;
+        private int                           screenwidth;
+        private Context                       context;
         private static final String TAG = "PL_List_Adapter";
-        public ArrayList<Boolean> flagList;
-        private SharedPreferences sp;
-        private Drawable dianzan, dianzan1;
-        private int mainColor;
+        public  ArrayList<Boolean> flagList;
+        private SharedPreferences  sp;
+        private Drawable           dianzan, dianzan1;
+        private int                             mainColor;
         private PL_List_Adapter.onHuifuListener onHuifu;
-        private boolean isHuifu = false;
+        private boolean isHuifu  = false;
         private boolean toDetail = false;
 
         public void setOnHuifuListener(PL_List_Adapter.onHuifuListener onhuifu) {
@@ -1376,13 +1409,13 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
 
         @Override
         protected void convert(final BaseViewHolder holder, final HashMap<String, String> bean) {
-            TextView Dznum = holder.getView(R.id.Pl_item_DianZan_num);
-            TextView huifu = holder.getView(R.id.PL_item_huifu);
-            AvatarImageView head = holder.getView(R.id.PL_item_Head);
-            TextView userName = holder.getView(R.id.PL_item_Name);
-            TextView content = holder.getView(R.id.Pl_item_Content);
-            TextView time = holder.getView(R.id.PL_item_time);
-            LinearLayout huifuLayout = holder.getView(R.id.pl_huifu_layout);
+            TextView        Dznum       = holder.getView(R.id.Pl_item_DianZan_num);
+            TextView        huifu       = holder.getView(R.id.PL_item_huifu);
+            AvatarImageView head        = holder.getView(R.id.PL_item_Head);
+            TextView        userName    = holder.getView(R.id.PL_item_Name);
+            TextView        content     = holder.getView(R.id.Pl_item_Content);
+            TextView        time        = holder.getView(R.id.PL_item_time);
+            LinearLayout    huifuLayout = holder.getView(R.id.pl_huifu_layout);
             if (isHuifu) {
                 Dznum.setVisibility(View.GONE);
                 huifu.setVisibility(View.GONE);
@@ -1414,7 +1447,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
             head.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ScaleImageUtil.openBigIagmeMode((Activity) context,bean.get("user_image"),true);
+                    ScaleImageUtil.openBigIagmeMode((Activity) context, bean.get("user_image"), true);
                 }
             });
 
@@ -1445,7 +1478,6 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                     if (!new LoginUtil().checkLogin(context)) {
                         return;
                     }
-                    ;
                     if (v.getTag() == null || v.getTag().toString().equals("")) {
                         Toast.makeText(context, mApplication.ST("快去给其他人点赞吧"), Toast.LENGTH_SHORT).show();
                         return;
@@ -1472,9 +1504,9 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                                         .params("msg", m.M())
                                         .execute().body().string();
                                 if (!data1.equals("")) {
-                                    final View childat = holder.convertView;
-                                    final TextView dznum = (TextView) childat.findViewById(R.id.Pl_item_DianZan_num);
-                                    HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);
+                                    final View              childat = holder.convertView;
+                                    final TextView          dznum   = (TextView) childat.findViewById(R.id.Pl_item_DianZan_num);
+                                    HashMap<String, String> map     = AnalyticalJSON.getHashMap(data1);
                                     if (map != null && map.get("code").equals("000")) {
                                         ((Activity) context).runOnUiThread(new Runnable() {
                                             @Override
@@ -1528,13 +1560,13 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                 if (replay != null) {
                     huifuLayout.removeAllViews();
                     for (final HashMap<String, String> map : replay) {
-                        TextView textView = new TextView(context);
+                        TextView                  textView     = new TextView(context);
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         layoutParams.setMargins(0, DimenUtils.dip2px(context, 5), 0, DimenUtils.dip2px(context, 5));
                         textView.setLayoutParams(layoutParams);
-                        String pet_name = map.get("pet_name");
-                        final String c = mApplication.ST(map.get("ct_contents"));
-                        SpannableStringBuilder ssb = new SpannableStringBuilder(pet_name + ":" + c);
+                        String                 pet_name = map.get("pet_name");
+                        final String           c        = mApplication.ST(map.get("ct_contents"));
+                        SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + c);
                         if ("3".equals(map.get("role"))) {
                             textView.setTextColor(ContextCompat.getColor(context, R.color.pinglun_name));
                             ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.black)), pet_name.length(), pet_name.length() + 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -1550,7 +1582,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
                         }
                     }
                     if (replay.size() >= 3) {
-                        TextView textView = new TextView(context);
+                        TextView                  textView     = new TextView(context);
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         layoutParams.setMargins(0, DimenUtils.dip2px(context, 5), 0, DimenUtils.dip2px(context, 5));
                         textView.setLayoutParams(layoutParams);

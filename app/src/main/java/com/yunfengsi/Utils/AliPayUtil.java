@@ -12,6 +12,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Fragment.Mine_GYQD;
 import com.yunfengsi.Managers.Base.BasePayParams;
+import com.yunfengsi.Models.Auction.Bid_History_Mine;
 import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
 import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
@@ -171,6 +172,7 @@ public class AliPayUtil {
                                                         context.startActivity(intent);
                                                     }else if(payParams.payType.equals("13")){
                                                         //义卖支付
+                                                        EventBus.getDefault().post(new Bid_History_Mine.DoRefreshEvent());
                                                         intent.setClass(context, Mine_GYQD.class);
                                                         context.startActivity(intent);
                                                     }else if(payParams.payType.equals("14")){
@@ -234,7 +236,7 @@ public class AliPayUtil {
 
 
                     }
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
             }

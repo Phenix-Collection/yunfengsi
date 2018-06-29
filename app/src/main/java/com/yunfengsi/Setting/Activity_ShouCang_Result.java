@@ -38,7 +38,6 @@ import okhttp3.Response;
  */
 public class Activity_ShouCang_Result extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener ,LoadMoreListView.OnLoadMore{
     public ImageView back, tip;
-    private TextView           title;
     private SwipeRefreshLayout swipeRefreshLayout;
     public LoadMoreListView   listView;
     private SharedPreferences  sp;
@@ -175,7 +174,7 @@ public class Activity_ShouCang_Result extends AppCompatActivity implements View.
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         back.setImageResource(R.drawable.back);
-        title = (TextView) findViewById(R.id.title_title);
+        TextView title = (TextView) findViewById(R.id.title_title);
         title.setText(mApplication.ST("搜索结果"));
         tip = (ImageView) findViewById(R.id.shoucang_tip);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swip);

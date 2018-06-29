@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/umeng_socialize_shareactivity"
+    android:background="#D4E0E5"
     android:id="@+id/root"
     android:orientation="vertical">
 
@@ -79,7 +79,7 @@
         android:paddingBottom="10dp"
         android:paddingRight="15dp"
         android:gravity="right"
-        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="#98999B"
         android:textSize="14sp" />
 
@@ -107,7 +107,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
            android:layout_centerInParent="true"
-            android:src="@color/umeng_socialize_color_group" />
+            android:src="#2c3035" />
         </RelativeLayout>
     <TextView
         android:layout_width="280dp"
@@ -116,7 +116,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="20dp"
         android:textColor="#575A5C"
-        android:maxLines="1"
+        android:singleLine="true"
         android:textSize="14sp"
         android:visibility="gone"
         android:layout_height="wrap_content" />

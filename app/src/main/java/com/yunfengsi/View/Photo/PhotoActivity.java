@@ -52,11 +52,9 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
     private static final String path = "array";
     private static final String pos = "position";
     private PhotoViewPager viewPager;
-    private ImageView back;
-    private TextView position, num;
+    private TextView position;
     public ImageView choose;
     private ArrayList<String> paths;
-    private photoAdapter adapter;
     private ScreenSwitchUtils instance;//重力感应辅助类
     private int screenWidth, screenHeight;
     private FrameLayout root;
@@ -77,10 +75,10 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         instance = ScreenSwitchUtils.init(this.getApplicationContext());
         viewPager = (PhotoViewPager) findViewById(R.id.viewpager);
 
-        back = (ImageView) findViewById(R.id.back);
+        ImageView back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
         position = (TextView) findViewById(R.id.position);
-        num = (TextView) findViewById(R.id.num);
+        TextView num = (TextView) findViewById(R.id.num);
         choose = (ImageView) findViewById(R.id.choose);
         choose.setOnClickListener(this);
         if(!getIntent().getBooleanExtra("download",true)) {
@@ -123,7 +121,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         initDatas();//初始化数据
-        adapter = new photoAdapter(this, paths);
+        photoAdapter adapter = new photoAdapter(this, paths);
 //        viewPager.setPageTransformer(false,new FirstTransFormer(1));
         viewPager.setOffscreenPageLimit(paths.size());
         viewPager.setAdapter(adapter);

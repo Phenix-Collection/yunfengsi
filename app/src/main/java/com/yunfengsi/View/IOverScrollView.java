@@ -22,7 +22,6 @@ public class IOverScrollView extends LinearLayout {
     float density;
 
     private float mLastY;
-    private String tips="上拉加载图文详情";
     private int tipHight=100;
     private Context context;
 
@@ -57,6 +56,7 @@ public class IOverScrollView extends LinearLayout {
         tip.setGravity(Gravity.CENTER);
         tip.setTextSize(18);
         addView(tip,1,new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,tipHight));
+        String tips = "上拉加载图文详情";
         tip.setText(tips);
 
     }

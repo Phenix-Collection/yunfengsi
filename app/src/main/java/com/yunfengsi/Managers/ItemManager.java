@@ -36,8 +36,6 @@ import java.util.List;
 public class ItemManager extends AppCompatActivity {
     private ImageView back;
     private TextView title;
-    private RecyclerView myItems;
-    private RecyclerView otherItems;
     private MyItemAdapter myItemAdapter, otherAdapter;
     private ArrayList<HashMap<String, Object>> myList;
     private ArrayList<HashMap<String, Object>> otherList;
@@ -56,7 +54,7 @@ public class ItemManager extends AppCompatActivity {
     public static final String CaCheName = "cache_HomePage";
     public static final String CaCheVersion = "cache_HomePage_Version";
     private int mFlags;
-    private static int FLAG_FORCE_DEAFAULT =0x00000001;//强行使用默认配置
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +81,8 @@ public class ItemManager extends AppCompatActivity {
             }
         });
 
-        myItems = (RecyclerView) findViewById(R.id.myItem);
-        otherItems = (RecyclerView) findViewById(R.id.otherItem);
+        RecyclerView myItems    = (RecyclerView) findViewById(R.id.myItem);
+        RecyclerView otherItems = (RecyclerView) findViewById(R.id.otherItem);
 
         myItems.setLayoutManager(new GridLayoutManager(this, 4));
 
@@ -92,6 +90,7 @@ public class ItemManager extends AppCompatActivity {
 
         LogUtil.e("获取设置缓存：：；" + FileUtils.getStorageMapEntities(this, CaCheName + PreferenceUtil.getUserId(this)));
         String version= Verification.getAppVersionName(this);
+        int    FLAG_FORCE_DEAFAULT = 0x00000001;
         if(PreferenceUtil.getSettingIncetance(this).getString(ItemManager.CaCheVersion,"").equals(version)){
             //同一版本才允许缓存，不同版本清空缓存
 
@@ -100,7 +99,7 @@ public class ItemManager extends AppCompatActivity {
         }
         //没有缓存
         if (FileUtils.getStorageMapEntities(this, CaCheName + PreferenceUtil.getUserId(this)) == null
-                ||((mFlags & FLAG_FORCE_DEAFAULT)==FLAG_FORCE_DEAFAULT)) {
+                ||((mFlags & FLAG_FORCE_DEAFAULT)== FLAG_FORCE_DEAFAULT)) {
             myList = new ArrayList<>();
             otherList = new ArrayList<>();
             boolean isContinue = false;

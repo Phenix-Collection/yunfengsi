@@ -255,7 +255,7 @@ public class RedPacket_Final extends AppCompatActivity {
         Result result = null;
         try {
             result = reader.decode(binaryBitmap, hints);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return result;
     }

@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -33,6 +34,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,12 +54,13 @@ import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.Managers.CollectManager;
 import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
+import com.yunfengsi.Models.TouGao.TouGao;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.AD;
 import com.yunfengsi.Setting.JuBaoActivity;
 import com.yunfengsi.Setting.Login;
 import com.yunfengsi.Setting.Mine_gerenziliao;
-import com.yunfengsi.Models.TouGao.TouGao;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -78,8 +81,8 @@ import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mAudioManager;
 import com.yunfengsi.View.mAudioView;
 import com.yunfengsi.View.mPLlistview;
+import com.yunfengsi.View.mScrollView;
 import com.yunfengsi.View.myWebView;
-import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.WebShare.WebInteraction;
 
 import org.json.JSONArray;
@@ -101,58 +104,57 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 //@MLinkRouter(keys={"zixun_detail"})
 public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListener, PL_List_Adapter.onHuifuListener {
     private static final String TAG = "Newsd";
-    private ImageView back;
-    private TextView title, time, user, fasong, plNum;
-    private TextView tiplike;
+    private TextView  title, time, user, fasong, plNum;
     private LinearLayout dianzan;
-    private myWebView content;
-    private mPLlistview PlListVIew;
-    private EditText PLText;
-    private ImageView dianzanImg;
-    private TextView dianzanText;
-    private int screenWidth;
-    private String id;
-    private String page = "1";
+    private myWebView    content;
+    private mPLlistview  PlListVIew;
+    private EditText     PLText;
+    private ImageView    dianzanImg;
+    private TextView     dianzanText;
+    private int          screenWidth;
+    private String       id;
+    private String page    = "1";
     private String endPage = "";
     private ArrayList<HashMap<String, String>> Pllist;
-    private String var;
-    private PL_List_Adapter adapter;
-    private ImageView shoucang, fenxiang2;
+    private String                             var;
+    private PL_List_Adapter                    adapter;
+    private ImageView                          shoucang, fenxiang2;
     private SharedPreferences sp;
     //第一次加载的评论数量
     private int firstNum = 0;
     //第一次加载的评论map
     private HashMap<String, String> FirstMap;
     //无评论时的header
-    private TextView tv;
+    private TextView                tv;
 
-    private SHARE_MEDIA[] share_list;
-    private ShareAction action;
-    private ViewStub video;
+    private ShareAction   action;
+    private ViewStub      video;
     JCVideoPlayerStandard player;
     private boolean needTochange = false;
     private ArrayList<String> arrayList;
-    private LinearLayout currentLayout;
-    private int currentPosition;
-    private String currentId;
+    private LinearLayout      currentLayout;
+    private int               currentPosition;
+    private String            currentId;
     private boolean isPLing = false;
     /*
     活动按钮
      */
     private TextView tv_activity;
 
-    private LinearLayout pinglun, fenxiangb;
-    private FrameLayout overlay;
-    private TextView audio;
-    private IBDRcognizeImpl ibdRcognize;
-    private ImageView toggle;
+    private LinearLayout       fenxiangb;
+    private FrameLayout        overlay;
+    private TextView           audio;
+    private IBDRcognizeImpl    ibdRcognize;
+    private ImageView          toggle;
     private InputMethodManager imm;
 
     private UMWeb umWeb;
 
 
-    private TextView tougao, jianyi;
-    private ImageView tip;
+    private ImageView          tip;
+    private SwipeRefreshLayout swip;
+
+    private boolean isLoadMore = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -205,15 +207,45 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
     }
 
     private void initView() {
+        swip = findViewById(R.id.swip);
+        swip.setColorSchemeResources(R.color.main_color);
+        swip.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                PlListVIew.footer.setEnabled(true);
+                isLoadMore = false;
+                page = "1";
+                endPage = "";
+                LoadData();
+                swip.setRefreshing(false);
+            }
+        });
+        ((TextView) findViewById(R.id.title)).setText("图文详情");
+        findViewById(R.id.title).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ScrollView) findViewById(R.id.scroll)).smoothScrollTo(0, 0);
+            }
+        });
+        ((mScrollView) findViewById(R.id.scroll)).setListener(new mScrollView.onIScrollChangedListener() {
+            @Override
+            public void onScrollChanged(int l, int t, int oldl, int oldt) {
+                if (t <= 0) {
+                    ((TextView) findViewById(R.id.title)).setText("图文详情");
+                } else {
+                    ((TextView) findViewById(R.id.title)).setText("返回顶部");
+                }
+            }
+        });
         id = getIntent().getStringExtra("id");
         tip = (ImageView) findViewById(R.id.tip);
         tip.setOnClickListener(this);
 
         PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
-        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
-        .into((ImageView) findViewById(R.id.pinglun_image));
-        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this,25),DimenUtils.dip2px(this,25))
+        Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
+                .into((ImageView) findViewById(R.id.pinglun_image));
+        Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.fenxiang_image));
         toggle = (ImageView) findViewById(R.id.toggle_audio_word);
         audio = (TextView) findViewById(R.id.audio_button);
@@ -236,9 +268,9 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 
-                        if(ibdRcognize==null){
-                            ibdRcognize=new IBDRcognizeImpl(ZiXun_Detail.this);
-                            ibdRcognize.attachView(PLText,audio,toggle);
+                        if (ibdRcognize == null) {
+                            ibdRcognize = new IBDRcognizeImpl(ZiXun_Detail.this);
+                            ibdRcognize.attachView(PLText, audio, toggle);
                         }
                         view.setSelected(true);
                         audio.setText("松开完成识别");
@@ -264,7 +296,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 v.setVisibility(View.GONE);
             }
         });
-        pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -277,7 +309,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
 
             }
         });
-        imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new OnClickListener() {
             @Override
@@ -306,12 +338,12 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
         plNum = (TextView) findViewById(R.id.zixun_Detail_appendPLNum);
         fasong = (TextView) findViewById(R.id.zixun_detail_fasong);
         fasong.setText(mApplication.ST("发送"));
-        tiplike = (TextView) findViewById(R.id.zixun_detail_tip);
+        TextView tiplike = (TextView) findViewById(R.id.zixun_detail_tip);
         tiplike.setText(mApplication.ST("看完了，点个赞吧"));
         dianzan = (LinearLayout) findViewById(R.id.zixun_detail_dianzan);
         tip.setVisibility(View.GONE);
         dianzan.setVisibility(View.GONE);
-        back = (ImageView) this.findViewById(R.id.zixun_detail_leftImg);
+        ImageView back = (ImageView) this.findViewById(R.id.zixun_detail_leftImg);
         title = (TextView) findViewById(R.id.zixun_detail_title);
         title.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -398,8 +430,8 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                             LogUtil.w("onResourceReady: 不是二维码   " + result);
                         } else {
                             LogUtil.w("onResourceReady: 是二维码   " + result);
-                            if (result.getText().toString().startsWith("http")) {
-                                Uri uri = Uri.parse(result.getText().toString());
+                            if (result.getText().startsWith("http")) {
+                                Uri    uri    = Uri.parse(result.getText());
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setData(uri);
                                 startActivity(intent);
@@ -416,80 +448,27 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
         PlListVIew.footer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                isLoadMore = true;
                 PlListVIew.footer.setText(mApplication.ST("正在加载"));
-                if (!endPage.equals(page)) page = String.valueOf(Integer.valueOf(page) + 1);
-                getPLandSet(FirstMap);
+                if (!endPage.equals(page)) {
+                    page = String.valueOf(Integer.valueOf(page) + 1);
+                    getPLandSet(FirstMap);
+                }
+
             }
         });
-
 
 
         back.setOnClickListener(this);
         plNum.setOnClickListener(this);
         //分享
-        share_list = new SHARE_MEDIA[]{
+        SHARE_MEDIA[] share_list = new SHARE_MEDIA[]{
                 SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
         };
-        if (null != (getIntent().getStringExtra("video_url"))) {
-            if (!getIntent().getStringExtra("video_url").endsWith("mp3")) {
-                video.setLayoutResource(R.layout.video_stub);
-                View view = video.inflate();
-                player = (JCVideoPlayerStandard) view.findViewById(R.id.zixun_detail_player);
-                Log.w(TAG, "initView: player-=-" + player + "  getIntent().getStringExtra(\"video_url\")" + getIntent().getStringExtra("video_url")
-                        + "   " + getIntent().getStringExtra("title"));
-                player.setUp(getIntent().getStringExtra("video_url"), mApplication.ST(getIntent().getStringExtra("title")));
-                player.titleTextView.setVisibility(View.GONE);
-                Glide.with(this).load(getIntent().getStringExtra("image"))
-                        .override(screenWidth - DimenUtils.dip2px(this, 10), (screenWidth - DimenUtils.dip2px(this, 10)) / 2)
-                        .centerCrop()
-                        .into(player.thumbImageView);
-            } else {
-                //音频
-                Log.w(TAG, "onBindViewHolder: 显示音频");
-                mAudioManager.release();
-                video.setLayoutResource(R.layout.zixun_detail_audio);
-                final mAudioView mAudioView = (mAudioView) video.inflate();
-                mAudioView.setOnImageClickListener(new mAudioView.onImageClickListener() {
-                    @Override
-                    public void onImageClick(final mAudioView v) {
-                        if (!Network.HttpTest(ZiXun_Detail.this)) {
-                            return;
-                        }
-                        if (mAudioManager.getAudioView() != null && mAudioManager.getAudioView().isPlaying()) {
-                            mAudioManager.release();
-                            mAudioManager.getAudioView().setPlaying(false);
-                            mAudioManager.getAudioView().resetAnim();
-                            if (v == mAudioManager.getAudioView()) {
-                                return;
-                            }
-                        }
-                        if (!mAudioView.isPlaying()) {
-                            Log.w(TAG, "onImageClick: 开始播放");
-                            mAudioManager.playSound(ZiXun_Detail.this, v, getIntent().getStringExtra("video_url"), new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mAudioView.resetAnim();
-                                }
-                            }, new MediaPlayer.OnPreparedListener() {
-                                @Override
-                                public void onPrepared(MediaPlayer mp) {
-                                    mAudioView.setTime(mAudioManager.mMediaplayer.getDuration() / 1000);
-                                    ProgressUtil.dismiss();
-                                }
-                            });
 
-                        } else {
-                            Log.w(TAG, "onImageClick: 停止播放");
-                            mAudioManager.release();
-                        }
-
-                    }
-                });
-            }
-
-        }
-        tougao = (TextView) findViewById(R.id.tougao);
-        jianyi = (TextView) findViewById(R.id.jianyi);
+        TextView tougao = (TextView) findViewById(R.id.tougao);
+        TextView jianyi = (TextView) findViewById(R.id.jianyi);
         Drawable tg = ContextCompat.getDrawable(this, R.drawable.tougao);
         Drawable jy = ContextCompat.getDrawable(this, R.drawable.jianyi);
         tg.setBounds(0, 0, DimenUtils.dip2px(this, 20), DimenUtils.dip2px(this, 20));
@@ -500,13 +479,69 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
         jianyi.setText(mApplication.ST("建议"));
     }
 
+    private void initAudio() {
+        mAudioManager.release();
+        video.setLayoutResource(R.layout.zixun_detail_audio);
+        final mAudioView mAudioView = (mAudioView) video.inflate();
+        mAudioView.setOnImageClickListener(new mAudioView.onImageClickListener() {
+            @Override
+            public void onImageClick(final mAudioView v) {
+                if (!Network.HttpTest(ZiXun_Detail.this)) {
+                    return;
+                }
+                if (mAudioManager.getAudioView() != null && mAudioManager.getAudioView().isPlaying()) {
+                    mAudioManager.release();
+                    mAudioManager.getAudioView().setPlaying(false);
+                    mAudioManager.getAudioView().resetAnim();
+                    if (v == mAudioManager.getAudioView()) {
+                        return;
+                    }
+                }
+                if (!mAudioView.isPlaying()) {
+                    Log.w(TAG, "onImageClick: 开始播放");
+                    mAudioManager.playSound(ZiXun_Detail.this, v, FirstMap.get("videourl"), new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            mAudioView.resetAnim();
+                        }
+                    }, new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mAudioView.setTime(mAudioManager.mMediaplayer.getDuration() / 1000);
+                            ProgressUtil.dismiss();
+                        }
+                    });
+
+                } else {
+                    Log.w(TAG, "onImageClick: 停止播放");
+                    mAudioManager.release();
+                }
+
+            }
+        });
+    }
+
+    private void InitVideo() {
+        video.setLayoutResource(R.layout.video_stub);
+        View view = video.inflate();
+        player = (JCVideoPlayerStandard) view.findViewById(R.id.zixun_detail_player);
+        Log.w(TAG, "initView: player-=-" + player + "  video地址：：；" + FirstMap.get("videourl")
+                + "   " + getIntent().getStringExtra("title"));
+        player.setUp(FirstMap.get("videourl"), mApplication.ST(FirstMap.get("title")));
+        player.titleTextView.setVisibility(View.GONE);
+        Glide.with(this).load(getIntent().getStringExtra("image"))
+                .override(screenWidth - DimenUtils.dip2px(this, 10), (screenWidth - DimenUtils.dip2px(this, 10)) / 2)
+                .centerCrop()
+                .into(player.thumbImageView);
+    }
+
     private void initClip() {
         content.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
             public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
                 LogUtil.e("创建菜单 ");
-                WebView.HitTestResult wh = content.getHitTestResult();
-                int type = wh.getType();
+                WebView.HitTestResult wh   = content.getHitTestResult();
+                int                   type = wh.getType();
                 LogUtil.e("是否是图片：：" + wh.getExtra() + "  长按类型：；  " + type);
                 if (type == WebView.HitTestResult.IMAGE_TYPE || type == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
                     Glide.with(ZiXun_Detail.this).load(wh.getExtra()).asBitmap().skipMemoryCache(true).override(400, 400).into(new SimpleTarget<Bitmap>() {
@@ -517,8 +552,8 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                 LogUtil.e("onResourceReady: 不是二维码   " + result);
                             } else {
                                 LogUtil.e("onResourceReady: 是二维码   " + result);
-                                if (result.getText().toString().startsWith("http")) {
-                                    Uri uri = Uri.parse(result.getText().toString());
+                                if (result.getText().startsWith("http")) {
+                                    Uri    uri    = Uri.parse(result.getText());
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     intent.setData(uri);
                                     startActivity(intent);
@@ -572,8 +607,8 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
     @Override
     protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
 
-        id=AnalyticalJSON.getHashMap(map.get("msg")).get("id");
-        LogUtil.e("资讯辅助通道启动"+map);
+        id = AnalyticalJSON.getHashMap(map.get("msg")).get("id");
+        LogUtil.e("资讯辅助通道启动" + map);
         LoadData();
     }
 
@@ -587,7 +622,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
         @android.webkit.JavascriptInterface
         public void openImage(String img) {
             if (arrayList != null) {
-                ScaleImageUtil.openBigIagmeMode(ZiXun_Detail.this, arrayList, arrayList.indexOf(img),true);
+                ScaleImageUtil.openBigIagmeMode(ZiXun_Detail.this, arrayList, arrayList.indexOf(img), true);
                 LogUtil.e("openImage: 网页图片地址" + img + "页码：" + arrayList.indexOf(img));
             }
 
@@ -649,7 +684,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                     Toast.makeText(ZiXun_Detail.this, mApplication.ST("请检查网络连接"), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                CollectManager.doCollect(ZiXun_Detail.this,id,"1",v);
+                CollectManager.doCollect(ZiXun_Detail.this, id, "1", v);
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -723,7 +758,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                             try {
                                 JSONObject js = new JSONObject();
                                 try {
-                                    js.put("m_id",Constants.M_id);
+                                    js.put("m_id", Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("news_id", id);
                                 } catch (JSONException e) {
@@ -738,8 +773,8 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if(!"0".equals(map.get("yundousum"))){
-                                                    YunDouAwardDialog.show(ZiXun_Detail.this,"每日点赞",map.get("yundousum"));
+                                                if (!"0".equals(map.get("yundousum"))) {
+                                                    YunDouAwardDialog.show(ZiXun_Detail.this, "每日点赞", map.get("yundousum"));
                                                 }
                                                 dianzanText.setText((Integer.valueOf(dianzanText.getText().toString()) + 1) + "");
                                                 dianzanImg.setImageResource(R.drawable.dianzan1);
@@ -794,7 +829,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                         public void run() {
                             try {
                                 final String content = PLText.getText().toString();
-                                JSONObject js = new JSONObject();
+                                JSONObject   js      = new JSONObject();
                                 try {
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("ct_contents", content);
@@ -803,10 +838,10 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                ApisSeUtil.M m=ApisSeUtil.i(js);
+                                ApisSeUtil.M m = ApisSeUtil.i(js);
                                 final String data = OkGo.post(Constants.News_PL_add_IP)
                                         .params("key", m.K())
-                                        .params("msg",m.M()).execute().body().string();
+                                        .params("msg", m.M()).execute().body().string();
                                 if (data != null & !data.equals("")) {
                                     Log.i(TAG, "run:      data------>" + data);
                                     final HashMap<String, String> hashMap = AnalyticalJSON.getHashMap(data);
@@ -814,48 +849,48 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if(!"0".equals(hashMap.get("yundousum"))){
-                                                    YunDouAwardDialog.show(ZiXun_Detail.this,"每日评论",hashMap.get("yundousum"));
+                                                if (!"0".equals(hashMap.get("yundousum"))) {
+                                                    YunDouAwardDialog.show(ZiXun_Detail.this, "每日评论", hashMap.get("yundousum"));
                                                 }
-                                                    ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-
-                                                final HashMap<String, String> map = new HashMap<>();
-                                                String headurl = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-                                                final String time = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-                                                String petname = sp.getString("pet_name", "");
-                                                String diazannum = "0";
-                                                map.put("user_image", headurl);
-                                                map.put("ct_contents", content);
-                                                map.put("pet_name", petname);
-                                                map.put("ct_ctr", diazannum);
-                                                map.put("level", sp.getString("level", "0"));
-                                                map.put("ct_time", time);
-                                                if (sp.getString("role", "").equals("3")) {
-                                                    map.put("role", "3");
-                                                } else {
-                                                    map.put("role", "0");
-                                                }
-
-                                                map.put("id", hashMap.get("id"));
-                                                map.put("reply", new JSONArray().toString());
-                                                map.put("level", sp.getString("level", "0"));
-                                                PlListVIew.setFocusable(true);
-                                                if (adapter.mlist.size() == 0) {
-                                                    adapter.mlist.add(0, map);
-                                                    adapter.flagList.add(0, false);
-                                                    PlListVIew.removeHeaderView(tv);
-                                                    PlListVIew.setAdapter(adapter);
-
-                                                } else {
-                                                    adapter.mlist.add(0, map);
-                                                    adapter.flagList.add(0, false);
-                                                    adapter.notifyDataSetChanged();
-
-                                                }
-                                                PlListVIew.setSelection(0);
+                                                ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
+//
+//                                                final HashMap<String, String> map       = new HashMap<>();
+//                                                String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
+//                                                final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
+//                                                String                        petname   = sp.getString("pet_name", "");
+//                                                String                        diazannum = "0";
+//                                                map.put("user_image", headurl);
+//                                                map.put("ct_contents", content);
+//                                                map.put("pet_name", petname);
+//                                                map.put("ct_ctr", diazannum);
+//                                                map.put("level", sp.getString("level", "0"));
+//                                                map.put("ct_time", time);
+//                                                if (sp.getString("role", "").equals("3")) {
+//                                                    map.put("role", "3");
+//                                                } else {
+//                                                    map.put("role", "0");
+//                                                }
+//
+//                                                map.put("id", hashMap.get("id"));
+//                                                map.put("reply", new JSONArray().toString());
+//                                                map.put("level", sp.getString("level", "0"));
+//                                                PlListVIew.setFocusable(true);
+//                                                if (adapter.mlist.size() == 0) {
+//                                                    adapter.mlist.add(0, map);
+//                                                    adapter.flagList.add(0, false);
+//                                                    PlListVIew.removeHeaderView(tv);
+//                                                    PlListVIew.setAdapter(adapter);
+//
+//                                                } else {
+//                                                    adapter.mlist.add(0, map);
+//                                                    adapter.flagList.add(0, false);
+//                                                    adapter.notifyDataSetChanged();
+//
+//                                                }
+//                                                PlListVIew.setSelection(0);
                                                 v.setEnabled(true);
-                                                firstNum += 1;
-                                                plNum.setText(mApplication.ST("评论 " + firstNum));
+//                                                firstNum += 1;
+//                                                plNum.setText(mApplication.ST("评论 " + firstNum));
                                                 PLText.setText("");
                                                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                                                 overlay.setVisibility(View.GONE);
@@ -886,7 +921,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                         public void run() {
                             try {
                                 final String content = PLText.getText().toString();
-                                JSONObject js = new JSONObject();
+                                JSONObject   js      = new JSONObject();
                                 try {
                                     js.put("user_id", sp.getString("user_id", ""));
                                     js.put("ct_contents", content);
@@ -904,19 +939,19 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if(!"0".equals(hashMap.get("yundousum"))){
-                                                    YunDouAwardDialog.show(ZiXun_Detail.this,"每日评论",hashMap.get("yundousum"));
+                                                if (!"0".equals(hashMap.get("yundousum"))) {
+                                                    YunDouAwardDialog.show(ZiXun_Detail.this, "每日评论", hashMap.get("yundousum"));
                                                 }
                                                 if (currentLayout.getVisibility() == View.GONE) {
                                                     currentLayout.setVisibility(View.VISIBLE);
                                                 }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                                TextView textView = new TextView(ZiXun_Detail.this);
+                                                TextView                  textView     = new TextView(ZiXun_Detail.this);
                                                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                                 layoutParams.setMargins(0, DimenUtils.dip2px(ZiXun_Detail.this, 5), 0, DimenUtils.dip2px(ZiXun_Detail.this, 5));
                                                 textView.setLayoutParams(layoutParams);
-                                                String pet_name = sp.getString("pet_name", "");
-                                                SpannableStringBuilder ssb = new SpannableStringBuilder(pet_name + ":" + content);
+                                                String                 pet_name = sp.getString("pet_name", "");
+                                                SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + content);
                                                 ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ZiXun_Detail.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                                                 textView.setText(ssb);
                                                 currentLayout.addView(textView);
@@ -928,7 +963,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                                 fasong.setEnabled(true);
                                                 isPLing = false;
                                                 try {
-                                                    JSONArray jsonArray = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
+                                                    JSONArray  jsonArray  = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
                                                     JSONObject jsonObject = new JSONObject();
                                                     jsonObject.put("id", hashMap.get("id"));
                                                     jsonObject.put("pet_name", mApplication.ST(pet_name));
@@ -977,7 +1012,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
             return;
         }
 
-        if ( id != null &&!id.equals("")) {
+        if (id != null && !id.equals("")) {
             ProgressUtil.show(this, null, mApplication.ST("正在加载...."));
             new Thread(new Runnable() {
                 @Override
@@ -1000,7 +1035,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                             }
                         });
                     }
-                    LogUtil.e("图文详情：：；"+id);
+
                     if (data1 != null && !data1.equals("")) {
                         if ("null".equals(data1)) {
                             runOnUiThread(new Runnable() {
@@ -1014,10 +1049,25 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                             return;
                         }
                         FirstMap = AnalyticalJSON.getHashMap(data1);
+                        LogUtil.e("图文详情：：；" + id + " 音视频地址：：" + FirstMap.get("videourl"));
                         if (FirstMap != null && FirstMap.get("code") == null) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if (null != (FirstMap.get("videourl")) && !FirstMap.get("videourl").equals("")) {
+                                        if (video.getLayoutResource() == 0) {
+                                            LogUtil.e("video的Id:::"+video.getLayoutResource());
+
+                                            if (!FirstMap.get("videourl").endsWith("mp3")) {
+                                                //显示视频
+                                                InitVideo();
+                                            } else {
+                                                //音频
+                                                Log.w(TAG, "onBindViewHolder: 显示音频");
+                                                initAudio();
+                                            }
+                                        }
+                                    }
                                     tip.setVisibility(View.GONE);
                                     fasong.setOnClickListener(ZiXun_Detail.this);
                                     shoucang.setOnClickListener(ZiXun_Detail.this);
@@ -1025,20 +1075,14 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                     title.setText(mApplication.ST(FirstMap.get("title")));
                                     time.setText(mApplication.ST(TimeUtils.getTrueTimeStr(FirstMap.get("time"))));
                                     user.setText(mApplication.ST("发布人:" + FirstMap.get("issuer")));
-                                    content.loadDataWithBaseURL(Constants.IMGDIR + TAG + "/" + TimeUtils.getStrTime(System.currentTimeMillis() / 1000 + "") + ".jpg", mApplication.ST(FirstMap.get("contents"))
+
+
+                                    content.loadDataWithBaseURL("", mApplication.ST(FirstMap.get("contents"))
                                             , "text/html", "UTF-8", null);
+
+
                                     // TODO: 2017/2/21 检测活动外链
                                     initActivity();
-
-
-                                }
-                            });
-//
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-//                                    content.setText(var1);
                                     tip.setVisibility(View.VISIBLE);
                                     dianzan.setVisibility(View.VISIBLE);
                                     dianzan.setOnClickListener(ZiXun_Detail.this);
@@ -1047,45 +1091,14 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                     plNum.setVisibility(View.VISIBLE);
                                     plNum.setText(mApplication.ST("评论 " + FirstMap.get("news_comment")));
                                     firstNum = Integer.valueOf(FirstMap.get("news_comment"));
-//                                    if (loading.isShown()) {
-//                                        loading.clearAnimation();
-//                                        loading.setVisibility(GONE);
-//                                    }
-                                    //使用的是测试分享地址
-                                    String md5 = MD5Utls.stringToMD5(Constants.safeKey);
-                                    String m1 = md5.substring(0, 16);
-                                    String m2 = md5.substring(16, md5.length());
-                                    LogUtil.e("m1:::" + m1 + "\n" + "m2:::" + m2);
-                                    umWeb = new UMWeb(Constants.FX_host_Ip + TAG + "/id/" + m1 + getIntent().getStringExtra("id") + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
-                                    umWeb.setTitle(mApplication.ST(FirstMap.get("title")));
-                                    umWeb.setThumb(new UMImage(ZiXun_Detail.this, FirstMap.get("image")));
-                                    if (!FirstMap.get("abstract").equals("")) {
-                                        umWeb.setDescription(mApplication.ST(FirstMap.get("abstract")));
-                                    } else {
-                                        umWeb.setDescription(mApplication.ST(FirstMap.get("title")));
-                                    }
-//                                    ShareContent shareContent = new ShareContent();
-//                                    shareContent.mFollow = getIntent().getStringExtra("id");
-//                                    shareContent.mTitle = FirstMap.get("title");
-//                                    if (!FirstMap.get("abstract").equals("")) {
-//                                        shareContent.mText = FirstMap.get("abstract");
-//                                    }
-//                                    shareContent.mTargetUrl = Constants.FX_host_Ip + TAG + "/id/" + shareContent.mFollow;
-//                                    shareContent.mMedia = new UMImage(ZiXun_Detail.this, FirstMap.get("image"));
-//                                    action = new ShareAction(ZiXun_Detail.this);
-//
-//
-//                                    action.setDisplayList(share_list).withMedia(umWeb)
-//                                    .setCallback(umShareListener);
 
+                                    initShare();
 
-                                    //使用的是测试分享地址
-
+                                    getPLandSet(FirstMap);
 
                                 }
                             });
 
-                            getPLandSet(FirstMap);
                         } else {
                             tip.setImageBitmap(ImageUtil.readBitMap(ZiXun_Detail.this, R.drawable.load_nothing));
                             tip.setVisibility(View.VISIBLE);
@@ -1107,18 +1120,33 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
         }
     }
 
+    private void initShare() {
+        String md5 = MD5Utls.stringToMD5(Constants.safeKey);
+        String m1  = md5.substring(0, 16);
+        String m2  = md5.substring(16, md5.length());
+        LogUtil.e("m1:::" + m1 + "\n" + "m2:::" + m2);
+        umWeb = new UMWeb(Constants.FX_host_Ip + TAG + "/id/" + m1 + getIntent().getStringExtra("id") + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
+        umWeb.setTitle(mApplication.ST(FirstMap.get("title")));
+        umWeb.setThumb(new UMImage(ZiXun_Detail.this, FirstMap.get("image")));
+        if (!FirstMap.get("abstract").equals("")) {
+            umWeb.setDescription(mApplication.ST(FirstMap.get("abstract")));
+        } else {
+            umWeb.setDescription(mApplication.ST(FirstMap.get("title")));
+        }
+    }
+
     private void initActivity() {
         if (!"".equals(FirstMap.get("active"))) {
             tv_activity.setVisibility(View.VISIBLE);
             final String active = FirstMap.get("active");
             LogUtil.e("活动参数：；" + active);
             if (active.contains("?")) {
-                int index = active.lastIndexOf("?");
-                String arg = active.substring(index + 1, active.length());
+                int    index = active.lastIndexOf("?");
+                String arg   = active.substring(index + 1, active.length());
                 LogUtil.e("截取后的参数字段：" + arg);
                 if (arg.contains("&")) {
-                    String[] args = arg.split("&");
-                    final String id = args[0].substring(args[0].lastIndexOf("=") + 1);
+                    String[]     args = arg.split("&");
+                    final String id   = args[0].substring(args[0].lastIndexOf("=") + 1);
                     final String type = args[1].substring(args[1].lastIndexOf("=") + 1);
                     LogUtil.e("字段信息：  id::" + id + "  type::" + type);
                     if ("".equals(type)) {
@@ -1131,22 +1159,22 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                         public void onClick(View v) {
                             Intent intent = new Intent();
 
-                            if(active.contains("activityd")||active.contains("Activityd")){//跳转到活动
+                            if (active.contains("activityd") || active.contains("Activityd")) {//跳转到活动
                                 intent.setClass(ZiXun_Detail.this, ActivityDetail.class);
                                 intent.putExtra("id", id);
-                            }else if(active.contains("newsd")||active.contains("Newsd")){//跳转到另一个资讯详情
+                            } else if (active.contains("newsd") || active.contains("Newsd")) {//跳转到另一个资讯详情
                                 intent.setClass(ZiXun_Detail.this, ZiXun_Detail.class);
                                 intent.putExtra("id", id);
-                            }else if(active.contains("shopd")||active.contains("Shopd")){
+                            } else if (active.contains("shopd") || active.contains("Shopd")) {
                                 intent.setClass(ZiXun_Detail.this, GongYangDetail.class);
                                 intent.putExtra("id", id);
-                            }else if(active.contains("Crowdfundingd")||active.contains("crowdfundingd")){
+                            } else if (active.contains("Crowdfundingd") || active.contains("crowdfundingd")) {
                                 intent.setClass(ZiXun_Detail.this, FundingDetailActivity.class);
                                 intent.putExtra("id", id);
                             }
                             try {
                                 startActivity(intent);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 ToastUtil.showToastShort("跳转失败，请稍后尝试");
                             }
 
@@ -1188,6 +1216,8 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                     String data = OkGo.post(Constants.ZiXun_detail_PL_Ip).tag(TAG)
                             .params("key", ApisSeUtil.getKey())
                             .params("msg", ApisSeUtil.getMsg(js)).execute().body().string();
+
+                    LogUtil.e("当前评论：：" + js + "    isLoadmore:::" + isLoadMore);
                     if (!data.equals("")) {
                         Pllist = AnalyticalJSON.getList(data, "comment");
 
@@ -1205,7 +1235,22 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
 
                                         return;
                                     }
-                                    if (adapter.mlist.size() == 0) {//添加评论的的时候
+//                                    if (adapter.mlist.size() == 0) {//添加评论的的时候
+//                                        adapter.addList(Pllist);
+//                                        PlListVIew.setAdapter(adapter);
+//                                        plNum.setText(mApplication.ST("评论 " + map.get("news_comment")));
+//                                        if (Pllist.size() < 10) {
+//                                            endPage = page;
+//                                            PlListVIew.footer.setText(mApplication.ST("没有更多数据了"));
+//                                            PlListVIew.footer.setEnabled(false);
+//                                        } else {
+//                                            PlListVIew.footer.setText(mApplication.ST("点击加载更多"));
+//                                        }
+//                                    }
+
+                                    if (!isLoadMore) {
+                                        adapter.mlist.clear();
+                                        isLoadMore = true;
                                         adapter.addList(Pllist);
                                         PlListVIew.setAdapter(adapter);
                                         plNum.setText(mApplication.ST("评论 " + map.get("news_comment")));
@@ -1250,11 +1295,9 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
     }
 
 
-
-
     @Override
     protected void onDestroy() {
-        if( content!=null) {
+        if (content != null) {
 
             // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
             // destory()

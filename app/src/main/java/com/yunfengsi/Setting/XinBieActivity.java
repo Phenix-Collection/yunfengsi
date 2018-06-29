@@ -26,8 +26,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class XinBieActivity extends AppCompatActivity implements View.OnClickListener{
-private RadioGroup mrgroup;
- private String xinbie;
+    private String xinbie;
     private Intent intent;
     private SharedPreferences sp;
     @Override
@@ -38,7 +37,7 @@ private RadioGroup mrgroup;
         setContentView(R.layout.activity_xin_bie);
         sp=getSharedPreferences("user",MODE_PRIVATE);
         intent=getIntent();
-        mrgroup=(RadioGroup) findViewById(R.id.radioGroup);
+        RadioGroup mrgroup = (RadioGroup) findViewById(R.id.radioGroup);
         mrgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {

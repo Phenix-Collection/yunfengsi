@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -197,7 +195,6 @@
                         android:id="@+id/ll_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
@@ -390,7 +387,6 @@
             android:id="@+id/zixun_detail_toPinglun_buttom_layout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
             android:background="#ffffff"
             android:layout_gravity="bottom"
             android:gravity="center_vertical"

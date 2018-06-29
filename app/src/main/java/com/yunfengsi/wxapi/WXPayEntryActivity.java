@@ -17,6 +17,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yunfengsi.Fragment.Mine_GYQD;
+import com.yunfengsi.Models.Auction.Bid_History_Mine;
 import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_zhongchou.Fund_Share;
 import com.yunfengsi.R;
@@ -38,14 +39,13 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
     private static final String TAG = "WXPayEntryActivity";
     private IWXAPI                  api;
     private TextView                msg;
-    private WeakReference<Activity> context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wx_result);
         Log.w(TAG, "-=-=进入WXPayEntryActivity:-==-= ");
-        context = new WeakReference<Activity>(this);
+        WeakReference<Activity> context = new WeakReference<Activity>(this);
         api = WXAPIFactory.createWXAPI(mApplication.getInstance(), Constants.WXPay_APPID);
         api.registerApp(Constants.WXPay_APPID);
         api.handleIntent(getIntent(), this);
@@ -94,6 +94,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
                     startActivity(intent);
                 }else if(mApplication.type.equals("13")){
                     //义卖支付
+                    EventBus.getDefault().post(new Bid_History_Mine.DoRefreshEvent());
                     Intent intent = new Intent();
                     intent.setClass(this, Mine_GYQD.class);
                     startActivity(intent);

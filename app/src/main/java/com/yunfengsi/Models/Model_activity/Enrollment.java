@@ -52,7 +52,6 @@ import java.util.Locale;
  */
 public class Enrollment extends AppCompatActivity implements View.OnClickListener {
     private EditText name, sex, phone, zhiye, c_id, address, another_phone;
-    private TextView camera, commit;
     private ImageView photo;
     private Uri pictureUri = null;
     private AlertDialog dialog;
@@ -61,7 +60,6 @@ public class Enrollment extends AppCompatActivity implements View.OnClickListene
     private static final String TAG = "Enrollment";
     private int screenWidth;
     private File Headfile;
-    private int screenHeight;
     private int dp60;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +75,7 @@ public class Enrollment extends AppCompatActivity implements View.OnClickListene
     private void initView() {
 
         dp60= DimenUtils.dip2px(this,60);
-        screenHeight=getResources().getDisplayMetrics().heightPixels;
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
         screenWidth=getResources().getDisplayMetrics().widthPixels;
         name = (EditText) findViewById(R.id.baoming_name);
         sex = (EditText) findViewById(R.id.baoming_xingbie);
@@ -87,8 +85,8 @@ public class Enrollment extends AppCompatActivity implements View.OnClickListene
         c_id = (EditText) findViewById(R.id.baoming_shenfengzheng);
         address = (EditText) findViewById(R.id.baoming_address);
         another_phone = (EditText) findViewById(R.id.baoming_another_phone);
-        camera = (TextView) findViewById(R.id.baoming_camera);
-        commit = (TextView) findViewById(R.id.baoming_commit);
+        TextView camera = (TextView) findViewById(R.id.baoming_camera);
+        TextView commit = (TextView) findViewById(R.id.baoming_commit);
         camera.setOnClickListener(this);
         commit.setOnClickListener(this);
     }

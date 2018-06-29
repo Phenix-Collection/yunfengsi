@@ -31,8 +31,7 @@ public class UsefulImageView extends android.support.v7.widget.AppCompatImageVie
     private int mFlags;
 
     private ColorMatrix            colorMatrix;//颜色暗化矩阵
-    private ColorMatrixColorFilter colorFilter;
-//    GestureDetector gestureDetector;
+    //    GestureDetector gestureDetector;
 
 
     public UsefulImageView(Context context) {
@@ -132,7 +131,7 @@ public class UsefulImageView extends android.support.v7.widget.AppCompatImageVie
 
     private void darkenImage() {
         colorMatrix.setScale(0.6f, 0.6f, 0.6f, 1);
-        colorFilter = new ColorMatrixColorFilter(colorMatrix);
+        ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrix);
         setColorFilter(colorFilter);
 
     }

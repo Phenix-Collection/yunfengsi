@@ -58,7 +58,6 @@ public class GYMX extends AppCompatActivity implements View.OnClickListener {
     private String url ;
     private List<String > keyList;
     private List<String >valueList;
-    private RelativeLayout bg_layout;
     private String digit;//单位后缀
     //Hodler hodler;
 
@@ -77,7 +76,7 @@ public class GYMX extends AppCompatActivity implements View.OnClickListener {
 //        mtvleijithree = (TextView) findViewById(R.id.activity_lf_tvleijithree);
         mlistview = (ListView) findViewById(R.id.activity_lf_list);
         mimageback = (ImageView) findViewById(R.id.activity_lf_imageback);
-        bg_layout= (RelativeLayout) findViewById(R.id.activity_lf_layoutzx);
+        RelativeLayout bg_layout = (RelativeLayout) findViewById(R.id.activity_lf_layoutzx);
     }
 
 
@@ -181,7 +180,7 @@ public class GYMX extends AppCompatActivity implements View.OnClickListener {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                }catch ( IllegalStateException e){
+                }catch ( IllegalStateException ignored){
 
                 }
             }

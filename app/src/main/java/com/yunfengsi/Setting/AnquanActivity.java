@@ -30,14 +30,10 @@ public class AnquanActivity extends AppCompatActivity implements View.OnClickLis
     private TextView mtvnc;
     private TextView mxinbie;
     private TextView msimiao;
-    private TextView sign;
     private SharedPreferences sp;
 
-    private String nc;
-    private String xinbie;
-    private String simiao;
     private HashMap<String, String> map;
-    private TextView loginState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +42,9 @@ public class AnquanActivity extends AppCompatActivity implements View.OnClickLis
         sp = getSharedPreferences("user", MODE_PRIVATE);
         mtvnc = (TextView) findViewById(R.id.anquan_nichen_tv);
         mxinbie = (TextView) findViewById(R.id.anquan_xinbie_tv);
-        sign= (TextView) findViewById(R.id.sign1);
+        TextView sign = (TextView) findViewById(R.id.sign1);
 //        msimiao = (TextView) findViewById(R.id.anquan_simiao_tv);
-        loginState= (TextView) findViewById(R.id.zhanghaoyuanquan_loginState);
+        TextView loginState = (TextView) findViewById(R.id.zhanghaoyuanquan_loginState);
         getdatafromserve();
         if(!TextUtils.isEmpty(sp.getString("user_id",""))){
             loginState.setText(mApplication.ST("账号已登录，无安全风险"));
@@ -101,20 +97,20 @@ public class AnquanActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             if (requestCode == 1) {
-                nc = data.getStringExtra("edit");
+                String nc = data.getStringExtra("edit");
                 if (!nc.equals("")) {
                     mtvnc.setText(nc);
                     SharedPreferences.Editor ed=sp.edit();
-                    ed.putString("pet_name",nc);
+                    ed.putString("pet_name", nc);
                     ed.apply();
                 }
             } else if (requestCode == 2) {
-                xinbie = data.getStringExtra("xinbie");
+                String xinbie = data.getStringExtra("xinbie");
                 if (!xinbie.equals("")) {
                     mxinbie.setText(xinbie);
                 }
             } else if (requestCode == 3) {
-                simiao = data.getStringExtra("edit");
+                String simiao = data.getStringExtra("edit");
                 if (!simiao.equals("")) {
                     msimiao.setText(simiao);
                 }

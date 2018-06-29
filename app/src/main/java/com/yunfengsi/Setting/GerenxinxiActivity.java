@@ -85,8 +85,16 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
     private TextView tvPerfect;
     private Uri pictureUri = null;
     private AlertDialog dialog;
-    private File Headfile;
-    private TextView more, trueName, faName, shenfenzheng, address, workPlace, xiuxingjingli, job, morePhone, carId;
+    private File        Headfile;
+    private TextView    trueName;
+    private TextView faName;
+    private TextView shenfenzheng;
+    private TextView address;
+    private TextView workPlace;
+    private TextView xiuxingjingli;
+    private TextView job;
+    private TextView morePhone;
+    private TextView carId;
     private JSONObject jsonObject;
 
     public void init() {
@@ -116,7 +124,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
         tvPerfect = (TextView) findViewById(R.id.perfect);
         tvPerfect.setText(mApplication.ST("完善资料"));
         tvPerfect.setOnClickListener(this);
-        more = (TextView) findViewById(R.id.geren_more);
+        TextView more = (TextView) findViewById(R.id.geren_more);
         more.setText(mApplication.ST("更多资料"));
         if (sp.getString("perfect", "1").equals("1")) {
             tvPerfect.setText(mApplication.ST("完善资料"));

@@ -24,14 +24,8 @@ import java.util.Map;
  * 众筹详情
  */
 public class FundingDetailActivity extends AndroidPopupActivity implements View.OnClickListener{
-    private android.app.FragmentManager     manager;
-    private android.app.FragmentTransaction transaction;
     private FundingDetailFragment           fragment;
 
-    /**
-     * 顶部栏
-     */
-    private ImageView img_titlebar_back;//后退按钮
     private ImageView shoucang;
     /**
      * 底部栏
@@ -72,7 +66,10 @@ public class FundingDetailActivity extends AndroidPopupActivity implements View.
     private void initView() {
 
         //tv_launch_fund = (TextView) findViewById(R.id.tv_launch_fund);
-        img_titlebar_back = (ImageView) findViewById(R.id.img_titlebar_back);
+        /*
+      顶部栏
+     */
+        ImageView img_titlebar_back = (ImageView) findViewById(R.id.img_titlebar_back);
         //tv_launch_fund.setOnClickListener(this);
         img_titlebar_back.setOnClickListener(this);
 
@@ -92,8 +89,8 @@ public class FundingDetailActivity extends AndroidPopupActivity implements View.
 //        img_weibo.setOnClickListener(this);
 //        btn_support.setOnClickListener(this);
 
-        manager = getFragmentManager();
-        transaction = manager.beginTransaction();
+        android.app.FragmentManager     manager     = getFragmentManager();
+        android.app.FragmentTransaction transaction = manager.beginTransaction();
 
         fragment = new FundingDetailFragment();
         transaction.replace(R.id.content, fragment);

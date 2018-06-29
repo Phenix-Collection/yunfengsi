@@ -10,7 +10,6 @@ import android.view.View;
  */
 
 public class FirstTransFormer implements ViewPager.PageTransformer {
-    private float baseRotate=90.0f;
     private static final int ThreeD=1;
     private static  final int Transation=2;
     private int type=1;
@@ -23,10 +22,11 @@ public class FirstTransFormer implements ViewPager.PageTransformer {
     public void transformPage(View page, float position) {
         switch (type){
             case 1:
+                float baseRotate = 90.0f;
                 if(position<=0){
                     ViewCompat.setPivotX(page,page.getMeasuredWidth());
                     ViewCompat.setPivotY(page,page.getMeasuredHeight()*0.5f);
-                    ViewCompat.setRotationY(page,baseRotate*position);
+                    ViewCompat.setRotationY(page, baseRotate *position);
                 }else if(position<-1){
                     ViewCompat.setPivotX(page,page.getMeasuredWidth());
                     ViewCompat.setPivotY(page,page.getMeasuredHeight()*0.5f);
@@ -34,7 +34,7 @@ public class FirstTransFormer implements ViewPager.PageTransformer {
                 }else if(position<=1){
                     ViewCompat.setPivotX(page,0);
                     ViewCompat.setPivotY(page,page.getMeasuredHeight()*0.5f);
-                    ViewCompat.setRotationY(page,baseRotate*position);
+                    ViewCompat.setRotationY(page, baseRotate *position);
                 }else{
                     ViewCompat.setPivotX(page,page.getMeasuredWidth());
                     ViewCompat.setPivotY(page,page.getMeasuredHeight()*0.5f);

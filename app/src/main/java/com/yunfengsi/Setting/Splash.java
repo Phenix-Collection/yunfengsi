@@ -80,7 +80,6 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 
     //获取到的广告页地址
     private String imageUrl;
-    private ACache acache;
     private Bitmap mAD;
     private int screenHeight;
 
@@ -237,7 +236,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 skip.performClick();
             }
         };
-        acache = ACache.get(getApplicationContext());
+        ACache acache = ACache.get(getApplicationContext());
         if (PreferenceUtil.getUserIncetance(this).getBoolean("isFirstIn", true)) {
             ViewStub viewStubfirst = (ViewStub) findViewById(R.id.view_stub_first);
             View view = viewStubfirst.inflate();
@@ -461,7 +460,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                             startActivity(intent);
                             finish();
                             return;
-                        };
+                        }
                         if(url.equals(Constants.Help)){
                             intent.setClass(Splash.this,AD.class);
                             intent.putExtra("bangzhu",true);

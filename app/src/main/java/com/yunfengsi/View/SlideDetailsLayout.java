@@ -238,8 +238,6 @@ public class SlideDetailsLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int left  = l;
-        final int right = r;
         int       top;
         int       bottom;
 
@@ -270,7 +268,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
             }
 
-            child.layout(left, top, right, bottom);
+            child.layout(l, top, r, bottom);
         }
     }
 
@@ -430,8 +428,7 @@ public class SlideDetailsLayout extends ViewGroup {
             if (offset <= 0) {
                 mSlideOffset = pHeight;
             } else {
-                final float newOffset = pHeight + offset;
-                mSlideOffset = newOffset;
+                mSlideOffset = pHeight + offset;
             }
 
             if (mSlideOffset == oldOffset) {

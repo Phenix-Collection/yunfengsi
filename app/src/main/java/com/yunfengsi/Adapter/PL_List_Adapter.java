@@ -96,6 +96,7 @@ public class PL_List_Adapter extends BaseAdapter {
     public void addList(List<HashMap<String, String>> list) {
         this.mlist = list;
         Boolean flag = false;
+        flagList.clear();
         for (int i = 0; i < mlist.size(); i++) {
             flagList.add(flag);
         }
@@ -266,7 +267,6 @@ public class PL_List_Adapter extends BaseAdapter {
                 if (!new LoginUtil().checkLogin(context)) {
                     return;
                 }
-                ;
                 if (v.getTag() == null || v.getTag().toString().equals("")) {
                     Toast.makeText(context, mApplication.ST("快去给其他人点赞吧"), Toast.LENGTH_SHORT).show();
                     return;

@@ -44,15 +44,13 @@ import okhttp3.Response;
 
 public class WallPagerClassification extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
-    private View               view;
-    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private fenleiAdapter      adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_wallpager_classification, container, false);
+        View view = inflater.inflate(R.layout.fragment_wallpager_classification, container, false);
         initView(view);
         return view;
 
@@ -64,7 +62,7 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
 //        recyclerView.addItemDecoration(new mItemDecoration(getActivity()));
         adapter = new fenleiAdapter(new ArrayList<HashMap<String, String>>());

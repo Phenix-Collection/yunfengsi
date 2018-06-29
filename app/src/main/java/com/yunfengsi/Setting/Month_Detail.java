@@ -44,7 +44,7 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
     public String m = "";
     private static final String URL = Constants.host_Ip+ "/" + Constants.NAME_LOW + ".php/Index/mybill";
     private String url = "";
-    private UMWeb umWeb;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +134,7 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
                 showDateDialog();
                 break;
             case R.id.share:
-                umWeb=new UMWeb(url);
+                UMWeb umWeb = new UMWeb(url);
                 umWeb.setTitle("致"+PreferenceUtil.getUserIncetance(this).getString("pet_name","")+"的感谢信");
                 umWeb.setDescription(y+"年"+m+"月的一封感谢信");
                 umWeb.setThumb(new UMImage(Month_Detail.this,R.drawable.yunfengcishan_jpg));
@@ -238,13 +238,16 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
     //设置回退
     //覆盖Activity类的onKeyDown(int keyCoder,KeyEvent event)方法
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-            webView.goBack(); //goBack()表示返回WebView的上一页面
-            return true;
+        if(webView!=null){
+            if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+                webView.goBack(); //goBack()表示返回WebView的上一页面
+                return true;
+            }
+            webView.removeAllViews();
+            webView.destroy();
+            webView = null;
         }
-        webView.destroy();
-        webView.removeAllViews();
-        webView = null;
+
         finish();//结束退出程序
         return false;
     }

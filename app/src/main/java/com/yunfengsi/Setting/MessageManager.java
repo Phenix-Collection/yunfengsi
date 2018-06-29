@@ -26,11 +26,7 @@ import java.util.ArrayList;
  */
 
 public class MessageManager extends AppCompatActivity implements View.OnClickListener{
-    private ImageView back;
-    private TabLayout tab;
     private ViewPager viewpager;
-    private MessagePagerAdapter adapter;
-    private ArrayList<Fragment> list;
     private TextView tongzhi,pinglun;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,17 +39,17 @@ public class MessageManager extends AppCompatActivity implements View.OnClickLis
 
     private void initView() {
 
-        back = (ImageView) findViewById(R.id.back);
+        ImageView back = (ImageView) findViewById(R.id.back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
-        tab= (TabLayout) findViewById(R.id.tab);
+        TabLayout tab = (TabLayout) findViewById(R.id.tab);
         viewpager= (ViewPager) findViewById(R.id.viewpager);
-        list=new ArrayList<>();
+        ArrayList<Fragment> list = new ArrayList<>();
         pinglun_fragment f2=new pinglun_fragment();
         TongzhiFragment f1=new TongzhiFragment();
         list.add(f1);
         list.add(f2);
-        adapter=new MessagePagerAdapter(getSupportFragmentManager(),list);
+        MessagePagerAdapter adapter = new MessagePagerAdapter(getSupportFragmentManager(), list);
 
         viewpager.setAdapter(adapter);
         tab.setupWithViewPager(viewpager);

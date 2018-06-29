@@ -24,7 +24,6 @@ import static com.yunfengsi.R.id.msg;
  */
 
 public class mProgressDialog extends ProgressDialog {
-    private ImageView progress;
     private TextView Msg;
     public mProgressDialog(Context context) {
         super(context);
@@ -47,7 +46,7 @@ public class mProgressDialog extends ProgressDialog {
          */
     private void init() {
         setContentView(R.layout.custom_progress_dialog);
-        progress= (ImageView)findViewById(R.id.progress);
+        ImageView progress = (ImageView) findViewById(R.id.progress);
         Msg= (TextView)findViewById(msg);
         RotateAnimation rotate=new RotateAnimation(0,360f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
         rotate.setDuration(1000);

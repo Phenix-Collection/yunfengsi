@@ -43,12 +43,10 @@ import okhttp3.Response;
  */
 
 public class Fund_Share extends BaseSTActivity implements View.OnClickListener{
-    private TextView title,text,commit;
-    private ImageView image;
     private TextInputEditText editText;
     private TextInputLayout editLayout;
     private String id,sut_id;
-    private UMWeb umWeb;
+
     @Override
     protected void resetData() {
 
@@ -167,7 +165,7 @@ public class Fund_Share extends BaseSTActivity implements View.OnClickListener{
         String md5 = MD5Utls.stringToMD5(Constants.safeKey);
         String m1 = md5.substring(0, 16);
         String m2 = md5.substring(16, md5.length());
-        umWeb=new UMWeb(Constants.FX_host_Ip + "Cfghxd" + "/id/" + m1 + id + m2+"/st/" + (mApplication.isChina ? "s" : "t"));
+        UMWeb  umWeb = new UMWeb(Constants.FX_host_Ip + "Cfghxd" + "/id/" + m1 + id + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
         umWeb.setTitle(mApplication.ST(PreferenceUtil.getUserIncetance(Fund_Share.this).getString("pet_name","")+"邀您一起捐"));
         umWeb.setDescription(mApplication.ST(PreferenceUtil.getUserIncetance(Fund_Share.this).getString("pet_name","")+"发起 【"+
         getIntent().getStringExtra("title")+"】 公益助学,祈愿天下孩子都有书读"));
@@ -192,14 +190,14 @@ public class Fund_Share extends BaseSTActivity implements View.OnClickListener{
     }
 
     private void initView() {
-        title= (TextView) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         title.setText(mApplication.ST("助学回向"));
-        text= (TextView) findViewById(R.id.text);
+        TextView text = (TextView) findViewById(R.id.text);
         text.setText(mApplication.ST("写下祝福"));
-        commit= (TextView) findViewById(R.id.commit);
+        TextView commit = (TextView) findViewById(R.id.commit);
         commit.setText(mApplication.ST("提交"));
         commit.setOnClickListener(this);
-        image= (ImageView) findViewById(R.id.image);
+        ImageView image = (ImageView) findViewById(R.id.image);
         Glide.with(this).load(R.drawable.fund_share).fitCenter().into(image);
         editText= (TextInputEditText) findViewById(R.id.edit);
         editText.setHint(mApplication.ST("祝福内容(300字)"));

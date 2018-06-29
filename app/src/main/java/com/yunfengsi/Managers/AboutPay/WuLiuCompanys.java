@@ -59,18 +59,13 @@ import okhttp3.Response;
 public class WuLiuCompanys extends AppCompatActivity implements View.OnClickListener {
     public static final String COMPANYS = "companys";
     private RecyclerView   sortListView;
-    private SideBar        sideBar;
-    private TextView       dialog;
     private countryAdapter adapter;
-    private ClearEditText  mClearEditText;
 
 
     private CharacterParser    characterParser;
     private List<CompanyModel> SourceDateList;
 
-    private ImageView    back;
-    private TextView     title;
-    private LinearLayout head, tags;
+    private LinearLayout            tags;
     private ArrayList<CompanyModel> cacheList;
 
     @Override
@@ -89,7 +84,7 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
     }
 
     private void initView() {
-        head = (LinearLayout) findViewById(R.id.headLayout);
+        LinearLayout head = (LinearLayout) findViewById(R.id.headLayout);
         tags = (LinearLayout) findViewById(R.id.tagsLayout);
         characterParser = CharacterParser.getInstance();
         cacheList = FileUtils.getStorageEntities(this, WuLiuCompanys.COMPANYS);
@@ -100,11 +95,11 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
         } else {
             head.setVisibility(View.GONE);
         }
-        sideBar = (SideBar) findViewById(R.id.sidrbar);
-        dialog = (TextView) findViewById(R.id.dialog);
-        back = (ImageView) findViewById(R.id.back);
+        SideBar   sideBar = (SideBar) findViewById(R.id.sidrbar);
+        TextView  dialog  = (TextView) findViewById(R.id.dialog);
+        ImageView back    = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         title.setText(mApplication.ST("选择物流公司"));
         sideBar.setTextView(dialog);
 
@@ -169,7 +164,7 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
         // ����a-z��������Դ����
 
 
-        mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
+        ClearEditText mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
         mClearEditText.setHint(mApplication.ST("搜索"));
         Drawable d = ContextCompat.getDrawable(this, R.drawable.search_gray);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25));
@@ -370,7 +365,7 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
             filterDateList.clear();
             for (CompanyModel model : SourceDateList) {
                 String name = model.getChinaName();
-                if (name.indexOf(filterStr.toString()) != -1 || characterParser.getSelling(name).startsWith(filterStr.toString())) {
+                if (name.indexOf(filterStr) != -1 || characterParser.getSelling(name).startsWith(filterStr)) {
                     filterDateList.add(model);
                 }
             }

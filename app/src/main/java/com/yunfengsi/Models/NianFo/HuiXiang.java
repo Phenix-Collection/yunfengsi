@@ -30,9 +30,6 @@ import com.yunfengsi.Utils.mApplication;
  */
 
 public class HuiXiang extends AppCompatActivity implements View.OnClickListener {
-    private TextView huixiang;
-    private TextView pet_name;
-    private TextView message, title;
     private static final String URL2 = Constants.host_Ip + "/" + Constants.NAME_LOW + ".php/Index/sharegx";
 
     @Override
@@ -40,12 +37,12 @@ public class HuiXiang extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_huixiang);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-        huixiang = (TextView) findViewById(R.id.huixiang);
-        pet_name = (TextView) findViewById(R.id.pet_name);
+        TextView huixiang = (TextView) findViewById(R.id.huixiang);
+        TextView pet_name = (TextView) findViewById(R.id.pet_name);
 
-        message = (TextView) findViewById(R.id.massege);
+        TextView message = (TextView) findViewById(R.id.massege);
 
-        title = (TextView) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         huixiang.setOnClickListener(this);
         huixiang.setText(mApplication.ST("回向给众生"));
         findViewById(R.id.back).setOnClickListener(this);

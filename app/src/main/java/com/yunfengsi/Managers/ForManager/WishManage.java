@@ -51,7 +51,6 @@ import okhttp3.Response;
  * 作者：luZheng on 2018/06/07 10:10
  */
 public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
-    private RecyclerView       recyclerView;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
     private int     pageSize   = 10;
@@ -59,8 +58,6 @@ public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.
     private int     endPage    = -1;
     private boolean isLoadMore = false;
     private boolean isRefresh  = false;
-
-    private LinearLayout display, delete;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,10 +76,10 @@ public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.
                 finish();
             }
         });
-        display = findViewById(R.id.display);
+        LinearLayout display = findViewById(R.id.display);
         display.setVisibility(View.GONE);
         findViewById(R.id.line).setVisibility(View.GONE);
-        delete = findViewById(R.id.delete);
+        LinearLayout delete = findViewById(R.id.delete);
         display.setOnClickListener(this);
         delete.setOnClickListener(this);
 
@@ -91,7 +88,7 @@ public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView        recyclerView        = (RecyclerView) findViewById(R.id.recycle);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);

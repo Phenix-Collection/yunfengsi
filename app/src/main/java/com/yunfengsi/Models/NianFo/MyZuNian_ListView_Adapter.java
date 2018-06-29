@@ -24,7 +24,6 @@ import java.util.HashMap;
 public class MyZuNian_ListView_Adapter extends BaseAdapter {
     private Context context;
     private String type;
-    private Hoder hoder;
     ArrayList<HashMap<String,String>> list;
     //private String[] text={"1","2","3","1","2","3"};
     public MyZuNian_ListView_Adapter(Context context,ArrayList<HashMap<String,String>> list){
@@ -45,13 +44,14 @@ public class MyZuNian_ListView_Adapter extends BaseAdapter {
     }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        Hoder hoder;
         if(view==null){
-            hoder=new Hoder();
+            hoder =new Hoder();
             view= LayoutInflater.from(context).inflate(R.layout.list,null);
             hoder.mlinearLayout=((LinearLayout) view.findViewById(R.id.myzunian_layout));
             view.setTag(hoder);
         }else {
-            hoder=(Hoder) view.getTag();
+            hoder =(Hoder) view.getTag();
         }
         hoder.mlinearLayout.removeAllViews();
                 View view1 = LayoutInflater.from(context).inflate(R.layout.list_itme, null);

@@ -19,15 +19,15 @@ public class AnalyticalJSON {
          * @param map
          */
         public static String hashMapToJson(HashMap map) {
-            String string = "{";
+            StringBuilder string = new StringBuilder("{");
             for (Iterator it = map.entrySet().iterator(); it.hasNext();) {
                 Map.Entry e = (Map.Entry) it.next();
-                string += "'" + e.getKey() + "':";
-                string += "'" + e.getValue() + "',";
+                string.append("'").append(e.getKey()).append("':");
+                string.append("'").append(e.getValue()).append("',");
             }
-            string = string.substring(0, string.lastIndexOf(","));
-            string += "}";
-            return string;
+            string = new StringBuilder(string.substring(0, string.lastIndexOf(",")));
+            string.append("}");
+            return string.toString();
         }
 
         /**

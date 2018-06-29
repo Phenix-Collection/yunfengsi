@@ -61,14 +61,12 @@ public class nianfo_home_tab3 extends AppCompatActivity implements View.OnClickL
     private LoadMoreListView listView;
     private Nianfo_home_Adaper adapter;
     private List<HashMap<String, String>> list;
-    private boolean isLoaded = false;
     public String totalNum = "";
     private ArrayList<HashMap<String, String>> typelist;
-    private int screeWidth;
-    private SharedPreferences sp;
-    private TextView username;
-    private EditText type;
-    private TextView commit, num;
+    private SharedPreferences                  sp;
+    private TextView                           username;
+    private EditText                           type;
+    private TextView                           num;
     private Handler handler = new Handler();
     private SwipeRefreshLayout swip;
     private boolean isRefresh = false;
@@ -93,10 +91,10 @@ public class nianfo_home_tab3 extends AppCompatActivity implements View.OnClickL
         type = (EditText) findViewById(R.id.nianfo_home_tab1_type);
         type.setFocusable(false);
         findViewById(R.id.nianfo_home_tab1_chaxunchengji).setOnClickListener(this);
-        screeWidth = getResources().getDisplayMetrics().widthPixels;
+        int screeWidth = getResources().getDisplayMetrics().widthPixels;
         sp = getSharedPreferences("user", Context.MODE_PRIVATE);
         username = (TextView) findViewById(R.id.nianfo_home_tab1_mName);
-        commit = (TextView) findViewById(R.id.nianfo_home_tab1_commit);
+        TextView commit = (TextView) findViewById(R.id.nianfo_home_tab1_commit);
         num = (TextView) findViewById(R.id.nianfo_home_tab1_num);
         username.setText(sp.getString("pet_name", ""));
         swip.post(new Runnable() {
@@ -123,6 +121,7 @@ public class nianfo_home_tab3 extends AppCompatActivity implements View.OnClickL
 
 
     private void loadData() {
+        boolean isLoaded = false;
         if (!isLoaded) {
             if(!Network.HttpTest(this)){
                 swip.setRefreshing(false);

@@ -74,12 +74,8 @@ import okhttp3.Response;
  */
 
 public class BlessTree extends AppCompatActivity implements View.OnClickListener {
-    private ImageView back;
-    private TextView  title, history;
     private RTextView                          txt_xuyuan;
-    private TagCloudView                       tagCloudView;
     private AutoPollRecyclerView               recyclerView;
-    private TreeAdapter                        adapter;
     private MessageAdapter                     messageAdapter;
     private ArrayList<HashMap<String, String>> list;
 
@@ -110,15 +106,15 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
 
     private void init() {
         mApplication.getInstance().addActivity(this);
-        back = (ImageView) findViewById(R.id.back);
-        history = (TextView) findViewById(R.id.history);
+        ImageView    back         = (ImageView) findViewById(R.id.back);
+        TextView     history      = (TextView) findViewById(R.id.history);
         RTextView txt_xuyuan = (RTextView) findViewById(R.id.xuyuan);
-        tagCloudView = (TagCloudView) findViewById(R.id.tree_view);
+        TagCloudView tagCloudView = (TagCloudView) findViewById(R.id.tree_view);
         ArrayList list = new ArrayList();
         for (int i = 0; i < 20; i++) {
             list.add(new HashMap<>());
         }
-        adapter = new TreeAdapter(list);
+        TreeAdapter adapter = new TreeAdapter(list);
         tagCloudView.setAdapter(adapter);
 
         recyclerView = (AutoPollRecyclerView) findViewById(R.id.recycle);
@@ -130,7 +126,7 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
 
         back.setOnClickListener(this);
         history.setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
         title.setText(mApplication.ST("祈愿树"));
         txt_xuyuan.setOnClickListener(this);
 

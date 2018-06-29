@@ -21,7 +21,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Adapter.PingLunActivity;
 import com.yunfengsi.Fragment.Mine_GYQD;
-import com.yunfengsi.Models.Auction.AuctionList;
 import com.yunfengsi.Models.GongYangDetail;
 import com.yunfengsi.Models.Model_activity.ActivityDetail;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
@@ -58,18 +57,17 @@ import okhttp3.Response;
 
 public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int ZiXun             = 1;
-    private static final int HuoDong           = 2;
-    private static final int GongYang          = 3;
-    private static final int ZhuXue            = 4;
-    private static final int PINGLUN           = 5;
-    private static final int MineHuodong       = 6;
-    private static final int GongYangPay       = 7;
-    private static final int ZhuXuePay         = 8;
-    private static final int WallPaperVerified = 9;
+    private static final int ZiXun                 = 1;
+    private static final int HuoDong               = 2;
+    private static final int GongYang              = 3;
+    private static final int ZhuXue                = 4;
+    private static final int PINGLUN               = 5;
+    private static final int MineHuodong           = 6;
+    private static final int GongYangPay           = 7;
+    private static final int ZhuXuePay             = 8;
+    private static final int WallPaperVerified     = 9;
     private static final int QianDaoToMineActivity = 10;
-    private static final int Auction = 11;
-    private RecyclerView       recyclerView;
+    private static final int Auction               = 11;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
     private int     pageSize   = 10;
@@ -103,7 +101,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());
@@ -146,6 +144,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                         case PINGLUN:
                             intent.setClass(MessageCenter.this, PingLunActivity.class);
                             break;
+                        case Auction:
                         case ZhuXuePay:
                         case GongYangPay:
                             intent.setClass(MessageCenter.this, Mine_GYQD.class);
@@ -158,9 +157,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                         case QianDaoToMineActivity:
                             intent.setClass(MessageCenter.this, Mine_activity_list.class);
                             break;
-                        case Auction:
-                            intent.setClass(MessageCenter.this, AuctionList.class);
-                            break;
+
 //                        case mReceiver.QiYuan:
 //                            intent.setClass(MessageCenter.this, BlessTree.class);
 //                            break;

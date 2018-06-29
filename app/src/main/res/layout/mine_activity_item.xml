@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/layout_bg_sel"
@@ -21,6 +20,7 @@
         android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/signact"
         android:layout_toRightOf="@+id/fund_list_item_head"
+        android:layout_marginRight="10dp"
         android:text="名"
         android:textColor="@color/black"
         android:textSize="15dp" />
@@ -52,7 +52,6 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/activity_detail_baoming"
         android:focusable="false"
         android:gravity="center"
         android:minWidth="60dp"
