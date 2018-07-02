@@ -1,6 +1,5 @@
 package com.yunfengsi.Models;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -38,6 +37,7 @@ import com.umeng.socialize.media.UMWeb;
 import com.yunfengsi.Adapter.PL_List_Adapter;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.Managers.Base.BasePayParams;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Utils.AnalyticalJSON;
@@ -56,7 +56,6 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
-import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -862,6 +861,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
     protected void onPause() {
         super.onPause();
         ProgressUtil.dismiss();
+        imm.hideSoftInputFromWindow(edmoneycustom.getWindowToken(), 0);
     }
 
     @Override

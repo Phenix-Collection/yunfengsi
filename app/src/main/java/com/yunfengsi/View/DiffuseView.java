@@ -144,7 +144,7 @@ public class DiffuseView extends View {
 
             canvas.drawBitmap(mBitmap, getWidth() / 2 - mBitmap.getWidth() / 2
                     , getHeight() / 2 - mBitmap.getHeight() / 2, mPaint);
-            LogUtil.e("width::"+getWidth()+"   Height::"+mBitmap.getHeight());
+
         }
 
 

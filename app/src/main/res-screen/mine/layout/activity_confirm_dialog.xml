@@ -1,42 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/mdivider"
     android:background="@color/white">
 
     <WebView
         android:id="@+id/web"
         android:layout_width="match_parent"
         android:scrollbars="none"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="41dp">
+        android:layout_height="400dp"
+        >
 
     </WebView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_gravity="bottom"
         android:orientation="horizontal">
 
 
 
-    <TextView
+    <com.ruffian.library.RTextView
         android:id="@+id/cancle"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@drawable/back_sel"
         android:gravity="center"
         android:text="不同意"
         android:textSize="16dp"
         android:textColor="@color/black"
+        app:background_pressed="#e6e6e6"
         android:layout_weight="1"/>
 
-    <TextView
+    <com.ruffian.library.RTextView
         android:id="@+id/baoming"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:background="@drawable/back_sel"
+        app:background_pressed="#e6e6e6"
         android:gravity="center"
         android:text="报名"
         android:textSize="16dp"
@@ -44,4 +47,4 @@
         android:layout_weight="1"/>
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

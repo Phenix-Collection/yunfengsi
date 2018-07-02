@@ -107,7 +107,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
     private ImageView rightImg;
     private ImageView shoucang;
     private ImageView dianzanImg;
-    private TextView dianzanText, title, fabuTime, faqidanwei, huodongdidian, huodongTime, peopleNum, Tobaoming, content, FaSong;
+    private TextView  dianzanText, title, fabuTime, faqidanwei, huodongdidian, huodongTime, peopleNum, Tobaoming, content, FaSong;
     private EditText     PLText;
     private LinearLayout dianzan;
     //    private LinearLayout PointLayou;//轮播图圆点layout
@@ -116,10 +116,10 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
     private String endPage = "";
     private Thread thread;//线程
     private static final String TAG = "Activityd";
-    private String            Id;//活动id
-    private ArrayList<String> imageList;
+    private String             Id;//活动id
+    private ArrayList<String>  imageList;
     //    private ViewPager viewPager;//轮播
-    private Banner            banner;
+    private Banner             banner;
     private PL_List_Adapter    adapter;
     private SharedPreferences  sp;
     private InputMethodManager imm;
@@ -589,7 +589,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                                         Tobaoming.setText(mApplication.ST("已通过"));
                                                         Tobaoming.setEnabled(false);
                                                         quickChannel.setVisibility(View.GONE);
-                                                    } else if("005".equals(totalMap.get("code"))){
+                                                    } else if ("005".equals(totalMap.get("code"))) {
                                                         //未报名的情况,暂时先显示快速通道
                                                         quickChannel.setVisibility(View.VISIBLE);
                                                         // TODO: 2018/4/23 使用券进入详情页  直接模拟点击报名
@@ -602,15 +602,15 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                             }
 
                                         }
-                                        LogUtil.e("code::::"+totalMap.get("code"));
+                                        LogUtil.e("code::::" + totalMap.get("code"));
 //                                        if ("2".equals(map.get("actquick"))) {
 //                                            //该活动拥有显示快速通道的权利，最后一次确定是否显示
 //                                            //如果有权利显示，则根据前面判断确定
 //
 //                                        } else {
-                                            //如果没有权利显示，则直接隐藏
+                                        //如果没有权利显示，则直接隐藏
                                         // TODO: 2018/6/23 功能未完善  暂时隐藏
-                                            quickChannel.setVisibility(View.GONE);
+                                        quickChannel.setVisibility(View.GONE);
 //                                        }
                                         peopleNum.append(mApplication.ST("已报名人数:" + map.get("enrollment")));//已报名人数
                                         dianzanText.setText(map.get("likes"));
@@ -736,39 +736,39 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                             YunDouAwardDialog.show(ActivityDetail.this, "每日评论", hashMap.get("yundousum"));
                                         }
                                         ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                        final HashMap<String, String> map       = new HashMap<>();
-                                        String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-                                        final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-                                        String                        petname   = sp.getString("pet_name", "");
-                                        String                        diazannum = "0";
-                                        map.put("user_image", headurl);
-                                        map.put("ct_contents", content);
-                                        map.put("pet_name", petname);
-                                        map.put("level", sp.getString("level", "0"));
-                                        map.put("ct_ctr", diazannum);
-                                        map.put("ct_time", time);
-                                        if (sp.getString("role", "").equals("3")) {
-                                            map.put("role", "3");
-                                        } else {
-                                            map.put("role", "0");
-                                        }
-                                        map.put("id", hashMap.get("id"));
-                                        map.put("reply", new JSONArray().toString());
-                                        map.put("level", sp.getString("level", "0"));
-                                        PlListVIew.setFocusable(true);
-                                        if (adapter.mlist.size() == 0) {
-                                            adapter.mlist.add(0, map);
-                                            adapter.flagList.add(0, false);
-                                            if (tv != null) PlListVIew.removeHeaderView(tv);
-                                            PlListVIew.setAdapter(adapter);
-
-                                        } else {
-                                            adapter.mlist.add(0, map);
-                                            adapter.flagList.add(0, false);
-                                            adapter.notifyDataSetChanged();
-
-                                        }
-                                        PlListVIew.setSelection(0);
+//                                        final HashMap<String, String> map       = new HashMap<>();
+//                                        String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
+//                                        final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
+//                                        String                        petname   = sp.getString("pet_name", "");
+//                                        String                        diazannum = "0";
+//                                        map.put("user_image", headurl);
+//                                        map.put("ct_contents", content);
+//                                        map.put("pet_name", petname);
+//                                        map.put("level", sp.getString("level", "0"));
+//                                        map.put("ct_ctr", diazannum);
+//                                        map.put("ct_time", time);
+//                                        if (sp.getString("role", "").equals("3")) {
+//                                            map.put("role", "3");
+//                                        } else {
+//                                            map.put("role", "0");
+//                                        }
+//                                        map.put("id", hashMap.get("id"));
+//                                        map.put("reply", new JSONArray().toString());
+//                                        map.put("level", sp.getString("level", "0"));
+//                                        PlListVIew.setFocusable(true);
+//                                        if (adapter.mlist.size() == 0) {
+//                                            adapter.mlist.add(0, map);
+//                                            adapter.flagList.add(0, false);
+//                                            if (tv != null) PlListVIew.removeHeaderView(tv);
+//                                            PlListVIew.setAdapter(adapter);
+//
+//                                        } else {
+//                                            adapter.mlist.add(0, map);
+//                                            adapter.flagList.add(0, false);
+//                                            adapter.notifyDataSetChanged();
+//
+//                                        }
+//                                        PlListVIew.setSelection(0);
                                         v.setEnabled(true);
                                         PLText.setText("");
                                         imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
@@ -918,7 +918,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         if (sp.getString("perfect", "1").equals("1") && !act_prol.equals("")) {
             Intent intent = new Intent(ActivityDetail.this, IdCardCheck.class);
             startActivityForResult(intent, 666);
-            Toast.makeText(ActivityDetail.this, mApplication.ST("您还未完善资料，快去完善资料吧"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityDetail.this, mApplication.ST("您还未完善资料，快完善资料吧"), Toast.LENGTH_SHORT).show();
         } else {
             if (hasShowedQuick) {
                 //快速报名通道
@@ -1399,6 +1399,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                 cancle.setText(mApplication.ST("不同意"));
                 final TextView baoming = (TextView) view.findViewById(R.id.baoming);
                 baoming.setEnabled(false);
+
                 final CountDownTimer cdt = new CountDownTimer(BuildConfig.DEBUG ? 1000 : 10000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -1413,7 +1414,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                 };
                 web.loadDataWithBaseURL("", act_prol
                         , "text/html", "UTF-8", null);
-//                    Api.getUserNeedKnow(this,web);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setView(view);
                 final AlertDialog dialog = builder.create();
@@ -1439,19 +1440,14 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                     @Override
                     public void onPageFinished(WebView view, String url) {
                         super.onPageFinished(view, url);
-                        if(!dialog.isShowing()){
-                            dialog.show();
-                        }
+                        dialog.show();
+                        web.setVisibility(View.VISIBLE);
+
                     }
 
-                    @Override
-                    public void onPageCommitVisible(WebView view, String url) {
-                        super.onPageCommitVisible(view, url);
-                        if(!dialog.isShowing()){
-                            dialog.show();
-                        }
-                    }
+
                 });
+
 
             } else {
                 showBaoMingDialog();
@@ -1560,6 +1556,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
     protected void onPause() {
         super.onPause();
         ProgressUtil.dismiss();
+        imm.hideSoftInputFromWindow(PLText.getWindowToken(),0);
     }
 
     @Override

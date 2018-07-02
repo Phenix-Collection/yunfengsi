@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -115,5 +116,12 @@ public class Sign extends AppCompatActivity implements View.OnClickListener {
         sign.setHint(mApplication.ST("请输入您的签名"));
         sign.setText(PreferenceUtil.getUserIncetance(this).getString("signature",""));
 
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(sign.getWindowToken(),0);
     }
 }

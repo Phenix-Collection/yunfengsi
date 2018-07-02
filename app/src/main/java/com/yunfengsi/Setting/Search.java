@@ -707,11 +707,15 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     protected void onDestroy() {
 //        removeDuplicate(gridList);
 //        IOUtil.setData(this,TAG,"history",gridList);
-        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(input.getWindowToken(), 0);
         super.onDestroy();
         mApplication.getInstance().romoveActivity(this);
 
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(input.getWindowToken(), 0);
+    }
 }

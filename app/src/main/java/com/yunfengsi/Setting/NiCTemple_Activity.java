@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -164,4 +165,9 @@ public class NiCTemple_Activity extends AppCompatActivity implements View.OnClic
         }).start();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(medit.getWindowToken(),0);
+    }
 }

@@ -957,7 +957,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
+
         OkGo.getInstance().cancelTag(getActivity());
     }
     //    @Override
@@ -1347,6 +1347,7 @@ public class FundingDetailFragment extends android.app.Fragment implements View.
         if (content != null) {
             content.onPause();
         }
+        imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
     }
 
     @Override

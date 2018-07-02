@@ -268,7 +268,7 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
                                             @Override
                                             public void run() {
                                                 File file = new File(getExternalFilesDir("pic"), System.currentTimeMillis() + ".jpg");
-                                                FileUtils.saveBitmap(resource, file, 100);
+                                                FileUtils.saveBitmap(resource, file, 200);
                                                 cardFile = file;
                                                 LogUtil.e("本地压缩后file::::" + file.length() + "   图片大小：：" + resource.getWidth() + "    " + resource.getHeight());
                                                 img_card.post(new Runnable() {
@@ -288,7 +288,7 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
                     } else {
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                         options.config = Bitmap.Config.RGB_565;
-                        options.size = 100;
+                        options.size = 200;
                         Tiny.getInstance().source(uri)
                                 .asFile().withOptions(options).compress(new FileWithBitmapCallback() {
                             @Override
@@ -327,7 +327,7 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
                                             @Override
                                             public void run() {
                                                 File file = new File(getExternalFilesDir("pic"), System.currentTimeMillis() + ".jpg");
-                                                FileUtils.saveBitmap(resource, file, 100);
+                                                FileUtils.saveBitmap(resource, file, 200);
                                                 personFile = file;
                                                 LogUtil.e("本地压缩后file::::" + file.length() + "   图片大小：：" + resource.getWidth() + "    " + resource.getHeight());
                                             }
@@ -339,7 +339,7 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
                     } else {
                         Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
                         options.config = Bitmap.Config.RGB_565;
-                        options.size = 100;
+                        options.size = 200;
                         Tiny.getInstance().source(uri)
                                 .asFile().withOptions(options).compress(new FileWithBitmapCallback() {
                             @Override
@@ -394,7 +394,7 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
 
 
                         } else {
-                            ToastUtil.showToastShort("图片识别失败，请稍后重试");
+                            ToastUtil.showToastShort("图片识别失败，请上传正确的身份证照后重试");
                         }
                     }
                 });
@@ -423,7 +423,7 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
 //                                        edtAddress.setText(AnalyticalJSON.getHashMap(map1.get("住址")).get("words"));
                                         edtNation.setText(AnalyticalJSON.getHashMap(map1.get("民族")).get("words"));
                                     }else{
-                                        ToastUtil.showToastShort("图片识别错误，请重新上传照片");
+                                        ToastUtil.showToastShort("图片识别失败，请上传正确的身份证照后重试");
                                     }
                                 }
                             }

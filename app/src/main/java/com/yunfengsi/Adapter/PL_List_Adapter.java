@@ -353,7 +353,7 @@ public class PL_List_Adapter extends BaseAdapter {
                 holder.huifuLayout.removeAllViews();
                 for (final HashMap<String, String> map : replay) {
                     TextView textView = new TextView(context);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParams.setMargins(0, DimenUtils.dip2px(context, 5), 0, DimenUtils.dip2px(context, 5));
                     textView.setLayoutParams(layoutParams);
                     String pet_name = map.get("pet_name");

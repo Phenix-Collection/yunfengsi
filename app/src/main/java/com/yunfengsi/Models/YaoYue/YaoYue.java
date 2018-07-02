@@ -32,6 +32,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -274,9 +275,11 @@ public class YaoYue extends Fragment implements View.OnClickListener, OnRefreshL
             if(bean.get("user_id").equals(PreferenceUtil.getUserId(context))){//自己发的消息  隐藏按钮,显示删除按钮
                 hoder.setVisible(R.id.button,false);
                 hoder.setVisible(R.id.delete,true);
+                ((SwipeMenuLayout) hoder.itemView).setSwipeEnable(true);
             }else{//别人发的消息  显示按钮,隐藏删除按钮
                 hoder.setVisible(R.id.button,true);
                 hoder.setVisible(R.id.delete,false);
+                ((SwipeMenuLayout) hoder.itemView).setSwipeEnable(false);
             }
             hoder.setText(R.id.num, bean.get("passenger"))
                     .setText(R.id.title, bean.get("title"))

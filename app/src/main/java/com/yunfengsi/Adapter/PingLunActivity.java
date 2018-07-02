@@ -1,6 +1,5 @@
 package com.yunfengsi.Adapter;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
+import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -33,7 +33,6 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
-import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -429,6 +428,8 @@ public class PingLunActivity extends AndroidPopupActivity implements View.OnClic
 
                     });
 
+                }else{
+                    ToastUtil.showToastShort("您的评论正在等待审核或已被删除");
                 }
                 }
 
