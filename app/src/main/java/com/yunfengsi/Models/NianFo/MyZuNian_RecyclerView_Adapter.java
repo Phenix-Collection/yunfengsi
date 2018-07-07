@@ -30,7 +30,7 @@ public class MyZuNian_RecyclerView_Adapter  extends RecyclerView.Adapter<Viewhol
     }
     @Override
     public void onBindViewHolder(Viewholder holder, final int i) {
-       Glide.with(context).load(list.get(i).get("user_image")).into(holder.mroundedimageview);
+       Glide.with(context).load(list.get(i).get("user_image")).error(R.drawable.def).into(holder.mroundedimageview);
 
     }
 

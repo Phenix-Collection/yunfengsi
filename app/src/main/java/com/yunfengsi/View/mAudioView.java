@@ -113,9 +113,9 @@ public class mAudioView extends FrameLayout {
 
             view = LayoutInflater.from(context).inflate(R.layout.audio_coustom, this, true);
 
-        mImage = (ImageView) view.findViewById(R.id.audio_image);
-        mTime = (TextView) view.findViewById(R.id.audio_time);
-        mAnim = (ImageView) view.findViewById(R.id.audio_anim);
+        mImage = view.findViewById(R.id.audio_image);
+        mTime = view.findViewById(R.id.audio_time);
+        mAnim = view.findViewById(R.id.audio_anim);
         mAnim.setImageBitmap(ImageUtil.readBitMap(context,R.drawable.sound3));
         a.recycle();
 //        mTime.setText(a.getText(R.styleable.mAudioView_timeText).equals("")?"0'":a.getText(R.styleable.mAudioView_timeText));

@@ -46,8 +46,8 @@ public class mProgressDialog extends ProgressDialog {
          */
     private void init() {
         setContentView(R.layout.custom_progress_dialog);
-        ImageView progress = (ImageView) findViewById(R.id.progress);
-        Msg= (TextView)findViewById(msg);
+        ImageView progress = findViewById(R.id.progress);
+        Msg= findViewById(msg);
         RotateAnimation rotate=new RotateAnimation(0,360f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
         rotate.setDuration(1000);
         rotate.setRepeatCount(-1);

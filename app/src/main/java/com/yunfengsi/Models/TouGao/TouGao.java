@@ -135,12 +135,12 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
      * 初始化控件
      */
     private void initView() {
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setOnClickListener(this);
         back.setVisibility(View.VISIBLE);
         back.setImageResource(R.drawable.back);
 
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText("投稿");
 
         ((TextView) findViewById(R.id.tip)).setText(mApplication.ST("" +
@@ -152,20 +152,20 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
 
         sp = getSharedPreferences("user", MODE_PRIVATE);
 
-        title_edt = (EditText) findViewById(R.id.tougao_title);
+        title_edt = findViewById(R.id.tougao_title);
         title_edt.setText(mApplication.ST(sp.getString("tougao_title", "")));
-        content_edt = (EditText) findViewById(R.id.tougao_content);
+        content_edt = findViewById(R.id.tougao_content);
         content_edt.setText(mApplication.ST(sp.getString("tougao_content", "")));
-        ImageView addFile = (ImageView) findViewById(R.id.tougao_addFile);
+        ImageView addFile = findViewById(R.id.tougao_addFile);
         addFile.setOnClickListener(this);
-        LinearLayout addFileLayout = (LinearLayout) findViewById(R.id.tougao_addFile_layout);
+        LinearLayout addFileLayout = findViewById(R.id.tougao_addFile_layout);
 
-        TextView commit = (TextView) findViewById(R.id.tougao_commit);
+        TextView commit = findViewById(R.id.tougao_commit);
         commit.setOnClickListener(this);
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
 
 
-        GridView grid = (GridView) findViewById(R.id.tougao_grid);
+        GridView grid = findViewById(R.id.tougao_grid);
         mImages.add("add");
         adpter = new TouGaoGridAdapter(this, mImages, true,allowChooseNum);
         adpter.setOncCancleListener(this);
@@ -210,9 +210,9 @@ public class TouGao extends AppCompatActivity implements View.OnClickListener, T
                     progressDialog.setCancelable(false);
                     progressDialog.setCanceledOnTouchOutside(false);
 
-                    final TextView speed = (TextView) view1.findViewById(R.id.upload_dialog_speed);
-                    final TextView percent = (TextView) view1.findViewById(R.id.upload_dialog_percent);
-                    final ProgressBar progressBar = (ProgressBar) view1.findViewById(R.id.upload_dialog_progressBar);
+                    final TextView speed = view1.findViewById(R.id.upload_dialog_speed);
+                    final TextView percent = view1.findViewById(R.id.upload_dialog_percent);
+                    final ProgressBar progressBar = view1.findViewById(R.id.upload_dialog_progressBar);
                     progressBar.setMax(100);
                     progressDialog.show();
                     JSONObject js = new JSONObject();

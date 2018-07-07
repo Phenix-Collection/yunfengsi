@@ -80,7 +80,7 @@ public class mHeadLineView extends LinearLayout {
         viewFlipper.removeAllViews();
         for (int j = 0; j < list.size(); j = j + num) {
             View child = LayoutInflater.from(context).inflate(R.layout.headline_child_view, null);
-            TextView tv1 = (TextView) child.findViewById(R.id.title1);
+            TextView tv1 = child.findViewById(R.id.title1);
             HashMap<String, String> map1 = list.get(j);
             if (type == FUND) {
                 ((TextView) child.findViewById(R.id.tag1)).setText(map1.get("pet_name").trim());
@@ -96,7 +96,7 @@ public class mHeadLineView extends LinearLayout {
                 child.findViewById(R.id.layout1).setTag(map1.get("shop_id"));
             }
 //            ((TextView) child.findViewById(R.id.tag1)).setText("最新");
-            TextView tv2 = (TextView) child.findViewById(R.id.title2);
+            TextView tv2 = child.findViewById(R.id.title2);
             if (list.size() > j + 1) {
                 HashMap<String, String> map2 = list.get(j + 1);
                 if (type == FUND) {

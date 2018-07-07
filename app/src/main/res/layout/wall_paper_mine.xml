@@ -20,6 +20,31 @@
         android:padding="10dp"
         android:src="@drawable/back" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/white"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/back_head"
+        app:layout_constraintBottom_toBottomOf="@+id/back_head"
+        android:text="壁纸管理"/>
+
+    <com.ruffian.library.RTextView
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="18dp"
+        app:text_color_normal="@color/white"
+        app:text_color_pressed="@color/gray"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/back_head"
+        app:layout_constraintBottom_toBottomOf="@+id/back_head"
+        android:text="上传"/>
 
     <TextView
         android:id="@+id/title"

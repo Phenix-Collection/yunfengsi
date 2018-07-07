@@ -63,9 +63,13 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.meditation);
         mApplication.getInstance().addActivity(this);
-        ((TextView) findViewById(R.id.title)).setText(mApplication.ST("坐禅"));
-        ((TextView) findViewById(R.id.meditationHistory)).setText(mApplication.ST("记录"));
-        back = (ImageView) findViewById(R.id.back);
+        ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("坐禅"));
+        ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("记录"));
+
+        findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+        findViewById(R.id.handle_right).setOnClickListener(this);
+        back = findViewById(R.id.title_back);
+        back.setVisibility(View.VISIBLE);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,15 +94,14 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
                 }
             }
         });
-        key = (TextView) findViewById(R.id.meditation_key);
+        key = findViewById(R.id.meditation_key);
         key.setText(mApplication.ST("开始坐禅"));
         key.setOnClickListener(this);
-        time = (TextView) findViewById(R.id.time);
+        time = findViewById(R.id.time);
 
 
         mediaPlayer = MediaPlayer.create(this, R.raw.up_seat);
-        TextView history = (TextView) findViewById(R.id.meditationHistory);
-        history.setOnClickListener(this);
+
         findViewById(R.id.layout).setBackground(ContextCompat.getDrawable(this,R.drawable.zuochan_bg));
     }
 
@@ -129,7 +132,7 @@ public class Meditation extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.meditationHistory:
+            case R.id.handle_right:
                 startActivity(new Intent(this,Meditation_History.class));
                 break;
             case R.id.meditation_key:

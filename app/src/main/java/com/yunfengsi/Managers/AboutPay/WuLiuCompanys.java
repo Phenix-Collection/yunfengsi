@@ -84,8 +84,8 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
     }
 
     private void initView() {
-        LinearLayout head = (LinearLayout) findViewById(R.id.headLayout);
-        tags = (LinearLayout) findViewById(R.id.tagsLayout);
+        LinearLayout head = findViewById(R.id.headLayout);
+        tags = findViewById(R.id.tagsLayout);
         characterParser = CharacterParser.getInstance();
         cacheList = FileUtils.getStorageEntities(this, WuLiuCompanys.COMPANYS);
         LogUtil.e("cachelist:::" + cacheList);
@@ -95,11 +95,11 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
         } else {
             head.setVisibility(View.GONE);
         }
-        SideBar   sideBar = (SideBar) findViewById(R.id.sidrbar);
-        TextView  dialog  = (TextView) findViewById(R.id.dialog);
-        ImageView back    = (ImageView) findViewById(R.id.back);
+        SideBar   sideBar = findViewById(R.id.sidrbar);
+        TextView  dialog  = findViewById(R.id.dialog);
+        ImageView back    = findViewById(R.id.back);
         back.setOnClickListener(this);
-        TextView title = (TextView) findViewById(R.id.title);
+        TextView title = findViewById(R.id.title);
         title.setText(mApplication.ST("选择物流公司"));
         sideBar.setTextView(dialog);
 
@@ -128,7 +128,7 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        sortListView = (RecyclerView) findViewById(R.id.country_lvcountry);
+        sortListView = findViewById(R.id.country_lvcountry);
         sortListView.setLayoutManager(new LinearLayoutManager(this));
         sortListView.addItemDecoration(new mItemDecoration(this));
 
@@ -164,7 +164,7 @@ public class WuLiuCompanys extends AppCompatActivity implements View.OnClickList
         // ����a-z��������Դ����
 
 
-        ClearEditText mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
+        ClearEditText mClearEditText = findViewById(R.id.filter_edit);
         mClearEditText.setHint(mApplication.ST("搜索"));
         Drawable d = ContextCompat.getDrawable(this, R.drawable.search_gray);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25));

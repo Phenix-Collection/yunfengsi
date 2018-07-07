@@ -67,16 +67,16 @@ public class GYMX extends AppCompatActivity implements View.OnClickListener {
         keyList=new ArrayList<>();
         valueList=new ArrayList<>();
 //        mtvhead = (TextView) findViewById(R.id.activity_lf_tvhead);
-        mtvtitle = (TextView) findViewById(R.id.activity_lf_title);
+        mtvtitle = findViewById(R.id.activity_lf_title);
 
 //        mtvdidian = (TextView) findViewById(R.id.activity_lf_didian);
-        mtvtime = (TextView) findViewById(R.id.activity_lf_time);
-        mtvleijione = (TextView) findViewById(R.id.activity_lf_tvleijione);
-        mtvpintaitwo = (TextView) findViewById(R.id.activity_lf_tvpintaitwo);
+        mtvtime = findViewById(R.id.activity_lf_time);
+        mtvleijione = findViewById(R.id.activity_lf_tvleijione);
+        mtvpintaitwo = findViewById(R.id.activity_lf_tvpintaitwo);
 //        mtvleijithree = (TextView) findViewById(R.id.activity_lf_tvleijithree);
-        mlistview = (ListView) findViewById(R.id.activity_lf_list);
-        mimageback = (ImageView) findViewById(R.id.activity_lf_imageback);
-        RelativeLayout bg_layout = (RelativeLayout) findViewById(R.id.activity_lf_layoutzx);
+        mlistview = findViewById(R.id.activity_lf_list);
+        mimageback = findViewById(R.id.activity_lf_imageback);
+        RelativeLayout bg_layout = findViewById(R.id.activity_lf_layoutzx);
     }
 
 

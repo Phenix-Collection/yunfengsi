@@ -66,19 +66,19 @@ public class Detail_Tongzhi extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
         setContentView(R.layout.detail_tongzhi);
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setOnClickListener(this);
         back.setVisibility(View.VISIBLE);
-        TextView t = (TextView) findViewById(R.id.title_title);
+        TextView t = findViewById(R.id.title_title);
         t.setText(mApplication.ST("通知详情"));
         Id=getIntent().getStringExtra("id");
         User_id=getIntent().getStringExtra("user_id");
-        type= (TextView) findViewById(R.id.type);
-        title= (TextView) findViewById(R.id.title);
-        pet_name= (TextView) findViewById(R.id.pet_name);
-        time= (TextView) findViewById(R.id.time);
-        content= (myWebView) findViewById(R.id.web);
-        head= (ImageView) findViewById(R.id.head);
+        type= findViewById(R.id.type);
+        title= findViewById(R.id.title);
+        pet_name= findViewById(R.id.pet_name);
+        time= findViewById(R.id.time);
+        content= findViewById(R.id.web);
+        head= findViewById(R.id.head);
         initWEB();
         getData();
     }

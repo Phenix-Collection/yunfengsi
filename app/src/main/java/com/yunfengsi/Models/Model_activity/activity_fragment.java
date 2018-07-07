@@ -72,14 +72,14 @@ public class activity_fragment extends BaseSTFragement implements SwipeRefreshLa
      * @param view
      */
     private void initView(View view) {
-        swip = (SwipeRefreshLayout) view.findViewById(R.id.activity_swip);
-        listView = (LoadMoreListView) view.findViewById(R.id.activity_listview);
+        swip = view.findViewById(R.id.activity_swip);
+        listView = view.findViewById(R.id.activity_listview);
         swip.setOnRefreshListener(this);
         listView.setLoadMoreListen(this);
         listView.setOnItemClickListener(onItemClickListener);
-        t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
-        p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
-        tip = (ImageView) view.findViewById(R.id.activity_tip);
+        t = listView.footer.findViewById(R.id.load_more_text);
+        p = listView.footer.findViewById(R.id.load_more_bar);
+        tip = view.findViewById(R.id.activity_tip);
         tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,9 +115,9 @@ public class activity_fragment extends BaseSTFragement implements SwipeRefreshLa
             Intent intent = new Intent(mApplication.getInstance(), ActivityDetail.class);
             String Id = "";
             if (position == 0) {
-                Id = ((TextView) view.findViewById(R.id.activity_title)).getTag().toString();
+                Id = view.findViewById(R.id.activity_title).getTag().toString();
             } else {
-                Id = ((TextView) view.findViewById(R.id.activity_item_title)).getTag().toString();
+                Id = view.findViewById(R.id.activity_item_title).getTag().toString();
             }
             if (!TextUtils.isEmpty(Id)) {
                 intent.putExtra("id", Id);

@@ -79,8 +79,8 @@ public class WebInteraction extends AppCompatActivity {
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
 
         setContentView(R.layout.enter_wrap);
-        webView = (WebView) findViewById(R.id.enter_wrap_web);
-        TextView name = (TextView) findViewById(R.id.ad_name);
+        webView = findViewById(R.id.enter_wrap_web);
+        TextView name = findViewById(R.id.ad_name);
 
         if (getIntent().getBooleanExtra(Progress, false)) {//项目进度
 //           https://indrah.cn/yfs.php/Index/cfgload/id/xx

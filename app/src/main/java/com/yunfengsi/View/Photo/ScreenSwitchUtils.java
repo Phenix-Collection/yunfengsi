@@ -156,7 +156,7 @@ public class ScreenSwitchUtils {
                 // 屏幕旋转时
                 float OneEightyOverPi = 57.29577957855f;
                 float angle = (float) Math.atan2(-Y, X) * OneEightyOverPi;
-                orientation = 90 - (int) Math.round(angle);
+                orientation = 90 - Math.round(angle);
                 // normalize to 0 - 359 range
                 while (orientation >= 360) {
                     orientation -= 360;
@@ -197,7 +197,7 @@ public class ScreenSwitchUtils {
                 // 屏幕旋转时
                 float OneEightyOverPi = 57.29577957855f;
                 float angle = (float) Math.atan2(-Y, X) * OneEightyOverPi;
-                orientation = 90 - (int) Math.round(angle);
+                orientation = 90 - Math.round(angle);
                 // normalize to 0 - 359 range
                 while (orientation >= 360) {
                     orientation -= 360;

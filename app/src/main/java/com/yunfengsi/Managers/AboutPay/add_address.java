@@ -59,26 +59,26 @@ public class add_address extends AppCompatActivity implements View.OnClickListen
         cityList = new ArrayList<>();
         citylist2 = new ArrayList<>();
         citylist2.add("城市");
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setImageResource(R.drawable.back);
         back.setOnClickListener(this);
 
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText("添加收货地址");
 
-        name = (EditText) findViewById(R.id.add_address_name);
-        phone = (EditText) findViewById(R.id.add_address_phone);
-        s1 = (Spinner) findViewById(R.id.add_address_spinner1);
+        name = findViewById(R.id.add_address_name);
+        phone = findViewById(R.id.add_address_phone);
+        s1 = findViewById(R.id.add_address_spinner1);
         s1.setOnItemSelectedListener(onitemclicklistener);
 
-        s2 = (Spinner) findViewById(R.id.add_address_spinner2);
+        s2 = findViewById(R.id.add_address_spinner2);
         cityAdtapter = new ArrayAdapter<String>(this, R.layout.spinner_text, citylist2);
         s2.setAdapter(cityAdtapter);
-        address = (EditText) findViewById(R.id.add_address_address);
-        youbian = (EditText) findViewById(R.id.add_address_youbian);
+        address = findViewById(R.id.add_address_address);
+        youbian = findViewById(R.id.add_address_youbian);
 
-        TextView baocun = (TextView) findViewById(R.id.add_address_commit);
+        TextView baocun = findViewById(R.id.add_address_commit);
         baocun.setOnClickListener(this);
         new Thread(new Runnable() {
             @Override

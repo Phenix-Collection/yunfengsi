@@ -13,7 +13,6 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -241,18 +240,18 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     private void initView() {
         listList = new ArrayList<>();
         adapter = new listAdapter(this, listList);
-        ImageView back = (ImageView) findViewById(R.id.search_back);
+        ImageView back = findViewById(R.id.search_back);
         back.setOnClickListener(this);
-        sousuo = (TextView) findViewById(R.id.search_sousuo);//搜索按钮
+        sousuo = findViewById(R.id.search_sousuo);//搜索按钮
         sousuo.setText(mApplication.ST("搜索"));
-        p = (ProgressBar) findViewById(R.id.search_loading);
-        input = (EditText) findViewById(R.id.search_edit);//搜索输入框
+        p = findViewById(R.id.search_loading);
+        input = findViewById(R.id.search_edit);//搜索输入框
         input.setHint(mApplication.ST("请输入关键字"));
         String message = getIntent().getStringExtra("text");
         if (message != null) {
             input.setText(message);
         }
-        diffuseView = (DiffuseView) findViewById(R.id.audio);
+        diffuseView = findViewById(R.id.audio);
         ibdRcognize = new IBDRcognizeImpl(this);
         ibdRcognize.setEventListener(new EventListener() {
             @Override
@@ -326,16 +325,16 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
-        zixun = (TextView) findViewById(R.id.search_zixun);
+        zixun = findViewById(R.id.search_zixun);
         zixun.setText(mApplication.ST("图文"));
-        huodong = (TextView) findViewById(R.id.search_huodong);
+        huodong = findViewById(R.id.search_huodong);
         huodong.setText(mApplication.ST("活动"));
-        gongyang = (TextView) findViewById(R.id.search_gongyang);
+        gongyang = findViewById(R.id.search_gongyang);
         gongyang.setText(mApplication.ST("供养"));
-        zhongchou = (TextView) findViewById(R.id.search_cishan);
+        zhongchou = findViewById(R.id.search_cishan);
         zhongchou.setText(mApplication.ST("助学"));
 //        removeAll= (TextView) findViewById(R.id.search_removeHistory);//清空记录
-        listView = (ListView) findViewById(R.id.search_listview);//搜索结果展示listview
+        listView = findViewById(R.id.search_listview);//搜索结果展示listview
 //        grid= (GridView) findViewById(R.id.search_grid);//搜索历史gridView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -367,46 +366,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         zixun.performClick();
     }
 
-    /**
-     * 搜索历史适配器
-     */
-    static class gridAdapter extends BaseAdapter {
-        private List<String> list1;
-        private Context      context;
 
-        public gridAdapter(Context context, List<String> list) {
-            super();
-            this.context = context;
-            this.list1 = list;
-
-        }
-
-        @Override
-        public int getCount() {
-            return list1 == null ? 0 : list1.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list1.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView = new TextView(context);
-            textView.setTextSize(14);
-            textView.setMaxLines(1);
-            textView.setTextColor(Color.BLACK);
-            textView.setEllipsize(TextUtils.TruncateAt.END);
-            textView.setText(list1.get(position));
-            return textView;
-        }
-    }
 
     /**
      * 搜索结果适配器
@@ -486,15 +446,15 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 if (view == null) {
                     holder = new ViewHolder0();
                     view = LayoutInflater.from(context).inflate(R.layout.hot_two_item, parent, false);
-                    holder.img = (ImageView) view.findViewById(R.id.hot_two_item_image);
-                    holder.title = (TextView) view.findViewById(R.id.hot_two_item_title);
-                    holder.time = (TextView) view.findViewById(R.id.hot_two_item_time);
-                    holder.user = (TextView) view.findViewById(R.id.hot_two_item_Plnum);
-                    holder.type = (TextView) view.findViewById(R.id.hot_two_item_type);
-                    holder.ctr = (TextView) view.findViewById(R.id.hot_two_item_ctr);
-                    holder.abs = (TextView) view.findViewById(R.id.hot_two_item_abs);
-                    holder.comments = (TextView) view.findViewById(R.id.hot_two_item_comments);
-                    holder.likes = (TextView) view.findViewById(R.id.hot_two_item_likes);
+                    holder.img = view.findViewById(R.id.hot_two_item_image);
+                    holder.title = view.findViewById(R.id.hot_two_item_title);
+                    holder.time = view.findViewById(R.id.hot_two_item_time);
+                    holder.user = view.findViewById(R.id.hot_two_item_Plnum);
+                    holder.type = view.findViewById(R.id.hot_two_item_type);
+                    holder.ctr = view.findViewById(R.id.hot_two_item_ctr);
+                    holder.abs = view.findViewById(R.id.hot_two_item_abs);
+                    holder.comments = view.findViewById(R.id.hot_two_item_comments);
+                    holder.likes = view.findViewById(R.id.hot_two_item_likes);
                     view.setTag(holder);
                 } else {
                     holder = (ViewHolder0) view.getTag();
@@ -543,11 +503,11 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 if (view == null) {
                     holder2 = new Holder2();
                     view = inflater.inflate(R.layout.activity_header2, parent, false);
-                    holder2.title = (TextView) view.findViewById(R.id.activity_item_title);
-                    holder2.content = (TextView) view.findViewById(R.id.activity_item_content);
-                    holder2.imageView = (ImageView) view.findViewById(R.id.activity_item_img);
-                    holder2.peopleNum = (TextView) view.findViewById(R.id.activity_item_peopleNum);
-                    holder2.time = (TextView) view.findViewById(R.id.activity_item_time);
+                    holder2.title = view.findViewById(R.id.activity_item_title);
+                    holder2.content = view.findViewById(R.id.activity_item_content);
+                    holder2.imageView = view.findViewById(R.id.activity_item_img);
+                    holder2.peopleNum = view.findViewById(R.id.activity_item_peopleNum);
+                    holder2.time = view.findViewById(R.id.activity_item_time);
                     view.setTag(holder2);
 
                 } else {
@@ -579,13 +539,13 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 if (view == null) {
                     holder = new ViewHolder();
                     view = inflater.inflate(R.layout.mine_shoucang_item, parent, false);
-                    holder.image = (ImageView) view.findViewById(R.id.mine_shoucang_item_image);
-                    holder.title = (TextView) view.findViewById(R.id.mine_shoucang_item_title);
-                    holder.time = (TextView) view.findViewById(R.id.mine_shoucang_item_time);
-                    holder.user = (TextView) view.findViewById(R.id.mine_shoucang_item_user);
-                    holder.type = (TextView) view.findViewById(R.id.mine_shoucang_item_type);
-                    holder.delete = (TextView) view.findViewById(R.id.delete);
-                    holder.content = (RelativeLayout) view.findViewById(R.id.content);
+                    holder.image = view.findViewById(R.id.mine_shoucang_item_image);
+                    holder.title = view.findViewById(R.id.mine_shoucang_item_title);
+                    holder.time = view.findViewById(R.id.mine_shoucang_item_time);
+                    holder.user = view.findViewById(R.id.mine_shoucang_item_user);
+                    holder.type = view.findViewById(R.id.mine_shoucang_item_type);
+                    holder.delete = view.findViewById(R.id.delete);
+                    holder.content = view.findViewById(R.id.content);
                     view.setTag(holder);
                 } else {
                     holder = (ViewHolder) view.getTag();
@@ -620,13 +580,13 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 if (view == null) {
                     holder = new ViewHolder();
                     view = inflater.inflate(R.layout.mine_shoucang_item, parent, false);
-                    holder.image = (ImageView) view.findViewById(R.id.mine_shoucang_item_image);
-                    holder.title = (TextView) view.findViewById(R.id.mine_shoucang_item_title);
-                    holder.time = (TextView) view.findViewById(R.id.mine_shoucang_item_time);
-                    holder.user = (TextView) view.findViewById(R.id.mine_shoucang_item_user);
-                    holder.type = (TextView) view.findViewById(R.id.mine_shoucang_item_type);
-                    holder.delete = (TextView) view.findViewById(R.id.delete);
-                    holder.content = (RelativeLayout) view.findViewById(R.id.content);
+                    holder.image = view.findViewById(R.id.mine_shoucang_item_image);
+                    holder.title = view.findViewById(R.id.mine_shoucang_item_title);
+                    holder.time = view.findViewById(R.id.mine_shoucang_item_time);
+                    holder.user = view.findViewById(R.id.mine_shoucang_item_user);
+                    holder.type = view.findViewById(R.id.mine_shoucang_item_type);
+                    holder.delete = view.findViewById(R.id.delete);
+                    holder.content = view.findViewById(R.id.content);
                     view.setTag(holder);
                 } else {
                     holder = (ViewHolder) view.getTag();

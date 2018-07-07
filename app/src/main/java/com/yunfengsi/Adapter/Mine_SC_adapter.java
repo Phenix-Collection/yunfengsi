@@ -79,11 +79,11 @@ public class Mine_SC_adapter extends BaseAdapter {
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.mine_shoucang_item, parent, false);
-            holder.image = (ImageView) view.findViewById(R.id.mine_shoucang_item_image);
-            holder.title = (TextView) view.findViewById(R.id.mine_shoucang_item_title);
-            holder.time = (TextView) view.findViewById(R.id.mine_shoucang_item_time);
-            holder.user = (TextView) view.findViewById(R.id.mine_shoucang_item_user);
-            holder.type = (TextView) view.findViewById(R.id.mine_shoucang_item_type);
+            holder.image = view.findViewById(R.id.mine_shoucang_item_image);
+            holder.title = view.findViewById(R.id.mine_shoucang_item_title);
+            holder.time = view.findViewById(R.id.mine_shoucang_item_time);
+            holder.user = view.findViewById(R.id.mine_shoucang_item_user);
+            holder.type = view.findViewById(R.id.mine_shoucang_item_type);
             holder.delete = view.findViewById(R.id.delete);
             holder.relativeLayout = view.findViewById(R.id.content);
             view.setTag(holder);
@@ -114,7 +114,7 @@ public class Mine_SC_adapter extends BaseAdapter {
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView view1  = (TextView) v.findViewById(R.id.mine_shoucang_item_type);
+                TextView view1  = v.findViewById(R.id.mine_shoucang_item_type);
                 String   id1    = view1.getTag().toString();
                 Intent   intent = new Intent();
 

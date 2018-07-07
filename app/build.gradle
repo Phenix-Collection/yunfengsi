@@ -11,7 +11,8 @@ android {
             file('src/main/res-screen')
                     .listFiles()
                     .each { res.srcDirs += it.path }
-            res.srcDirs = ['src/main/res', 'src/main/res-screen', 'src/main/res-screen/res-pinglun', 'src/main/res-screen/share', 'src/main/res-screen/audio', 'src/main/res-screen/sidebar', 'src/main/res-screen/photo', 'src/main/res-screen/mine', 'src/main/res-screen/nianfo', 'src/main/res/raw']
+            res.srcDirs = ['src/main/res', 'src/main/res-screen', 'src/main/res-screen/res-pinglun', 'src/main/res-screen/share', 'src/main/res-screen/audio', 'src/main/res-screen/sidebar', 'src/main/res-screen/photo', 'src/main/res-screen/mine', 'src/main/res-screen/nianfo', 'src/main/res/raw', 'src/main/res/dimens']
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/font']
         }
 
     }
@@ -32,8 +33,8 @@ android {
         applicationId "com.yunfengsi"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 83
-        versionName "2.4.1"
+        versionCode 84
+        versionName "2.4.2"
         ndk {
             abiFilters "armeabi-v7a", "armeabi"
 //            , "x86"

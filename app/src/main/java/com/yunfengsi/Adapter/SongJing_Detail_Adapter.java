@@ -56,9 +56,9 @@ public class SongJing_Detail_Adapter extends BaseAdapter {
             holder = new ViewHolder();
             view = LayoutInflater.from(context).inflate(R.layout.niaofo_detail_list_item, parent, false);
 
-            holder.title = (TextView) view.findViewById(R.id.nianfodetail_list_item_names);
+            holder.title = view.findViewById(R.id.nianfodetail_list_item_names);
 
-            holder.num = (TextView) view.findViewById(R.id.nianfodetail_list_item_num);
+            holder.num = view.findViewById(R.id.nianfodetail_list_item_num);
 
 
             view.setTag(holder);

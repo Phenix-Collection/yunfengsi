@@ -105,13 +105,13 @@ public class Nianfo_home_Adaper extends BaseAdapter {
         if (view == null) {
             holder = new Holder();
             view = inflater.inflate(R.layout.nianfo_item, null);
-            holder.imageView = (ImageView) view.findViewById(R.id.nianfo_item_ima);
-            holder.txt_date = (TextView) view.findViewById(R.id.nianfo_item_date);
-            holder.txt_desc = (TextView) view.findViewById(R.id.nianfo_item_desc);
-            holder.txt_name = (TextView) view.findViewById(R.id.nianfo_item_name);
-            holder.txt_share= (TextView) view.findViewById(R.id.nianfo_item_share);
-            holder.content= (RelativeLayout) view.findViewById(R.id.content);
-            holder.txt_delete= (TextView) view.findViewById(R.id.delete);
+            holder.imageView = view.findViewById(R.id.nianfo_item_ima);
+            holder.txt_date = view.findViewById(R.id.nianfo_item_date);
+            holder.txt_desc = view.findViewById(R.id.nianfo_item_desc);
+            holder.txt_name = view.findViewById(R.id.nianfo_item_name);
+            holder.txt_share= view.findViewById(R.id.nianfo_item_share);
+            holder.content= view.findViewById(R.id.content);
+            holder.txt_delete= view.findViewById(R.id.delete);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();

@@ -98,8 +98,8 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
                             if(map!=null){
                                ArrayList<HashMap<String,String >> list=AnalyticalJSON.getList_zj(map.get("msg"));
                                 if(list!=null){
-                                    final TextView    t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
-                                    final ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
+                                    final TextView    t = listView.footer.findViewById(R.id.load_more_text);
+                                    final ProgressBar p = listView.footer.findViewById(R.id.load_more_bar);
                                     if(list.size()<PAGE_SIZE){
                                         endPage=page;
                                     }
@@ -188,18 +188,18 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
         search.setOnClickListener(this);
         EventBus.getDefault().register(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-        back = (ImageView) findViewById(R.id.title_back);
+        back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         back.setImageResource(R.drawable.back);
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText(mApplication.ST("收藏"));
-        tip = (ImageView) findViewById(R.id.shoucang_tip);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swip);
+        tip = findViewById(R.id.shoucang_tip);
+        swipeRefreshLayout = findViewById(R.id.swip);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
         swipeRefreshLayout.setOnRefreshListener(this);
         list = new ArrayList<>();
-        listView = (LoadMoreListView) findViewById(R.id.shoucang_listview);
+        listView = findViewById(R.id.shoucang_listview);
         listView.setLoadMoreListen(this);
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -252,8 +252,8 @@ public class Activity_ShouCang extends AppCompatActivity implements View.OnClick
         if (!endPage.equals(page)) {
             page = String.valueOf(Integer.parseInt(page) + 1);
         } else {
-            final ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
-            final TextView t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
+            final ProgressBar p = listView.footer.findViewById(R.id.load_more_bar);
+            final TextView t = listView.footer.findViewById(R.id.load_more_text);
             p.setVisibility(View.GONE);
             t.setText("没有更多数据了");
             return;

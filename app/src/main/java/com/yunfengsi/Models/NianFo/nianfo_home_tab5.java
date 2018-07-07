@@ -71,8 +71,8 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.nianfo_home_chanhui);
         mApplication.getInstance().addActivity(this);
-        editText= (EditText) findViewById(R.id.nianfo_home_chanhui_content);
-        diffuseView= (DiffuseView) findViewById(R.id.audio);
+        editText= findViewById(R.id.nianfo_home_chanhui_content);
+        diffuseView= findViewById(R.id.audio);
         ibdRcognize=new IBDRcognizeImpl(this);
         ibdRcognize.attachView(editText,null,null);
         diffuseView.setOnTouchListener(new View.OnTouchListener() {
@@ -93,14 +93,14 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
                 return true;
             }
         });
-        listView= (LoadMoreListView) findViewById(R.id.nianfo_home_chanhui_listview);
+        listView= findViewById(R.id.nianfo_home_chanhui_listview);
         listView.setLoadMoreListen(this);
-        swip= (SwipeRefreshLayout) findViewById(R.id.chanhui_swip);
+        swip= findViewById(R.id.chanhui_swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
 
-        TextView textView = (TextView) findViewById(R.id.nianfo_home_chanhui_commit);
+        TextView textView = findViewById(R.id.nianfo_home_chanhui_commit);
         textView.setText(mApplication.ST("提交忏悔"));
         sp=getSharedPreferences("user", Context.MODE_PRIVATE);
         list=new ArrayList<>();
@@ -139,8 +139,8 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
             @Override
             public void run() {
                 try {
-                    final ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
-                    final TextView t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
+                    final ProgressBar p = listView.footer.findViewById(R.id.load_more_bar);
+                    final TextView t = listView.footer.findViewById(R.id.load_more_text);
                     JSONObject js=new JSONObject();
                     try {
                         js.put("m_id", Constants.M_id);
@@ -241,8 +241,8 @@ public class nianfo_home_tab5 extends AppCompatActivity implements OnClickListen
         if (!endPage.equals(page)) {
             page = String.valueOf(Integer.parseInt(page) + 1);
         }else{
-            final ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
-            final TextView t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
+            final ProgressBar p = listView.footer.findViewById(R.id.load_more_bar);
+            final TextView t = listView.footer.findViewById(R.id.load_more_text);
             p.setVisibility(View.GONE);
             t.setText(mApplication.ST("没有更多数据了"));
             return;

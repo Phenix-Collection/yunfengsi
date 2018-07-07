@@ -27,7 +27,7 @@ public class EnterShortCut extends AppCompatActivity {
         StatusBarCompat.compat(this, (Color.parseColor("#90000000")));
 
         setContentView(R.layout.enter_wrap);
-        webView= (WebView) findViewById(R.id.enter_wrap_web);
+        webView= findViewById(R.id.enter_wrap_web);
         webView.loadUrl(Constants.host_Ip+"/"+Constants.NAME_LOW+".php");
         WebSettings webSettings=webView.getSettings();
         //设置WebView属性，能够执行Javascript脚本

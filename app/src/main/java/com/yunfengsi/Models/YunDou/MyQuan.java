@@ -79,20 +79,20 @@ public class MyQuan extends AppCompatActivity implements DuiHuanContract.MyQuanV
         setContentView(R.layout.message_center);
         mApplication.getInstance().addActivity(this);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("我的福利"));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
         quanPresenter = new MyQuanPresenterImpl(this);
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(quanPresenter);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDecoration(this));
 

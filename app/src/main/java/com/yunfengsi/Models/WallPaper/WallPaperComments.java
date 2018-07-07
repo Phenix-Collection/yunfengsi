@@ -1,17 +1,14 @@
 package com.yunfengsi.Models.WallPaper;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
@@ -53,7 +50,6 @@ import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.LoadMoreListView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -126,14 +122,14 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
+        PLText = findViewById(R.id.zixun_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
         Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.pinglun_image));
         Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.fenxiang_image));
-        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
-        audio = (TextView) findViewById(R.id.audio_button);
+        toggle = findViewById(R.id.toggle_audio_word);
+        audio = findViewById(R.id.audio_button);
         toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,7 +167,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
             }
         });
 
-        overlay = (FrameLayout) findViewById(R.id.frame);
+        overlay = findViewById(R.id.frame);
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,7 +177,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                 v.setVisibility(View.GONE);
             }
         });
-        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +190,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
 
             }
         });
-        fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
+        fenxiangb = findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,7 +214,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
         ((TextView) findViewById(R.id.pltv)).setText(mApplication.ST("评论"));
         ((TextView) findViewById(R.id.fxtv)).setText(mApplication.ST("分享"));
 
-        fasong = (TextView) findViewById(R.id.zixun_detail_fasong);
+        fasong = findViewById(R.id.zixun_detail_fasong);
         fasong.setOnClickListener(this);
         fasong.setText(mApplication.ST("发送"));
 
@@ -229,13 +225,13 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
         adapter = new PL_List_Adapter(this);
         adapter.setOnHuifuListener(this);
 
-        PlListVIew = (LoadMoreListView) findViewById(R.id.listview);
+        PlListVIew = findViewById(R.id.listview);
         PlListVIew.setLoadMoreListen(this);
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-        t = (TextView) (PlListVIew.footer.findViewById(R.id.load_more_text));
-        p = (ProgressBar) (PlListVIew.footer.findViewById(R.id.load_more_bar));
+        t = PlListVIew.footer.findViewById(R.id.load_more_text);
+        p = PlListVIew.footer.findViewById(R.id.load_more_bar);
 
         swip.post(new Runnable() {
             @Override
@@ -464,43 +460,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                                                     YunDouAwardDialog.show(WallPaperComments.this, "每日评论", hashMap.get("yundousum"));
                                                 }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-//                                                final HashMap<String, String> map       = new HashMap<>();
-//                                                String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-//                                                final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-//                                                String                        petname   = sp.getString("pet_name", "");
-//                                                String                        diazannum = "0";
-//                                                map.put("user_image", headurl);
-//                                                map.put("ct_contents", content);
-//                                                map.put("pet_name", petname);
-//                                                map.put("ct_ctr", diazannum);
-//                                                map.put("level", sp.getString("level", "0"));
-//                                                map.put("ct_time", time);
-//                                                if (sp.getString("role", "").equals("3")) {
-//                                                    map.put("role", "3");
-//                                                } else {
-//                                                    map.put("role", "0");
-//                                                }
-//
-//                                                map.put("id", hashMap.get("id"));
-//                                                map.put("reply", new JSONArray().toString());
-//                                                map.put("level", sp.getString("level", "0"));
-//                                                PlListVIew.setFocusable(true);
-//                                                if (adapter.mlist.size() == 0) {
-//                                                    adapter.mlist.add(0, map);
-//                                                    adapter.flagList.add(0, false);
-//                                                    PlListVIew.removeHeaderView(tv);
-//                                                    PlListVIew.setAdapter(adapter);
-//
-//                                                } else {
-//                                                    adapter.mlist.add(0, map);
-//                                                    adapter.flagList.add(0, false);
-//                                                    adapter.notifyDataSetChanged();
-//
-//                                                }
-//                                                PlListVIew.setSelection(0);
                                                 v.setEnabled(true);
-//                                                firstNum += 1;
-//                                                plNum.setText(mApplication.ST("评论 " + firstNum));
                                                 PLText.setText("");
                                                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                                                 overlay.setVisibility(View.GONE);
@@ -553,19 +513,7 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                                                 if (!"0".equals(hashMap.get("yundousum"))) {
                                                     YunDouAwardDialog.show(WallPaperComments.this, "每日评论", hashMap.get("yundousum"));
                                                 }
-                                                if (currentLayout.getVisibility() == View.GONE) {
-                                                    currentLayout.setVisibility(View.VISIBLE);
-                                                }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                                TextView                  textView     = new TextView(WallPaperComments.this);
-                                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                                layoutParams.setMargins(0, DimenUtils.dip2px(WallPaperComments.this, 5), 0, DimenUtils.dip2px(WallPaperComments.this, 5));
-                                                textView.setLayoutParams(layoutParams);
-                                                String                 pet_name = sp.getString("pet_name", "");
-                                                SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + content);
-                                                ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(WallPaperComments.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                                                textView.setText(ssb);
-                                                currentLayout.addView(textView);
                                                 PLText.setText("");
                                                 PLText.setHint(mApplication.ST("写入您的评论（300字以内）"));
                                                 overlay.setVisibility(View.GONE);
@@ -573,24 +521,6 @@ public class WallPaperComments extends AppCompatActivity implements PL_List_Adap
                                                 PlListVIew.setSelection(currentPosition);
                                                 fasong.setEnabled(true);
                                                 isPLing = false;
-                                                try {
-                                                    JSONArray  jsonArray  = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
-                                                    JSONObject jsonObject = new JSONObject();
-                                                    jsonObject.put("id", hashMap.get("id"));
-                                                    jsonObject.put("pet_name", mApplication.ST(pet_name));
-                                                    if (sp.getString("role", "").equals("3")) {
-                                                        jsonObject.put("role", "3");
-                                                    } else {
-                                                        jsonObject.put("role", "0");
-                                                    }
-                                                    jsonObject.put("ct_contents", mApplication.ST(content));
-                                                    jsonObject.put("user_id", sp.getString("user_id", ""));
-                                                    jsonArray.put(jsonObject);
-                                                    adapter.mlist.get(currentPosition).put("reply", jsonArray.toString());
-                                                    adapter.notifyDataSetChanged();
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
                                                 ProgressUtil.dismiss();
                                             }
                                         });

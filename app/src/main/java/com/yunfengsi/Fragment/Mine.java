@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -73,13 +74,14 @@ import com.yunfengsi.Models.YunDou.YunDouAwardDialog;
 import com.yunfengsi.Models.YunDou.YunDouHome;
 import com.yunfengsi.R;
 import com.yunfengsi.Setting.Activity_ShouCang;
+import com.yunfengsi.Setting.GerenxinxiActivity;
 import com.yunfengsi.Setting.Login;
 import com.yunfengsi.Setting.Mine_HuiYuan;
 import com.yunfengsi.Setting.Mine_gerenziliao;
 import com.yunfengsi.Setting.Month_Detail;
 import com.yunfengsi.Setting.NiCTemple_Activity;
 import com.yunfengsi.Setting.Sign;
-import com.yunfengsi.Setting.gerenshezhi;
+import com.yunfengsi.Setting.Setting;
 import com.yunfengsi.Utils.ACache;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -153,8 +155,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
     private FrameLayout header;
 
 
-
-    private MineManager  mineManager;
+    private MineManager mineManager;
     private Intent intent = new Intent();
     private ImageView level;
     private boolean           isAgreeed    = false;//是否同意隐私政策
@@ -184,7 +185,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         screenWidth = getResources().getDisplayMetrics().widthPixels;
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         aCache = ACache.get(mApplication.getInstance());
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recycle);
+        RecyclerView recyclerView = v.findViewById(R.id.recycle);
         mineManager = new MineManager(getActivity(), recyclerView);
         isAgreeed = sp.getString("agree_status", "").equals("0") || sp.getString("agree_status", "").equals("") ? false : true;
 
@@ -208,11 +209,11 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
 
         mineManager.setOnitemClickListener(onItemClickListener);
         ((ImageView) v.findViewById(R.id.mine_gerenbeijing)).setImageBitmap(ImageUtil.readBitMap(getActivity(), R.drawable.mine_banner));
-        ((ImageView) v.findViewById(R.id.mine_gerenbeijing)).setColorFilter(Color.parseColor("#30000000"));
-        head = (ImageView) v.findViewById(R.id.mine_head);
-        petname = (TextView) v.findViewById(R.id.mine_petName);
-        sign = (TextView) v.findViewById(R.id.mine_sign);
-        level = (ImageView) v.findViewById(R.id.level);
+        ((ImageView) v.findViewById(R.id.mine_gerenbeijing)).setColorFilter(Color.parseColor("#40000000"));
+        head = v.findViewById(R.id.mine_head);
+        petname = v.findViewById(R.id.mine_petName);
+        sign = v.findViewById(R.id.mine_sign);
+        level = v.findViewById(R.id.level);
         switch (sp.getString("level", "0")) {
             case "0":
                 level.setVisibility(View.GONE);
@@ -249,7 +250,14 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         } else {
             sign.setText("暂无个性签名");
         }
-
+        v.findViewById(R.id.infoSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.setClass(getActivity(), GerenxinxiActivity.class);
+                startActivity(intent);
+            }
+        });
         head.setOnClickListener(this);
         sign.setOnClickListener(this);
         petname.setOnClickListener(this);
@@ -258,7 +266,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         return v;
     }
 
-    BaseQuickAdapter.OnItemClickListener onItemClickListener=new BaseQuickAdapter.OnItemClickListener() {
+    BaseQuickAdapter.OnItemClickListener onItemClickListener = new BaseQuickAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
             HashMap<String, Object> map = mineManager.getMaps().get(position);
@@ -404,22 +412,23 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                     openGongke();
                     break;
                 case "设置":
-                    intent.setClass(getActivity(), gerenshezhi.class);
+                    intent.setClass(getActivity(), Setting.class);
                     startActivity(intent);
                     break;
             }
         }
     };
-    public void openGongke() {
-        View vi = LayoutInflater.from(getActivity()).inflate(R.layout.mine_gongke_fragment, null);
-        TextView tvone = (TextView) vi.findViewById(R.id.mine_gongke_fragment_oneitme);
 
-        TextView tvtwo   = (TextView) vi.findViewById(R.id.mine_gongke_fragment_twoitme);
-        TextView tvthree = (TextView) vi.findViewById(R.id.mine_gongke_fragment_threeitme);
-        TextView tvfour  = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fouritme);
-        TextView tvfive  = (TextView) vi.findViewById(R.id.mine_gongke_fragment_fiveitme);
-        TextView tv6     = (TextView) vi.findViewById(R.id.mine_gongke_fragment_sixitme);
-        TextView cancle = (TextView) vi.findViewById(R.id.dismiss);
+    public void openGongke() {
+        View     vi    = LayoutInflater.from(getActivity()).inflate(R.layout.mine_gongke_fragment, null);
+        TextView tvone = vi.findViewById(R.id.mine_gongke_fragment_oneitme);
+
+        TextView tvtwo   = vi.findViewById(R.id.mine_gongke_fragment_twoitme);
+        TextView tvthree = vi.findViewById(R.id.mine_gongke_fragment_threeitme);
+        TextView tvfour  = vi.findViewById(R.id.mine_gongke_fragment_fouritme);
+        TextView tvfive  = vi.findViewById(R.id.mine_gongke_fragment_fiveitme);
+        TextView tv6     = vi.findViewById(R.id.mine_gongke_fragment_sixitme);
+        TextView cancle  = vi.findViewById(R.id.dismiss);
         cancle.setText(mApplication.ST("取消"));
         tvone.setText(mApplication.ST("念佛"));
         tvtwo.setText(mApplication.ST("诵经"));
@@ -458,11 +467,6 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         }
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        getLevelInfo();
-//    }
 
     // TODO: 2017/4/19 重置简繁
     @Override
@@ -535,7 +539,6 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                                         .asGif()
                                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(level);
                                                 break;
-
 
 
                                         }
@@ -670,7 +673,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                     }
 
 
-                                    if(mineManager!=null){
+                                    if (mineManager != null) {
                                         mineManager.initMine();
                                         mineManager.setOnitemClickListener(onItemClickListener);
                                     }
@@ -714,10 +717,10 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                                     public void run() {
                                         if (map != null) {
                                             View          view   = LayoutInflater.from(getActivity()).inflate(R.layout.activity_confirm_dialog, null);
-                                            final WebView web    = (WebView) view.findViewById(R.id.web);
-                                            TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                                            final WebView web    = view.findViewById(R.id.web);
+                                            TextView      cancle = view.findViewById(R.id.cancle);
                                             cancle.setText(mApplication.ST("不同意"));
-                                            final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                                            final TextView baoming = view.findViewById(R.id.baoming);
                                             baoming.setEnabled(false);
                                             final CountDownTimer cdt = new CountDownTimer(10000, 1000) {
                                                 @Override
@@ -843,7 +846,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         }
         if (!sp.getString("head_url", "").equals("")) {
             Glide.with(mApplication.getInstance()).load(sp.getString("head_url", "")).asBitmap()
-                    .override(screenWidth / 4, screenWidth / 4).into(new BitmapImageViewTarget(head) {
+                    .into(new BitmapImageViewTarget(head) {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                     if (resource != null) {
@@ -1024,6 +1027,7 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.qr:
 
+
                 String md5 = MD5Utls.stringToMD5(Constants.safeKey);
                 String m1 = md5.substring(0, 16);
                 String m2 = md5.substring(16, md5.length());
@@ -1031,26 +1035,39 @@ public class Mine extends BaseSTFragement implements View.OnClickListener {
                 final StringBuilder builder = new StringBuilder(m1);
                 builder.append(PreferenceUtil.getUserId(getActivity()));
                 builder.append(m2);
-                new Thread(){
+                new Thread() {
                     @Override
                     public void run() {
                         super.run();
-                        final Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(builder.toString(), DimenUtils.dip2px(getActivity(),240),Color.BLACK,aCache.getAsBitmap("head_"+PreferenceUtil.getUserId(getActivity())));
+                        final Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(builder.toString(), DimenUtils.dip2px(getActivity(), 240), Color.BLACK, aCache.getAsBitmap("head_" + PreferenceUtil.getUserId(getActivity())));
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                LogUtil.e("bitmap：："+bitmap.getByteCount());
+                                LogUtil.e("bitmap：：" + bitmap.getByteCount());
                                 AlertDialog.Builder builder1  = new AlertDialog.Builder(getActivity());
                                 ImageView           imageView = new ImageView(getActivity());
+                                imageView.setScaleX(0.4f);
+                                imageView.setScaleY(0.4f);
+
+                                imageView.setBackgroundResource(R.drawable.shape_corner_white_bg);
+                                int dp10 = DimenUtils.dip2px(getActivity(), 10);
+                                imageView.setPadding(dp10, dp10, dp10, dp10);
                                 imageView.setImageBitmap(bitmap);
                                 AlertDialog dialog = builder1.setView(imageView).create();
                                 dialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
                                 dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
                                 WindowManager.LayoutParams wl = dialog.getWindow().getAttributes();
-                                wl.width = DimenUtils.dip2px(getActivity(), 240);
-                                wl.height = DimenUtils.dip2px(getActivity(), 240);
+                                wl.width = DimenUtils.dip2px(getActivity(), 260);
+                                wl.height = DimenUtils.dip2px(getActivity(), 260);
+
+
                                 dialog.getWindow().setAttributes(wl);
                                 dialog.show();
+                                imageView.animate().setDuration(1000)
+                                        .scaleX(1.0f)
+                                        .scaleY(1.0f)
+                                        .setInterpolator(new BounceInterpolator())
+                                        .start();
                             }
                         });
                     }

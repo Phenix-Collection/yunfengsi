@@ -170,7 +170,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
     private void initView(LayoutInflater inflater) {
         EventBus.getDefault().register(this);//注册事件管理器
         head = (LinearLayout) inflater.inflate(R.layout.head_homepage, null);
-        RecyclerView items = (RecyclerView) head.findViewById(R.id.items);
+        RecyclerView items = head.findViewById(R.id.items);
 
 
         swip = rootView.findViewById(R.id.swip);
@@ -190,7 +190,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
         }
         itemAdapter = new ItemAdapter(itemList);
         items.setAdapter(itemAdapter);
-        banner = (Banner) head.findViewById(R.id.banner);
+        banner = head.findViewById(R.id.banner);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,
                 getResources().getDisplayMetrics().widthPixels * 3 / 8);
         banner.setLayoutParams(layoutParams);
@@ -335,7 +335,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent   intent   = new Intent();
-                TextView textView = (TextView) view.findViewById(R.id.text);
+                TextView textView = view.findViewById(R.id.text);
                 LogUtil.e("首页item点击：：：" + textView.getTag());
                 switch (textView.getTag().toString()) {
                     case "义卖":
@@ -606,6 +606,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                     Glide.with(getActivity()).load(bean.getImage())
                             .asBitmap()
 //                            .skipMemoryCache(true)
+                            .placeholder(R.color.light_huise)
                             .override(DimenUtils.dip2px(getActivity(), 120), DimenUtils.dip2px(getActivity(), 90))
                             .centerCrop()
                             .into(new BitmapImageViewTarget(((ImageView) holder.getView(R.id.hot_two_item_image))) {
@@ -702,7 +703,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                     }
 
                     holder.setText(R.id.zixun_video_title, mApplication.ST(bean.getTitle()));
-                    ((TextView) holder.getView(R.id.zixun_video_title)).setTag(bean.getVideoUrl());
+                    holder.getView(R.id.zixun_video_title).setTag(bean.getVideoUrl());
                     holder.getView(R.id.zixun_video_user).setTag(bean.getActive());
                     holder.getView(R.id.zixun_video_Num).setTag(bean.getImage());
                     ((TextView) holder.getView(R.id.zixun_video_tag)).setText(mApplication.ST(bean.getTag()));
@@ -843,7 +844,7 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
             public void onSuccess(String s, Call call, Response response) {
                 ArrayList list = AnalyticalJSON.getList(s, "activity");
                 if (list != null) {
-                    LinearLayout layout = (LinearLayout) head.findViewById(R.id.layout2);
+                    LinearLayout layout = head.findViewById(R.id.layout2);
 
                     layout.removeViews(1, layout.getChildCount() - 1);
 
@@ -867,11 +868,11 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                 }
                 for (final Object map : Huodonglist) {
                     view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_header2, null);
-                    TextView      title     = (TextView) view.findViewById(R.id.activity_item_title);
-                    TextView      content   = (TextView) view.findViewById(R.id.activity_item_content);
-                    ImageView     imageView = (ImageView) view.findViewById(R.id.activity_item_img);
-                    TextView      peopleNum = (TextView) view.findViewById(R.id.activity_item_peopleNum);
-                    TextView      time      = (TextView) view.findViewById(R.id.activity_item_time);
+                    TextView      title     = view.findViewById(R.id.activity_item_title);
+                    TextView      content   = view.findViewById(R.id.activity_item_content);
+                    ImageView     imageView = view.findViewById(R.id.activity_item_img);
+                    TextView      peopleNum = view.findViewById(R.id.activity_item_peopleNum);
+                    TextView      time      = view.findViewById(R.id.activity_item_time);
                     final HashMap map1      = (HashMap) map;
                     Glide.with(getActivity()).load(map1.get("image1")).asBitmap().centerCrop().override(screenwidth * 9 / 25, screenwidth * 27 / 100).into(new BitmapImageViewTarget(imageView) {
                         @Override
@@ -899,7 +900,6 @@ public class HomePage extends Fragment implements View.OnClickListener, SwipeRef
                             }
                         }
                     });
-
                     layout.findViewById(R.id.more2).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

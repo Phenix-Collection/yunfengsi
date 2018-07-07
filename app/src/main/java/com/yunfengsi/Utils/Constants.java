@@ -12,7 +12,7 @@ public class Constants {
 
     //服务器测试域名
 //    public static final String host_Ip       = "http://yintolo.net";
-    //    //服务器域名
+        //服务器域名
     public static  final String host_Ip="https://indrah.cn";
 //    public static final String oooooo = "/api.php/Api/";
     public static final String oooooo        = "/api.php/EncryptApi/";
@@ -668,6 +668,31 @@ public class Constants {
     //活动快速通道
     public static final String ActivityQuick= host_Ip + oooooo + "Actquick";
 
-//    //管理员订单详情接口
-//    public static final String GoodsAdminDdxq= host_Ip + iiiiii + "Myddxq";
+    //重新绑定手机号码
+    public static final String ResetPhone= host_Ip + oooooo + "Resetphone";
+
+
+    //管理模块  管理员评论回复
+    public static final String ManagerReply= host_Ip + iiiiii + "Plreply";
+    //管理模块  用户搜索列表
+    public static final String UserlistQuery= host_Ip + iiiiii + "Userlistquery";
+
+    //管理模块  用户详细资料
+    public static final String UserInfoForManagerChecking= host_Ip + iiiiii + "Userd";
+
+
+    //管理模块  意见反馈列表
+    public static final String SuggestionList= host_Ip + iiiiii + "Suggest";
+
+    //管理模块  意见反馈受理
+    public static final String SuggestionAccept= host_Ip + iiiiii + "Suggestupdate";
+
+    //判断用户是否有使用快速通道的权限
+    public static final String CheckQuickChannelPermission= host_Ip + oooooo + "Pdactquick";
+
+
+    //绑定皈依卡号
+    public static final String BindRefugeCard= host_Ip + oooooo + "Bdconversion";
+
+
 }

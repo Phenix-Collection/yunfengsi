@@ -269,10 +269,17 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".Setting.gerenshezhi"
+            android:name=".Setting.Setting"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.Month_Detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Managers.ForManager.SuggestManage"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Setting.AccountSecurity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Setting.CountryCode"
@@ -373,9 +380,7 @@
         <activity
             android:name=".Models.TouGao.Photo.PhotoPicker"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Setting.MessageManager"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".Setting.Mine_HuiYuan"
             android:screenOrientation="portrait" />
@@ -836,6 +841,9 @@
             android:name=".Managers.AboutPay.WuLiuDetail"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Managers.ForManager.UserInfoForManagerChecking"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Managers.AboutPay.WuLiuCompanys"
             android:screenOrientation="portrait" />
         <activity
@@ -845,7 +853,9 @@
         <activity
             android:name=".Managers.ForManager.WallPaperManage"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".Managers.ForManager.UserManage"
+            android:screenOrientation="portrait" />
 
         <!--sophix-->
         <meta-data

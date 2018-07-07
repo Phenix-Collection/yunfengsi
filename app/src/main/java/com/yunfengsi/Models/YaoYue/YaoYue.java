@@ -86,10 +86,10 @@ public class YaoYue extends Fragment implements View.OnClickListener, OnRefreshL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_zixun_tougao, container, false);
         getActivity().registerReceiver(receiver, new IntentFilter("yaoyue"));
-        swip = (SwipeRefreshLayout) view.findViewById(R.id.swip);
+        swip = view.findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
+        recyclerView = view.findViewById(R.id.recycle);
 
 
         adapter = new TGAdapter(getActivity(), new ArrayList<HashMap<String, String>>());
@@ -295,9 +295,9 @@ public class YaoYue extends Fragment implements View.OnClickListener, OnRefreshL
                         case "申请":
                             AlertDialog.Builder builder=new AlertDialog.Builder(context);
                             View v=LayoutInflater.from(context).inflate(R.layout.dialog_yue,null);
-                            final EditText phone= (EditText) v.findViewById(R.id.phone);
-                            final EditText people= (EditText) v.findViewById(R.id.peopleNum);
-                            final EditText address= (EditText) v.findViewById(R.id.address);
+                            final EditText phone= v.findViewById(R.id.phone);
+                            final EditText people= v.findViewById(R.id.peopleNum);
+                            final EditText address= v.findViewById(R.id.address);
                             builder.setView(v);
                             final AlertDialog dialog=builder.create();
                             v.findViewById(R.id.cancle).setOnClickListener(new View.OnClickListener() {

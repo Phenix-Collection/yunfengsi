@@ -61,13 +61,13 @@ public class ImagePagerAdapter extends BaseAdapter {
         if (convertView==null){
             holder=new ViewHolder();
             convertView= LayoutInflater.from(context).inflate(R.layout.item_splash,null);
-            holder.imageView=(ImageView)convertView.findViewById(R.id.img);
+            holder.imageView= convertView.findViewById(R.id.img);
             convertView.setTag(holder);
         }else {
             holder=(ViewHolder)convertView.getTag();
         }
 
-        Glide.with(context).load((String)this.imageIdList.get(getPosition(position)))
+        Glide.with(context).load(this.imageIdList.get(getPosition(position)))
                 .override(screenWidth, DimenUtils.dip2px(context,200))
                 .centerCrop().into(holder.imageView);
 

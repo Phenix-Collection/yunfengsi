@@ -130,15 +130,15 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
         holder = new viewHolder();
 
         View view = LayoutInflater.from(context).inflate(R.layout.nianfo_home_zhunian_item, parent, false);
-        holder.container= (RelativeLayout) view.findViewById(R.id.content);
-        holder.time = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_time);
-        holder.username = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_username);
-        holder.head = (ImageView) view.findViewById(R.id.nianfo_home_chanhui_item_head);
-        holder.content = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_content);
-        holder.tip = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_tip);
-        holder.dianzan = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_dianzan);
-        holder.swipeview = (SwipeMenuLayout) view.findViewById(R.id.swipview);
-        holder.text_delete = (TextView) view.findViewById(R.id.delete);
+        holder.container= view.findViewById(R.id.content);
+        holder.time = view.findViewById(R.id.nianfo_home_chanhui_item_time);
+        holder.username = view.findViewById(R.id.nianfo_home_chanhui_item_username);
+        holder.head = view.findViewById(R.id.nianfo_home_chanhui_item_head);
+        holder.content = view.findViewById(R.id.nianfo_home_chanhui_item_content);
+        holder.tip = view.findViewById(R.id.nianfo_home_chanhui_item_tip);
+        holder.dianzan = view.findViewById(R.id.nianfo_home_chanhui_item_dianzan);
+        holder.swipeview = view.findViewById(R.id.swipview);
+        holder.text_delete = view.findViewById(R.id.delete);
 //            view.setTag(holder);
 //        } else {
 //            holder = (viewHolder) view.getTag();
@@ -220,15 +220,15 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                     return;
                 }
                 final View view1 = parent.getChildAt(p - ((ListView) parent).getFirstVisiblePosition());
-                final TextView tip = (TextView) view1.findViewById(R.id.nianfo_home_chanhui_item_tip);
+                final TextView tip = view1.findViewById(R.id.nianfo_home_chanhui_item_tip);
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 final View view = LayoutInflater.from(context).inflate(R.layout.alert_view_nianfo_zhunian, null);
-                final EditText name = (EditText) view.findViewById(R.id.zhunian_alert_name);
+                final EditText name = view.findViewById(R.id.zhunian_alert_name);
                 name.setText(list.get(p).get("pet_name").equals("") ? mApplication.ST("佚名") : list.get(p).get("pet_name"));
-                final EditText fohao = (EditText) view.findViewById(R.id.zhunian_alert_fohao);
+                final EditText fohao = view.findViewById(R.id.zhunian_alert_fohao);
                 fohao.setFocusable(false);
-                final EditText num = (EditText) view.findViewById(R.id.zhunian_alert_num);
-                TextView commit = (TextView) view.findViewById(R.id.zhunian_alert_commit);
+                final EditText num = view.findViewById(R.id.zhunian_alert_num);
+                TextView commit = view.findViewById(R.id.zhunian_alert_commit);
                 builder.setView(view);
                 final AlertDialog dialog = builder.create();
                 dialog.show();
@@ -240,7 +240,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         View view = LayoutInflater.from(context).inflate(R.layout.nianfo_type_dialog, null);
-                        final ListView list = (ListView) view.findViewById(R.id.nianfo_type_listview);
+                        final ListView list = view.findViewById(R.id.nianfo_type_listview);
                         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
                         builder.setView(view);
                         final android.support.v7.app.AlertDialog dialog1 = builder.create();
@@ -303,7 +303,7 @@ public class nianfo_home_zhunian_adapter extends BaseAdapter {
                                     JSONObject js = new JSONObject();
                                     js.put("m_id", Constants.M_id);
                                     js.put("user_id", sp.getString("user_id", ""));
-                                    js.put("gongke_id", (String) fohao.getTag());
+                                    js.put("gongke_id", fohao.getTag());
                                     js.put("num", num.getText().toString());
                                     js.put("recit_id", tip.getTag().toString());
                                     ApisSeUtil.M m=ApisSeUtil.i(js);

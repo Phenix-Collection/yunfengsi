@@ -3,42 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/main_color">
-
-        <TextView
-            android:id="@+id/titletv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#ffffff"
-            android:textSize="18sp" />
-
-        <ImageButton
-            android:id="@+id/xuanzhe_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back_sel"
-            android:onClick="onClick"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/back" />
-
-        <ImageView
-            android:id="@+id/gongyang_detail_fenxiang"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back_sel"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/fenxiang"
-            android:visibility="gone" />
-    </RelativeLayout>
-
+  <include layout="@layout/title_default"/>
 
 
     <ImageView

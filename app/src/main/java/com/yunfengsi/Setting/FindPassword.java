@@ -98,33 +98,33 @@ public class FindPassword extends AppCompatActivity implements View.OnClickListe
             }
         });
         ((TextView) findViewById(R.id.login_wangjimima_title)).setText(mApplication.ST("找回密码"));
-        phoneNum = (EditText) findViewById(R.id.login_wangjimima_phonenum);
+        phoneNum = findViewById(R.id.login_wangjimima_phonenum);
         phoneNum.setHint(mApplication.ST("手机号码"));
-        newWord = (EditText) findViewById(R.id.login_wangjimima_password);
+        newWord = findViewById(R.id.login_wangjimima_password);
         newWord.setHint(mApplication.ST("新密码"));
-        word2 = (EditText) findViewById(R.id.login_wangjimima_password2);
+        word2 = findViewById(R.id.login_wangjimima_password2);
         word2.setHint(mApplication.ST("再次输入密码"));
-        Mid = (EditText) findViewById(R.id.login_wangjimima_Mid);
+        Mid = findViewById(R.id.login_wangjimima_Mid);
         Mid.setHint(mApplication.ST("请输入验证码"));
-        getMid = (TextView) findViewById(R.id.login_wangjimima_getMid);
+        getMid = findViewById(R.id.login_wangjimima_getMid);
         getMid.setText(mApplication.ST("获取验证码"));
-        Button button = (Button) findViewById(R.id.login_wangjimima_submit);
+        Button button = findViewById(R.id.login_wangjimima_submit);
         button.setText(mApplication.ST("提交信息"));
         imm= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         findViewById(R.id.findPassWord_back).setOnClickListener(this);
         button.setOnClickListener(this);
         getMid.setOnClickListener(this);
-        tvPhone = (TextView) findViewById(R.id.zhuce_phone);
+        tvPhone = findViewById(R.id.zhuce_phone);
         tvPhone.setText(mApplication.ST("手机号码"));
-        tvEmail = (TextView) findViewById(R.id.zhuce_email);
+        tvEmail = findViewById(R.id.zhuce_email);
         tvEmail.setText(mApplication.ST("邮箱地址"));
         tvEmail.setOnClickListener(this);
         tvPhone.setOnClickListener(this);
-        yanzhenLayout = (LinearLayout) findViewById(R.id.yanzhen_layout);
-        wordlayout1 = (LinearLayout) findViewById(R.id.wordLayout);
-        wordlayout2 = (LinearLayout) findViewById(R.id.wordLayout2);
+        yanzhenLayout = findViewById(R.id.yanzhen_layout);
+        wordlayout1 = findViewById(R.id.wordLayout);
+        wordlayout2 = findViewById(R.id.wordLayout2);
         tvPhone.performClick();
-        TextView t= (TextView) findViewById(R.id.country_code);
+        TextView t= findViewById(R.id.country_code);
         if(PreferenceUtil.getSettingIncetance(this).getString("country","").equals("")){
             t.setText(mApplication.ST("国家/地区: 中国大陆  +86"));
         }else{

@@ -75,12 +75,12 @@ public class NiCTemple_Activity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_ni_cqian_mhua_t_);
         intent=getIntent();
         sp=getSharedPreferences("user",MODE_PRIVATE);
-        TextView mtvtitle = (TextView) findViewById(R.id.ncqmht_title);
-        medit=(EditText) findViewById(R.id.ncqmht_edittext);
+        TextView mtvtitle = findViewById(R.id.ncqmht_title);
+        medit= findViewById(R.id.ncqmht_edittext);
         medit.setHint(mApplication.ST("请输入您的昵称"));
         medit.setText(mApplication.ST(PreferenceUtil.getUserIncetance(this).getString("pet_name","")));
 //        mspinner=(Spinner)findViewById(R.id.spinner_temple);
-        RelativeLayout mrelativelayout = (RelativeLayout) findViewById(R.id.ncqmht_relativelayout_nc);
+        RelativeLayout mrelativelayout = findViewById(R.id.ncqmht_relativelayout_nc);
         title= getIntent().getStringExtra("title");
         if(title.equals("昵称")){
             String httpcanshu = "pet_name";

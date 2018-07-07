@@ -68,6 +68,7 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
     private static final int WallPaperVerified     = 9;
     private static final int QianDaoToMineActivity = 10;
     private static final int Auction               = 11;
+    private static final int Suggest               = 12;
     private SwipeRefreshLayout swip;
     private MessageAdapter     adapter;
     private int     pageSize   = 10;
@@ -85,23 +86,24 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setBackgroundDrawable(null);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.message_center);
         mApplication.getInstance().addActivity(this);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("通知中心");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());
@@ -157,6 +159,9 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                         case QianDaoToMineActivity:
                             intent.setClass(MessageCenter.this, Mine_activity_list.class);
                             break;
+                        case Suggest:
+                            LogUtil.e("不做跳转");
+                            return;
 
 //                        case mReceiver.QiYuan:
 //                            intent.setClass(MessageCenter.this, BlessTree.class);
@@ -216,6 +221,8 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
 
         @Override
         protected void convert(BaseViewHolder holder, HashMap<String, String> map) {
+            ((TextView) holder.getView(R.id.detail)).setCompoundDrawables(null, null, next, null);
+            ((TextView) holder.getView(R.id.detail)).setText("详情");
             if (map.get("type") != null) {
                 switch (Integer.valueOf(map.get("type"))) {
                     case ZiXun:
@@ -258,6 +265,12 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
                     case QianDaoToMineActivity:
                         holder.setText(R.id.title, "签到");
                         break;
+                    case Suggest:
+
+                        ((TextView) holder.getView(R.id.detail)).setCompoundDrawables(null, null, null, null);
+                        ((TextView) holder.getView(R.id.detail)).setText("阿弥陀佛");
+                        holder.setText(R.id.title, "留言反馈");
+                        break;
 //                    case mReceiver.QiYuan:
 //                        holder.setText(R.id.title, "祈愿树");
 //                        break;
@@ -275,7 +288,6 @@ public class MessageCenter extends AndroidPopupActivity implements SwipeRefreshL
             holder.setText(R.id.content, mApplication.ST(map.get("contents")))
                     .setText(R.id.time, mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))))
                     .setText(R.id.time2, mApplication.ST(TimeUtils.getTrueTimeStr(map.get("time"))));
-            ((TextView) holder.getView(R.id.detail)).setCompoundDrawables(null, null, next, null);
 
 
         }

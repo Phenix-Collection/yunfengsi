@@ -37,7 +37,7 @@ public class AD extends AppCompatActivity {
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
 
         setContentView(R.layout.enter_wrap);
-        webView= (WebView) findViewById(R.id.enter_wrap_web);
+        webView= findViewById(R.id.enter_wrap_web);
         if(getIntent().getBooleanExtra("bangzhu",false)){
             ((TextView) findViewById(R.id.ad_name)).setText(mApplication.ST("帮助"));
             webView.loadUrl("https://indrah.cn/yfs.php/Index/help");

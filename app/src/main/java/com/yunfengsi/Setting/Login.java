@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,19 +103,19 @@ public class Login extends AppCompatActivity implements OnClickListener {
 //        weChatLogin.setOnClickListener(this);
 //        QQLogin = (LinearLayout) findViewById(R.id.QQ);
 //        QQLogin.setOnClickListener(this);
-        TextView zhuce = (TextView) findViewById(R.id.Login_to_zhuce);
+        TextView zhuce = findViewById(R.id.Login_to_zhuce);
         zhuce.setText(mApplication.ST("注册账号"));
         zhuce.setOnClickListener(this);
-        username = (EditText) findViewById(R.id.userName_edt);
+        username = findViewById(R.id.userName_edt);
         username.setHint(mApplication.ST("手机号/PhoneNumber"));
-        password = (EditText) findViewById(R.id.passWord_edt);
+        password = findViewById(R.id.passWord_edt);
         password.setHint(mApplication.ST("密码/Password"));
-        Button login = (Button) findViewById(R.id.Login_login);
+        Button login = findViewById(R.id.Login_login);
         login.setText(mApplication.ST("登录"));
         login.setOnClickListener(this);
 //        back = (ImageView) findViewById(R.id.login_back);
 //        back.setOnClickListener(this);
-        TextView wangjimima = (TextView) findViewById(R.id.Login_wangjimima);
+        TextView wangjimima = findViewById(R.id.Login_wangjimima);
         wangjimima.setText(mApplication.ST("忘记密码?"));
         wangjimima.setOnClickListener(this);
         findViewById(R.id.login_bg).setBackgroundDrawable(new GlideBitmapDrawable(getResources(), ImageUtil.readBitMap(this, R.drawable.backgd)));
@@ -218,12 +217,12 @@ public class Login extends AppCompatActivity implements OnClickListener {
                                     pushService.addAlias(map.get("user_id"), new CommonCallback() {
                                         @Override
                                         public void onSuccess(String s) {
-                                            LogUtil.e("别名绑定成功，哈哈哈哈哈哈哈哈");
+                                            LogUtil.e("别名绑定成功");
                                         }
 
                                         @Override
                                         public void onFailed(String s, String s1) {
-                                            LogUtil.e("别名绑定失败，呜呜呜呜呜呜");
+                                            LogUtil.e("别名绑定失败");
                                         }
                                     });
                                     ed.putString("status", map.get("status"));
@@ -233,13 +232,16 @@ public class Login extends AppCompatActivity implements OnClickListener {
                                 } else if (map != null && "003".equals(map.get("code"))) {
                                     mLoginHandler.sendEmptyMessage(-3);
                                 } else {
+                                    LogUtil.e("map为空或者code验证失败");
                                     mLoginHandler.sendEmptyMessage(-2);
                                 }
                             } else {
+                                LogUtil.e("数据返回空");
                                 mLoginHandler.sendEmptyMessage(-2);
                             }
 
                         } catch (Exception e) {
+                            LogUtil.e("网络接口异常");
                             mLoginHandler.sendEmptyMessage(-2);
                         }
 
@@ -340,10 +342,10 @@ public class Login extends AppCompatActivity implements OnClickListener {
                                         if (map != null) {
                                             ProgressUtil.dismiss();
                                             View view = LayoutInflater.from(Login.this).inflate(R.layout.activity_confirm_dialog, null);
-                                            final WebView web = (WebView) view.findViewById(R.id.web);
-                                            TextView cancle = (TextView) view.findViewById(R.id.cancle);
+                                            final WebView web = view.findViewById(R.id.web);
+                                            TextView cancle = view.findViewById(R.id.cancle);
                                             cancle.setText(mApplication.ST("不同意"));
-                                            final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                                            final TextView baoming = view.findViewById(R.id.baoming);
                                             baoming.setEnabled(false);
                                             final CountDownTimer cdt = new CountDownTimer(10000, 1000) {
                                                 @Override
@@ -554,16 +556,7 @@ public class Login extends AppCompatActivity implements OnClickListener {
                                             }
                                             ed.apply();
 
-                                            if (TextUtils.isEmpty(map.get("phone"))) {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Intent intent = new Intent(Login.this, PhoneCheck.class);
-                                                        startActivity(intent);
 
-                                                    }
-                                                });
-                                            }
                                             mLoginHandler.sendEmptyMessage(-1);
 
 

@@ -49,7 +49,7 @@ public class Verification {
     public static String getLocalMac(Context context) {
         String mac = "";
         // 获取wifi管理器
-        WifiManager wifiMng = (WifiManager) context.getSystemService(WIFI_SERVICE);
+        WifiManager wifiMng = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfor = wifiMng.getConnectionInfo();
         mac = wifiInfor.getMacAddress();
         return mac;

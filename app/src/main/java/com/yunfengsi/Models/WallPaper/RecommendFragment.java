@@ -103,6 +103,7 @@ public class RecommendFragment extends Fragment implements SwipeRefreshLayout.On
 
             Glide.with(getActivity()).load(item.get("image"))
                     .asBitmap()
+                    .placeholder(R.color.light_huise)
                     .override(singleWidth, (singleWidth << 4) / 9)
                     .centerCrop()
                     .into(((ImageView) helper.getView(R.id.image)));

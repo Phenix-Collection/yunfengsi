@@ -51,7 +51,7 @@ public class ChapterAdapter extends RecyclerView.Adapter <ChapterAdapter.Chapter
         TextView text;
         public ChapterViewHolder(View view){
             super(view);
-            text = (TextView)view.findViewById(R.id.chapter_item_text);
+            text = view.findViewById(R.id.chapter_item_text);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

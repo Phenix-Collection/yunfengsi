@@ -2,7 +2,8 @@
 <com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout android:id="@+id/content"
         android:background="@color/white"
@@ -36,11 +37,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:layout_toLeftOf="@+id/time"
             android:layout_toRightOf="@+id/head"
             android:textColor="@color/main_color"
             android:textSize="15dp"
+            android:layout_toLeftOf="@+id/reply"
             tools:text="用户昵称" />
 
         <TextView
@@ -69,11 +69,25 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/petName"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/petName"
+           android:layout_toRightOf="@+id/head"
+            android:layout_toLeftOf="@+id/reply"
+            android:paddingLeft="10dp"
             android:textColor="@color/gray"
             android:textSize="12dp"
             tools:text="2018年7月18日" />
+
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            app:text_color_normal="@color/black"
+            app:text_color_pressed="@color/wordhuise"
+            android:text="回复"
+            android:textSize="16dp"
+            android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
 

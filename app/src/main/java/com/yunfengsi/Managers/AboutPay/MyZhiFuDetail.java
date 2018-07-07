@@ -76,11 +76,11 @@ public class MyZhiFuDetail extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.my_zhifu_detail);
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.back));
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText("订单详情");
         initView();
         snr = getIntent().getStringExtra("snr");
@@ -102,20 +102,20 @@ public class MyZhiFuDetail extends AppCompatActivity implements View.OnClickList
      */
     private void initView() {
 
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setColorSchemeResources(R.color.main_color);
         swip.setOnRefreshListener(this);
-        User = (TextView) findViewById(R.id.username);
-        Address = (TextView) findViewById(R.id.address);
-        TextView phone = (TextView) findViewById(R.id.phone);
-        Time = (TextView) findViewById(R.id.time);
-        Status = (TextView) findViewById(R.id.status);
-        Snr = (TextView) findViewById(R.id.snr);
-        Total_Cost = (TextView) findViewById(R.id.total);
-        TextView youHui = (TextView) findViewById(R.id.youhui);
-        Money_Total = (TextView) findViewById(R.id.money_total);
-        Pay = (TextView) findViewById(R.id.pay);
-        mItemListview listview = (mItemListview) findViewById(R.id.listview);
+        User = findViewById(R.id.username);
+        Address = findViewById(R.id.address);
+        TextView phone = findViewById(R.id.phone);
+        Time = findViewById(R.id.time);
+        Status = findViewById(R.id.status);
+        Snr = findViewById(R.id.snr);
+        Total_Cost = findViewById(R.id.total);
+        TextView youHui = findViewById(R.id.youhui);
+        Money_Total = findViewById(R.id.money_total);
+        Pay = findViewById(R.id.pay);
+        mItemListview listview = findViewById(R.id.listview);
         adapter = new itemAdapter(this, new ArrayList<HashMap<String, String>>());
         listview.setAdapter(adapter);
         isPintuan = getIntent().getBooleanExtra("KT", false);
@@ -362,11 +362,11 @@ public class MyZhiFuDetail extends AppCompatActivity implements View.OnClickList
             if (((mItemListview) parent).isOnMeasure) {
                 return view;
             }
-            TextView name  = (TextView) view.findViewById(R.id.name);
-            TextView cost  = (TextView) view.findViewById(R.id.cost);
-            TextView money = (TextView) view.findViewById(R.id.money);
-            TextView num   = (TextView) view.findViewById(R.id.num);
-            TextView tags  = (TextView) view.findViewById(R.id.tags);
+            TextView name  = view.findViewById(R.id.name);
+            TextView cost  = view.findViewById(R.id.cost);
+            TextView money = view.findViewById(R.id.money);
+            TextView num   = view.findViewById(R.id.num);
+            TextView tags  = view.findViewById(R.id.tags);
             name.setText(map.get("title"));
 //            cost.setText("￥" + map.get("cost"));
 //            cost.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
+import com.yunfengsi.Managers.ForManager.UserInfoForManagerChecking;
 import com.yunfengsi.R;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -46,9 +47,9 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
         setContentView(R.layout.qr_activity);
-        zXingView = (ZXingView) findViewById(R.id.zxingview);
+        zXingView = findViewById(R.id.zxingview);
         zXingView.setDelegate(this);
-        if(getIntent().getStringExtra("id")==null){
+        if (getIntent().getStringExtra("id") == null) {
             zXingView.changeToScanBarcodeStyle();//切换到条形码扫描
         }
         findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
@@ -62,7 +63,7 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
     private void vibrator() {
         //获取系统震动服务
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        if(vibrator!=null){
+        if (vibrator != null) {
             vibrator.vibrate(200);
         }
 
@@ -84,39 +85,39 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
     @Override
     protected void onStart() {
         super.onStart();
-        zXingView.startCamera();
-        zXingView.showScanRect();
-        zXingView.startSpot();
+
     }
 
     @Override
     public void onScanQRCodeSuccess(String result) {
 //扫描成功后调用震动器
         vibrator();
-        if(getIntent().getStringExtra("id")!=null){
+        if (getIntent().getStringExtra("id") != null) {
             //显示扫描结果   活动扫码签到
+            //再次延时1.5秒后启动
+            zXingView.startSpot();
             LogUtil.e(result);
             result = result.substring(16, result.length() - 16);
             LogUtil.e("获取的最终结果：：" + result);
             postSign(result);
-        }else{
+        } else {
             //发货扫条形码
-            Intent intent =new Intent();
-            intent.putExtra("code",result);
-            setResult(0,intent);
+            Intent intent = new Intent();
+            intent.putExtra("code", result);
+            setResult(0, intent);
             finish();
         }
 
 
 
 
-//        Intent intent =new Intent();
-//        intent.putExtra("code",result);
-//        setResult(0,intent);
-//        finish();
-        //再次延时1.5秒后启动
-//        zXingView.startSpot();
-
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        zXingView.startCamera();
+        zXingView.showScanRect();
+        zXingView.startSpot();
     }
 
     @Override
@@ -149,12 +150,19 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
                         if (map != null) {
                             if ("000".equals(map.get("code"))) {
                                 ToastUtil.showToastLong("签到成功", Gravity.CENTER);
+                                // TODO: 2018/7/3 跳转用户详情页查看资料
+                                Intent intent = new Intent(QRActivity.this, UserInfoForManagerChecking.class);
+                                intent.putExtra("msg", map.get("msg"));
+                                startActivity(intent);
+                            } else if ("001".equals(map.get("code"))) {
+                                ToastUtil.showToastLong("该用户的报名还未审核通过", Gravity.CENTER);
                             } else if ("002".equals(map.get("code"))) {
-                                ToastUtil.showToastLong("该用户已经签过到了,请到个人活动查看",Gravity.CENTER);
+                                ToastUtil.showToastLong("该用户已经签过到了", Gravity.CENTER);
                             } else if ("003".equals(map.get("code"))) {
-                                ToastUtil.showToastLong("未查到用户报名信息，该用户尚未报名",Gravity.CENTER);
+                                ToastUtil.showToastLong("未查到用户报名信息，该用户尚未报名", Gravity.CENTER);
                             }
-                        }else{
+
+                        } else {
                             ToastUtil.showToastShort("该活动不支持签到或签到请求失败");
                         }
                     }
@@ -169,7 +177,7 @@ public class QRActivity extends AppCompatActivity implements QRCodeView.Delegate
                     public void onAfter(String s, Exception e) {
                         super.onAfter(s, e);
                         ProgressUtil.dismiss();
-                        finish();
+
                     }
                 });
     }

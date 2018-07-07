@@ -3,16 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#dddddd"
     android:orientation="vertical">
 
    <com.yunfengsi.View.mHeadLineView
        android:layout_width="match_parent"
        android:id="@+id/headline"
-       android:background="@color/white"
        android:layout_height="80dp">
 
    </com.yunfengsi.View.mHeadLineView>
+
+   <View
+       android:layout_width="match_parent"
+       android:layout_height="10dp"
+       android:background="#e6e6e6"/>
 
    <com.ruffian.library.RTextView
        android:id="@+id/change"
@@ -22,7 +25,8 @@
        android:paddingBottom="5dp"
        android:paddingLeft="25dp"
        android:paddingRight="25dp"
-       android:layout_marginTop="10dp"
+       android:layout_marginTop="5dp"
+       android:layout_marginBottom="5dp"
        app:corner_radius="3dp"
        android:textSize="18dp"
        app:text_color_normal="@color/white"
@@ -41,9 +45,6 @@
           android:scrollbars="none"
           android:divider="@null"
           android:dividerHeight="10dp"
-          android:paddingTop="10dp"
-          android:paddingRight="10dp"
-          android:paddingLeft="10dp"
           android:id="@+id/fund_listview">
 
       </com.yunfengsi.View.LoadMoreListView>

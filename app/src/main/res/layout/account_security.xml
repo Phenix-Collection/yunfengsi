@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:showDividers="middle|end"
+    android:divider="@drawable/mdivider"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/title_default"/>
+
+    <TextView
+        android:id="@+id/findPassword"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:text="修改密码"
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+    <TextView
+        android:id="@+id/resetPhone"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:padding="10dp"
+        android:text="更换手机号"
+        android:textColor="@color/wordblack"
+        android:textSize="18dp" />
+
+</LinearLayout>

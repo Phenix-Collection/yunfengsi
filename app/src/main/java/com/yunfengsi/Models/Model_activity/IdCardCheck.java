@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -72,9 +73,9 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.idcard_check);
 
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("资料完善");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -415,13 +416,18 @@ public class IdCardCheck extends AppCompatActivity implements View.OnClickListen
                                 HashMap<String,String > map=AnalyticalJSON.getHashMap(s);
                                 if(map!=null){
                                     if(map.get("image_status")!=null&&map.get("words_result")!=null){
-                                        ToastUtil.showToastShort("身份证识别成功，请继续填写相关资料");
                                         HashMap<String,String > map1=AnalyticalJSON.getHashMap(map.get("words_result"));
-                                        trueName.setText(AnalyticalJSON.getHashMap(map1.get("姓名")).get("words"));
-                                        edtCard.setText(AnalyticalJSON.getHashMap(map1.get("公民身份号码")).get("words"));
-                                        edtSex.setText(AnalyticalJSON.getHashMap(map1.get("性别")).get("words"));
+                                        if(!TextUtils.isEmpty(AnalyticalJSON.getHashMap(map1.get("公民身份号码")).get("words"))){
+                                            ToastUtil.showToastShort("身份证识别成功，请继续填写相关资料");
+                                            trueName.setText(AnalyticalJSON.getHashMap(map1.get("姓名")).get("words"));
+                                            edtCard.setText(AnalyticalJSON.getHashMap(map1.get("公民身份号码")).get("words"));
+                                            edtSex.setText(AnalyticalJSON.getHashMap(map1.get("性别")).get("words"));
 //                                        edtAddress.setText(AnalyticalJSON.getHashMap(map1.get("住址")).get("words"));
-                                        edtNation.setText(AnalyticalJSON.getHashMap(map1.get("民族")).get("words"));
+                                            edtNation.setText(AnalyticalJSON.getHashMap(map1.get("民族")).get("words"));
+                                        }else{
+                                            ToastUtil.showToastShort("图片识别失败，请上传正确的身份证照后重试");
+                                        }
+
                                     }else{
                                         ToastUtil.showToastShort("图片识别失败，请上传正确的身份证照后重试");
                                     }

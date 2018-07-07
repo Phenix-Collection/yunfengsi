@@ -64,7 +64,7 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.wall_paper_upload);
 
 
-        GridView grid = (GridView) findViewById(R.id.tougao_grid);
+        GridView grid = findViewById(R.id.tougao_grid);
         classfy = findViewById(R.id.spinner_classfy);
         mImages.add("add");
         adpter = new TouGaoGridAdapter(this, mImages, true, allowChooseNum);
@@ -148,7 +148,7 @@ public class WallPaperUpload extends AppCompatActivity implements View.OnClickLi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long i) {
 
                 id = classification.keyAt(classification.indexOfValue(((String) parent.getSelectedItem())));
-                LogUtil.e("选中id：：" + id + "  typeName：：：" + ((String) parent.getSelectedItem()));
+                LogUtil.e("选中id：：" + id + "  typeName：：：" + parent.getSelectedItem());
             }
 
             @Override

@@ -71,27 +71,27 @@ public class AuctionList extends AppCompatActivity implements SwipeRefreshLayout
         setContentView(R.layout.message_center);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         EventBus.getDefault().register(this);
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("义卖");
         ((TextView) findViewById(R.id.handle_right)).setText("竞拍记录");
-        ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.handle_right)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+        findViewById(R.id.handle_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AuctionList.this,Bid_History_Mine.class));
             }
         });
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         adapter = new MessageAdapter(this, new ArrayList<HashMap<String, String>>());

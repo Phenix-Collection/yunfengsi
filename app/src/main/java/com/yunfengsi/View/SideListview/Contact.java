@@ -59,11 +59,11 @@ public class Contact extends AppCompatActivity implements View.OnClickListener{
 		
 		pinyinComparator = new PinyinComparator();
 
-		SideBar   sideBar = (SideBar) findViewById(R.id.sidrbar);
-		TextView  dialog  = (TextView) findViewById(R.id.dialog);
-		ImageView back    = (ImageView) findViewById(R.id.back);
+		SideBar   sideBar = findViewById(R.id.sidrbar);
+		TextView  dialog  = findViewById(R.id.dialog);
+		ImageView back    = findViewById(R.id.back);
 		back.setOnClickListener(this);
-		fasong= (TextView) findViewById(R.id.fasong);
+		fasong= findViewById(R.id.fasong);
 		fasong.setText(mApplication.ST("邀请"));
 		fasong.setOnClickListener(this);
 		sideBar.setTextView(dialog);
@@ -82,7 +82,7 @@ public class Contact extends AppCompatActivity implements View.OnClickListener{
 			}
 		});
 		
-		sortListView = (ListView) findViewById(R.id.country_lvcountry);
+		sortListView = findViewById(R.id.country_lvcountry);
 		sortListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -118,7 +118,7 @@ public class Contact extends AppCompatActivity implements View.OnClickListener{
 		sortListView.setAdapter(adapter);
 
 
-		ClearEditText mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
+		ClearEditText mClearEditText = findViewById(R.id.filter_edit);
 		mClearEditText.setHint(mApplication.ST("请输入联系人姓名关键字"));
 		//�������������ֵ�ĸı�����������
 		mClearEditText.addTextChangedListener(new TextWatcher() {

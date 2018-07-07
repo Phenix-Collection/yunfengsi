@@ -1,57 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:showDividers="middle|end"
+    android:layout_height="match_parent"
     android:divider="@drawable/mdivider"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:showDividers="middle|end">
 
 
-    <include layout="@layout/title_default"/>
+    <include layout="@layout/title_default" />
+
+    <TextView
+        android:id="@+id/user_manage"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:drawableRight="@drawable/next"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:text="用户管理"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
 
     <TextView
         android:id="@+id/comment_manage"
-        android:text="评论管理"
-        android:textColor="@color/black"
-        android:textSize="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:drawableRight="@drawable/next"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
-        android:background="@drawable/layout_bg_sel"
-        android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:text="评论管理"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
 
     <TextView
         android:id="@+id/wish_manage"
-        android:text="祈愿管理"
-        android:textColor="@color/black"
-        android:textSize="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:drawableRight="@drawable/next"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
-        android:background="@drawable/layout_bg_sel"
-        android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:text="祈愿管理"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
 
     <TextView
         android:id="@+id/auciton_manage"
-        android:text="发货管理"
-        android:textColor="@color/black"
-        android:textSize="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:drawableRight="@drawable/next"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
-        android:background="@drawable/layout_bg_sel"
-        android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:text="发货管理"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
 
     <TextView
         android:id="@+id/wallpaper_manage"
-        android:text="壁纸管理"
-        android:textColor="@color/black"
-        android:textSize="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:drawableRight="@drawable/next"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
-        android:background="@drawable/layout_bg_sel"
+        android:text="壁纸管理"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/suggest_manage"
         android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:layout_height="45dp"
+        android:background="@drawable/layout_bg_sel"
+        android:drawableRight="@drawable/next"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:text="意见反馈管理"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
 
 </LinearLayout>

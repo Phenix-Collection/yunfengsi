@@ -59,11 +59,11 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
         characterParser = CharacterParser.getInstance();
 
 
-        SideBar   sideBar = (SideBar) findViewById(R.id.sidrbar);
-        TextView  dialog  = (TextView) findViewById(R.id.dialog);
-        ImageView back    = (ImageView) findViewById(R.id.back);
+        SideBar   sideBar = findViewById(R.id.sidrbar);
+        TextView  dialog  = findViewById(R.id.dialog);
+        ImageView back    = findViewById(R.id.back);
         back.setOnClickListener(this);
-        TextView title = (TextView) findViewById(R.id.title);
+        TextView title = findViewById(R.id.title);
         title.setText(mApplication.ST("国家代码"));
         sideBar.setTextView(dialog);
 
@@ -92,7 +92,7 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
             }
         });
 
-        sortListView = (RecyclerView) findViewById(R.id.country_lvcountry);
+        sortListView = findViewById(R.id.country_lvcountry);
         sortListView.setLayoutManager(new LinearLayoutManager(this));
         sortListView.addItemDecoration(new mItemDeraction(2, Color.parseColor("#aaaaaa")));
 
@@ -118,7 +118,7 @@ public class CountryCode extends AppCompatActivity implements View.OnClickListen
         // ����a-z��������Դ����
 
 
-        ClearEditText mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
+        ClearEditText mClearEditText = findViewById(R.id.filter_edit);
         mClearEditText.setHint(mApplication.ST("搜索"));
         Drawable d = ContextCompat.getDrawable(this, R.drawable.search_gray);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 20), DimenUtils.dip2px(this, 20));

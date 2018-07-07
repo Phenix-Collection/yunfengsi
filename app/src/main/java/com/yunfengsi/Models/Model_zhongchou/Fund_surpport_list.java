@@ -147,17 +147,17 @@ public class Fund_surpport_list extends AppCompatActivity implements LoadMoreLis
     }
 
     private void initView() {
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setImageResource(R.drawable.back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText(mApplication.ST("爱心动态"));
 
-        listView = (LoadMoreListView) findViewById(R.id.fund_people_list);
+        listView = findViewById(R.id.fund_people_list);
         listView.setLoadMoreListen(this);
-        t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
-        p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
+        t = listView.footer.findViewById(R.id.load_more_text);
+        p = listView.footer.findViewById(R.id.load_more_bar);
 
     }
 
@@ -204,11 +204,11 @@ public class Fund_surpport_list extends AppCompatActivity implements LoadMoreLis
             if (view == null) {
                 holder = new viewHolder();
                 view = LayoutInflater.from(context).inflate(R.layout.fund_list_item, parent, false);
-                holder.head = (AvatarImageView) view.findViewById(R.id.fund_list_item_head);
-                holder.name = (TextView) view.findViewById(R.id.fund_list_item_name);
-                holder.money = (TextView) view.findViewById(R.id.fund_list_item_money);
-                holder.time = (TextView) view.findViewById(R.id.fund_list_item_time);
-                holder.level= (ImageView) view.findViewById(R.id.level);
+                holder.head = view.findViewById(R.id.fund_list_item_head);
+                holder.name = view.findViewById(R.id.fund_list_item_name);
+                holder.money = view.findViewById(R.id.fund_list_item_money);
+                holder.time = view.findViewById(R.id.fund_list_item_time);
+                holder.level= view.findViewById(R.id.level);
                 view.setTag(holder);
             } else {
                 holder = (viewHolder) view.getTag();

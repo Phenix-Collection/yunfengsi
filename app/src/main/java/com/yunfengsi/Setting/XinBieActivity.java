@@ -37,14 +37,14 @@ public class XinBieActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_xin_bie);
         sp=getSharedPreferences("user",MODE_PRIVATE);
         intent=getIntent();
-        RadioGroup mrgroup = (RadioGroup) findViewById(R.id.radioGroup);
+        RadioGroup mrgroup = findViewById(R.id.radioGroup);
         mrgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 //获取变更后的选中项的ID
                 int radioButtonId = radioGroup.getCheckedRadioButtonId();
                 //根据ID获取RadioButton的实例
-                RadioButton rb = (RadioButton)XinBieActivity.this.findViewById(radioButtonId);
+                RadioButton rb = XinBieActivity.this.findViewById(radioButtonId);
                 //更新文本内容，以符合选中项
                xinbie=rb.getText().toString();
             }

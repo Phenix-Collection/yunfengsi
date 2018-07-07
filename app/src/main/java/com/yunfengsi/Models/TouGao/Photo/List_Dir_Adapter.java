@@ -56,10 +56,10 @@ public class List_Dir_Adapter extends BaseAdapter {
         if (view == null) {
             holder = new viewHolder();
             view = inflater.inflate(R.layout.list_dir_item, parent, false);
-            holder.name = (TextView) view.findViewById(R.id.tv_list_dir_item_name);
-            holder.num = (TextView) view.findViewById(R.id.tv_list_dir_item_num);
-            holder.fImage = (ImageView) view.findViewById(R.id.image_list_dir_item_fimg);
-            holder.check = (ImageView) view.findViewById(R.id.img_list_dir_item_check);
+            holder.name = view.findViewById(R.id.tv_list_dir_item_name);
+            holder.num = view.findViewById(R.id.tv_list_dir_item_num);
+            holder.fImage = view.findViewById(R.id.image_list_dir_item_fimg);
+            holder.check = view.findViewById(R.id.img_list_dir_item_check);
             view.setTag(holder);
         } else {
             holder = (viewHolder) view.getTag();

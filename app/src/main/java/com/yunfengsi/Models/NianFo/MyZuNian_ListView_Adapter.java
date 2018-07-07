@@ -48,17 +48,17 @@ public class MyZuNian_ListView_Adapter extends BaseAdapter {
         if(view==null){
             hoder =new Hoder();
             view= LayoutInflater.from(context).inflate(R.layout.list,null);
-            hoder.mlinearLayout=((LinearLayout) view.findViewById(R.id.myzunian_layout));
+            hoder.mlinearLayout= view.findViewById(R.id.myzunian_layout);
             view.setTag(hoder);
         }else {
             hoder =(Hoder) view.getTag();
         }
         hoder.mlinearLayout.removeAllViews();
                 View view1 = LayoutInflater.from(context).inflate(R.layout.list_itme, null);
-               TextView tvname = (TextView) view1.findViewById(R.id.tv_myzunian_listitme_name);
-               TextView tvtype = (TextView) view1.findViewById(R.id.tv_myzunian_listitme_type);
-               TextView tvnum = (TextView) view1.findViewById(R.id.tv_myzunian_listitme_num);
-               TextView tvtime=(TextView)view1.findViewById(R.id.tv_myzunian_listitme_time);
+               TextView tvname = view1.findViewById(R.id.tv_myzunian_listitme_name);
+               TextView tvtype = view1.findViewById(R.id.tv_myzunian_listitme_type);
+               TextView tvnum = view1.findViewById(R.id.tv_myzunian_listitme_num);
+               TextView tvtime= view1.findViewById(R.id.tv_myzunian_listitme_time);
                 hoder.mlinearLayout.addView(view1);
         tvname.setText(list.get(i).get("pet_name"));
         SpannableString ss=new SpannableString("助念 "+list.get(i).get("ba_name"));

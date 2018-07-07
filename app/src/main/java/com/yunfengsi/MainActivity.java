@@ -52,7 +52,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.taobao.sophix.SophixManager;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -62,7 +61,7 @@ import com.yunfengsi.Audio_BD.WakeUp.IWakeupListener;
 import com.yunfengsi.Audio_BD.WakeUp.MyWakeup;
 import com.yunfengsi.Audio_BD.WakeUp.SimpleWakeupListener;
 import com.yunfengsi.Deamon.KeepLiveWakeLockReceiver;
-import com.yunfengsi.Fragment.GongYangActivity;
+import com.yunfengsi.Fragment.GongYangFragment;
 import com.yunfengsi.Fragment.HomePage;
 import com.yunfengsi.Fragment.Mine;
 import com.yunfengsi.Managers.MessageCenter;
@@ -75,8 +74,8 @@ import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Models.NianFo.NianFo;
 import com.yunfengsi.Models.ZiXun_Detail;
 import com.yunfengsi.Setting.AD;
-import com.yunfengsi.Setting.PhoneCheck;
 import com.yunfengsi.Setting.Search;
+import com.yunfengsi.Setting.Setting;
 import com.yunfengsi.ThirdPart.Push.mReceiver;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
@@ -126,15 +125,12 @@ public class MainActivity extends AppCompatActivity {
     private myHomePagerAdapter adapter;
     private SharedPreferences  sp;
     public  List<Fragment>     list;
-    private ImageView          add;
-    private PopupWindow        pp;//加号弹出窗口
-    private ShareAction        action;
-    private AlertDialog        backDialog;
-    private String             appUrl;
+    private ImageView          add, search;
+    private PopupWindow pp;//加号弹出窗口
+    private String      appUrl;
     private String jishuSupprot = null;
     private String share        = null;
     public  String SMS          = null;
-    private Uri   contactData;
     private UMWeb umWeb;
     private boolean needExit = false;
     public static MainActivity                       activity;
@@ -146,6 +142,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        LayoutInflaterCompat.setFactory2(LayoutInflater.from(this), new LayoutInflater.Factory2() {
+//            @Override
+//            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+//                switch (name) {
+//
+//                    case "TextView":
+//                        AppCompatTextView textView=new AppCompatTextView(context,attrs);
+//                        textView.setTypeface(Typeface.createFromAsset(getAssets(),"font/ss.ttf"));
+//                        return textView;
+//                    default:
+//                        return getDelegate().createView(parent,name,context,attrs);
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public View onCreateView(String name, Context context, AttributeSet attrs) {
+//                return null;
+//            }
+//        });
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -230,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
         startWakeUp();
 
     }
+
     //开启语音唤醒
     public void startWakeUp() {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -260,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
                                 if (!"".equals(map.get("gg_image"))) {
                                     android.support.v7.app.AlertDialog.Builder b      = new android.support.v7.app.AlertDialog.Builder(MainActivity.this);
                                     View                                       view   = LayoutInflater.from(MainActivity.this).inflate(R.layout.main_ad_dialog, null);
-                                    ImageView                                  cancle = (ImageView) view.findViewById(R.id.cancle);
-                                    final ImageView                            image  = (ImageView) view.findViewById(R.id.main_ad_image);
+                                    ImageView                                  cancle = view.findViewById(R.id.cancle);
+                                    final ImageView                            image  = view.findViewById(R.id.main_ad_image);
                                     b.setView(view);
                                     dialog = b.create();
                                     cancle.setOnClickListener(new View.OnClickListener() {
@@ -357,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                                     Glide.with(MainActivity.this).load(map.get("gg_image"))
                                             .asBitmap()
                                             .skipMemoryCache(true)
-                                            .override(getResources().getDisplayMetrics().widthPixels*7/10,getResources().getDisplayMetrics().widthPixels*7*16/90)
+                                            .override(getResources().getDisplayMetrics().widthPixels * 7 / 10, getResources().getDisplayMetrics().widthPixels * 7 * 16 / 90)
                                             .centerCrop()
                                             .into(new SimpleTarget<Bitmap>() {
                                                 @Override
@@ -462,7 +480,6 @@ public class MainActivity extends AppCompatActivity {
 //        if (iWakeupListener.syntherizer != null) {
 //            iWakeupListener.syntherizer.release();
 //        }
-
     }
 
     @Override
@@ -519,19 +536,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void checkUserinfo() {
-        if (!sp.getString("user_id", "").equals("")) {
-//            if (sp.getString("pet_name", "").equals("") || sp.getString("sex", "").equals("")) {
-//                Intent intent = new Intent(this, Mine_gerenziliao.class);
-//                startActivity(intent);
-//            }
-            if (sp.getString("phone", "").equals("")) {
-                Intent intent = new Intent(this, PhoneCheck.class);
-                startActivity(intent);
-            }
-        }
-    }
-
 
     /*
      通知到达事件
@@ -539,7 +543,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public static class NoticeEvent {
 
-        private int action=0;
+        private int action = 0;
 
         public void setAction(int action) {
             this.action = action;
@@ -552,12 +556,12 @@ public class MainActivity extends AppCompatActivity {
        */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNoticeArrived(NoticeEvent event) {
-        if(event.action==2){
+        if (event.action == 2) {
             myWakeup.stop();
 
-        }else if(event.action==1){
+        } else if (event.action == 1) {
             startWakeUp();
-        }else {
+        } else {
             LogUtil.e("改变notice图标");
             if (notice != null) {
                 notice.setSelected(true);
@@ -618,10 +622,20 @@ public class MainActivity extends AppCompatActivity {
                 SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
                 SHARE_MEDIA.SINA
         };
-        add = (ImageView) findViewById(R.id.title_image3);
+        add = findViewById(R.id.title_image3);
+        findViewById(R.id.setting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //处于我的界面
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, Setting.class);
+                startActivity(intent);
+            }
+        });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 View view = LayoutInflater.from(mApplication.getInstance()).inflate(R.layout.home_add_layout, null);
                 if (pp == null) {
                     pp = new PopupWindow(view);
@@ -640,7 +654,7 @@ public class MainActivity extends AppCompatActivity {
                 initPopupWindow(view);
             }
         });
-        notice = (ImageView) findViewById(R.id.mine_pinglun);
+        notice = findViewById(R.id.mine_pinglun);
         notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -656,15 +670,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        ImageView back = (ImageView) findViewById(R.id.title_back);
-        title = (TextView) findViewById(R.id.title_title);
-        pager = (ViewPager) findViewById(R.id.home_viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.home_bottom_tablayout);
+        ImageView back = findViewById(R.id.title_back);
+        title = findViewById(R.id.title_title);
+        pager = findViewById(R.id.home_viewpager);
+        tabLayout = findViewById(R.id.home_bottom_tablayout);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        ImageView img = ((ImageView) findViewById(R.id.title_image2));
-        Glide.with(this).load(R.drawable.search).override(DimenUtils.dip2px(this, 40), DimenUtils.dip2px(this, 40)).into(img);
-        img.setVisibility(View.VISIBLE);
-        img.setOnClickListener(new View.OnClickListener() {
+        search = findViewById(R.id.title_image2);
+        Glide.with(this).load(R.drawable.search).override(DimenUtils.dip2px(this, 40), DimenUtils.dip2px(this, 40)).into(search);
+        search.setVisibility(View.VISIBLE);
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mApplication.getInstance(), Search.class);
@@ -677,7 +691,7 @@ public class MainActivity extends AppCompatActivity {
 //        Fragment f = new ZiXun();
         Fragment f  = new HomePage();
         Fragment f1 = new activity_fragment();
-        Fragment f2 = new GongYangActivity();
+        Fragment f2 = new GongYangFragment();
         Fragment f3 = new FundFragment();
         Fragment f4 = new Mine();
         list.add(f);
@@ -720,6 +734,10 @@ public class MainActivity extends AppCompatActivity {
                         title.setText(ST("助学"));
                         break;
                     case 4:
+                        //进入我的 切换右上角图标
+                        search.setVisibility(View.GONE);
+                        add.setVisibility(View.GONE);
+                        findViewById(R.id.setting).setVisibility(View.VISIBLE);
                         title.setText(ST("我的"));
                         break;
 
@@ -729,6 +747,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 4) {
+                    //退出我的 切换右上角图标
+                    search.setVisibility(View.VISIBLE);
+                    add.setVisibility(View.VISIBLE);
+                    findViewById(R.id.setting).setVisibility(View.GONE);
+                }
                 ((TextView) tab.getCustomView().findViewById(R.id.home_tab_text)).setTextColor(getResources().getColor(R.color.gray));
             }
 
@@ -759,11 +783,11 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog   dialog  = builder.create();
         final View          view    = LayoutInflater.from(getApplicationContext()).inflate(R.layout.update_alet_layout, null);
         ((TextView) view.findViewById(R.id.version_update_title)).setText(ST("检测到新版本：" + appname.substring(Constants.NAME_CHAR_NUM, appname.length() - 4)));
-        final TextView textView = (TextView) view.findViewById(R.id.version_update_content);
+        final TextView textView = view.findViewById(R.id.version_update_content);
         textView.setText(ST(content.equals("") ? "是否需要更新？" : content));
-        TextView update = (TextView) view.findViewById(R.id.version_update_update);
+        TextView update = view.findViewById(R.id.version_update_update);
         update.setText(ST("更新"));
-        TextView cancle = (TextView) view.findViewById(R.id.version_update_cancel);
+        TextView cancle = view.findViewById(R.id.version_update_cancel);
         cancle.setText(ST("取消"));
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -895,7 +919,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initPopupWindow(View v) {
-        LinearLayout layout_info = (LinearLayout) v.findViewById(R.id.layout_info);
+        LinearLayout layout_info = v.findViewById(R.id.layout_info);
         layout_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -918,10 +942,10 @@ public class MainActivity extends AppCompatActivity {
                                 HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
                                 if (map != null && !map.get("aboutapp").equals("")) {
                                     View          view   = LayoutInflater.from(MainActivity.this).inflate(R.layout.activity_confirm_dialog, null);
-                                    final WebView web    = (WebView) view.findViewById(R.id.web);
-                                    TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                                    final WebView web    = view.findViewById(R.id.web);
+                                    TextView      cancle = view.findViewById(R.id.cancle);
                                     cancle.setText(mApplication.ST("确定"));
-                                    final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                                    final TextView baoming = view.findViewById(R.id.baoming);
                                     baoming.setEnabled(false);
                                     baoming.setVisibility(View.GONE);
 
@@ -961,7 +985,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        LinearLayout layout1 = (LinearLayout) v.findViewById(R.id.layout1);
+        LinearLayout layout1 = v.findViewById(R.id.layout1);
         layout1.setOnClickListener(new View.OnClickListener()
 
         {
@@ -992,7 +1016,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        LinearLayout layout2 = (LinearLayout) v.findViewById(R.id.layout2);
+        LinearLayout layout2 = v.findViewById(R.id.layout2);
         layout2.setOnClickListener(new View.OnClickListener()
 
         {
@@ -1004,7 +1028,7 @@ public class MainActivity extends AppCompatActivity {
                 pp.dismiss();
             }
         });
-        LinearLayout layout3 = (LinearLayout) v.findViewById(R.id.layout3);
+        LinearLayout layout3 = v.findViewById(R.id.layout3);
         ((TextView) layout3.findViewById(R.id.jishuzhichi)).
 
                 setText(ST("技术支持"));
@@ -1028,7 +1052,7 @@ public class MainActivity extends AppCompatActivity {
                 pp.dismiss();
             }
         });
-        LinearLayout layout4 = (LinearLayout) v.findViewById(R.id.layout4);
+        LinearLayout layout4 = v.findViewById(R.id.layout4);
         ((TextView) layout4.findViewById(R.id.fenxiang)).
 
                 setText(ST("分享"));
@@ -1058,7 +1082,7 @@ public class MainActivity extends AppCompatActivity {
                 pp.dismiss();
             }
         });
-        LinearLayout layout5 = (LinearLayout) v.findViewById(R.id.layout5);
+        LinearLayout layout5 = v.findViewById(R.id.layout5);
         ((TextView) layout5.findViewById(R.id.invite)).
 
                 setText(ST("邀请好友"));
@@ -1124,7 +1148,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+//        //去除首页背景绘制
+//        getWindow().setBackgroundDrawable(null);
     }
 
     @Override
@@ -1154,42 +1179,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (intent != null) {
-//            LogUtil.e("主页：：：" + intent.getExtras() + "    " + intent.getStringExtra("type")+"  id:::"+intent.getStringExtra("id"));
-//            String type = intent.getStringExtra("type");//type  1,资讯，2活动，3，供养，4，助学，5红包
-//            if (type != null) {
-//                switch (type) {
-//                    case "1":
-//                        intent.setClass(this, ZiXun_Detail.class);
-//                        break;
-//                    case "2":
-//                        intent.setClass(this, ActivityDetail.class);
-//                        break;
-//                    case "3":
-//                        intent.setClass(this, GongYangDetail.class);
-//                        break;
-//                    case "4":
-//                        intent.setClass(this, FundingDetailActivity.class);
-//                        break;
-//                    case "5":
-//                        intent.setClass(this, WebInteraction.class);
-//                        break;
 //
-//                }
-//                //TODO：动画等耗时操作结束后再调用checkYYB(),一般写在starActivity前即可
-//                MLinkAPIFactory.createAPI(this).checkYYB(this, new YYBCallback() {
-//                    @Override
-//                    public void onFailed(Context context) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSuccess() {
-//
-//                    }
-//                });
-//                startActivity(intent);
-//                return;
-//            }
 
             boolean isExit = intent.getBooleanExtra(TAG_EXIT, false);
             if (isExit) {
@@ -1200,9 +1190,7 @@ public class MainActivity extends AppCompatActivity {
                 pager.setCurrentItem(pos);
             }
         }
-//        else {
-//            MLinkAPIFactory.createAPI(this).checkYYB();
-//        }
+
     }
 
     private void imgReset(WebView webView) {
@@ -1242,6 +1230,18 @@ public class MainActivity extends AppCompatActivity {
                 "}" +
                 "})()"
         );
+    }
+
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (BuildConfig.DEBUG && level == TRIM_MEMORY_UI_HIDDEN) {
+            LogUtil.e("进入后台");
+        }
+
+        Glide.get(this).trimMemory(level);
+
     }
 
 

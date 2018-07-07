@@ -126,34 +126,34 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
             }
         });
-        tvPhone = (TextView) findViewById(R.id.zhuce_phone);
+        tvPhone = findViewById(R.id.zhuce_phone);
         tvPhone.setText(mApplication.ST("手机注册"));
-        tvEmail = (TextView) findViewById(R.id.zhuce_email);
+        tvEmail = findViewById(R.id.zhuce_email);
         tvEmail.setText(mApplication.ST("邮箱注册"));
         tvEmail.setOnClickListener(this);
         tvPhone.setOnClickListener(this);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        yanzhenLayout = (LinearLayout) findViewById(R.id.yanzhen_layout);
-        password2 = (EditText) findViewById(R.id.Zhuce_password2);
+        yanzhenLayout = findViewById(R.id.yanzhen_layout);
+        password2 = findViewById(R.id.Zhuce_password2);
         password2.setHint(mApplication.ST("确认密码/Password"));
-        ImageView back = (ImageView) findViewById(R.id.zhuce_back);
+        ImageView back = findViewById(R.id.zhuce_back);
         back.setOnClickListener(this);
-        ImageView headImage = (ImageView) findViewById(R.id.activity_register_imageview);
-        phonenum = (EditText) findViewById(R.id.Zhuce_phonenum);
+        ImageView headImage = findViewById(R.id.activity_register_imageview);
+        phonenum = findViewById(R.id.Zhuce_phonenum);
         phonenum.setHint(mApplication.ST("手机号码/PhoneNumber"));
-        password = (EditText) findViewById(R.id.Zhuce_password);
+        password = findViewById(R.id.Zhuce_password);
         password.setHint(mApplication.ST("密码/Password"));
-        Mid = (EditText) findViewById(R.id.Zhuce_Mid);
+        Mid = findViewById(R.id.Zhuce_Mid);
         Mid.setHint(mApplication.ST("验证码/Code"));
-        getMid = (TextView) findViewById(R.id.Zhuce_getMid);
+        getMid = findViewById(R.id.Zhuce_getMid);
         getMid.setHint(mApplication.ST("获取验证码"));
         getMid.setOnClickListener(this);
-        Button submit = (Button) findViewById(R.id.Zhuce_submit);
+        Button submit = findViewById(R.id.Zhuce_submit);
         submit.setText(mApplication.ST("注册"));
         submit.setOnClickListener(this);
         headImage.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.indra));
         tvPhone.performClick();
-        TextView t= (TextView) findViewById(R.id.country_code);
+        TextView t= findViewById(R.id.country_code);
         if(PreferenceUtil.getSettingIncetance(this).getString("country","").equals("")){
             t.setText(mApplication.ST("国家/地区: 中国大陆  +86"));
         }else{
@@ -362,10 +362,10 @@ public class ZhuCe extends AppCompatActivity implements View.OnClickListener {
                                     public void run() {
                                         if (map != null) {
                                             View view = LayoutInflater.from(ZhuCe.this).inflate(R.layout.activity_confirm_dialog, null);
-                                            final WebView web = (WebView) view.findViewById(R.id.web);
-                                            TextView cancle = (TextView) view.findViewById(R.id.cancle);
+                                            final WebView web = view.findViewById(R.id.web);
+                                            TextView cancle = view.findViewById(R.id.cancle);
                                             cancle.setText(mApplication.ST("不同意"));
-                                            final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                                            final TextView baoming = view.findViewById(R.id.baoming);
                                             baoming.setEnabled(false);
                                             final CountDownTimer cdt = new CountDownTimer(10000, 1000) {
                                                 @Override

@@ -16,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -70,32 +71,29 @@ import static com.yunfengsi.Utils.PhotoUtilForWeb.CHOOSEPICTUE;
 import static com.yunfengsi.Utils.PhotoUtilForWeb.TAKEPICTURE;
 
 public class GerenxinxiActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView mtvxinbie;     //性别
-    private TextView mtvnc;        //昵称
-    private TextView mtvphone;   //手机号
-    //    private TextView mtvid;     //身份证号
-//    private TextView mtvsimiao;  //所属寺庙
-    private TextView mtvyonghuleixing;   //用户类型
-    //    private TextView mtvtime;      //注册时间
-    private AvatarImageView mcircleview; //RoundedImageView头像
+    private TextView          mtvxinbie;     //性别
+    private TextView          mtvnc;        //昵称
+    private TextView          mtvphone;   //手机号
+    private TextView          mtvyonghuleixing;   //用户类型
+    private AvatarImageView   mcircleview; //RoundedImageView头像
     private SharedPreferences sp;
-    private String xb;
+    private String            xb;
     private HashMap<String, String> map, moreMap = null;
-    private int screenWidth;
+    private int      screenWidth;
     private TextView tvPerfect;
     private Uri pictureUri = null;
     private AlertDialog dialog;
     private File        Headfile;
     private TextView    trueName;
-    private TextView faName;
-    private TextView shenfenzheng;
-    private TextView address;
-    private TextView workPlace;
-    private TextView xiuxingjingli;
-    private TextView job;
-    private TextView morePhone;
-    private TextView carId;
-    private JSONObject jsonObject;
+    private TextView    faName;
+    private TextView    shenfenzheng;
+    private TextView    address;
+    private TextView    workPlace;
+    private TextView    xiuxingjingli;
+    private TextView    job;
+    private TextView    morePhone;
+    private TextView    carId;
+    private JSONObject  jsonObject;
 
     public void init() {
         ((TextView) findViewById(R.id.titletv)).setText(mApplication.ST("个人信息"));
@@ -112,19 +110,18 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
         ((TextView) findViewById(R.id.jobtv)).setText(mApplication.ST("职业"));
         ((TextView) findViewById(R.id.morePhone)).setText(mApplication.ST("紧急联系人手机"));
         ((TextView) findViewById(R.id.cartv)).setText(mApplication.ST("车牌登记"));
-        mtvxinbie = (TextView) findViewById(R.id.gerenxinxi_xingbie_tv);
-        mtvnc = (TextView) findViewById(R.id.gerenxinxi_nichengz_tv);
-        mtvphone = (TextView) findViewById(R.id.gerenxinxi_phone_tv);
-//    mtvid=(TextView) findViewById(R.id.gerenxinxi_shenfenz_tv);
-//    mtvsimiao=(TextView) findViewById(R.id.gerenxinxi_shimiao_tv);
-//    mtvyonghuleixing=(TextView) findViewById(R.id.gerenxinxi_yonghuleixing_tv);
-//    mtvtime=(TextView) findViewById(R.id.gerenxinxi_time_tv);
-        mcircleview = (AvatarImageView) findViewById(R.id.gerenxinxi_touxiang_cicleimageview);
+        ((TextView) findViewById(R.id.refugeTxt)).setText(mApplication.ST("皈依卡号"));
+        mtvxinbie = findViewById(R.id.gerenxinxi_xingbie_tv);
+        mtvnc = findViewById(R.id.gerenxinxi_nichengz_tv);
+        mtvphone = findViewById(R.id.gerenxinxi_phone_tv);
+
+
+        mcircleview = findViewById(R.id.gerenxinxi_touxiang_cicleimageview);
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        tvPerfect = (TextView) findViewById(R.id.perfect);
+        tvPerfect = findViewById(R.id.perfect);
         tvPerfect.setText(mApplication.ST("完善资料"));
         tvPerfect.setOnClickListener(this);
-        TextView more = (TextView) findViewById(R.id.geren_more);
+        TextView more = findViewById(R.id.geren_more);
         more.setText(mApplication.ST("更多资料"));
         if (sp.getString("perfect", "1").equals("1")) {
             tvPerfect.setText(mApplication.ST("完善资料"));
@@ -134,18 +131,18 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
             getMore();
         }
 
-        trueName = (TextView) findViewById(R.id.tv_trueName);
-        faName = (TextView) findViewById(R.id.tv_faMing);
-        shenfenzheng = (TextView) findViewById(R.id.tv_shenfenzheng);
-        address = (TextView) findViewById(R.id.tv_address);
-        workPlace = (TextView) findViewById(R.id.tv_workPlace);
-        xiuxingjingli = (TextView) findViewById(R.id.tv_xiuxingjingli);
-        job = (TextView) findViewById(R.id.tv_job);
-        morePhone = (TextView) findViewById(R.id.tv_morePhone);
-        carId = (TextView) findViewById(R.id.tv_carId);
+        trueName = findViewById(R.id.tv_trueName);
+        faName = findViewById(R.id.tv_faMing);
+        shenfenzheng = findViewById(R.id.tv_shenfenzheng);
+        address = findViewById(R.id.tv_address);
+        workPlace = findViewById(R.id.tv_workPlace);
+        xiuxingjingli = findViewById(R.id.tv_xiuxingjingli);
+        job = findViewById(R.id.tv_job);
+        morePhone = findViewById(R.id.tv_morePhone);
+        carId = findViewById(R.id.tv_carId);
 
         screenWidth = this.getResources().getDisplayMetrics().widthPixels;
-        final RelativeLayout r = (RelativeLayout) findViewById(R.id.back_bg);
+        final RelativeLayout r = findViewById(R.id.back_bg);
         Glide.with(this).load(R.drawable.mine_banner)
                 .asBitmap().override(screenWidth, DimenUtils.dip2px(this, 150))
                 .into(new SimpleTarget<Bitmap>() {
@@ -155,6 +152,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
         findViewById(R.id.jiatingzhuzhi).setOnClickListener(changeClickListener);
+        findViewById(R.id.phoneLayout).setOnClickListener(this);
         findViewById(R.id.faming).setOnClickListener(changeClickListener);
         findViewById(R.id.gongzuodanwei).setOnClickListener(changeClickListener);
         findViewById(R.id.xiuxingjingli).setOnClickListener(changeClickListener);
@@ -172,13 +170,13 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
         @Override
         public void onClick(final View view2) {
             AlertDialog.Builder builder = new AlertDialog.Builder(GerenxinxiActivity.this);
-            View view1 = LayoutInflater.from(GerenxinxiActivity.this).inflate(R.layout.user_info_change_dialog, null);
+            View                view1   = LayoutInflater.from(GerenxinxiActivity.this).inflate(R.layout.user_info_change_dialog, null);
             builder.setView(view1);
-            final EditText editText = (EditText) view1.findViewById(R.id.edittext);
-            TextView title = (TextView) view1.findViewById(R.id.title);
-            TextView cancle = (TextView) view1.findViewById(R.id.cancle);
-            TextView commit = (TextView) view1.findViewById(R.id.commit);
-            final AlertDialog dialog = builder.create();
+            final EditText    editText = view1.findViewById(R.id.edittext);
+            TextView          title    = view1.findViewById(R.id.title);
+            TextView          cancle   = view1.findViewById(R.id.cancle);
+            TextView          commit   = view1.findViewById(R.id.commit);
+            final AlertDialog dialog   = builder.create();
             cancle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -389,6 +387,8 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                                 job.setText(mApplication.ST(moreMap.get("work")));
                                 morePhone.setText(mApplication.ST(moreMap.get("contact")));
                                 carId.setText(moreMap.get("plate"));
+
+                                ((TextView) findViewById(R.id.refugeCard)).setText(TextUtils.isEmpty(moreMap.get("conversion"))?"暂未绑定皈依卡号":moreMap.get("conversion"));
 //                                Glide.with(GerenxinxiActivity.this).load(map.get("cidimage")).thumbnail(0.1f)
 //                                        .into(moreImg);
                             }
@@ -407,6 +407,11 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
+            case R.id.phoneLayout:
+                Intent i1 = new Intent();
+                i1.setClass(GerenxinxiActivity.this, PhoneCheck.class);
+                startActivity(i1);
+                break;
             case R.id.gerenxinxi_back:
                 finish();
                 break;
@@ -553,7 +558,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                 try {
                     JSONObject js = new JSONObject();
                     js.put("user_id", uid);
-                    js.put("m_id",Constants.M_id);
+                    js.put("m_id", Constants.M_id);
                     Response response = OkGo.post(Constants.uploadHead_IP).tag(TAG)
                             .params("head", file)
                             .params("key", ApisSeUtil.getKey())
@@ -564,8 +569,8 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                         HashMap<String, String> map = AnalyticalJSON.getHashMap(data1);
                         if (map != null && null != map.get("code")) {
                             if ("000".equals(map.get("code"))) {
-                                SharedPreferences.Editor ed = sp.edit();
-                                String url = map.get("head");
+                                SharedPreferences.Editor ed  = sp.edit();
+                                String                   url = map.get("head");
                                 if (url != null) {
                                     ed.putString("head_url", url);
                                     ed.apply();
@@ -628,8 +633,8 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    LogUtil.e("个人资料：：个人信息：："+js);
-                    ApisSeUtil.M m=ApisSeUtil.i(js);
+                    LogUtil.e("个人资料：：个人信息：：" + js);
+                    ApisSeUtil.M m = ApisSeUtil.i(js);
                     data1 = OkGo.post(Constants.User_Info_Ip)
                             .params("key", m.K())
                             .params("msg", m.M()).execute()
@@ -645,9 +650,6 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void run() {
                                 mtvnc.setText("".equals(map.get("pet_name")) ? "未填写" : map.get("pet_name"));
-//                                mtvtime.setText(map.get("user_time"));
-//                                mtvsimiao.setText(map.get("user_temple"));
-//                                mtvid.setText(map.get("user_cid"));
                                 mtvphone.setText(map.get("phone").equals("") ? mApplication.ST("暂未绑定手机号") : map.get("phone"));
                                 Glide.with(GerenxinxiActivity.this).load(map.get("user_image")).into(mcircleview);
                                 if (map.get("sex").equals("1")) {
@@ -679,7 +681,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
     //选择照片或照相
     private void choosePic() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = LayoutInflater.from(mApplication.getInstance()).inflate(R.layout.dialog_album_camera, null);
+        View                view    = LayoutInflater.from(mApplication.getInstance()).inflate(R.layout.dialog_album_camera, null);
         view.findViewById(R.id.photograph).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -701,7 +703,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int permissionCheck = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    int permissionCheck  = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     int permissionCheck1 = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS);
                     int permissionCheck2 = ContextCompat.checkSelfPermission(mApplication.getInstance(), Manifest.permission.READ_EXTERNAL_STORAGE);
                     if (permissionCheck
@@ -732,7 +734,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
             }
         });
         Window window = dialog.getWindow();
-        window.getDecorView().setPadding(0,0,0,0);
+        window.getDecorView().setPadding(0, 0, 0, 0);
         window.setGravity(Gravity.BOTTOM);
         window.setWindowAnimations(R.style.dialogWindowAnim);
         window.setBackgroundDrawableResource(R.color.vifrification);
@@ -750,8 +752,8 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                 Locale.CHINA);
         // Standard Intent action that can be sent to have the camera
         // application capture an image and return it.
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        ContentValues attrs = new ContentValues();
+        Intent        takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues attrs             = new ContentValues();
         attrs.put(MediaStore.Images.Media.DISPLAY_NAME,
                 dateFormat.format(new Date(System.currentTimeMillis())));// 添加照片名字
         attrs.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");// 图片类型

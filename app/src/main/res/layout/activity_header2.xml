@@ -6,8 +6,8 @@
     android:orientation="horizontal"
     android:paddingLeft="10dp"
     android:paddingTop="5dp"
-    android:background="@drawable/layout_bg_sel"
     android:paddingBottom="5dp"
+    android:background="@drawable/layout_bg_sel"
     android:paddingRight="10dp">
 
 

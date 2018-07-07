@@ -65,8 +65,8 @@ public class FundFragment extends BaseSTFragement implements View.OnClickListene
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_three, null);
-        headLineView = (mHeadLineView) view.findViewById(R.id.headline);
-        tip = (ImageView) view.findViewById(R.id.tip);
+        headLineView = view.findViewById(R.id.headline);
+        tip = view.findViewById(R.id.tip);
         tip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,18 +135,18 @@ public class FundFragment extends BaseSTFragement implements View.OnClickListene
      * @param view
      */
     private void initView(final View view) {
-        swip = (SwipeRefreshLayout) view.findViewById(R.id.fund_swip);
-        listView = (LoadMoreListView) view.findViewById(R.id.fund_listview);
+        swip = view.findViewById(R.id.fund_swip);
+        listView = view.findViewById(R.id.fund_listview);
         swip.setOnRefreshListener(this);
         listView.setLoadMoreListen(this);
-        listView.footer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                view.findViewById(R.id.change).performClick();
-            }
-        });
-        t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
-        p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
+//        listView.footer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                view.findViewById(R.id.change).performClick();
+//            }
+//        });
+        t = listView.footer.findViewById(R.id.load_more_text);
+        p = listView.footer.findViewById(R.id.load_more_bar);
         swip.setColorSchemeResources(R.color.main_color);
         swip.post(new Runnable() {
             @Override

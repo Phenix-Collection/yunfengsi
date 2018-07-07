@@ -104,12 +104,18 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
         init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().setBackgroundDrawable(null);
+    }
+
     private void init() {
         mApplication.getInstance().addActivity(this);
-        ImageView    back         = (ImageView) findViewById(R.id.back);
-        TextView     history      = (TextView) findViewById(R.id.history);
-        RTextView txt_xuyuan = (RTextView) findViewById(R.id.xuyuan);
-        TagCloudView tagCloudView = (TagCloudView) findViewById(R.id.tree_view);
+        ImageView    back         = findViewById(R.id.back);
+        TextView     history      = findViewById(R.id.history);
+        RTextView txt_xuyuan = findViewById(R.id.xuyuan);
+        TagCloudView tagCloudView = findViewById(R.id.tree_view);
         ArrayList list = new ArrayList();
         for (int i = 0; i < 20; i++) {
             list.add(new HashMap<>());
@@ -117,7 +123,7 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
         TreeAdapter adapter = new TreeAdapter(list);
         tagCloudView.setAdapter(adapter);
 
-        recyclerView = (AutoPollRecyclerView) findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new ScrollSpeedLinearLayoutManger(this));
         messageAdapter = new MessageAdapter(list);
         recyclerView.addItemDecoration(new mItemDecoration(this));
@@ -126,7 +132,7 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
 
         back.setOnClickListener(this);
         history.setOnClickListener(this);
-        TextView title = (TextView) findViewById(R.id.title);
+        TextView title = findViewById(R.id.title);
         title.setText(mApplication.ST("祈愿树"));
         txt_xuyuan.setOnClickListener(this);
 
@@ -200,10 +206,10 @@ public class BlessTree extends AppCompatActivity implements View.OnClickListener
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setView(view);
                 final AlertDialog dialog = builder.create();
-                TextView tip = (TextView) view.findViewById(R.id.msg);
+                TextView tip = view.findViewById(R.id.msg);
                 tip.setText(mApplication.ST("弟子向菩萨诚心祈祷，惟愿:"));
-                final EditText content = (EditText) view.findViewById(R.id.content);
-                TextView commit = (TextView) view.findViewById(R.id.commit);
+                final EditText content = view.findViewById(R.id.content);
+                TextView commit = view.findViewById(R.id.commit);
                 commit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

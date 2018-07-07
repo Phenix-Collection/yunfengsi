@@ -35,7 +35,7 @@ public class mArrayAdapter extends ArrayAdapter {
             view = LayoutInflater.from(context).inflate(resource, parent, false);
 
         }
-        TextView textView = (TextView) view.findViewById(textviewId);
+        TextView textView = view.findViewById(textviewId);
         HashMap<String, String> map = (HashMap<String, String>) getItem(position);
         if (type.equals("念佛")) {
             textView.setText(map.get("ba_name"));

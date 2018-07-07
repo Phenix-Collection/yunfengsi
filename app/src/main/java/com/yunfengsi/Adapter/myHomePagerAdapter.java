@@ -47,8 +47,8 @@ public class myHomePagerAdapter extends FragmentPagerAdapter {
 
     public View getTabView(int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.home_tab_customview, null);
-        ImageView img = (ImageView) view.findViewById(R.id.home_tab_image);
-        TextView text = (TextView) view.findViewById(R.id.home_tab_text);
+        ImageView img = view.findViewById(R.id.home_tab_image);
+        TextView text = view.findViewById(R.id.home_tab_text);
         text.setText(getPageTitle(position));
         img.setImageResource(images[position]);
         return view;

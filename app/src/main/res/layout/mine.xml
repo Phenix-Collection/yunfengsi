@@ -10,8 +10,7 @@
 
     <com.zhy.android.percent.support.PercentRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_heightPercent="50%w">
+        android:layout_height="140dp">
 
         <ImageView
             android:id="@+id/mine_gerenbeijing"
@@ -24,10 +23,10 @@
 
         <cn.carbs.android.avatarimageview.library.AvatarImageView
             android:id="@+id/mine_head"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
             android:background="@drawable/white_stroke_1dp_bg"
             android:padding="1.5px"
             android:scaleType="centerCrop" />
@@ -40,38 +39,63 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/layout_bg_sel"
+            android:background="@drawable/shape_corner_white_bg"
             android:padding="2dp"
             android:src="@drawable/mine_qr_code" />
 
         <ImageView
             android:id="@+id/level"
-            android:layout_width="35dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/mine_head"
-            android:layout_alignRight="@+id/mine_head"
+            android:layout_alignEnd="@+id/mine_head"
             android:adjustViewBounds="true" />
 
         <TextView
             android:id="@+id/mine_petName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/mine_head"
             android:layout_below="@id/mine_head"
-            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@+id/mine_head"
             android:text="昵称"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_marginTopPercent="3%w" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/mine_sign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/mine_petName"
             android:layout_below="@+id/mine_petName"
-            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
             android:textColor="@color/white"
-            android:textSize="13sp"
-            app:layout_marginTopPercent="3%w" />
+            android:textSize="13sp" />
+
+        <com.ruffian.library.RTextView
+            android:id="@+id/infoSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="个人中心"
+            android:textSize="12dp"
+            app:background_normal="#80000000"
+            app:background_pressed="#aa000000"
+            app:corner_radius_bottom_left="100dp"
+            app:corner_radius_top_left="100dp"
+            app:icon_direction="right"
+            app:icon_height="15dp"
+            app:icon_src_normal="@drawable/next"
+            app:icon_width="15dp"
+            app:text_color_normal="@color/white"
+            app:text_color_pressed="@color/lightgray" />
 
 
     </com.zhy.android.percent.support.PercentRelativeLayout>
@@ -81,8 +105,7 @@
         layout="@layout/fragment_mine_header"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:visibility="gone"
-         />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/mine_shoucang"
@@ -264,8 +287,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f2f2f2">
+        android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
 

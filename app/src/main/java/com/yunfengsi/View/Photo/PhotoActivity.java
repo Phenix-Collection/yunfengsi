@@ -69,17 +69,17 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
     private void initView() {
 
-        root = (FrameLayout) findViewById(R.id.root);
+        root = findViewById(R.id.root);
         screenHeight = getResources().getDisplayMetrics().heightPixels;
         screenWidth = getResources().getDisplayMetrics().widthPixels;
         instance = ScreenSwitchUtils.init(this.getApplicationContext());
-        viewPager = (PhotoViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
 
-        ImageView back = (ImageView) findViewById(R.id.back);
+        ImageView back = findViewById(R.id.back);
         back.setOnClickListener(this);
-        position = (TextView) findViewById(R.id.position);
-        TextView num = (TextView) findViewById(R.id.num);
-        choose = (ImageView) findViewById(R.id.choose);
+        position = findViewById(R.id.position);
+        TextView num = findViewById(R.id.num);
+        choose = findViewById(R.id.choose);
         choose.setOnClickListener(this);
         if(!getIntent().getBooleanExtra("download",true)) {
             choose.setVisibility(View.GONE);
@@ -331,9 +331,9 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
 
                 Log.e("AlexGIF", "现在是gif大图");
                 View rl_gif = LayoutInflater.from(activity).inflate(R.layout.gif_progress_group, null);//这种方式容易导致内存泄漏
-                GifImageView gifImageView = (GifImageView) rl_gif.findViewById(R.id.gif_photo_view);
-                ProgressWheel progressWheel = (ProgressWheel) rl_gif.findViewById(R.id.progress_wheel);
-                TextView tv_progress = (TextView) rl_gif.findViewById(R.id.tv_progress);
+                GifImageView gifImageView = rl_gif.findViewById(R.id.gif_photo_view);
+                ProgressWheel progressWheel = rl_gif.findViewById(R.id.progress_wheel);
+                TextView tv_progress = rl_gif.findViewById(R.id.tv_progress);
                 AlxGifHelper.displayImage(paths.get(position), gifImageView, progressWheel, tv_progress, 0);//最后一个参数传0表示不缩放gif的大小，显示原始尺寸
                 try {
                     container.addView(rl_gif);//这里要注意由于container是一个复用的控件，所以频繁的addView会导致多张相同的图片重叠，必须予以处置

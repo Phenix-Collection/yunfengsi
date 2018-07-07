@@ -33,7 +33,7 @@ public class ChapterActivity extends AppCompatActivity implements ChapterFactory
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter);
-        recyclerView = (FastScrollRecyclerView) findViewById(R.id.chapter_activity_recycler_view);
+        recyclerView = findViewById(R.id.chapter_activity_recycler_view);
 
         mAdapter = new ChapterAdapter(this);
         recyclerView.setAdapter(mAdapter);
@@ -64,7 +64,7 @@ public class ChapterActivity extends AppCompatActivity implements ChapterFactory
         });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.chapter_activity_toolbar);
+        Toolbar toolbar = findViewById(R.id.chapter_activity_toolbar);
         toolbar.setTitle(PageFactory.getInstance().getBook().getBookName());
 //        toolbar.setNavigationIcon(R.drawable.arrow_back_holo_dark_no_trim_no_padding);
         setSupportActionBar(toolbar);

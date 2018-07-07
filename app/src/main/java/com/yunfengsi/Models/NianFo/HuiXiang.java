@@ -37,12 +37,12 @@ public class HuiXiang extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_huixiang);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-        TextView huixiang = (TextView) findViewById(R.id.huixiang);
-        TextView pet_name = (TextView) findViewById(R.id.pet_name);
+        TextView huixiang = findViewById(R.id.huixiang);
+        TextView pet_name = findViewById(R.id.pet_name);
 
-        TextView message = (TextView) findViewById(R.id.massege);
+        TextView message = findViewById(R.id.massege);
 
-        TextView title = (TextView) findViewById(R.id.title);
+        TextView title = findViewById(R.id.title);
         huixiang.setOnClickListener(this);
         huixiang.setText(mApplication.ST("回向给众生"));
         findViewById(R.id.back).setOnClickListener(this);

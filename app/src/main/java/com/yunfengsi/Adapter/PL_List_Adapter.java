@@ -123,15 +123,15 @@ public class PL_List_Adapter extends BaseAdapter {
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(context).inflate(R.layout.video_pinglun_item, parent, false);
-            ImageView head = (ImageView) view.findViewById(R.id.PL_item_Head);
-            TextView username = (TextView) view.findViewById(R.id.PL_item_Name);
-            TextView content = (TextView) view.findViewById(R.id.Pl_item_Content);
-            TextView time = (TextView) view.findViewById(R.id.PL_item_time);
-            TextView DZnum = (TextView) view.findViewById(R.id.Pl_item_DianZan_num);
-            holder.level = (ImageView) view.findViewById(R.id.level);
-            holder.huifu = (TextView) view.findViewById(R.id.PL_item_huifu);
+            ImageView head = view.findViewById(R.id.PL_item_Head);
+            TextView username = view.findViewById(R.id.PL_item_Name);
+            TextView content = view.findViewById(R.id.Pl_item_Content);
+            TextView time = view.findViewById(R.id.PL_item_time);
+            TextView DZnum = view.findViewById(R.id.Pl_item_DianZan_num);
+            holder.level = view.findViewById(R.id.level);
+            holder.huifu = view.findViewById(R.id.PL_item_huifu);
             holder.huifu.setText(mApplication.ST("回复"));
-            holder.huifuLayout = (LinearLayout) view.findViewById(R.id.pl_huifu_layout);
+            holder.huifuLayout = view.findViewById(R.id.pl_huifu_layout);
             holder.content = content;
             holder.head = head;
             holder.DZnum = DZnum;
@@ -293,7 +293,7 @@ public class PL_List_Adapter extends BaseAdapter {
                                     .execute().body().string();
                             if (!data1.equals("")) {
                                 final View                    childat = parent.getChildAt(position - ((ListView) parent).getFirstVisiblePosition());
-                                final TextView                dznum   = (TextView) childat.findViewById(R.id.Pl_item_DianZan_num);
+                                final TextView                dznum   = childat.findViewById(R.id.Pl_item_DianZan_num);
                                 final HashMap<String, String> map     = AnalyticalJSON.getHashMap(data1);
                                 if (map != null && map.get("code").equals("000")) {
                                     ((Activity) context).runOnUiThread(new Runnable() {

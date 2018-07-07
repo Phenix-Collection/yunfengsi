@@ -10,8 +10,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +40,7 @@ import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
+import com.yunfengsi.View.ListDialog;
 import com.yunfengsi.View.mItemDecoration;
 
 import org.json.JSONException;
@@ -67,7 +71,13 @@ public class CommentManage extends AppCompatActivity implements SwipeRefreshLayo
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.comment_manage);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("禁言列表"));
         findViewById(R.id.handle_right).setOnClickListener(new View.OnClickListener() {
@@ -77,23 +87,18 @@ public class CommentManage extends AppCompatActivity implements SwipeRefreshLayo
             }
         });
         ((TextView) findViewById(R.id.title_title)).setText("评论管理");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
         LinearLayout display = findViewById(R.id.display);
         LinearLayout delete  = findViewById(R.id.delete);
         display.setOnClickListener(this);
         delete.setOnClickListener(this);
 
 
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView        recyclerView        = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView        recyclerView        = findViewById(R.id.recycle);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -126,6 +131,8 @@ public class CommentManage extends AppCompatActivity implements SwipeRefreshLayo
                 onRefresh();
             }
         });
+
+
 
     }
 
@@ -247,7 +254,7 @@ public class CommentManage extends AppCompatActivity implements SwipeRefreshLayo
                     @Override
                     public void onBefore(BaseRequest request) {
                         super.onBefore(request);
-                        ProgressUtil.show(CommentManage.this, "", "正在删除...");
+                        ProgressUtil.show(CommentManage.this, "", "正在提交...");
                     }
 
                     @Override
@@ -292,6 +299,54 @@ public class CommentManage extends AppCompatActivity implements SwipeRefreshLayo
             } else {
                 choose.setImageBitmap(ImageUtil.readBitMap(CommentManage.this, R.drawable.unselected_btn));
             }
+            holder.getView(R.id.reply).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ListDialog.create(CommentManage.this)
+                            .setView(R.layout.dialog_title_msg_edt_cancel_commit)
+                            .setText(R.id.title,"请输入回复内容")
+                            .setText(R.id.cancel,"取消")
+                            .setText(R.id.commit,"提交回复")
+                            .setVisible(R.id.msg,false)
+                            .setCancelViewId(R.id.cancel)
+                            .setGravity(Gravity.CENTER)
+                            .showSoftKeyboard(R.id.edit)
+                            .setCommitId(R.id.commit, new ListDialog.DialogCallBack() {
+                                @Override
+                                public void onCancelClick(AlertDialog dialog) {
+
+                                }
+
+                                @Override
+                                public void onCommit(AlertDialog dialog,View view) {
+
+                                    String content=((EditText) view.findViewById(R.id.edit)).getText().toString();
+                                    if(TextUtils.isEmpty(content)){
+                                        ToastUtil.showToastShort("请输入回复内容");
+                                        return;
+                                    }
+                                    dialog.dismiss();
+                                    if(map.get("type").equals("12")){
+                                        //回复评论回复
+                                        postReply(content,map.get("ct_id"));
+                                    }else{
+                                        //回复评论
+                                        postReply(content,map.get("id"));
+                                    }
+
+                                }
+                            }).show();
+
+                }
+            });
+
+
+
+
+
+
+
+
             holder.getView(R.id.content).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -330,6 +385,46 @@ public class CommentManage extends AppCompatActivity implements SwipeRefreshLayo
                 }
             });
         }
+    }
+
+    private void postReply(String content,String id) {
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("m_id",Constants.M_id);
+            jsonObject.put("ct_id",id);
+            jsonObject.put("user_id",PreferenceUtil.getUserId(this));
+            jsonObject.put("ct_contents",content);
+            jsonObject.put("admin_id",PreferenceUtil.getUserId(this));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApisSeUtil.M m =ApisSeUtil.i(jsonObject);
+        LogUtil.e("管理员评论回复：："+jsonObject);
+
+        OkGo.post(Constants.ManagerReply)
+                .params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        HashMap<String,String > map=AnalyticalJSON.getHashMap(s);
+                        if(map!=null&&"000".equals(map.get("code"))){
+                            ToastUtil.showToastShort("回复成功");
+                        }
+                    }
+
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        ProgressUtil.show(CommentManage.this,"","正在提交");
+                    }
+
+                    @Override
+                    public void onAfter(String s, Exception e) {
+                        super.onAfter(s, e);
+                        ProgressUtil.dismiss();
+                    }
+                });
     }
 
     private void banCommitComment(String id, final SwipeMenuLayout itemview) {

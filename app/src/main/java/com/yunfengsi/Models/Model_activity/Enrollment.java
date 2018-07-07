@@ -77,16 +77,16 @@ public class Enrollment extends AppCompatActivity implements View.OnClickListene
         dp60= DimenUtils.dip2px(this,60);
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         screenWidth=getResources().getDisplayMetrics().widthPixels;
-        name = (EditText) findViewById(R.id.baoming_name);
-        sex = (EditText) findViewById(R.id.baoming_xingbie);
-        phone = (EditText) findViewById(R.id.baoming_phone);
-        photo= (ImageView) findViewById(R.id.baoming_shenfengzheng_displayImg);
-        zhiye = (EditText) findViewById(R.id.baoming_zhiye);
-        c_id = (EditText) findViewById(R.id.baoming_shenfengzheng);
-        address = (EditText) findViewById(R.id.baoming_address);
-        another_phone = (EditText) findViewById(R.id.baoming_another_phone);
-        TextView camera = (TextView) findViewById(R.id.baoming_camera);
-        TextView commit = (TextView) findViewById(R.id.baoming_commit);
+        name = findViewById(R.id.baoming_name);
+        sex = findViewById(R.id.baoming_xingbie);
+        phone = findViewById(R.id.baoming_phone);
+        photo= findViewById(R.id.baoming_shenfengzheng_displayImg);
+        zhiye = findViewById(R.id.baoming_zhiye);
+        c_id = findViewById(R.id.baoming_shenfengzheng);
+        address = findViewById(R.id.baoming_address);
+        another_phone = findViewById(R.id.baoming_another_phone);
+        TextView camera = findViewById(R.id.baoming_camera);
+        TextView commit = findViewById(R.id.baoming_commit);
         camera.setOnClickListener(this);
         commit.setOnClickListener(this);
     }
@@ -96,12 +96,12 @@ public class Enrollment extends AppCompatActivity implements View.OnClickListene
      */
     private void setTitleLayout() {
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText("填写报名信息");
-        ImageView fenxiang = (ImageView) findViewById(R.id.title_image2);
+        ImageView fenxiang = findViewById(R.id.title_image2);
 //        fenxiang.setVisibility(View.VISIBLE);
         fenxiang.setOnClickListener(this);
         fenxiang.setImageResource(R.drawable.fenxiang);

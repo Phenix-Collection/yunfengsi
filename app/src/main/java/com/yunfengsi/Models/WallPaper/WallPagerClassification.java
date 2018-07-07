@@ -58,11 +58,11 @@ public class WallPagerClassification extends Fragment implements SwipeRefreshLay
 
     private void initView(View view) {
 
-        swip = (SwipeRefreshLayout) view.findViewById(R.id.swip);
+        swip = view.findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
+        RecyclerView recyclerView = view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
 //        recyclerView.addItemDecoration(new mItemDecoration(getActivity()));
         adapter = new fenleiAdapter(new ArrayList<HashMap<String, String>>());

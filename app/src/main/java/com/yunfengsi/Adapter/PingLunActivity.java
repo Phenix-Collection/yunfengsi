@@ -248,28 +248,28 @@ public class PingLunActivity extends AndroidPopupActivity implements View.OnClic
     }
 
     private void initView() {
-        PLText = (EditText) findViewById(R.id.zixun_item_input);
+        PLText = findViewById(R.id.zixun_item_input);
         PLText.setHint(mApplication.ST("请输入您的回复"));
         sp = PreferenceUtil.getUserIncetance(this);
-        TextView fasong = (TextView) findViewById(R.id.zixun_item_fasong);
+        TextView fasong = findViewById(R.id.zixun_item_fasong);
         fasong.setText(mApplication.ST("发送"));
         fasong.setOnClickListener(this);
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         back.setImageResource(R.drawable.back);
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText(mApplication.ST("回复详情"));
-        time = (TextView) findViewById(R.id.PL_item_time);
+        time = findViewById(R.id.PL_item_time);
         time.setText(TimeUtils.getTrueTimeStr(getIntent().getStringExtra("time")));
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        head = (AvatarImageView) findViewById(R.id.PL_item_Head);
+        head = findViewById(R.id.PL_item_Head);
 
         Glide.with(this).load(getIntent().getStringExtra("user_image")).override(DimenUtils.dip2px(this, 50), DimenUtils.dip2px(this, 50))
                 .centerCrop().into(head);
-        name = (TextView) findViewById(R.id.PL_item_Name);
+        name = findViewById(R.id.PL_item_Name);
         name.setText(getIntent().getStringExtra("pet_name"));
-        dianzanNum = (TextView) findViewById(R.id.Pl_item_DianZan_num);
+        dianzanNum = findViewById(R.id.Pl_item_DianZan_num);
         dianzanNum.setText(getIntent().getStringExtra("num"));
         dianzanNum.setOnClickListener(this);
         Drawable dianzan = ContextCompat.getDrawable(this, R.drawable.dianzan);
@@ -284,11 +284,11 @@ public class PingLunActivity extends AndroidPopupActivity implements View.OnClic
             dianzanNum.setTextColor(ContextCompat.getColor(this,R.color.gray));
         }
         pLId = getIntent().getStringExtra("id");
-        content = (TextView) findViewById(R.id.Pl_item_Content);
+        content = findViewById(R.id.Pl_item_Content);
         content.setText(getIntent().getStringExtra("content"));
-        ImageView article_head  = (ImageView) findViewById(R.id.article_head);
-        TextView  article_title = (TextView) findViewById(R.id.article_title);
-        PlListVIew = (mPLlistview) findViewById(R.id.zixun_item_plListview);
+        ImageView article_head  = findViewById(R.id.article_head);
+        TextView  article_title = findViewById(R.id.article_title);
+        PlListVIew = findViewById(R.id.zixun_item_plListview);
         PlListVIew.setFooterDividersEnabled(false);
 
         PlListVIew.footer.setOnClickListener(new View.OnClickListener() {

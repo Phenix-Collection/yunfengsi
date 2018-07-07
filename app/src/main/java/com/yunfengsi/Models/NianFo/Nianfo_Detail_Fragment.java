@@ -69,7 +69,7 @@ public class Nianfo_Detail_Fragment extends Fragment implements OnClickListener 
         /////
         adapter = new NianFo_Detail_Adapter(getActivity());
         dataList = new ArrayList<>();
-        listView = (ListView) view.findViewById(R.id.niaofo_detail_list);
+        listView = view.findViewById(R.id.niaofo_detail_list);
     }
 
     public void loadData() {//加载数据

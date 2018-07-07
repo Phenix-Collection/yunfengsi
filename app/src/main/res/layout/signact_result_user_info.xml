@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/title_default" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/gongde"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+
+                    android:text="功德值 →"
+                    android:textSize="18dp"
+                    app:background_normal="@color/white"
+                    app:background_pressed="#e6e6e6"
+                    app:text_color_normal="@color/black" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/mdivider" />
+
+                <com.ruffian.library.RTextView
+                    android:id="@+id/practiceExperience"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="修行经历 →"
+                    android:textSize="18dp"
+                    app:background_normal="@color/white"
+                    app:background_pressed="#e6e6e6"
+                    app:text_color_normal="@color/black" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@drawable/mdivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <com.ruffian.library.RTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="个人照片"
+                    android:textSize="16dp"
+                    app:text_color_normal="@color/black" />
+
+                <com.ruffian.library.RTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="身份证"
+                    android:textSize="16dp"
+                    app:text_color_normal="@color/black" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <com.yunfengsi.View.UsefulImageView
+                    android:id="@+id/pic_personal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="#e6e6e6"
+                    android:scaleType="fitCenter" />
+
+                <com.yunfengsi.View.UsefulImageView
+                    android:id="@+id/pic_idCard"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="#e6e6e6"
+                    android:scaleType="fitCenter" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:lineSpacingExtra="8dp"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:paddingBottom="4dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/userType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="8dp"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/ban"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="8dp"
+                android:paddingLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/refugeCard"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical"
+                android:textSize="16dp"
+                android:textColor="@color/sandybrown"
+                android:text="皈依卡号:  点击完善皈依卡号"
+                android:background="#f0f0f0"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</merge>

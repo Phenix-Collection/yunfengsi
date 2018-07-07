@@ -74,7 +74,7 @@ public class ListImageDirPopupWindow extends BasePopupWindowForListView<ImageFlo
                     checkedPositin=position;
                     adapter.setChecked(checkedPositin);
                 }
-                ImageView imageView= (ImageView) view.findViewById(R.id.img_list_dir_item_check);
+                ImageView imageView= view.findViewById(R.id.img_list_dir_item_check);
                 Glide.with(context).load(R.drawable.icon_data_select).override(DimenUtils.dip2px(context,25),DimenUtils.dip2px(context,25))
                         .into(imageView);
 

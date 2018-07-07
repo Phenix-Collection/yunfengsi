@@ -86,7 +86,7 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fortune);
         mApplication.getInstance().addActivity(this);
-        ImageView back = (ImageView) findViewById(R.id.back);
+        ImageView back = findViewById(R.id.back);
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("卜事"));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,21 +94,21 @@ public class Fortune extends AppCompatActivity implements SensorEventListener, V
                 finish();
             }
         });
-        qian_small = (ImageView) findViewById(R.id.qian_small);
+        qian_small = findViewById(R.id.qian_small);
         Drawable drawable = OneDrawable.createBgDrawable(this, R.drawable.qian1_low);
-        auto = (TextView) findViewById(R.id.autoFortune);
+        auto = findViewById(R.id.autoFortune);
         auto.setText(mApplication.ST("自动摇签"));
         auto.setOnClickListener(this);
-        TextView history = (TextView) findViewById(R.id.fortuneHistory);
+        TextView history = findViewById(R.id.fortuneHistory);
         history.setText(mApplication.ST("摇签记录"));
         history.setOnClickListener(this);
         qian_small.setImageDrawable(drawable);
-        qian = (ImageView) findViewById(R.id.qian);
-        tip = (TextView) findViewById(R.id.tip);
+        qian = findViewById(R.id.qian);
+        tip = findViewById(R.id.tip);
 
         width = getResources().getDisplayMetrics().widthPixels - DimenUtils.dip2px(this, 100);
         height = getResources().getDisplayMetrics().heightPixels - DimenUtils.dip2px(this, 145);
-        qiantong = (ImageView) findViewById(R.id.qiantong);
+        qiantong = findViewById(R.id.qiantong);
         //加载首屏图片
         Glide.with(this).load(R.drawable.qian1_low)
                 .override(width, height)

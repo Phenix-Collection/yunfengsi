@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yunfengsi.R;
@@ -21,9 +20,9 @@ public class ForManagers extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.for_manager);
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("管理员中心");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -34,6 +33,8 @@ public class ForManagers extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.wish_manage).setOnClickListener(this);
         findViewById(R.id.auciton_manage).setOnClickListener(this);
         findViewById(R.id.wallpaper_manage).setOnClickListener(this);
+        findViewById(R.id.user_manage).setOnClickListener(this);
+        findViewById(R.id.suggest_manage).setOnClickListener(this);
     }
 
     @Override
@@ -50,6 +51,12 @@ public class ForManagers extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.wallpaper_manage:
                 startActivity(new Intent(this,WallPaperManage.class));
+                break;
+            case R.id.user_manage:
+                startActivity(new Intent(this,UserManage.class));
+                break;
+            case R.id.suggest_manage:
+                startActivity(new Intent(this,SuggestManage.class));
                 break;
         }
     }

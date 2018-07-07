@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_background"
         android:id="@+id/edit"
+        android:inputType="number"
         app:layout_constraintTop_toBottomOf="@+id/msg"
         android:padding="10dp"
         android:layout_margin="20dp"/>

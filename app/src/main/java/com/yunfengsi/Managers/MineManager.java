@@ -79,7 +79,7 @@ public class MineManager {
             String text[] = mApplication.getInstance().getResources().getStringArray(R.array.mine_text);
             int img[] = new int[]
                     {
-                            R.drawable.auction,
+//                            R.drawable.auction,
                             R.raw.icon_wallpager,
                             R.raw.yundou,
                             R.raw.fuli,
@@ -97,7 +97,7 @@ public class MineManager {
                             R.raw.mine_activity,
                             R.raw.tongzhi_normal,
                             R.raw.tougao_mine,
-                            R.raw.setting,
+//                            R.raw.setting,
                             R.raw.qiehuan
                     };
 
@@ -138,7 +138,7 @@ public class MineManager {
 
 
         recyclerView.setLayoutManager(new GridLayoutManager(context, 4));
-        mItemDeraction mItemDeraction = new mItemDeraction(1, Color.parseColor("#f2f2f2"));
+        mItemDeraction mItemDeraction = new mItemDeraction(5, Color.parseColor("#f0f0f0"));
         recyclerView.addItemDecoration(mItemDeraction);
         ItemDragAndSwipeCallback swipeCallback   = new ItemDragAndSwipeCallback(adapter);
         ItemTouchHelper          itemTouchHelper = new ItemTouchHelper(swipeCallback);

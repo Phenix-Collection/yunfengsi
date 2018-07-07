@@ -253,7 +253,7 @@ public class SlideDetailsLayout extends ViewGroup {
 
             if (child == mBehindView) {
                 top = (int) (b + offset - needCutHeight + textView.getMeasuredHeight());
-                bottom = (int) (top + b - t);
+                bottom = top + b - t;
             } else if (child == mFrontView) {
                 top = (int) (t + offset - needCutHeight);
                 bottom = (int) (b + offset - needCutHeight);

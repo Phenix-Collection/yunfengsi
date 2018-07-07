@@ -83,11 +83,11 @@ public class ChengZhangJiLu extends BaseSTActivity implements SwipeRefreshLayout
     }
 
     private void initView() {
-        TextView title = (TextView) findViewById(R.id.title);
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        TextView title = findViewById(R.id.title);
+        swip = findViewById(R.id.swip);
         swip.setColorSchemeResources(R.color.main_color);
         swip.setOnRefreshListener(this);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDeraction(1, Color.parseColor("#b6b6b6")));
         adapter = new mJiLuAdapter(this, new ArrayList<HashMap<String, String>>());

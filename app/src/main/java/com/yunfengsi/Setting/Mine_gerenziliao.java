@@ -71,14 +71,14 @@ public class Mine_gerenziliao extends AppCompatActivity implements OnClickListen
     private void initView() {
         sp = getSharedPreferences("user", MODE_PRIVATE);
         findViewById(R.id.mine_gerenziliao_back).setOnClickListener(this);
-        commit= (Button) findViewById(R.id.mine_gerenziliao_commit);
+        commit= findViewById(R.id.mine_gerenziliao_commit);
         commit.setOnClickListener(this);
-        petName = (EditText) findViewById(R.id.mine_gerenziliao_petname);
+        petName = findViewById(R.id.mine_gerenziliao_petname);
         petName.setHint(mApplication.ST("昵称"));
 //        stub= (ViewStub) findViewById(R.id.mine_gerenziliao_stub);
 //        headimage= (ImageView) findViewById(R.id.mine_gerenziliao_touxiang);
-        sex1= (RadioButton) findViewById(R.id.sex1);
-        sex2= (RadioButton) findViewById(R.id.sex2);
+        sex1= findViewById(R.id.sex1);
+        sex2= findViewById(R.id.sex2);
         ((TextView) findViewById(R.id.sextv)).setText(mApplication.ST("性别"));
         commit.setText(mApplication.ST("提交保存"));
         ((TextView) findViewById(R.id.zhuce_title)).setText(mApplication.ST("昵称性别"));

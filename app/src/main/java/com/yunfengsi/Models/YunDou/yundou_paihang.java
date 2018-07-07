@@ -60,19 +60,19 @@ public class yundou_paihang extends AppCompatActivity implements SwipeRefreshLay
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.yundou_paihang_list);
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("云豆排行榜");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDecoration(this));
 
@@ -135,7 +135,7 @@ public class yundou_paihang extends AppCompatActivity implements SwipeRefreshLay
 
         @Override
         protected void convert(final BaseViewHolder holder, final HashMap<String, String> map) {
-            final RTextView user = ((RTextView) holder.getView(R.id.user));
+            final RTextView user = holder.getView(R.id.user);
             Glide.with(context).load(map.get("user_image"))
                     .asBitmap()
                     .override(DimenUtils.dip2px(context, 50), DimenUtils.dip2px(context, 50))

@@ -190,16 +190,16 @@ public class Fund_Share extends BaseSTActivity implements View.OnClickListener{
     }
 
     private void initView() {
-        TextView title = (TextView) findViewById(R.id.title);
+        TextView title = findViewById(R.id.title);
         title.setText(mApplication.ST("助学回向"));
-        TextView text = (TextView) findViewById(R.id.text);
+        TextView text = findViewById(R.id.text);
         text.setText(mApplication.ST("写下祝福"));
-        TextView commit = (TextView) findViewById(R.id.commit);
+        TextView commit = findViewById(R.id.commit);
         commit.setText(mApplication.ST("提交"));
         commit.setOnClickListener(this);
-        ImageView image = (ImageView) findViewById(R.id.image);
+        ImageView image = findViewById(R.id.image);
         Glide.with(this).load(R.drawable.fund_share).fitCenter().into(image);
-        editText= (TextInputEditText) findViewById(R.id.edit);
+        editText= findViewById(R.id.edit);
         editText.setHint(mApplication.ST("祝福内容(300字)"));
     }
 }

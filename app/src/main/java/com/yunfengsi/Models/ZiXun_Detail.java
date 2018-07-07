@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -85,7 +84,6 @@ import com.yunfengsi.View.mScrollView;
 import com.yunfengsi.View.myWebView;
 import com.yunfengsi.WebShare.WebInteraction;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -220,8 +218,8 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 swip.setRefreshing(false);
             }
         });
-        ((TextView) findViewById(R.id.title)).setText("图文详情");
-        findViewById(R.id.title).setOnClickListener(new OnClickListener() {
+        ((TextView) findViewById(R.id.title_title)).setText("图文详情");
+        findViewById(R.id.title_title).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ScrollView) findViewById(R.id.scroll)).smoothScrollTo(0, 0);
@@ -231,24 +229,24 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
                 if (t <= 0) {
-                    ((TextView) findViewById(R.id.title)).setText("图文详情");
+                    ((TextView) findViewById(R.id.title_title)).setText("图文详情");
                 } else {
-                    ((TextView) findViewById(R.id.title)).setText("返回顶部");
+                    ((TextView) findViewById(R.id.title_title)).setText("返回顶部");
                 }
             }
         });
         id = getIntent().getStringExtra("id");
-        tip = (ImageView) findViewById(R.id.tip);
+        tip = findViewById(R.id.tip);
         tip.setOnClickListener(this);
 
-        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
+        PLText = findViewById(R.id.zixun_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
         Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.pinglun_image));
         Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.fenxiang_image));
-        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
-        audio = (TextView) findViewById(R.id.audio_button);
+        toggle = findViewById(R.id.toggle_audio_word);
+        audio = findViewById(R.id.audio_button);
         toggle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,7 +284,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
             }
         });
 
-        overlay = (FrameLayout) findViewById(R.id.frame);
+        overlay = findViewById(R.id.frame);
         overlay.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,7 +294,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 v.setVisibility(View.GONE);
             }
         });
-        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -310,7 +308,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
             }
         });
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
+        fenxiangb = findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -323,28 +321,33 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
 
         ((TextView) findViewById(R.id.pltv)).setText(mApplication.ST("评论"));
         ((TextView) findViewById(R.id.fxtv)).setText(mApplication.ST("分享"));
-        tv_activity = (TextView) findViewById(R.id.activity);
+        tv_activity = findViewById(R.id.activity);
 
-        dianzanImg = (ImageView) findViewById(R.id.zixun_detail_dianzan_img);
-        dianzanText = (TextView) findViewById(R.id.zixun_detail_dianzan_text);
-        shoucang = (ImageView) findViewById(R.id.zixun_detail_shoucang);
-        video = (ViewStub) findViewById(R.id.zixun_detail_viewstub);
-        fenxiang2 = (ImageView) findViewById(R.id.zixun_detail_fenxiang2);
+        dianzanImg = findViewById(R.id.zixun_detail_dianzan_img);
+        dianzanText = findViewById(R.id.zixun_detail_dianzan_text);
+        shoucang = findViewById(R.id.title_image2);
+        shoucang.setVisibility(View.VISIBLE);
+        shoucang.setImageResource(R.drawable.shoucang_selector);
+
+        video = findViewById(R.id.zixun_detail_viewstub);
+        fenxiang2 = findViewById(R.id.zixun_detail_fenxiang2);
         Pllist = new ArrayList<>();
         adapter = new PL_List_Adapter(this);
         adapter.setOnHuifuListener(this);
 
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        plNum = (TextView) findViewById(R.id.zixun_Detail_appendPLNum);
-        fasong = (TextView) findViewById(R.id.zixun_detail_fasong);
+        plNum = findViewById(R.id.zixun_Detail_appendPLNum);
+        fasong = findViewById(R.id.zixun_detail_fasong);
         fasong.setText(mApplication.ST("发送"));
-        TextView tiplike = (TextView) findViewById(R.id.zixun_detail_tip);
+        TextView tiplike = findViewById(R.id.zixun_detail_tip);
         tiplike.setText(mApplication.ST("看完了，点个赞吧"));
-        dianzan = (LinearLayout) findViewById(R.id.zixun_detail_dianzan);
+        dianzan = findViewById(R.id.zixun_detail_dianzan);
         tip.setVisibility(View.GONE);
         dianzan.setVisibility(View.GONE);
-        ImageView back = (ImageView) this.findViewById(R.id.zixun_detail_leftImg);
-        title = (TextView) findViewById(R.id.zixun_detail_title);
+        ImageView back = this.findViewById(R.id.title_back);
+        back.setVisibility(View.VISIBLE);
+        back.setImageBitmap(ImageUtil.readBitMap(this,R.drawable.back));
+        title = findViewById(R.id.zixun_detail_title);
         title.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -358,9 +361,9 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 return true;
             }
         });
-        time = (TextView) findViewById(R.id.zixun_detail_time);
-        user = (TextView) findViewById(R.id.zixun_detail_user);
-        content = (myWebView) findViewById(R.id.zixun_detail_content);
+        time = findViewById(R.id.zixun_detail_time);
+        user = findViewById(R.id.zixun_detail_user);
+        content = findViewById(R.id.zixun_detail_content);
         WebSettings webSettings = content.getSettings();
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setJavaScriptEnabled(true);
@@ -444,7 +447,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
             }
         });
 
-        PlListVIew = (mPLlistview) findViewById(R.id.zixun_Detail_PL_listview);
+        PlListVIew = findViewById(R.id.zixun_Detail_PL_listview);
         PlListVIew.footer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -467,8 +470,8 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE,
         };
 
-        TextView tougao = (TextView) findViewById(R.id.tougao);
-        TextView jianyi = (TextView) findViewById(R.id.jianyi);
+        TextView tougao = findViewById(R.id.tougao);
+        TextView jianyi = findViewById(R.id.jianyi);
         Drawable tg = ContextCompat.getDrawable(this, R.drawable.tougao);
         Drawable jy = ContextCompat.getDrawable(this, R.drawable.jianyi);
         tg.setBounds(0, 0, DimenUtils.dip2px(this, 20), DimenUtils.dip2px(this, 20));
@@ -524,7 +527,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
     private void InitVideo() {
         video.setLayoutResource(R.layout.video_stub);
         View view = video.inflate();
-        player = (JCVideoPlayerStandard) view.findViewById(R.id.zixun_detail_player);
+        player = view.findViewById(R.id.zixun_detail_player);
         Log.w(TAG, "initView: player-=-" + player + "  video地址：：；" + FirstMap.get("videourl")
                 + "   " + getIntent().getStringExtra("title"));
         player.setUp(FirstMap.get("videourl"), mApplication.ST(FirstMap.get("title")));
@@ -676,7 +679,7 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                 startActivity(t);
 
                 break;
-            case R.id.zixun_detail_shoucang://收藏
+            case R.id.title_image2://收藏
                 if (!new LoginUtil().checkLogin(this)) {
                     return;
                 }
@@ -685,64 +688,14 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                     return;
                 }
                 CollectManager.doCollect(ZiXun_Detail.this, id, "1", v);
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            JSONObject js = new JSONObject();
-//                            try {
-//                                js.put("m_id", Constants.M_id);
-//                                js.put("user_id", sp.getString("user_id", ""));
-//                                js.put("newsid", id);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                            String data = OkGo.post(Constants.News_SC_Ip)
-//                                    .params("key", ApisSeUtil.getKey())
-//                                    .params("msg", ApisSeUtil.getMsg(js))
-//                                    .execute().body().string();
-//                            if (!data.equals("")) {
-//                                if (AnalyticalJSON.getHashMap(data).get("code").equals("000")) {
-//                                    runOnUiThread(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("添加收藏成功"), Toast.LENGTH_SHORT).show();
-//                                            v.setSelected(true);
-//                                            needTochange = true;
-//
-//                                        }
-//                                    });
-//                                } else if (AnalyticalJSON.getHashMap(data).get("code").equals("002")) {
-//                                    runOnUiThread(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("已取消收藏"), Toast.LENGTH_SHORT).show();
-//                                            v.setSelected(false);
-//                                            needTochange = true;
-//
-//                                        }
-//                                    });
-//                                } else {
-//                                    runOnUiThread(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            Toast.makeText(ZiXun_Detail.this, mApplication.ST("服务器异常"), Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    });
-//                                }
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }).start();
+
                 break;
 
             case R.id.zixun_detail_fenxiang2://底部分享
                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                 fenxiangb.performClick();
                 break;
-            case R.id.zixun_detail_leftImg://返回
+            case R.id.title_back://返回
                 finish();
                 break;
             case R.id.zixun_detail_dianzan://图文点赞
@@ -942,19 +895,23 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                                 if (!"0".equals(hashMap.get("yundousum"))) {
                                                     YunDouAwardDialog.show(ZiXun_Detail.this, "每日评论", hashMap.get("yundousum"));
                                                 }
-                                                if (currentLayout.getVisibility() == View.GONE) {
-                                                    currentLayout.setVisibility(View.VISIBLE);
-                                                }
+//                                                if (currentLayout.getVisibility() == View.GONE) {
+//                                                    currentLayout.setVisibility(View.VISIBLE);
+//                                                }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                                TextView                  textView     = new TextView(ZiXun_Detail.this);
-                                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                                layoutParams.setMargins(0, DimenUtils.dip2px(ZiXun_Detail.this, 5), 0, DimenUtils.dip2px(ZiXun_Detail.this, 5));
-                                                textView.setLayoutParams(layoutParams);
-                                                String                 pet_name = sp.getString("pet_name", "");
-                                                SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + content);
-                                                ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ZiXun_Detail.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                                                textView.setText(ssb);
-                                                currentLayout.addView(textView);
+
+
+//                                                TextView                  textView     = new TextView(ZiXun_Detail.this);
+//                                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//                                                layoutParams.setMargins(0, DimenUtils.dip2px(ZiXun_Detail.this, 5), 0, DimenUtils.dip2px(ZiXun_Detail.this, 5));
+//                                                textView.setLayoutParams(layoutParams);
+//                                                String                 pet_name = sp.getString("pet_name", "");
+//                                                SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + content);
+//                                                ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ZiXun_Detail.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+//                                                textView.setText(ssb);
+//                                                currentLayout.addView(textView);
+
+
                                                 PLText.setText("");
                                                 PLText.setHint(mApplication.ST("写入您的评论（300字以内）"));
                                                 overlay.setVisibility(View.GONE);
@@ -962,24 +919,24 @@ public class ZiXun_Detail extends AndroidPopupActivity implements OnClickListene
                                                 PlListVIew.setSelection(currentPosition);
                                                 fasong.setEnabled(true);
                                                 isPLing = false;
-                                                try {
-                                                    JSONArray  jsonArray  = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
-                                                    JSONObject jsonObject = new JSONObject();
-                                                    jsonObject.put("id", hashMap.get("id"));
-                                                    jsonObject.put("pet_name", mApplication.ST(pet_name));
-                                                    if (sp.getString("role", "").equals("3")) {
-                                                        jsonObject.put("role", "3");
-                                                    } else {
-                                                        jsonObject.put("role", "0");
-                                                    }
-                                                    jsonObject.put("ct_contents", mApplication.ST(content));
-                                                    jsonObject.put("user_id", sp.getString("user_id", ""));
-                                                    jsonArray.put(jsonObject);
-                                                    adapter.mlist.get(currentPosition).put("reply", jsonArray.toString());
-                                                    adapter.notifyDataSetChanged();
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
+//                                                try {
+//                                                    JSONArray  jsonArray  = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
+//                                                    JSONObject jsonObject = new JSONObject();
+//                                                    jsonObject.put("id", hashMap.get("id"));
+//                                                    jsonObject.put("pet_name", mApplication.ST(pet_name));
+//                                                    if (sp.getString("role", "").equals("3")) {
+//                                                        jsonObject.put("role", "3");
+//                                                    } else {
+//                                                        jsonObject.put("role", "0");
+//                                                    }
+//                                                    jsonObject.put("ct_contents", mApplication.ST(content));
+//                                                    jsonObject.put("user_id", sp.getString("user_id", ""));
+//                                                    jsonArray.put(jsonObject);
+//                                                    adapter.mlist.get(currentPosition).put("reply", jsonArray.toString());
+//                                                    adapter.notifyDataSetChanged();
+//                                                } catch (JSONException e) {
+//                                                    e.printStackTrace();
+//                                                }
                                                 ProgressUtil.dismiss();
                                             }
                                         });

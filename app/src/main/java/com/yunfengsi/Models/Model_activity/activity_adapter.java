@@ -86,8 +86,8 @@ public class activity_adapter extends BaseAdapter {
             if (getItemViewType(position) == 0) {
                 holder = new Holder();
                 view = inflater.inflate(R.layout.activity_header, parent, false);
-                holder.title = (TextView) view.findViewById(R.id.activity_title);
-                holder.imageView = (ImageView) view.findViewById(R.id.activity_image);
+                holder.title = view.findViewById(R.id.activity_title);
+                holder.imageView = view.findViewById(R.id.activity_image);
                 ((TextView) view.findViewById(R.id.title1)).setText(mApplication.ST("热门活动"));
                 view.setTag(holder);
             } else {
@@ -98,11 +98,11 @@ public class activity_adapter extends BaseAdapter {
                 } else {
                     view = inflater.inflate(R.layout.activity_header2, parent, false);
                 }
-                holder2.title = (TextView) view.findViewById(R.id.activity_item_title);
-                holder2.content = (TextView) view.findViewById(R.id.activity_item_content);
-                holder2.imageView = (ImageView) view.findViewById(R.id.activity_item_img);
-                holder2.peopleNum = (TextView) view.findViewById(R.id.activity_item_peopleNum);
-                holder2.time = (TextView) view.findViewById(R.id.activity_item_time);
+                holder2.title = view.findViewById(R.id.activity_item_title);
+                holder2.content = view.findViewById(R.id.activity_item_content);
+                holder2.imageView = view.findViewById(R.id.activity_item_img);
+                holder2.peopleNum = view.findViewById(R.id.activity_item_peopleNum);
+                holder2.time = view.findViewById(R.id.activity_item_time);
                 view.setTag(holder2);
             }
         } else {
@@ -116,7 +116,6 @@ public class activity_adapter extends BaseAdapter {
             Glide.with(context).load(map.get("image1")).asBitmap().centerCrop().override(screeWidth - (dp10*2), dp180).into(new BitmapImageViewTarget(holder.imageView) {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    super.onResourceReady(resource, glideAnimation);
                     RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
                     rbd.setCornerRadius(10);
                     setDrawable(rbd);
@@ -128,7 +127,6 @@ public class activity_adapter extends BaseAdapter {
             Glide.with(context).load(map.get("image1")).asBitmap().centerCrop().override(screeWidth * 9 / 25, screeWidth*27 /100).into(new BitmapImageViewTarget(holder2.imageView) {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    super.onResourceReady(resource, glideAnimation);
                     RoundedBitmapDrawable rbd = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
                     rbd.setCornerRadius(7);
                     setDrawable(rbd);

@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/main_color"
-        android:paddingTop="7dp"
-        android:paddingRight="7dp">
+        android:paddingRight="7dp"
+        android:paddingTop="7dp">
 
         <ImageButton
             android:id="@+id/ncqmht_back"
@@ -50,35 +50,36 @@
 
     <RelativeLayout
         android:id="@+id/ncqmht_relativelayout_nc"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/ncqmht_edittext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="请输入昵称"
-            android:maxLength="8"/>
+            android:maxLength="8" />
+
         <ImageButton
             android:id="@+id/ncqmht_qingchu"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
-            android:onClick="onClick"
-            android:background="@null"
-            android:scaleType="centerInside"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:src="@drawable/umeng_socialize_x_button" />
+            android:background="@null"
+            android:onClick="onClick"
+            android:scaleType="centerInside" />
     </RelativeLayout>
+
     <Spinner
-        android:layout_gravity="right"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"
         android:id="@+id/spinner_temple"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:padding="5dp"/>
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:visibility="gone" />
 </LinearLayout>

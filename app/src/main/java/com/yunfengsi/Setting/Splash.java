@@ -109,7 +109,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash);
-
+        getWindow().setBackgroundDrawableResource(R.color.transparent);
         initView();
 //        MWConfiguration config = new MWConfiguration(this);
 //        config.setLogEnable(true);//打开魔窗Log信息
@@ -220,8 +220,14 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
      * 初始化控件
      */
     private void initView() {
-        type = (TextView) findViewById(R.id.splash_type);
-        skip = (TextView) findViewById(R.id.splash_skip);
+        findViewById(R.id.skip2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                skip.performClick();
+            }
+        });
+        type = findViewById(R.id.splash_type);
+        skip = findViewById(R.id.splash_skip);
         skip.setOnClickListener(this);
         cdt = new CountDownTimer(5200, 1000) {///倒计时
             @Override
@@ -240,9 +246,9 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
         };
         ACache acache = ACache.get(getApplicationContext());
         if (PreferenceUtil.getUserIncetance(this).getBoolean("isFirstIn", true)) {
-            ViewStub viewStubfirst = (ViewStub) findViewById(R.id.view_stub_first);
+            ViewStub viewStubfirst = findViewById(R.id.view_stub_first);
             View     view          = viewStubfirst.inflate();
-            pager = (ViewPager) view.findViewById(R.id.view_stub_viewpager);
+            pager = view.findViewById(R.id.view_stub_viewpager);
             final int[] images = new int[]{R.drawable.loading1, R.drawable.loading2};
             pagerAdapter = new PagerAdapter() {
                 @Override
@@ -273,14 +279,37 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
             };
             pager.setOffscreenPageLimit(images.length);
             pager.setAdapter(pagerAdapter);
-            skip.setText(mApplication.ST("跳过"));
-            skip.setVisibility(View.VISIBLE);
+            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (position == images.length - 1) {
+                        //最后一页
+                        findViewById(R.id.skip2).setVisibility(View.VISIBLE);
+                    } else {
+                        findViewById(R.id.skip2).setVisibility(View.GONE);
+
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
         } else {
-            ViewStub viewStubstart = (ViewStub) findViewById(R.id.view_stub_start);
+            ViewStub viewStubstart = findViewById(R.id.view_stub_start);
             View     view          = viewStubstart.inflate();
-            image = (ImageView) view.findViewById(R.id.splash_image);
+            image = view.findViewById(R.id.splash_image);
             Bitmap bitmap = ImageUtil.readBitMap(this, R.drawable.start);
             image.setImageBitmap(bitmap);
+            //待图片加载好之后 去除activity的背景
+            getWindow().setBackgroundDrawable(null);
             image.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -396,53 +425,7 @@ public class Splash extends AppCompatActivity implements View.OnClickListener {
                     LogUtil.e("销毁bitmap");
                     image.destroyDrawingCache();
                 }
-//                if (new LoginUtil().checkLogin(this)) {
-//                    //TODO：动画等耗时操作结束后再调用checkYYB(),一般写在starActivity前即可
-//                    MLinkAPIFactory.createAPI(this).checkYYB(this, new YYBCallback() {
-//                        @Override
-//                        public void onFailed(Context context) {
-//                            LogUtil.e("应用宝检测失败");
-//                            gotoHome ();
-//                        }
-//                        @Override
-//                        public void onSuccess() {
-//                            LogUtil.e("应用宝检测成功"+getIntent().getDataString()+"      "+getIntent().getStringExtra("type"));
-////                            if(getIntent()!=null){
-////                                String type = getIntent().getStringExtra("type");//type  1,资讯，2活动，3，供养，4，助学，5红包
-////                                if (type != null) {
-////                                    switch (type) {
-////                                        case "1":
-////                                            getIntent().setClass(Splash.this, ZiXun_Detail.class);
-////                                            break;
-////                                        case "2":
-////                                            getIntent().setClass(Splash.this, ActivityDetail.class);
-////                                            break;
-////                                        case "3":
-////                                            getIntent().setClass(Splash.this, GongYangDetail.class);
-////                                            break;
-////                                        case "4":
-////                                            getIntent().setClass(Splash.this, FundingDetailActivity.class);
-////                                            break;
-////                                        case "5":
-////                                            getIntent().setClass(Splash.this, WebInteraction.class);
-////                                            break;
-////
-////                                    }
-////                                    getIntent().setClass(Splash.this, MainActivity.class);
-////                                    startActivity(intent);
-////                                    startActivity(getIntent());
-////
-////                                    return;
-////                                }
-////                            }
 //
-//                            finish();
-//                        }
-//                    });
-
-//                }
-
-
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
                 finish();

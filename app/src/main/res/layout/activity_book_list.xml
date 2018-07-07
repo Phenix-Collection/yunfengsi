@@ -7,7 +7,6 @@
     tools:context=".Models.E_Book.BookList">
 
 
-    <include layout="@layout/title_default" />
 
 
     <RelativeLayout

@@ -2,6 +2,7 @@ package com.yunfengsi.Managers.ForManager;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -65,12 +66,11 @@ public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.comment_manage);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
-
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
 
 
         ((TextView) findViewById(R.id.title_title)).setText("祈愿管理");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -84,11 +84,11 @@ public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.
         delete.setOnClickListener(this);
 
 
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView        recyclerView        = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView        recyclerView        = findViewById(R.id.recycle);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -183,9 +183,11 @@ public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.
         @Override
         protected void convert(final BaseViewHolder holder, final HashMap<String, String> map) {
             holder.setText(R.id.petName, map.get("pet_name"))
-                    .setText(R.id.comment, map.get("content"))
+                    .setText(R.id.title, map.get("content"))
                     .setText(R.id.time, TimeUtils.getTrueTimeStr(map.get("time")));
-            holder.setVisible(R.id.title,false);
+            holder.setVisible(R.id.comment, false)
+                    .setVisible(R.id.reply, false);
+            holder.setTextColor(R.id.title, Color.BLACK);
             Glide.with(WishManage.this)
                     .load(map.get("user_image"))
                     .override(dp30, dp30)
@@ -218,7 +220,6 @@ public class WishManage extends AppCompatActivity implements SwipeRefreshLayout.
 
         }
     }
-
 
 
     /**

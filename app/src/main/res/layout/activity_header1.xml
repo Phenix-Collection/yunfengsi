@@ -26,6 +26,9 @@
        android:orientation="horizontal"
        android:paddingLeft="10dp"
        android:paddingRight="10dp"
+       android:background="@drawable/layout_bg_sel"
+       android:paddingTop="5dp"
+       android:paddingBottom="5dp"
        >
        <ImageView
            android:layout_width="0dp"

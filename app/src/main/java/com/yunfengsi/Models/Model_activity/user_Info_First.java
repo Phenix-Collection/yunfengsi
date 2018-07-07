@@ -49,9 +49,9 @@ public class user_Info_First extends AppCompatActivity  implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_ziliaowanshan);
 
-        ImageView imgBack = (ImageView) findViewById(R.id.back);
+        ImageView imgBack = findViewById(R.id.back);
         imgBack.setOnClickListener(this);
-        webContent= (myWebView) findViewById(R.id.user_info);
+        webContent= findViewById(R.id.user_info);
         WebSettings webSettings = webContent.getSettings();
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setJavaScriptEnabled(true);
@@ -87,7 +87,7 @@ public class user_Info_First extends AppCompatActivity  implements View.OnClickL
             }
             
         });
-        tvCommit= (TextView) findViewById(R.id.commit);
+        tvCommit= findViewById(R.id.commit);
         cdt=new CountDownTimer(10000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {

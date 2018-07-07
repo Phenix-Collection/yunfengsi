@@ -4,6 +4,8 @@
 
     <color name="huise">#9b9b9b</color>
     <color name="light_huise">#e1e1e1</color>
+    <color name="line_bg_press">#e6e6e6</color>
+    <color name="windowBackground">@color/white</color>
 
     <color name="textOnImg_bg">#22000000</color>
 
@@ -13,18 +15,10 @@
     <string name="haveNoPermission">您没有该功能管理权限</string>
     <string name="wallPaper_User_Head_ShareName">wallpaper_User_Head</string>
 
-    <!--<integer-array name="mine_image">-->
-    <!--<item>@mipmap/shoucang_justforleft</item>-->
-    <!--<item>@mipmap/shoucang_justforleft</item>-->
-    <!--<item>@mipmap/zhifu_justforleft</item>-->
-    <!--<item>@drawable/nianfo</item>-->
-    <!--<item>@drawable/gongke</item>-->
-    <!--<item>@drawable/mine_activity</item>-->
-    <!--<item>@mipmap/setting</item>-->
-    <!--</integer-array>-->
+
 
     <string-array name="mine_text">
-        <item>义卖</item>
+        <!--<item>义卖</item>-->
         <item>壁纸</item>
         <item>我的云豆</item>
         <item>我的福利</item>
@@ -41,7 +35,7 @@
         <item>活动</item>
         <item>通知</item>
         <item>投稿</item>
-        <item>设置</item>
+        <!--<item>设置</item>-->
         <item>切换账号</item>
     </string-array>
 

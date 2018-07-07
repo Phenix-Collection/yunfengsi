@@ -56,12 +56,12 @@ public class Fahuo extends AppCompatActivity implements View.OnClickListener {
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
         setContentView(R.layout.activity_fahuo_info);
         findViewById(R.id.title_back).setOnClickListener(this);
-        chooseCompany = (TextView) findViewById(R.id.chooseCompany);
-        TextView  commit = (TextView) findViewById(R.id.commit);
-        ImageView toScan = (ImageView) findViewById(R.id.toscan);
+        chooseCompany = findViewById(R.id.chooseCompany);
+        TextView  commit = findViewById(R.id.commit);
+        ImageView toScan = findViewById(R.id.toscan);
         toScan.setOnClickListener(this);
         commit.setOnClickListener(this);
-        code = (EditText) findViewById(R.id.code);
+        code = findViewById(R.id.code);
         chooseCompany.setOnClickListener(this);
 
     }

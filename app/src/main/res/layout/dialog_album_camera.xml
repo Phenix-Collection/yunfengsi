@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:showDividers="beginning|middle"
     android:divider="@drawable/mdivider"
-    android:background="@color/transparent"
     >
 
     <TextView

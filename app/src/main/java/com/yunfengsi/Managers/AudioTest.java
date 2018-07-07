@@ -43,8 +43,8 @@ public class AudioTest extends AppCompatActivity implements EventListener{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.audio_test);
-        logText= (TextView) findViewById(R.id.log);
-        result= (TextView) findViewById(R.id.result);
+        logText= findViewById(R.id.log);
+        result= findViewById(R.id.result);
         initButton();
         initPermission();
 
@@ -53,7 +53,7 @@ public class AudioTest extends AppCompatActivity implements EventListener{
     }
 
     private void initButton() {
-        diffuseView = (DiffuseView) findViewById(R.id.audio_button);
+        diffuseView = findViewById(R.id.audio_button);
 
         diffuseView.setOnTouchListener(new View.OnTouchListener() {
             @Override

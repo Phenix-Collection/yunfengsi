@@ -42,9 +42,9 @@ public class QiFu_PaiWei_Detail extends AppCompatActivity {
         address = getIntent().getStringExtra("address");
         person = getIntent().getStringExtra("person");
         time = getIntent().getStringExtra("time");
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST((type.equals("3") ? "我的祈福" : "我的牌位")));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

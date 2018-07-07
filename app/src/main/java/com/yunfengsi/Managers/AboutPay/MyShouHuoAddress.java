@@ -149,24 +149,24 @@ public class MyShouHuoAddress extends AppCompatActivity implements View.OnClickL
      * 初始化控件
      */
     private void initView() {
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swipeRefreshLayout = findViewById(R.id.swip);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
         swipeRefreshLayout.setOnRefreshListener(this);
         list = new ArrayList<>();
-        listView = (ListView) findViewById(R.id.mshouhuo_listview);
+        listView = findViewById(R.id.mshouhuo_listview);
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        back = (ImageView) findViewById(R.id.title_back);
+        back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setImageResource(R.drawable.back);
         back.setOnClickListener(this);
         ((TextView) findViewById(R.id.title_title)).setText("我的收货地址");
 
-        ImageView add = (ImageView) findViewById(R.id.title_image2);
+        ImageView add = findViewById(R.id.title_image2);
         add.setVisibility(View.VISIBLE);
         add.setImageResource(R.drawable.home_add_more);
         add.setOnClickListener(this);
 
-        tip = (ImageView) findViewById(R.id.shucheng_tip);
+        tip = findViewById(R.id.shucheng_tip);
         tip.setOnClickListener(this);
         cureentID = getIntent().getStringExtra("id");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -297,11 +297,11 @@ public class MyShouHuoAddress extends AppCompatActivity implements View.OnClickL
             if (view == null) {
                 holder = new Holder();
                 view = LayoutInflater.from(MyShouHuoAddress.this).inflate(R.layout.shouhuo_list_item, parent, false);
-                holder.user = (TextView) view.findViewById(R.id.commit_dingdan_user);
-                holder.phone = (TextView) view.findViewById(R.id.commit_dingdan_phone);
-                holder.address = (TextView) view.findViewById(R.id.commit_dingdan_address);
-                holder.update = (ImageView) view.findViewById(R.id.commit_dingdan_update);
-                holder.delete = (ImageView) view.findViewById(R.id.commit_dingdan_delete);
+                holder.user = view.findViewById(R.id.commit_dingdan_user);
+                holder.phone = view.findViewById(R.id.commit_dingdan_phone);
+                holder.address = view.findViewById(R.id.commit_dingdan_address);
+                holder.update = view.findViewById(R.id.commit_dingdan_update);
+                holder.delete = view.findViewById(R.id.commit_dingdan_delete);
                 view.setTag(holder);
             } else {
                 holder = (Holder) view.getTag();

@@ -47,14 +47,14 @@ public class QuanFragment extends Fragment implements DuiHuanContract.IFView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quan_duihuan, container, false);
-        swip = (SwipeRefreshLayout) view.findViewById(R.id.swip);
+        swip = view.findViewById(R.id.swip);
         quanPresenter=new QuanFramgentPresenterImpl(this);
         EventBus.getDefault().register(this);
         swip.setOnRefreshListener(quanPresenter);
         swip.setColorSchemeResources(R.color.main_color);
 
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycle);
+        RecyclerView recyclerView = view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new mItemDecoration(getActivity()));
 

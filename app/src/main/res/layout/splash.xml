@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -36,5 +37,22 @@
         android:background="@drawable/skip_sel"
         android:textSize="16sp"
         android:visibility="gone"/>
-
+    <com.ruffian.library.RTextView
+        android:id="@+id/skip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="30dp"
+        android:textSize="16dp"
+        app:corner_radius="5dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="25dp"
+        android:visibility="gone"
+        android:paddingRight="25dp"
+        android:paddingBottom="8dp"
+        app:background_normal="@color/main_color"
+        app:text_color_normal="@color/white"
+        app:text_color_pressed="@color/lightgray"
+        android:text="立即体验"
+        />
 </merge>

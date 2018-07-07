@@ -292,18 +292,18 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                 ScaleImageUtil.openBigIagmeMode(AuctionDetail.this, imageUrls, position, true);
             }
         });
-        behind = ((myWebView) findViewById(R.id.bebind));
+        behind = findViewById(R.id.bebind);
 
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
+        PLText = findViewById(R.id.zixun_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
         Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.pinglun_image));
         Glide.with(this).load(R.drawable.auction_bid).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.fenxiang_image));
-        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
-        audio = (TextView) findViewById(R.id.audio_button);
+        toggle = findViewById(R.id.toggle_audio_word);
+        audio = findViewById(R.id.audio_button);
         toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -343,7 +343,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
         TextView fasong = findViewById(R.id.fasong);
         fasong.setText("发送");
         fasong.setOnClickListener(this);
-        overlay = (FrameLayout) findViewById(R.id.frame);
+        overlay = findViewById(R.id.frame);
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -352,7 +352,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
                 v.setVisibility(View.GONE);
             }
         });
-        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -365,7 +365,7 @@ public class AuctionDetail extends AppCompatActivity implements View.OnClickList
         });
         ((TextView) findViewById(R.id.pltv)).setText(mApplication.ST("评论"));
         ((TextView) findViewById(R.id.fxtv)).setText(mApplication.ST("出价"));
-        fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
+        fenxiangb = findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

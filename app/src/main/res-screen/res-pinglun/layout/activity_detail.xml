@@ -5,40 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/main_color">
-
-        <ImageView
-            android:id="@+id/title_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/back_sel"
-            android:clickable="true"
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/back"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/title_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:textIsSelectable="true"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/activity_detail_shoucang"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:padding="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/shoucang_selector" />
-    </RelativeLayout>
+    <include layout="@layout/title_default"/>
 
 
     <ImageView
@@ -397,7 +364,7 @@
                 android:textSize="15dp" />
 
             <ImageView
-                android:id="@+id/title_image2"
+                android:id="@+id/shareRight"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:visibility="gone"

@@ -109,14 +109,14 @@ public class FundingItemAdapter extends BaseAdapter {
             if (getItemViewType(position) == 0) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.item_funding, null);
-                holder.img_jump = (ImageView) convertView.findViewById(R.id.img_jump);
-                holder.tv_funding_name = (TextView) convertView.findViewById(R.id.tv_funding_name);
-                holder.tv_goal_money = (TextView) convertView.findViewById(R.id.tv_goal_money);
-                holder.tv_get_money = (TextView) convertView.findViewById(R.id.tv_get_money);
-                holder.tv_support_count = (TextView) convertView.findViewById(R.id.tv_support_count);
-                holder.tv_rest_time = (TextView) convertView.findViewById(R.id.tv_rest_time);
-                holder.progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
-                holder.but_surpport= (TextView) convertView.findViewById(R.id.fund_list_item_Tosurpport);
+                holder.img_jump = convertView.findViewById(R.id.img_jump);
+                holder.tv_funding_name = convertView.findViewById(R.id.tv_funding_name);
+                holder.tv_goal_money = convertView.findViewById(R.id.tv_goal_money);
+                holder.tv_get_money = convertView.findViewById(R.id.tv_get_money);
+                holder.tv_support_count = convertView.findViewById(R.id.tv_support_count);
+                holder.tv_rest_time = convertView.findViewById(R.id.tv_rest_time);
+                holder.progressBar = convertView.findViewById(R.id.progressBar);
+                holder.but_surpport= convertView.findViewById(R.id.fund_list_item_Tosurpport);
                 ((TextView) convertView.findViewById(R.id.fund_list_item_Tosurpport)).setText(mApplication.ST("我要助学"));
                 ((TextView) convertView.findViewById(R.id.goal)).setText(mApplication.ST("目标金额"));
                 ((TextView) convertView.findViewById(R.id.get)).setText(mApplication.ST("已达成"));
@@ -126,13 +126,13 @@ public class FundingItemAdapter extends BaseAdapter {
             }else{
                 holder2 = new ViewHolder2();
                 convertView = LayoutInflater.from(context).inflate(R.layout.fund_list_item_small, null);
-                holder2.tv_funding_name = (TextView) convertView.findViewById(R.id.fund_list_item_small_title);
-                holder2.tv_goal_money = (TextView) convertView.findViewById(R.id.tv_goal_money);
-                holder2.tv_get_money = (TextView) convertView.findViewById(R.id.tv_get_money);
-                holder2.tv_support_count = (TextView) convertView.findViewById(R.id.tv_support_count);
-                holder2.tv_rest_time = (TextView) convertView.findViewById(R.id.tv_rest_time);
-                holder2.but_surpport= (TextView) convertView.findViewById(R.id.fund_list_item_small_Tosurpport);
-                holder2.status= (TextView) convertView.findViewById(R.id.status);
+                holder2.tv_funding_name = convertView.findViewById(R.id.fund_list_item_small_title);
+                holder2.tv_goal_money = convertView.findViewById(R.id.tv_goal_money);
+                holder2.tv_get_money = convertView.findViewById(R.id.tv_get_money);
+                holder2.tv_support_count = convertView.findViewById(R.id.tv_support_count);
+                holder2.tv_rest_time = convertView.findViewById(R.id.tv_rest_time);
+                holder2.but_surpport= convertView.findViewById(R.id.fund_list_item_small_Tosurpport);
+                holder2.status= convertView.findViewById(R.id.status);
                 ((TextView) convertView.findViewById(R.id.fund_list_item_small_Tosurpport)).setText(mApplication.ST("我要助学"));
                 ((TextView) convertView.findViewById(R.id.goal)).setText(mApplication.ST("目标金额"));
                 ((TextView) convertView.findViewById(R.id.get)).setText(mApplication.ST("已达成"));
@@ -292,18 +292,18 @@ public class FundingItemAdapter extends BaseAdapter {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final View view = LayoutInflater.from(context).inflate(R.layout.pay_choose_num_dialog, null);
-        final TextView one = (TextView) view.findViewById(R.id.one);
-        final TextView five = (TextView) view.findViewById(R.id.five);
-        final TextView ten = (TextView) view.findViewById(R.id.ten);
-        final TextView twelve = (TextView) view.findViewById(R.id.twelve);
-        final TextView fifty = (TextView) view.findViewById(R.id.fifty);
-        final TextView one_han = (TextView) view.findViewById(R.id.han);
-        final TextView two_han = (TextView) view.findViewById(R.id.two_han);
-        final TextView five_han = (TextView) view.findViewById(R.id.five_han);
-        final TextView others = (TextView) view.findViewById(R.id.others);
-        final EditText otherNum = (EditText) view.findViewById(R.id.otherNum);
-        final Button agreeTOPay = (Button) view.findViewById(R.id.agreeToPay);
-        final RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.otherlayout);
+        final TextView one = view.findViewById(R.id.one);
+        final TextView five = view.findViewById(R.id.five);
+        final TextView ten = view.findViewById(R.id.ten);
+        final TextView twelve = view.findViewById(R.id.twelve);
+        final TextView fifty = view.findViewById(R.id.fifty);
+        final TextView one_han = view.findViewById(R.id.han);
+        final TextView two_han = view.findViewById(R.id.two_han);
+        final TextView five_han = view.findViewById(R.id.five_han);
+        final TextView others = view.findViewById(R.id.others);
+        final EditText otherNum = view.findViewById(R.id.otherNum);
+        final Button agreeTOPay = view.findViewById(R.id.agreeToPay);
+        final RelativeLayout layout = view.findViewById(R.id.otherlayout);
        int dimens = DimenUtils.dip2px(context, 10);
         builder.setView(view,0, dimens, 0, dimens);
 

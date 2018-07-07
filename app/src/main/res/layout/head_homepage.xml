@@ -12,6 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:banner_default_image="@color/transparent"
+        app:indicator_width="8dp"
+        app:indicator_height="4dp"
+        app:indicator_drawable_selected="@drawable/shape_selected_circle"
+        app:indicator_drawable_unselected="@drawable/shape_unselected_circle"
         app:delay_time="5000">
 
     </com.youth.banner.Banner>
@@ -19,7 +23,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@color/white"
         android:orientation="horizontal">
 
         <android.support.v7.widget.RecyclerView
@@ -49,19 +52,13 @@
         android:id="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:background="@color/white"
-        android:divider="@drawable/mdivider"
         android:orientation="vertical"
-        android:showDividers="beginning|end"
         android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#f0f0f0"
-
-
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 

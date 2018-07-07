@@ -102,15 +102,15 @@ public class ziXun_List_Adapter extends BaseAdapter {
             if (view == null) {
                 holder = new ViewHolder();
                 view = LayoutInflater.from(context).inflate(R.layout.hot_two_item, parent, false);
-                holder.img = (ImageView) view.findViewById(R.id.hot_two_item_image);
-                holder.title = (TextView) view.findViewById(R.id.hot_two_item_title);
-                holder.time = (TextView) view.findViewById(R.id.hot_two_item_time);
-                holder.user = (TextView) view.findViewById(R.id.hot_two_item_Plnum);
-                holder.type = (TextView) view.findViewById(R.id.hot_two_item_type);
-                holder.ctr = (TextView) view.findViewById(R.id.hot_two_item_ctr);
-                holder.abs = (TextView) view.findViewById(R.id.hot_two_item_abs);
-                holder.comments = (TextView) view.findViewById(R.id.hot_two_item_comments);
-                holder.likes = (TextView) view.findViewById(R.id.hot_two_item_likes);
+                holder.img = view.findViewById(R.id.hot_two_item_image);
+                holder.title = view.findViewById(R.id.hot_two_item_title);
+                holder.time = view.findViewById(R.id.hot_two_item_time);
+                holder.user = view.findViewById(R.id.hot_two_item_Plnum);
+                holder.type = view.findViewById(R.id.hot_two_item_type);
+                holder.ctr = view.findViewById(R.id.hot_two_item_ctr);
+                holder.abs = view.findViewById(R.id.hot_two_item_abs);
+                holder.comments = view.findViewById(R.id.hot_two_item_comments);
+                holder.likes = view.findViewById(R.id.hot_two_item_likes);
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();
@@ -149,14 +149,14 @@ public class ziXun_List_Adapter extends BaseAdapter {
                 holder = new ViewHolder();
                 view = LayoutInflater.from(context).inflate(R.layout.zixun_video_item, parent, false);
 //                holder.player = (JCVideoPlayerStandard) view.findViewById(R.id.zixun_video_player);
-                holder.stub = (FrameLayout) view.findViewById(R.id.zixun_video_stub);
-                holder.title = (TextView) view.findViewById(R.id.zixun_video_title);
-                holder.time = (TextView) view.findViewById(R.id.zixun_video_time);
-                holder.user = (TextView) view.findViewById(R.id.zixun_video_user);
-                holder.ctr = (TextView) view.findViewById(R.id.zixun_video_Num);
-                holder.type = (TextView) view.findViewById(R.id.zixun_video_tag);
-                holder.likes = (TextView) view.findViewById(R.id.zixun_video_likes);
-                holder.comments = (TextView) view.findViewById(R.id.zixun_video_comment);
+                holder.stub = view.findViewById(R.id.zixun_video_stub);
+                holder.title = view.findViewById(R.id.zixun_video_title);
+                holder.time = view.findViewById(R.id.zixun_video_time);
+                holder.user = view.findViewById(R.id.zixun_video_user);
+                holder.ctr = view.findViewById(R.id.zixun_video_Num);
+                holder.type = view.findViewById(R.id.zixun_video_tag);
+                holder.likes = view.findViewById(R.id.zixun_video_likes);
+                holder.comments = view.findViewById(R.id.zixun_video_comment);
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();

@@ -70,7 +70,7 @@ public class Songjing_Detail_Fragment extends Fragment implements View.OnClickLi
         /////
         adapter = new SongJing_Detail_Adapter(getActivity());
         dataList = new ArrayList<>();
-        listView = (ListView) view.findViewById(R.id.niaofo_detail_list);
+        listView = view.findViewById(R.id.niaofo_detail_list);
     }
 
     public void loadData() {//加载数据

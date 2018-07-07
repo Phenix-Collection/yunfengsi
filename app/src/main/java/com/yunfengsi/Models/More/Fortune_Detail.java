@@ -27,9 +27,9 @@ public class Fortune_Detail extends AppCompatActivity {
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_fortune_detail);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("灵签详解"));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

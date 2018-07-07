@@ -1,50 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/main_color"
-        android:id="@+id/nianfo_home_title">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:text="共修"
-            android:textColor="#ffffff"
-            android:textSize="18sp"/>
-        <ImageView
-            android:id="@+id/main_search"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/back"
-            android:background="@drawable/back_sel"
-            android:padding="10dp"
-            android:layout_marginLeft="5dp"
-            />
-        <ImageView
-            android:id="@+id/Share"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/fenxiang2"
-            android:background="@drawable/back_sel"
-            android:layout_marginRight="5dp"
-            android:layout_gravity="right"
-            android:padding="8dp"
-            />
-    </FrameLayout>
 
 
+    <include layout="@layout/title_default" />
 
 
     <ListView
         android:id="@+id/nianfo_home_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/nianfo_home_title"
+        android:layout_marginTop="40dp"
         android:background="@color/white"
-        android:divider="@drawable/mdivider"
-        />
-</com.zhy.android.percent.support.PercentRelativeLayout>
+        android:divider="@drawable/mdivider" />
+</merge>

@@ -100,19 +100,19 @@ public class Sign extends AppCompatActivity implements View.OnClickListener {
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.sign_activity);
 
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         back.setImageResource(R.drawable.back);
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText(mApplication.ST("修改个性签名"));
 
-        TextView save = (TextView) findViewById(R.id.title_info);
+        TextView save = findViewById(R.id.title_info);
         save.setVisibility(View.VISIBLE);
         save.setText(mApplication.ST("保存"));
         save.setOnClickListener(this);
 
-        sign= (EditText) findViewById(R.id.sign_ed);
+        sign= findViewById(R.id.sign_ed);
         sign.setHint(mApplication.ST("请输入您的签名"));
         sign.setText(PreferenceUtil.getUserIncetance(this).getString("signature",""));
 

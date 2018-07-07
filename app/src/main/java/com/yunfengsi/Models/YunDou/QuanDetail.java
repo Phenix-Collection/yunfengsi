@@ -48,9 +48,9 @@ public class QuanDetail extends AppCompatActivity {
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.quan_detail);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("兑换券"));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

@@ -129,15 +129,15 @@ public class ImageGridAdapter extends BaseAdapter {
             if (getItemViewType(position) == 0) {
                 holder0 = new ViewHolder0();
                 view = inflater.inflate(R.layout.photo_picker_item_camera, parent, false);
-                holder0.imageView = (ImageView) view.findViewById(R.id.photo_picker_item_camera_img);
+                holder0.imageView = view.findViewById(R.id.photo_picker_item_camera_img);
                 holder0.imageView.setMinimumWidth((mScreenWidth - dp4) / 3);
                 holder0.imageView.setMinimumHeight((mScreenWidth - dp4) / 3);
                 view.setTag(holder0);
             } else {
                 holder = new ViewHolder();
                 view = inflater.inflate(R.layout.photo_picker_grid_item, parent, false);
-                holder.imageView = (ImageView) view.findViewById(R.id.photo_picker_item_imageView);
-                holder.check = (ImageView) view.findViewById(R.id.photo_picker_item_checkbox);
+                holder.imageView = view.findViewById(R.id.photo_picker_item_imageView);
+                holder.check = view.findViewById(R.id.photo_picker_item_checkbox);
                 holder.imageView.setMinimumWidth((mScreenWidth - dp4) / 3);
                 holder.imageView.setMinimumHeight((mScreenWidth - dp4) / 3);
                 view.setTag(holder);
@@ -184,7 +184,7 @@ public class ImageGridAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Log.w(TAG, "onClick: 选中图片");
 
-                    ImageView img = (ImageView) ((FrameLayout) v.getParent()).findViewById(R.id.photo_picker_item_imageView);
+                    ImageView img = ((FrameLayout) v.getParent()).findViewById(R.id.photo_picker_item_imageView);
                     if (!mSelectedImages.contains(path)) {
                         if (hasSelectedSize + mSelectedImages.size() >= allowChooseNum) {
                             Toast.makeText(context, "最多能够上传"+allowChooseNum+"张图片", Toast.LENGTH_SHORT).show();

@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -41,6 +40,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.request.BaseRequest;
+import com.ruffian.library.RTextView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.media.UMImage;
@@ -79,13 +79,11 @@ import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.ErWeiMa.QRActivity;
-import com.yunfengsi.View.ListDialog;
 import com.yunfengsi.View.mPLlistview;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -155,8 +153,8 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
     private TextView quickChannel;
     private boolean hasShowedQuick = false;
     private ArrayList<HashMap<String, String>> quickInfoMap;
-
-
+    private boolean hasShowActivityProtocol = false;
+    private boolean shouldShowQuickChannel=false;
     public static class RefreshEvent {
 
     }
@@ -181,7 +179,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
      * 初始化数据
      */
     private void initView() {
-        tip = (ImageView) findViewById(R.id.tip);
+        tip = findViewById(R.id.tip);
         tip.setOnClickListener(this);
         /**
          * 快速通道
@@ -193,17 +191,17 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
          * 快速通道
          */
 
-        yue = (TextView) findViewById(R.id.activity_detail_yue);
+        yue = findViewById(R.id.activity_detail_yue);
         yue.setText("约");
         yue.setOnClickListener(this);
-        PLText = (EditText) findViewById(R.id.activity_detail_apply_edt);
+        PLText = findViewById(R.id.activity_detail_apply_edt);
         PLText.setHint(mApplication.ST("写入你的评论(300字以内)"));
         Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.pinglun_image));
         Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.fenxiang_image));
-        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
-        audio = (TextView) findViewById(R.id.audio_button);
+        toggle = findViewById(R.id.toggle_audio_word);
+        audio = findViewById(R.id.audio_button);
         toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -240,21 +238,27 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                 return true;
             }
         });
-        overlay = (FrameLayout) findViewById(R.id.frame);
+        overlay = findViewById(R.id.frame);
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PLText.setHint(mApplication.ST("写入您的评论（300字以内）"));
+                if(shouldShowQuickChannel){
+                    quickChannel.setVisibility(View.VISIBLE);
+                }
                 isPLing = false;
                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                 v.setVisibility(View.GONE);
             }
         });
-        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 overlay.setVisibility(View.VISIBLE);
+                if(shouldShowQuickChannel){
+                    quickChannel.setVisibility(View.GONE);
+                }
                 PLText.requestFocus();
                 isPLing = false;
                 PLText.setHint(mApplication.ST("写入您的评论（300字以内）"));
@@ -263,7 +267,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
 
             }
         });
-        LinearLayout fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
+        LinearLayout fenxiangb = findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,9 +280,9 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         ((TextView) findViewById(R.id.p1)).setText(mApplication.ST("最新评论"));
         ((TextView) findViewById(R.id.pltv)).setText(mApplication.ST("评论"));
         ((TextView) findViewById(R.id.fxtv)).setText(mApplication.ST("分享"));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(this);
-        dianzanImg = (ImageView) findViewById(R.id.activity_detail_dianzan_img);
-        dianzanText = (TextView) findViewById(R.id.activity_detail_dianzan_text);
+        findViewById(R.id.title_back).setOnClickListener(this);
+        dianzanImg = findViewById(R.id.activity_detail_dianzan_img);
+        dianzanText = findViewById(R.id.activity_detail_dianzan_text);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         sp = getSharedPreferences("user", MODE_PRIVATE);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -290,12 +294,11 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         int dp7   = DimenUtils.dip2px(this, 7);
         //图片地址数组
         imageList = new ArrayList<>();
-        //轮播图圆点layout
-//        PointLayou = (LinearLayout) findViewById(R.id.activity_detail_circlePoint_layout);
+
         //活动Id
         Id = getIntent().getStringExtra("id");
         //返回按钮
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
 
@@ -303,14 +306,14 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("活动详情"));
 
         //分享按钮
-        rightImg = (ImageView) findViewById(R.id.title_image2);
+        rightImg = findViewById(R.id.shareRight);
 //        rightImg.setOnClickListener(this);
         //标题，发布时间
-        title = (TextView) findViewById(R.id.activity_detail_title);
-        fabuTime = (TextView) findViewById(R.id.activity_detail_time);
+        title = findViewById(R.id.activity_detail_title);
+        fabuTime = findViewById(R.id.activity_detail_time);
         //轮播
 //        viewPager = (ViewPager) findViewById(R.id.activity_detail_viewPager);
-        banner = (Banner) findViewById(R.id.banner);
+        banner = findViewById(R.id.banner);
 
         banner.setDelayTime(3000);
         banner.setImageLoader(new ImageLoader() {
@@ -334,21 +337,21 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         });
 
         //发起单位，活动地点，活动时间，已报名人数
-        faqidanwei = (TextView) findViewById(R.id.activity_detail_faxidanwei);
-        huodongdidian = (TextView) findViewById(R.id.activity_detail_huodongdidian);
-        huodongTime = (TextView) findViewById(R.id.activity_detail_huodongshijian);
-        peopleNum = (TextView) findViewById(R.id.activity_detail_peopleNum);
+        faqidanwei = findViewById(R.id.activity_detail_faxidanwei);
+        huodongdidian = findViewById(R.id.activity_detail_huodongdidian);
+        huodongTime = findViewById(R.id.activity_detail_huodongshijian);
+        peopleNum = findViewById(R.id.activity_detail_peopleNum);
         //报名入口
-        Tobaoming = (TextView) findViewById(R.id.activity_detail_baoming);
+        Tobaoming = findViewById(R.id.activity_detail_baoming);
         Tobaoming.setText(mApplication.ST("立即报名"));
 //        Tobaoming.setOnClickListener(this);
         //点赞
-        dianzan = (LinearLayout) findViewById(R.id.activity_detail_dianzan);
+        dianzan = findViewById(R.id.activity_detail_dianzan);
 //        dianzan.setOnClickListener(this);
         //活动详情
-        content = (TextView) findViewById(R.id.activity_detail_info);
+        content = findViewById(R.id.activity_detail_info);
         //评论列表
-        PlListVIew = (mPLlistview) findViewById(R.id.activity_detail_listview);
+        PlListVIew = findViewById(R.id.activity_detail_listview);
         PlListVIew.footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,9 +362,11 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         });
         //评论框底部
 
-        FaSong = (TextView) findViewById(R.id.activity_detail_fasong);
+        FaSong = findViewById(R.id.activity_detail_fasong);
         FaSong.setText(mApplication.ST("发送"));
-        shoucang = (ImageView) findViewById(R.id.activity_detail_shoucang);
+        shoucang = findViewById(R.id.title_image2);
+        shoucang.setVisibility(View.VISIBLE);
+        shoucang.setImageResource(R.drawable.shoucang_selector);
 
 
         if (PreferenceUtil.getUserIncetance(this).getString("role", "").equals("3")) {
@@ -497,7 +502,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
         if (Id == null || Id.equals("")) {
             return;
         }
-//        ProgressUtil.show(this, "", mApplication.ST("正在加载...."));
+
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -576,6 +581,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                                     //已报名，但是正在审核，显示快速通道
                                                     LogUtil.e("已报名，但是正在审核，显示快速通道");
                                                     quickChannel.setVisibility(View.VISIBLE);
+                                                    shouldShowQuickChannel=true;
                                                     Tobaoming.setText(mApplication.ST("已报名"));
                                                     Tobaoming.setEnabled(false);
                                                     if (getIntent().getStringExtra("wel_id") != null) {
@@ -589,8 +595,10 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                                         Tobaoming.setText(mApplication.ST("已通过"));
                                                         Tobaoming.setEnabled(false);
                                                         quickChannel.setVisibility(View.GONE);
+                                                        shouldShowQuickChannel=false;
                                                     } else if ("005".equals(totalMap.get("code"))) {
                                                         //未报名的情况,暂时先显示快速通道
+                                                        shouldShowQuickChannel=true;
                                                         quickChannel.setVisibility(View.VISIBLE);
                                                         // TODO: 2018/4/23 使用券进入详情页  直接模拟点击报名
                                                         if (getIntent().getStringExtra("wel_id") != null) {
@@ -603,15 +611,15 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
 
                                         }
                                         LogUtil.e("code::::" + totalMap.get("code"));
-//                                        if ("2".equals(map.get("actquick"))) {
-//                                            //该活动拥有显示快速通道的权利，最后一次确定是否显示
-//                                            //如果有权利显示，则根据前面判断确定
-//
-//                                        } else {
-                                        //如果没有权利显示，则直接隐藏
-                                        // TODO: 2018/6/23 功能未完善  暂时隐藏
-                                        quickChannel.setVisibility(View.GONE);
-//                                        }
+                                        if ("2".equals(map.get("actquick"))) {
+                                            //该活动拥有显示快速通道的权利，最后一次确定是否显示
+                                            //如果有权利显示，则根据前面判断确定
+                                            shouldShowQuickChannel=true;
+                                        } else {
+//                                        如果没有权利显示，则直接隐藏
+                                            shouldShowQuickChannel=false;
+                                            quickChannel.setVisibility(View.GONE);
+                                        }
                                         peopleNum.append(mApplication.ST("已报名人数:" + map.get("enrollment")));//已报名人数
                                         dianzanText.setText(map.get("likes"));
                                         ((TextView) findViewById(R.id.p1)).setText(mApplication.ST("评论 " + map.get("act_comment")));
@@ -736,39 +744,6 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                             YunDouAwardDialog.show(ActivityDetail.this, "每日评论", hashMap.get("yundousum"));
                                         }
                                         ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-//                                        final HashMap<String, String> map       = new HashMap<>();
-//                                        String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-//                                        final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-//                                        String                        petname   = sp.getString("pet_name", "");
-//                                        String                        diazannum = "0";
-//                                        map.put("user_image", headurl);
-//                                        map.put("ct_contents", content);
-//                                        map.put("pet_name", petname);
-//                                        map.put("level", sp.getString("level", "0"));
-//                                        map.put("ct_ctr", diazannum);
-//                                        map.put("ct_time", time);
-//                                        if (sp.getString("role", "").equals("3")) {
-//                                            map.put("role", "3");
-//                                        } else {
-//                                            map.put("role", "0");
-//                                        }
-//                                        map.put("id", hashMap.get("id"));
-//                                        map.put("reply", new JSONArray().toString());
-//                                        map.put("level", sp.getString("level", "0"));
-//                                        PlListVIew.setFocusable(true);
-//                                        if (adapter.mlist.size() == 0) {
-//                                            adapter.mlist.add(0, map);
-//                                            adapter.flagList.add(0, false);
-//                                            if (tv != null) PlListVIew.removeHeaderView(tv);
-//                                            PlListVIew.setAdapter(adapter);
-//
-//                                        } else {
-//                                            adapter.mlist.add(0, map);
-//                                            adapter.flagList.add(0, false);
-//                                            adapter.notifyDataSetChanged();
-//
-//                                        }
-//                                        PlListVIew.setSelection(0);
                                         v.setEnabled(true);
                                         PLText.setText("");
                                         imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
@@ -827,22 +802,11 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (currentLayout.getVisibility() == View.GONE) {
-                                            currentLayout.setVisibility(View.VISIBLE);
-                                        }
                                         if (!"0".equals(hashMap.get("yundousum"))) {
                                             YunDouAwardDialog.show(ActivityDetail.this, "每日评论", hashMap.get("yundousum"));
                                         }
                                         ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                        TextView                  textView     = new TextView(ActivityDetail.this);
-                                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                        layoutParams.setMargins(0, DimenUtils.dip2px(ActivityDetail.this, 5), 0, DimenUtils.dip2px(ActivityDetail.this, 5));
-                                        textView.setLayoutParams(layoutParams);
-                                        String                 pet_name = sp.getString("pet_name", "");
-                                        SpannableStringBuilder ssb      = new SpannableStringBuilder(pet_name + ":" + mApplication.ST(content));
-                                        ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(ActivityDetail.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                                        textView.setText(ssb);
-                                        currentLayout.addView(textView);
+
                                         PLText.setText("");
                                         PLText.setHint(mApplication.ST("写入您的评论（300字以内）"));
                                         imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
@@ -850,24 +814,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                                         PlListVIew.setSelection(currentPosition);
                                         FaSong.setEnabled(true);
                                         isPLing = false;
-                                        try {
-                                            JSONArray  jsonArray  = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
-                                            JSONObject jsonObject = new JSONObject();
-                                            jsonObject.put("id", hashMap.get("id"));
-                                            jsonObject.put("pet_name", pet_name);
-                                            jsonObject.put("ct_contents", content);
-                                            if (sp.getString("role", "").equals("3")) {
-                                                jsonObject.put("role", "3");
-                                            } else {
-                                                jsonObject.put("role", "0");
-                                            }
-                                            jsonObject.put("user_id", sp.getString("user_id", ""));
-                                            jsonArray.put(jsonObject);
-                                            adapter.mlist.get(currentPosition).put("reply", jsonArray.toString());
-                                            adapter.notifyDataSetChanged();
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
+
                                         ProgressUtil.dismiss();
                                     }
                                 });
@@ -1057,8 +1004,8 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
             e.printStackTrace();
         }
         ApisSeUtil.M m = ApisSeUtil.i(js);
-        LogUtil.e("快速通道：：" + js);
-        OkGo.post(Constants.ActivityQuick)
+        LogUtil.e("获取快速通道权限并显示快速通道协议：：" + js);
+        OkGo.post(Constants.CheckQuickChannelPermission)
                 .tag(this)
                 .params("key", m.K())
                 .params("msg", m.M())
@@ -1067,78 +1014,62 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                     public void onSuccess(String s, Call call, Response response) {
                         final HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
                         if (map != null) {
+                            boolean havePermisson = false;
                             if ("000".equals(map.get("code"))) {
-                                //获取快速通道的信息
-                                quickInfoMap = AnalyticalJSON.getList_zj(map.get("msg"));
-                                if (quickInfoMap != null) {
-                                    ListDialog.create(ActivityDetail.this)
-                                            .setView(R.layout.dialog_list)
-                                            .mode(ListDialog.WITH_LIST)
-                                            .setAnimResId(R.style.dialogWindowAnim)
-                                            .setListViewId(R.id.recycle)
-                                            .setCancelViewId(R.id.cancel)
-                                            .setList(quickInfoMap, "title")
-                                            .setText(R.id.title, mApplication.ST("请选择【免审核】直接录取方式"))
-                                            .setCallBack(new ListDialog.HandleCallBack<HashMap<String, String>>() {
-                                                @Override
-                                                public void onItemClick(final HashMap<String, String> item, int pos, AlertDialog dialog) {
-                                                    dialog.dismiss();
-                                                    View          view   = LayoutInflater.from(ActivityDetail.this).inflate(R.layout.activity_confirm_dialog, null);
-                                                    final WebView web    = (WebView) view.findViewById(R.id.web);
-                                                    TextView      cancle = (TextView) view.findViewById(R.id.cancle);
-                                                    cancle.setText(mApplication.ST("取消"));
-                                                    final TextView commitToPay = (TextView) view.findViewById(R.id.baoming);
-                                                    commitToPay.setText(mApplication.ST(item.get("title")));
-                                                    commitToPay.setBackgroundResource(R.color.main_color);
-                                                    web.loadDataWithBaseURL("", item.get("contents")
-                                                            , "text/html", "UTF-8", null);
+                                //有直录通道权限
+                                havePermisson = true;
+                            } else if ("002".equals(map.get("code"))) {
+                                //没有直录通道权限
+                                havePermisson = false;
+                            }
+                            //显示直录通道协议
+                            View            view    = LayoutInflater.from(ActivityDetail.this).inflate(R.layout.activity_confirm_dialog, null);
+                            final WebView   web     = view.findViewById(R.id.web);
+                            TextView        cancle  = view.findViewById(R.id.cancle);
+                            final RTextView baoming = view.findViewById(R.id.baoming);
+                            //判断按钮状态
+                            if (havePermisson) {
+                                cancle.setText("取消");
+                                baoming.setText("确定报名");
+                                baoming.setTextColorNormal(Color.WHITE);
+                                baoming.setBackgroundColorNormal(ContextCompat.getColor(ActivityDetail.this, R.color.main_color));
+                            } else {
+                                cancle.setVisibility(View.GONE);
+                                baoming.setText("暂无权限");
+                                baoming.setTextColorNormal(Color.LTGRAY);
+                                baoming.setBackgroundColorNormal(Color.GRAY);
+                            }
 
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDetail.this);
-                                                    builder.setView(view);
-                                                    final AlertDialog d = builder.create();
-                                                    cancle.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            web.destroy();
+                            web.loadDataWithBaseURL("", map.get("contents")
+                                    , "text/html", "UTF-8", null);
 
-                                                            d.dismiss();
-                                                        }
-                                                    });
-                                                    commitToPay.setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            d.dismiss();
-                                                            showPayCommitDialog(item);
-
-                                                        }
-                                                    });
-
-                                                    builder.setCancelable(false);
-                                                    web.setWebViewClient(new WebViewClient() {
-                                                        @Override
-                                                        public void onPageFinished(WebView view, String url) {
-                                                            super.onPageFinished(view, url);
-
-                                                        }
-
-                                                        @Override
-                                                        public void onPageCommitVisible(WebView view, String url) {
-                                                            super.onPageCommitVisible(view, url);
-                                                            d.show();
-                                                        }
-                                                    });
-                                                }
-                                            }).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityDetail.this);
+                            builder.setView(view);
+                            final AlertDialog dialog = builder.create();
+                            cancle.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    web.destroy();
+                                    dialog.dismiss();
+                                }
+                            });
+                            baoming.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                    postQuickChannel();
 
                                 }
-
-                            } else if ("002".equals(map.get("code"))) {
-                                //已经是理事会成员了
-                                Tobaoming.setText(mApplication.ST("已通过"));
-                                Tobaoming.setEnabled(false);
-                                quickChannel.setVisibility(View.GONE);
-                                ToastUtil.showToastShort("您已报名通过，请到个人中心查看");
-                            }
+                            });
+                            builder.setCancelable(false);
+                            web.setWebViewClient(new WebViewClient() {
+                                @Override
+                                public void onPageFinished(WebView view, String url) {
+                                    super.onPageFinished(view, url);
+                                    dialog.show();
+                                    web.setVisibility(View.VISIBLE);
+                                }
+                            });
                         }
 
                     }
@@ -1147,6 +1078,59 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                     public void onBefore(BaseRequest request) {
                         super.onBefore(request);
                         ProgressUtil.show(ActivityDetail.this, "", "请稍等");
+                    }
+
+                    @Override
+                    public void onAfter(String s, Exception e) {
+                        super.onAfter(s, e);
+                        ProgressUtil.dismiss();
+                    }
+                });
+    }
+
+    private void postQuickChannel() {
+        if (!Network.HttpTest(this)) {
+            return;
+        }
+        JSONObject js = new JSONObject();
+        try {
+            js.put("m_id", Constants.M_id);
+            js.put("act_id", Id);
+            js.put("user_id", PreferenceUtil.getUserId(this));
+            if (isNeedToChooseTime) {
+                js.put("start_time", startTime);
+                js.put("end_time", endTime);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        LogUtil.e("快速通道报名：：" + js);
+        OkGo.post(Constants.ActivityQuick)
+                .params("key",m.K())
+                .params("msg",m.M())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(String s, Call call, Response response) {
+                        HashMap<String,String > map=AnalyticalJSON.getHashMap(s);
+                        if(map!=null){
+                            if ("000".equals(map.get("code"))) {
+                                //有权限
+                                LoadData();
+
+                            }else if("003".equals(map.get("code"))){
+                                ToastUtil.showToastShort("您还没有直录通道的权限");
+                            }
+                        }else{
+                            ToastUtil.showToastShort("报名失败，请稍后尝试");
+                        }
+
+                    }
+
+                    @Override
+                    public void onBefore(BaseRequest request) {
+                        super.onBefore(request);
+                        ProgressUtil.show(ActivityDetail.this,"","正在报名");
                     }
 
                     @Override
@@ -1258,10 +1242,6 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                 startActivity(intent1);
                 break;
             case R.id.activity_detail_yue:
-//                if(TimeUtils.dataOne(map.get("act_time"))<System.currentTimeMillis()){
-//                    ToastUtil.showToastShort("该活动已经开始，约功能已停止");
-//                    return;
-//                }
                 if (new LoginUtil().checkLogin(this)) {
                     JSONObject js = new JSONObject();
                     try {
@@ -1370,13 +1350,13 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
             case R.id.title_back://返回
                 finish();
                 break;
-            case R.id.title_image2://分享
+            case R.id.shareRight://分享
                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
                 if (umWeb != null) {
                     new ShareManager().shareWeb(umWeb, ActivityDetail.this);
                 }
                 break;
-            case R.id.activity_detail_shoucang:
+            case R.id.title_image2:
                 if (!new LoginUtil().checkLogin(this)) {
                     return;
                 }
@@ -1392,12 +1372,12 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
 
     private void prepareBaoMing() {
         if (new LoginUtil().checkLogin(ActivityDetail.this)) {
-            if (act_prol != null && !act_prol.equals("")) {
+            if (act_prol != null && !act_prol.equals("") && !hasShowActivityProtocol) {
                 View          view   = LayoutInflater.from(this).inflate(R.layout.activity_confirm_dialog, null);
-                final WebView web    = (WebView) view.findViewById(R.id.web);
-                TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                final WebView web    = view.findViewById(R.id.web);
+                TextView      cancle = view.findViewById(R.id.cancle);
                 cancle.setText(mApplication.ST("不同意"));
-                final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                final TextView baoming = view.findViewById(R.id.baoming);
                 baoming.setEnabled(false);
 
                 final CountDownTimer cdt = new CountDownTimer(BuildConfig.DEBUG ? 1000 : 10000, 1000) {
@@ -1423,6 +1403,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                     public void onClick(View v) {
                         web.destroy();
                         cdt.cancel();
+                        hasShowActivityProtocol = false;
                         dialog.dismiss();
                     }
                 });
@@ -1430,6 +1411,7 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                        hasShowActivityProtocol = true;
                         showBaoMingDialog();
 
                     }
@@ -1556,13 +1538,16 @@ public class ActivityDetail extends AndroidPopupActivity implements View.OnClick
     protected void onPause() {
         super.onPause();
         ProgressUtil.dismiss();
-        imm.hideSoftInputFromWindow(PLText.getWindowToken(),0);
+        imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
     }
 
     @Override
     public void onHuifuClicked(String id, int p, View v, String name) {
         // TODO: 2016/12/27 评论回复接口
         overlay.setVisibility(View.VISIBLE);
+        if(shouldShowQuickChannel){
+            quickChannel.setVisibility(View.GONE);
+        }
         PLText.requestFocus();
         isPLing = true;
         currentLayout = (LinearLayout) v;

@@ -23,7 +23,6 @@ import com.lzy.okgo.callback.StringCallback;
 import com.yunfengsi.Audio_BD.WakeUp.Recognizelmpl.IBDRcognizeImpl;
 import com.yunfengsi.MainActivity;
 import com.yunfengsi.Managers.MessageCenter;
-import com.yunfengsi.Models.Auction.AuctionList;
 import com.yunfengsi.Models.BlessTree.BlessTree;
 import com.yunfengsi.Models.E_Book.BookList;
 import com.yunfengsi.Models.Model_activity.Mine_activity_list;
@@ -50,7 +49,7 @@ import com.yunfengsi.Setting.GanyuActivity;
 import com.yunfengsi.Setting.Mine_HuiYuan;
 import com.yunfengsi.Setting.Month_Detail;
 import com.yunfengsi.Setting.Search;
-import com.yunfengsi.Setting.gerenshezhi;
+import com.yunfengsi.Setting.Setting;
 import com.yunfengsi.Utils.AnalyticalJSON;
 import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
@@ -446,7 +445,7 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
                 context.startActivity(intent);
             } else if (result.contains("设置")) {
                 text = OK;
-                context.startActivity(new Intent(context, gerenshezhi.class));
+                context.startActivity(new Intent(context, Setting.class));
             } else if (result.contains("排行榜")) {
                 text = OK;
                 context.startActivity(new Intent(context, yundou_paihang.class));
@@ -472,11 +471,13 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
                 text = OK;
                 Intent i2 = new Intent(context, GanyuActivity.class);
                 context.startActivity(i2);
-            } else if (result.contains("义卖") || result.contains("拍卖") || result.contains("竞拍")) {
-                text = OK;
-                Intent i2 = new Intent(context, AuctionList.class);
-                context.startActivity(i2);
-            } else if (result.contains("祈愿树") || result.contains("许愿") || result.contains("祈愿")) {
+            }
+//            else if (result.contains("义卖") || result.contains("拍卖") || result.contains("竞拍")) {
+//                text = OK;
+//                Intent i2 = new Intent(context, AuctionList.class);
+//                context.startActivity(i2);
+//            }
+            else if (result.contains("祈愿树") || result.contains("许愿") || result.contains("祈愿")) {
                 text = OK;
                 Intent i2 = new Intent(context, BlessTree.class);
                 context.startActivity(i2);
@@ -621,10 +622,10 @@ public class SimpleWakeupListener implements IWakeupListener, EventListener {
                         HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
                         if (map != null && !map.get("aboutapp").equals("")) {
                             View          view   = LayoutInflater.from(context).inflate(R.layout.activity_confirm_dialog, null);
-                            final WebView web    = (WebView) view.findViewById(R.id.web);
-                            TextView      cancle = (TextView) view.findViewById(R.id.cancle);
+                            final WebView web    = view.findViewById(R.id.web);
+                            TextView      cancle = view.findViewById(R.id.cancle);
                             cancle.setText(mApplication.ST("确定"));
-                            final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                            final TextView baoming = view.findViewById(R.id.baoming);
                             baoming.setEnabled(false);
                             baoming.setVisibility(View.GONE);
 

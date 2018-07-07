@@ -60,7 +60,7 @@ public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
         setContentView(R.layout.yue);
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
         ((TextView) findViewById(R.id.title_title)).setText("发布");
@@ -70,20 +70,20 @@ public class YaoYue_Fabu extends AppCompatActivity implements View.OnClickListen
 
 
     private void initView() {
-        EditText edt_content = (EditText) findViewById(R.id.edt_content);
-        EditText edt_money   = (EditText) findViewById(R.id.edt_money);
-        edt_peolle = (EditText) findViewById(R.id.edt_people_num);
-        edt_place = (EditText) findViewById(R.id.edt_place);
-        edt_time = (EditText) findViewById(R.id.edt_time);
-        edt_xuqiu = (EditText) findViewById(R.id.edt_xuqiu);
-        edt_phone = (EditText) findViewById(R.id.edt_phone);
+        EditText edt_content = findViewById(R.id.edt_content);
+        EditText edt_money   = findViewById(R.id.edt_money);
+        edt_peolle = findViewById(R.id.edt_people_num);
+        edt_place = findViewById(R.id.edt_place);
+        edt_time = findViewById(R.id.edt_time);
+        edt_xuqiu = findViewById(R.id.edt_xuqiu);
+        edt_phone = findViewById(R.id.edt_phone);
 
-        haveCar = (TextView) findViewById(R.id.haveCar);
-        Nocar = (TextView) findViewById(R.id.noCar);
+        haveCar = findViewById(R.id.haveCar);
+        Nocar = findViewById(R.id.noCar);
         haveCar.setOnClickListener(this);
         Nocar.setOnClickListener(this);
 
-        TextView tv_commit = (TextView) findViewById(R.id.tv_commit);
+        TextView tv_commit = findViewById(R.id.tv_commit);
         tv_commit.setOnClickListener(this);
         edt_time.setOnClickListener(this);
         edt_time.setFocusable(false);

@@ -24,9 +24,9 @@ public class DuiHuan extends AppCompatActivity implements DuiHuanContract.IView 
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_dui_huan);
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("兑换中心"));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -34,8 +34,8 @@ public class DuiHuan extends AppCompatActivity implements DuiHuanContract.IView 
         });
 
         ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("我的福利"));
-        ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.handle_right)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+        findViewById(R.id.handle_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DuiHuan.this,MyQuan.class));

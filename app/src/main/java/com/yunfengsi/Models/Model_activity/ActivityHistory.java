@@ -57,12 +57,12 @@ public class ActivityHistory extends AppCompatActivity implements SwipeRefreshLa
 
 
     private SwipeRefreshLayout swip;
-    private MessageAdapter adapter;
-    private int pageSize = 20;
-    private int page = 1;
-    private int endPage = -1;
+    private MessageAdapter     adapter;
+    private int     pageSize   = 20;
+    private int     page       = 1;
+    private int     endPage    = -1;
     private boolean isLoadMore = false;
-    private boolean isRefresh = false;
+    private boolean isRefresh  = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,34 +82,35 @@ public class ActivityHistory extends AppCompatActivity implements SwipeRefreshLa
 //                new ShareManager().shareWeb(umWeb,Bless_History.this);
 //            }
 //        });
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("修行经历"));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
         ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("分享"));
-        ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.handle_right)).setOnClickListener(new View.OnClickListener() {
+
+
+        findViewById(R.id.handle_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String md5 = MD5Utls.stringToMD5(Constants.safeKey);
-                String m1 = md5.substring(0, 16);
-                String m2 = md5.substring(16, md5.length());
-                UMWeb umWeb = new UMWeb(Constants.FX_host_Ip + "practice" + "/id/" + m1 +PreferenceUtil.getUserId(ActivityHistory.this) + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
-                umWeb.setTitle(mApplication.ST(PreferenceUtil.getUserIncetance(ActivityHistory.this).getString("pet_name","")+"  正在这里修行"));
+                String md5   = MD5Utls.stringToMD5(Constants.safeKey);
+                String m1    = md5.substring(0, 16);
+                String m2    = md5.substring(16, md5.length());
+                UMWeb  umWeb = new UMWeb(Constants.FX_host_Ip + "practice" + "/id/" + m1 + PreferenceUtil.getUserId(ActivityHistory.this) + m2 + "/st/" + (mApplication.isChina ? "s" : "t"));
+                umWeb.setTitle(mApplication.ST(PreferenceUtil.getUserIncetance(ActivityHistory.this).getString("pet_name", "") + "  正在这里修行"));
                 umWeb.setThumb(new UMImage(ActivityHistory.this, R.drawable.indra_share));
                 umWeb.setDescription("这是我的修行经历，快来看看吧");
-                new ShareManager().shareWeb(umWeb,ActivityHistory.this);
+                new ShareManager().shareWeb(umWeb, ActivityHistory.this);
             }
         });
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mItemDecoration(this));
 
@@ -131,7 +132,7 @@ public class ActivityHistory extends AppCompatActivity implements SwipeRefreshLa
         recyclerView.setAdapter(adapter);
 
         TextView textView = new TextView(this);
-        Drawable d = ContextCompat.getDrawable(this, R.drawable.load_nothing);
+        Drawable d        = ContextCompat.getDrawable(this, R.drawable.load_nothing);
         d.setBounds(0, 0, DimenUtils.dip2px(this, 150), DimenUtils.dip2px(this, 150) * d.getIntrinsicHeight() / d.getIntrinsicWidth());
         textView.setCompoundDrawables(null, d, null, null);
         textView.setCompoundDrawablePadding(DimenUtils.dip2px(this, 10));
@@ -199,7 +200,6 @@ public class ActivityHistory extends AppCompatActivity implements SwipeRefreshLa
 //            }
 
 
-
         }
     }
 
@@ -209,7 +209,8 @@ public class ActivityHistory extends AppCompatActivity implements SwipeRefreshLa
             try {
                 js.put("page", page);
                 js.put("m_id", Constants.M_id);
-                js.put("user_id", PreferenceUtil.getUserId(this));
+                //有user_id则调相应的用户活动经历  没有则调自己的
+                js.put("user_id", getIntent().getStringExtra("user_id") == null ? PreferenceUtil.getUserId(this) : getIntent().getStringExtra("user_id"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -243,10 +244,12 @@ public class ActivityHistory extends AppCompatActivity implements SwipeRefreshLa
                                     }
                                 }
                             }
-                            if(adapter.getData().size()==0){
+                            if (adapter.getData().size() == 0) {
                                 findViewById(R.id.handle_right).setVisibility(View.GONE);
-                            }else{
-                                findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+                            } else {
+                                if (getIntent().getStringExtra("user_id") == null) {
+                                    findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+                                }
                             }
                         }
 

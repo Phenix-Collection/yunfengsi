@@ -68,8 +68,8 @@ public class RedPacket_Final extends AppCompatActivity {
                 b.setCancelable(true);
                 final AlertDialog dialog = b.create();
                 ((TextView) view2.findViewById(R.id.title)).setText("请选择随喜方式");
-                TextView weixin = (TextView) view2.findViewById(R.id.weixin);
-                TextView alipay = (TextView) view2.findViewById(R.id.alipay);
+                TextView weixin = view2.findViewById(R.id.weixin);
+                TextView alipay = view2.findViewById(R.id.alipay);
                 alipay.setVisibility(View.VISIBLE);
 
                 weixin.setText("保存微信收款码到相册");

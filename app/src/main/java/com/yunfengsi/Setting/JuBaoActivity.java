@@ -41,13 +41,13 @@ public class JuBaoActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ju_bao);
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
-        ((TextView) findViewById(R.id.title)).setText(mApplication.ST("举报建议"));
+        ((TextView) findViewById(R.id.title)).setText(mApplication.ST("建议反馈"));
         ((TextView) findViewById(R.id.jubao_tijiao)).setText(mApplication.ST("提交"));
-        medittext = (EditText) findViewById(R.id.jubao_edittext);
+        medittext = findViewById(R.id.jubao_edittext);
         medittext.setHint(mApplication.ST("请输入内容"));
-        mtextview = (TextView) findViewById(R.id.jubao_textview);
+        mtextview = findViewById(R.id.jubao_textview);
 
-        title = (EditText) findViewById(R.id.jubao_title);
+        title = findViewById(R.id.jubao_title);
         title.setHint(mApplication.ST("标题"));
         medittext.addTextChangedListener(new TextWatcher() {   //文本框监听事件
             private int editStart;

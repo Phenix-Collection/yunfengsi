@@ -239,20 +239,20 @@ public class Mine_HuiYuan extends BaseSTActivity implements View.OnClickListener
 
     private void initView() {
         findViewById(R.id.back).setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title);
-        t1 = (TextView) findViewById(R.id.t1);
-        score = (TextView) findViewById(R.id.score_big);
-        score_now = (TextView) findViewById(R.id.score_now);
-        score_next = (TextView) findViewById(R.id.score_need);
-        score_time = (TextView) findViewById(R.id.time);
-        chengzhang = (TextView) findViewById(R.id.chengzhangjilu);
+        title = findViewById(R.id.title);
+        t1 = findViewById(R.id.t1);
+        score = findViewById(R.id.score_big);
+        score_now = findViewById(R.id.score_now);
+        score_next = findViewById(R.id.score_need);
+        score_time = findViewById(R.id.time);
+        chengzhang = findViewById(R.id.chengzhangjilu);
         chengzhang.setOnClickListener(this);
-        progressBar = (ProgressBar) findViewById(R.id.progress);
-        gif_next = (ImageView) findViewById(R.id.gif_next);
-        gif_now = (ImageView) findViewById(R.id.gif_now);
-        score_small = (TextView) findViewById(R.id.score_small);
-        head = (ImageView) findViewById(R.id.head);
-        content = (myWebView) findViewById(R.id.web);
+        progressBar = findViewById(R.id.progress);
+        gif_next = findViewById(R.id.gif_next);
+        gif_now = findViewById(R.id.gif_now);
+        score_small = findViewById(R.id.score_small);
+        head = findViewById(R.id.head);
+        content = findViewById(R.id.web);
         WebSettings webSettings = content.getSettings();
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setJavaScriptEnabled(true);
@@ -281,6 +281,8 @@ public class Mine_HuiYuan extends BaseSTActivity implements View.OnClickListener
                 imgReset();
                 addImageClickListner();
                 ProgressUtil.dismiss();
+                //移除activity背景  减少一层背景绘制
+                getWindow().setBackgroundDrawable(null);
             }
 
             @Override

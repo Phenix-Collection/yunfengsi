@@ -67,7 +67,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler, 
     @Override
     public void onResp(BaseResp resp) {
         if (msg == null) {
-            msg = (TextView) findViewById(R.id.wx_result);
+            msg = findViewById(R.id.wx_result);
             ((ImageView) findViewById(R.id.wx_imageview)).setImageBitmap(ImageUtil.readBitMap(this, R.drawable.pay_wc));
         }
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {

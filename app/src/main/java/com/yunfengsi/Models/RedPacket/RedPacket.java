@@ -98,7 +98,7 @@ public class RedPacket extends AppCompatActivity {
         setContentView(R.layout.red_packet);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ((ImageView) findViewById(R.id.title_back)).setImageBitmap(ImageUtil.readBitMap(this, R.drawable.cancle_white));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(redRainView!=null){
@@ -108,7 +108,7 @@ public class RedPacket extends AppCompatActivity {
             }
         });
         getInfo();
-        redRainView = (RedRainView) findViewById(R.id.redrain);
+        redRainView = findViewById(R.id.redrain);
         Glide.with(this).load(R.drawable.hongbao_bg).asBitmap()
                 .into(new SimpleTarget<Bitmap>(getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels - DimenUtils.dip2px(this, 40)) {
                     @Override
@@ -123,7 +123,7 @@ public class RedPacket extends AppCompatActivity {
             public void onRePacketClick(RedRainView.RedPacket redPacket) {
                 AlertDialog.Builder b = new AlertDialog.Builder(RedPacket.this);
                 final View view = LayoutInflater.from(RedPacket.this).inflate(R.layout.red_packet_dialog, null);
-                final ImageView hongbaoBg = ((ImageView) view.findViewById(R.id.backgroud));
+                final ImageView hongbaoBg = view.findViewById(R.id.backgroud);
                 hongbaoBg.setImageBitmap(ImageUtil.readBitMap(RedPacket.this, R.drawable.hongbao_close_bg));
                 if (info != null) {
                     Glide.with(RedPacket.this).load(info.get("redimg")).placeholder(R.drawable.default_redimg)
@@ -132,8 +132,8 @@ public class RedPacket extends AppCompatActivity {
                 } else {
                     ((ImageView) view.findViewById(R.id.redimg)).setImageBitmap(ImageUtil.readBitMap(RedPacket.this, R.drawable.default_redimg));
                 }
-                ImageView redimg = (ImageView) view.findViewById(R.id.redimg);
-                final TextView chai = (TextView) view.findViewById(R.id.chai);
+                ImageView redimg = view.findViewById(R.id.redimg);
+                final TextView chai = view.findViewById(R.id.chai);
                 int px500 = getResources().getDisplayMetrics().widthPixels;
                 int px1 = px500 / 400;
                 ViewGroup.MarginLayoutParams vm = (ViewGroup.MarginLayoutParams) chai.getLayoutParams();
@@ -259,12 +259,12 @@ public class RedPacket extends AppCompatActivity {
     }
 
     private void showGetDialog(HashMap<String, String> map) {
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.GONE);
+        findViewById(R.id.title_back).setVisibility(View.GONE);
         AlertDialog.Builder b = new AlertDialog.Builder(RedPacket.this);
         final View view1 = LayoutInflater.from(RedPacket.this).inflate(R.layout.hongbao_dialog_open, null);
-        ImageView hongbaoBg = ((ImageView) view1.findViewById(R.id.openbg));
+        ImageView hongbaoBg = view1.findViewById(R.id.openbg);
         hongbaoBg.setImageBitmap(ImageUtil.readBitMap(RedPacket.this, R.drawable.hongbao_bg2));
-        TextView money = (TextView) view1.findViewById(R.id.money);
+        TextView money = view1.findViewById(R.id.money);
         SpannableString ss = new SpannableString("恭喜您获得" + map.get("money") + "元");
         ss.setSpan(new ForegroundColorSpan(Color.parseColor("#ffefd5")), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         ss.setSpan(new AbsoluteSizeSpan(DimenUtils.dip2px(RedPacket.this, 30)), 6, ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -277,7 +277,7 @@ public class RedPacket extends AppCompatActivity {
         final AlertDialog dialog = b.create();
         if (status.equals("0") || status.equals("1")) {
             ((TextView) view1.findViewById(R.id.get_money)).setText("领取福包");
-            ((TextView) view1.findViewById(R.id.get_money)).setBackgroundResource(R.drawable.get_money_sel);
+            view1.findViewById(R.id.get_money).setBackgroundResource(R.drawable.get_money_sel);
         } else if (status.equals("2")) {
             view1.postDelayed(new Runnable() {
                 @Override
@@ -287,7 +287,7 @@ public class RedPacket extends AppCompatActivity {
             }, 500);
 
 //            ((TextView) view1.findViewById(R.id.get_money)).setText("点击二维码去微信领福包");
-            ((TextView) view1.findViewById(R.id.get_money)).setVisibility(View.GONE);
+            view1.findViewById(R.id.get_money).setVisibility(View.GONE);
 
         }
 

@@ -64,17 +64,17 @@ public class YunDouHome extends AppCompatActivity {
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_yun_dou_home);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("我的云豆"));
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
         ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("兑换中心"));
-        ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.handle_right)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+        findViewById(R.id.handle_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(YunDouHome.this, DuiHuan.class));

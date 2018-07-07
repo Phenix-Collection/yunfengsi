@@ -96,9 +96,10 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/phoneLayout"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="#ffffff"
+                android:background="@drawable/back_sel"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -434,6 +435,30 @@
                         android:textSize="16dp" />
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@color/white"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/refugeTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/wordblack"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/refugeCard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/wordhuise"
+                        android:textSize="16dp" />
+                </RelativeLayout>
 
             </LinearLayout>
 

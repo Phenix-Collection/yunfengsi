@@ -22,6 +22,7 @@ import com.yunfengsi.Utils.ApisSeUtil;
 import com.yunfengsi.Utils.Constants;
 import com.yunfengsi.Utils.DimenUtils;
 import com.yunfengsi.Utils.LogUtil;
+import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.PreferenceUtil;
 import com.yunfengsi.Utils.StatusBarCompat;
 import com.yunfengsi.Utils.SystemUtil;
@@ -40,25 +41,35 @@ import okhttp3.Response;
  * 公司：成都因陀罗网络科技有限公司
  */
 public class WallPaperUserHome extends AppCompatActivity implements View.OnClickListener {
-    private ViewPager            viewPager;
+    private ViewPager viewPager;
     private ImageView head;
-    private TextView name;
-    UserHomeFragment mine, verify, collection,Other;
+    private TextView  name;
+    UserHomeFragment mine, verify, collection, Other;
     private String userId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.wall_paper_mine);
+        findViewById(R.id.upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Network.HttpTest(WallPaperUserHome.this)) {
+                    startActivity(new Intent(WallPaperUserHome.this, WallPaperUpload.class));
+                }
+            }
+        });
+
         TabLayout tabLayout = findViewById(R.id.tab);
         viewPager = findViewById(R.id.viewpager);
-        head=findViewById(R.id.head);
-        name=findViewById(R.id.pet_name);
-        userId=getIntent().getStringExtra("id");
+        head = findViewById(R.id.head);
+        name = findViewById(R.id.pet_name);
+        userId = getIntent().getStringExtra("id");
         ArrayList<Fragment> fragments = new ArrayList<>();
 
-        if(getIntent().getStringExtra("id")==null||getIntent().getStringExtra("id").equals(PreferenceUtil.getUserId(this))
-                ||getIntent().getBooleanExtra("mine",false)){//个人中心
+        if (getIntent().getStringExtra("id") == null || getIntent().getStringExtra("id").equals(PreferenceUtil.getUserId(this))
+                || getIntent().getBooleanExtra("mine", false)) {//个人中心
             viewPager.setOffscreenPageLimit(3);
             mine = new UserHomeFragment();
             Bundle bundle = new Bundle();
@@ -72,25 +83,25 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
             Bundle bundle2 = new Bundle();
             bundle2.putString("type", "3");
             collection.setArguments(bundle2);
-            Glide.with(this).load(PreferenceUtil.getUserIncetance(this).getString("head_url",""))
-                    .override(DimenUtils.dip2px(this,80),DimenUtils.dip2px(this,80))
+            Glide.with(this).load(PreferenceUtil.getUserIncetance(this).getString("head_url", ""))
+                    .override(DimenUtils.dip2px(this, 80), DimenUtils.dip2px(this, 80))
                     .into(head);
-            name.setText(PreferenceUtil.getUserIncetance(this).getString("pet_name",""));
+            name.setText(PreferenceUtil.getUserIncetance(this).getString("pet_name", ""));
             fragments.add(mine);
             fragments.add(verify);
             fragments.add(collection);
-        }else{//他人主页
-            Other=new UserHomeFragment();
-            Bundle b=new Bundle();
-            b.putString("type","4");
+        } else {//他人主页
+            Other = new UserHomeFragment();
+            Bundle b = new Bundle();
+            b.putString("type", "4");
             Other.setArguments(b);
             fragments.add(Other);
-            if(userId.equals("0")){
+            if (userId.equals("0")) {
                 Glide.with(this).load(R.drawable.indra)
-                        .override(DimenUtils.dip2px(this,80),DimenUtils.dip2px(this,80))
+                        .override(DimenUtils.dip2px(this, 80), DimenUtils.dip2px(this, 80))
                         .into(head);
                 name.setText("云峰禅院");
-            }else{
+            } else {
                 getUserInfo();
             }
 
@@ -114,22 +125,22 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        LogUtil.e("用户壁纸空间信息：："+js);
-        ApisSeUtil.M m =ApisSeUtil.i(js);
-         OkGo.post(Constants.User_Info_Ip)
+        LogUtil.e("用户壁纸空间信息：：" + js);
+        ApisSeUtil.M m = ApisSeUtil.i(js);
+        OkGo.post(Constants.User_Info_Ip)
                 .params("key", m.K())
                 .params("msg", m.M()).execute(new StringCallback() {
-             @Override
-             public void onSuccess(String s, Call call, Response response) {
-                HashMap<String,String > map = AnalyticalJSON.getHashMap(s);
-                if(map!=null){
+            @Override
+            public void onSuccess(String s, Call call, Response response) {
+                HashMap<String, String> map = AnalyticalJSON.getHashMap(s);
+                if (map != null) {
                     Glide.with(WallPaperUserHome.this).load(map.get("user_image"))
-                            .override(DimenUtils.dip2px(WallPaperUserHome.this,80),DimenUtils.dip2px(WallPaperUserHome.this,80))
+                            .override(DimenUtils.dip2px(WallPaperUserHome.this, 80), DimenUtils.dip2px(WallPaperUserHome.this, 80))
                             .into(head);
                     name.setText(map.get("pet_name"));
                 }
-             }
-         });
+            }
+        });
 
     }
 
@@ -176,7 +187,7 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
         @Override
         public CharSequence getPageTitle(int position) {
             if (position == 0) {
-                return list.size()==1?"所有壁纸":"我的壁纸";
+                return list.size() == 1 ? "所有壁纸" : "我的壁纸";
             } else if (position == 1) {
                 return "壁纸审核";
             } else if (position == 2) {
@@ -189,11 +200,12 @@ public class WallPaperUserHome extends AppCompatActivity implements View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==999&&verify!=null){
+        if (resultCode == 999 && verify != null) {
             viewPager.setCurrentItem(1);
             verify.onRefresh();
             LogUtil.e("刷新审核列表：：：");
-        }if(resultCode==222&&collection!=null){
+        }
+        if (resultCode == 222 && collection != null) {
             collection.onRefresh();
             LogUtil.e("刷新收藏列表：：：");
         }

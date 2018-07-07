@@ -81,20 +81,20 @@ public class GYMX_FaYuan extends AppCompatActivity implements View.OnClickListen
     public void init() {
         keyList = new ArrayList<>();
         valueList = new ArrayList<>();
-        mtvtitle = (TextView) findViewById(R.id.activity_lf_title);
+        mtvtitle = findViewById(R.id.activity_lf_title);
         adapter = new FayuanAdapter(new ArrayList<HashMap<String, String>>());
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
-        mtvtime = (TextView) findViewById(R.id.activity_lf_time);
-        pingtai1 = (TextView) findViewById(R.id.pintai1);
-        pingtai2 = (TextView) findViewById(R.id.pintai2);
-        pingtai3 = (TextView) findViewById(R.id.pintai3);
-        geren1 = (TextView) findViewById(R.id.geren1);
-        geren2 = (TextView) findViewById(R.id.geren2);
-        geren3 = (TextView) findViewById(R.id.geren3);
-        mlistview = (RecyclerView) findViewById(R.id.activity_lf_list);
-        mimageback = (ImageView) findViewById(R.id.activity_lf_imageback);
+        mtvtime = findViewById(R.id.activity_lf_time);
+        pingtai1 = findViewById(R.id.pintai1);
+        pingtai2 = findViewById(R.id.pintai2);
+        pingtai3 = findViewById(R.id.pintai3);
+        geren1 = findViewById(R.id.geren1);
+        geren2 = findViewById(R.id.geren2);
+        geren3 = findViewById(R.id.geren3);
+        mlistview = findViewById(R.id.activity_lf_list);
+        mimageback = findViewById(R.id.activity_lf_imageback);
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
 
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

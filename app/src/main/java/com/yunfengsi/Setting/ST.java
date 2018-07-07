@@ -29,10 +29,10 @@ public class ST extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.st);
-        img1= (ImageView) findViewById(R.id.img1);
-        img2= (ImageView) findViewById(R.id.img2);
-        RelativeLayout layout1 = (RelativeLayout) findViewById(R.id.layout1);
-        RelativeLayout layout2 = (RelativeLayout) findViewById(R.id.layout2);
+        img1= findViewById(R.id.img1);
+        img2= findViewById(R.id.img2);
+        RelativeLayout layout1 = findViewById(R.id.layout1);
+        RelativeLayout layout2 = findViewById(R.id.layout2);
         if(mApplication.isChina){
             img1.setVisibility(View.VISIBLE);
         }else{

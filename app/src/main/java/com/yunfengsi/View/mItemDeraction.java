@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.yunfengsi.Utils.LogUtil;
+
 /**
  * Created by Administrator on 2017/5/10.
  */
@@ -22,6 +24,7 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
         private Drawable mDivider;
         private Paint mPaint;
         private int type;
+        private boolean shouldDrawTopLeftRightEdge=false;
 
         public int getColor() {
             return color;
@@ -41,7 +44,7 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
             mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mPaint.setColor(color);
             mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setStrokeWidth(space * 2);
+            mPaint.setStrokeWidth(space);
         }
         public mItemDeraction(int space, int color,int type) {
             this.space = space;
@@ -49,7 +52,7 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
             mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             mPaint.setColor(color);
             mPaint.setStyle(Paint.Style.FILL);
-            mPaint.setStrokeWidth(space * 2);
+            mPaint.setStrokeWidth(space);
             this.type=type;
         }
 
@@ -61,6 +64,9 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(Rect outRect, View view,
                                    RecyclerView parent, RecyclerView.State state) {
+            LogUtil.e("获取边界的偏移量");
+
+
             if (parent.getLayoutManager() != null) {
                 if (parent.getLayoutManager() instanceof LinearLayoutManager && !(parent.getLayoutManager() instanceof GridLayoutManager)) {
                     if (((LinearLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.HORIZONTAL) {
@@ -68,8 +74,12 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
                     } else {
                         outRect.set(0, space, 0, space);
                     }
-                } else {
-                    outRect.set(space, space, space, space);
+                } else if(parent.getLayoutManager() instanceof GridLayoutManager) {
+
+                        outRect.set(0, 0, space, space);
+
+
+
                 }
             }
 
@@ -78,6 +88,7 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
         @Override
         public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
             super.onDraw(c, parent, state);
+            LogUtil.e("绘制装饰线");
             if (parent.getLayoutManager() != null) {
                 if (parent.getLayoutManager() instanceof LinearLayoutManager && !(parent.getLayoutManager() instanceof GridLayoutManager)) {
                     if (((LinearLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.HORIZONTAL) {
@@ -141,48 +152,35 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
         private void drawGrideview(Canvas canvas, RecyclerView parent) {
             GridLayoutManager linearLayoutManager = (GridLayoutManager) parent.getLayoutManager();
             int childSize = parent.getChildCount();
-            int other = parent.getChildCount() / linearLayoutManager.getSpanCount() - 1;
-            if (other < 1) {
-                other = 1;
-            }
-            other = other * linearLayoutManager.getSpanCount();
-            if (parent.getChildCount() < linearLayoutManager.getSpanCount()) {
-                other = parent.getChildCount();
-            }
-            int top, bottom, left, right, spancount;
-            spancount = linearLayoutManager.getSpanCount() - 1;
-            for (int i = 0; i < childSize; i++) {
-                final View child = parent.getChildAt(i);
-                RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) child.getLayoutParams();
-                if (i < other) {
-                    top = child.getBottom() + layoutParams.bottomMargin;
-                    bottom = top + space;
-                    left = (layoutParams.leftMargin + space) * (i + 1);
-                    right = child.getMeasuredWidth() * (i + 1) + left + space * i;
-                    if (mDivider != null) {
-                        mDivider.setBounds(left, top, right, bottom);
-                        mDivider.draw(canvas);
-                    }
-                    if (mPaint != null) {
-                        canvas.drawRect(left, top, right, bottom, mPaint);
-                    }
+            if(!shouldDrawTopLeftRightEdge){
+                //不绘制上左右边缘
+
+                for(int i=0;i<childSize;i++){
+                    View child=parent.getChildAt(i);
+                    int left=child.getLeft();
+                    int right=child.getRight();
+                    int top=child.getBottom();
+                    int bottom=top+space;
+                    canvas.drawRect(left,top,right,bottom,mPaint);//画底部线
+
+                    left=child.getRight();
+                    right=left+space;
+                    top=child.getTop();
+                    bottom=child.getBottom();
+
+                    canvas.drawRect(left,top,right,bottom,mPaint);//画右部线
+//                   if(check==span-1){
+//                       //最后一列只画底部线
+//
+//                   }else{
+//                      //其他的都画底部和右边
+//
+//                   }
                 }
-                if (i != spancount) {
-                    top = (layoutParams.topMargin + space) * (i / linearLayoutManager.getSpanCount() + 1);
-                    bottom = (child.getMeasuredHeight() + space) * (i / linearLayoutManager.getSpanCount() + 1) + space;
-                    left = child.getRight() + layoutParams.rightMargin;
-                    right = left + space;
-                    if (mDivider != null) {
-                        mDivider.setBounds(left, top, right, bottom);
-                        mDivider.draw(canvas);
-                    }
-                    if (mPaint != null) {
-                        canvas.drawRect(left, top, right, bottom, mPaint);
-                    }
-                } else {
-                    spancount += 4;
-                }
+            }else{
+
             }
+
         }
 
         /***/

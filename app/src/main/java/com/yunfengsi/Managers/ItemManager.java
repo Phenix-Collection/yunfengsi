@@ -44,8 +44,8 @@ public class ItemManager extends AppCompatActivity {
     private static final String[] DEFAULT_NAME = {"共修", "收藏", "活动", "佛经"};
     private static final int[] DEFAULT_IMAGE = {R.raw.gongxiu,R.raw.shoucang_justforleft, R.raw.mine_activity, R.raw.jinshu};
 
-    private static final String[] ALL_NAME = {"义卖","壁纸","我的云豆","我的福利","卜事", "坐禅", "会员中心", "功德", "通知", "功课", "投稿", "祈愿树"};
-    private static final int[] ALL_IMAGE = {R.drawable.auction,R.raw.icon_wallpager,R.raw.yundou,R.raw.fuli,R.raw.qian_icon, R.raw.meditation, R.raw.huiyuan, R.raw.zhifu_justforleft, R.raw.tongzhi_normal,
+    private static final String[] ALL_NAME = {"壁纸","我的云豆","我的福利","卜事", "坐禅", "会员中心", "功德", "通知", "功课", "投稿", "祈愿树"};
+    private static final int[] ALL_IMAGE = {R.raw.icon_wallpager,R.raw.yundou,R.raw.fuli,R.raw.qian_icon, R.raw.meditation, R.raw.huiyuan, R.raw.zhifu_justforleft, R.raw.tongzhi_normal,
             R.raw.gongke, R.raw.tougao_mine, R.raw.qiyuan};
 
 
@@ -61,9 +61,9 @@ public class ItemManager extends AppCompatActivity {
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.manager_item);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.title_title)).setText("编辑应用");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -81,8 +81,8 @@ public class ItemManager extends AppCompatActivity {
             }
         });
 
-        RecyclerView myItems    = (RecyclerView) findViewById(R.id.myItem);
-        RecyclerView otherItems = (RecyclerView) findViewById(R.id.otherItem);
+        RecyclerView myItems    = findViewById(R.id.myItem);
+        RecyclerView otherItems = findViewById(R.id.otherItem);
 
         myItems.setLayoutManager(new GridLayoutManager(this, 4));
 

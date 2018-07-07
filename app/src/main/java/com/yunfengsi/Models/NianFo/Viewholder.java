@@ -15,7 +15,7 @@ class Viewholder extends RecyclerView.ViewHolder {
     public AvatarImageView mroundedimageview;
     public Viewholder(View itemView) {
         super(itemView);
-        mroundedimageview = (AvatarImageView) itemView.findViewById(R.id.griditme_roundedimageview);
+        mroundedimageview = itemView.findViewById(R.id.griditme_roundedimageview);
         Log.d("我就打哈日志：","222222");
     }
 }

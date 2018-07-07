@@ -49,10 +49,10 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 		if (view == null) {
 			viewHolder = new ViewHolder();
 			view = LayoutInflater.from(mContext).inflate(R.layout.sort_item, null);
-			viewHolder.tvTitle = (TextView) view.findViewById(R.id.title);
-			viewHolder.tvLetter = (TextView) view.findViewById(R.id.catalog);
-			viewHolder.number = (TextView) view.findViewById(R.id.number);
-			viewHolder.imageView = (ImageView) view.findViewById(R.id.checkbox);
+			viewHolder.tvTitle = view.findViewById(R.id.title);
+			viewHolder.tvLetter = view.findViewById(R.id.catalog);
+			viewHolder.number = view.findViewById(R.id.number);
+			viewHolder.imageView = view.findViewById(R.id.checkbox);
 			view.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) view.getTag();

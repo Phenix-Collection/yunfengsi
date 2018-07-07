@@ -154,6 +154,7 @@ public class UserHomeFragment extends Fragment implements SwipeRefreshLayout.OnR
 //            ((ImageView) helper.getView(R.id.image))
             Glide.with(getActivity()).load(item.get("image"))
 //                    .skipMemoryCache(true)
+                    .placeholder(R.color.light_huise)
                     .override(singleWidth, (singleWidth << 4) / 9)
                     .centerCrop()
                     .into( ((ImageView) helper.getView(R.id.image)));

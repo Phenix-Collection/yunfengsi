@@ -40,11 +40,11 @@ public class AnquanActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_anquan);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        mtvnc = (TextView) findViewById(R.id.anquan_nichen_tv);
-        mxinbie = (TextView) findViewById(R.id.anquan_xinbie_tv);
-        TextView sign = (TextView) findViewById(R.id.sign1);
+        mtvnc = findViewById(R.id.anquan_nichen_tv);
+        mxinbie = findViewById(R.id.anquan_xinbie_tv);
+        TextView sign = findViewById(R.id.sign1);
 //        msimiao = (TextView) findViewById(R.id.anquan_simiao_tv);
-        TextView loginState = (TextView) findViewById(R.id.zhanghaoyuanquan_loginState);
+        TextView loginState = findViewById(R.id.zhanghaoyuanquan_loginState);
         getdatafromserve();
         if(!TextUtils.isEmpty(sp.getString("user_id",""))){
             loginState.setText(mApplication.ST("账号已登录，无安全风险"));

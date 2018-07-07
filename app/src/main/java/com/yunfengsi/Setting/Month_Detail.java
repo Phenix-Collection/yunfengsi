@@ -55,7 +55,7 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("感谢信"));
         ((TextView) findViewById(R.id.share)).setText(mApplication.ST("分享"));
         c = Calendar.getInstance();
-        webView = (WebView) findViewById(R.id.enter_wrap_web);
+        webView = findViewById(R.id.enter_wrap_web);
 //        webView.setBackgroundColor(ContextCompat.getColor(this,R.color.main_color));
         WebSettings webSettings = webView.getSettings();
         //设置WebView属性，能够执行Javascript脚本
@@ -152,8 +152,8 @@ public class Month_Detail extends AppCompatActivity implements View.OnClickListe
 
     public void showDateDialog() {
         View mView = View.inflate(this, R.layout.dialog_date_picker, null);
-        final NumberPicker np1 = (NumberPicker) mView.findViewById(R.id.year);
-        final NumberPicker np2 = (NumberPicker) mView.findViewById(R.id.month);
+        final NumberPicker np1 = mView.findViewById(R.id.year);
+        final NumberPicker np2 = mView.findViewById(R.id.month);
 
         //获取当前日期
 

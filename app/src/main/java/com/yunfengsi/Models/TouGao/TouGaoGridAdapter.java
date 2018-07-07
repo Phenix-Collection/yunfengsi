@@ -82,8 +82,8 @@ public class TouGaoGridAdapter extends BaseAdapter {
         if (view == null) {
             viewholder = new Viewholder();
             view = inflater.inflate(R.layout.tougao_yulan_grid_item, parent, false);
-            viewholder.imageView = (ImageView) view.findViewById(R.id.tougao_grid_item_img);
-            viewholder.cancle = (ImageView) view.findViewById(R.id.tougao_grid_item_cancle);
+            viewholder.imageView = view.findViewById(R.id.tougao_grid_item_img);
+            viewholder.cancle = view.findViewById(R.id.tougao_grid_item_cancle);
             view.setTag(viewholder);
         } else {
             viewholder = (Viewholder) view.getTag();

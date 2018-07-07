@@ -52,14 +52,14 @@ public class MyZuNianActivity extends AppCompatActivity implements View.OnClickL
     private UMWeb umWeb;
 
     public void init() {
-        mtitle = (TextView) findViewById(R.id.activity_my_zunian_title_tv);
-        mcontents = (TextView) findViewById(R.id.activity_my_zunian_tv_zhuniancontents);
-        mpepole = (TextView) findViewById(R.id.activity_my_zunian_tv_pepole);
-        mfohaonum = (TextView) findViewById(R.id.activity_my_zunian_tv_fohaonum);
-        mrecyclerview = (RecyclerView) findViewById(R.id.activity_my_zunian_recyclerview);
-        mlistview = (ListView) findViewById(R.id.activity_my_zunian_listview);
+        mtitle = findViewById(R.id.activity_my_zunian_title_tv);
+        mcontents = findViewById(R.id.activity_my_zunian_tv_zhuniancontents);
+        mpepole = findViewById(R.id.activity_my_zunian_tv_pepole);
+        mfohaonum = findViewById(R.id.activity_my_zunian_tv_fohaonum);
+        mrecyclerview = findViewById(R.id.activity_my_zunian_recyclerview);
+        mlistview = findViewById(R.id.activity_my_zunian_listview);
         mlistview.setHeaderDividersEnabled(false);
-        TextView mfohao = (TextView) findViewById(R.id.activity_my_zunian_tv_fohao);
+        TextView mfohao = findViewById(R.id.activity_my_zunian_tv_fohao);
         listviewadapter = new MyZuNian_ListView_Adapter(this, recitlist);
         mrecycleradpter = new MyZuNian_RecyclerView_Adapter(this, headlist);
         screenwidth = getBaseContext().getResources().getDisplayMetrics().widthPixels;

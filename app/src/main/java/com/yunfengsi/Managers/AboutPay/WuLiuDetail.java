@@ -60,12 +60,12 @@ public class WuLiuDetail extends AppCompatActivity implements SwipeRefreshLayout
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, ContextCompat.getColor(this, R.color.main_color));
         setContentView(R.layout.activity_wuliu_detail);
-        ImageView back = (ImageView) findViewById(R.id.title_back);
-        status = (TextView) findViewById(R.id.status);
-        company = (TextView) findViewById(R.id.company);
-        code = (TextView) findViewById(R.id.WlCode);
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycle);
+        ImageView back = findViewById(R.id.title_back);
+        status = findViewById(R.id.status);
+        company = findViewById(R.id.company);
+        code = findViewById(R.id.WlCode);
+        swip = findViewById(R.id.swip);
+        RecyclerView recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new mWuLiuDecoration(this));
         swip.setOnRefreshListener(this);

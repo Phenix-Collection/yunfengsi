@@ -5,11 +5,9 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -52,12 +50,10 @@ import com.yunfengsi.Utils.Network;
 import com.yunfengsi.Utils.ProgressUtil;
 import com.yunfengsi.Utils.ShareManager;
 import com.yunfengsi.Utils.StatusBarCompat;
-import com.yunfengsi.Utils.TimeUtils;
 import com.yunfengsi.Utils.ToastUtil;
 import com.yunfengsi.Utils.mApplication;
 import com.yunfengsi.View.mPLlistview;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -125,20 +121,20 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.activity_xuanzhe);
         id = getIntent().getStringExtra("id");
-        abs = (TextView) findViewById(R.id.xuanzhe_abs);
+        abs = findViewById(R.id.xuanzhe_abs);
 
 
-        tip = (ImageView) findViewById(R.id.tip);
+        tip = findViewById(R.id.tip);
         tip.setOnClickListener(this);
 
-        PLText = (EditText) findViewById(R.id.zixun_detail_apply_edt);
+        PLText = findViewById(R.id.zixun_detail_apply_edt);
         PLText.setHint(mApplication.ST("您的留言(300字以内)"));
         Glide.with(this).load(R.drawable.pinglun).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.pinglun_image));
         Glide.with(this).load(R.drawable.fenxiangb).skipMemoryCache(true).override(DimenUtils.dip2px(this, 25), DimenUtils.dip2px(this, 25))
                 .into((ImageView) findViewById(R.id.fenxiang_image));
-        toggle = (ImageView) findViewById(R.id.toggle_audio_word);
-        audio = (TextView) findViewById(R.id.audio_button);
+        toggle = findViewById(R.id.toggle_audio_word);
+        audio = findViewById(R.id.audio_button);
         toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,7 +171,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                 return true;
             }
         });
-        overlay = (FrameLayout) findViewById(R.id.frame);
+        overlay = findViewById(R.id.frame);
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,7 +181,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                 v.setVisibility(View.GONE);
             }
         });
-        LinearLayout pinglun = (LinearLayout) findViewById(R.id.pinglun);
+        LinearLayout pinglun = findViewById(R.id.pinglun);
         pinglun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +194,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
 
             }
         });
-        fenxiangb = (LinearLayout) findViewById(R.id.fenxiangb);
+        fenxiangb = findViewById(R.id.fenxiangb);
         fenxiangb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,20 +203,21 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                 }
             }
         });
-        ((TextView) findViewById(R.id.titletv)).setText(mApplication.ST("功德无量"));
+        ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("功德无量"));
         ((TextView) findViewById(R.id.numtv)).setText(mApplication.ST("数量"));
         ((TextView) findViewById(R.id.pltv)).setText(mApplication.ST("评论"));
         ((TextView) findViewById(R.id.fxtv)).setText(mApplication.ST("分享"));
 
-        fenxiang = (ImageView) findViewById(R.id.zixun_detail_fenxiang2);
+
+        fenxiang = findViewById(R.id.zixun_detail_fenxiang2);
         Pllist = new ArrayList<>();
         adapter = new PL_List_Adapter(this);
         adapter.setOnHuifuListener(this);
 
-        fasong = (TextView) findViewById(R.id.zixun_detail_fasong);
+        fasong = findViewById(R.id.zixun_detail_fasong);
         fasong.setText(mApplication.ST("发送"));
         fasong.setOnClickListener(this);
-        PlListVIew = (mPLlistview) findViewById(R.id.zixun_Detail_PL_listview);
+        PlListVIew = findViewById(R.id.zixun_Detail_PL_listview);
         PlListVIew.footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,17 +227,19 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
             }
         });
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setOnClickListener(this);
 
 
-        beizhu = (EditText) findViewById(R.id.beizhu);
+        beizhu = findViewById(R.id.beizhu);
         beizhu.setHint(mApplication.ST("请输入申请人和祈福内容（限50字,选填）"));
         sp = getSharedPreferences("user", MODE_PRIVATE);
-        title = (TextView) findViewById(R.id.xuanzhe_name);
+        title = findViewById(R.id.xuanzhe_name);
         title.setText(getIntent().getStringExtra("title"));
-        edmoneycustom = (EditText) findViewById(R.id.money_custom);
+        edmoneycustom = findViewById(R.id.money_custom);
         edmoneycustom.setHint(mApplication.ST("随喜捐赠(元)"));
         edmoneycustom.setOnClickListener(this);
-        image = (ImageView) findViewById(R.id.xuanzhe_imageview);
+        image = findViewById(R.id.xuanzhe_imageview);
         if (getIntent().getStringExtra("head") == null) {
             Glide.with(this).load(getIntent().getStringExtra("head_url")).centerCrop().into(image);
         } else {
@@ -248,7 +247,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
             byte[] b = getIntent().getByteArrayExtra("head");
             image.setImageBitmap(BitmapFactory.decodeByteArray(b, 0, b.length));
         }
-        tvnum = (EditText) findViewById(R.id.tv_fact_count);
+        tvnum = findViewById(R.id.tv_fact_count);
         tvnum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -273,14 +272,13 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                 LogUtil.e("商品数量：" + num + "     ~~~~::" + s.toString());
             }
         });
-        tvmoney1 = (TextView) findViewById(R.id.money1);
-        tvmoney2 = (TextView) findViewById(R.id.money2);
-        tvmoney3 = (TextView) findViewById(R.id.money3);
-        tvqian = (TextView) findViewById(R.id.xuanzhe_qian);
+        tvmoney1 = findViewById(R.id.money1);
+        tvmoney2 = findViewById(R.id.money2);
+        tvmoney3 = findViewById(R.id.money3);
+        tvqian = findViewById(R.id.xuanzhe_qian);
         tvqian.setText(getIntent().getStringExtra("money"));
-        Button bntadd = (Button) findViewById(R.id.btn_count_plus);
-        bntdelect = (Button) findViewById(R.id.btn_count_minus);
-        bntbuy = (TextView) findViewById(R.id.xuanzhe_buy);
+        bntdelect = findViewById(R.id.btn_count_minus);
+        bntbuy = findViewById(R.id.xuanzhe_buy);
         bntbuy.setText(mApplication.ST("供养"));
         edmoneycustom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -592,40 +590,6 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                                                     YunDouAwardDialog.show(GongYangDetail.this, "每日评论", hashMap.get("yundousum"));
                                                 }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-
-                                                final HashMap<String, String> map       = new HashMap<>();
-                                                String                        headurl   = sp.getString("head_path", "").equals("") ? sp.getString("head_url", "") : sp.getString("head_path", "");
-                                                final String                  time      = TimeUtils.getStrTime(System.currentTimeMillis() + "");
-                                                String                        petname   = sp.getString("pet_name", "");
-                                                String                        diazannum = "0";
-                                                map.put("user_image", headurl);
-                                                map.put("ct_contents", content);
-                                                map.put("pet_name", petname);
-                                                map.put("ct_ctr", diazannum);
-                                                map.put("level", sp.getString("level", "0"));
-                                                map.put("ct_time", time);
-                                                if (sp.getString("role", "").equals("3")) {
-                                                    map.put("role", "3");
-                                                } else {
-                                                    map.put("role", "0");
-                                                }
-                                                map.put("id", hashMap.get("id"));
-                                                map.put("reply", new JSONArray().toString());
-                                                map.put("level", sp.getString("level", "0"));
-                                                PlListVIew.setFocusable(true);
-                                                if (adapter.mlist.size() == 0) {
-                                                    adapter.mlist.add(0, map);
-                                                    adapter.flagList.add(0, false);
-                                                    PlListVIew.removeHeaderView(tv);
-                                                    PlListVIew.setAdapter(adapter);
-
-                                                } else {
-                                                    adapter.mlist.add(0, map);
-                                                    adapter.flagList.add(0, false);
-                                                    adapter.notifyDataSetChanged();
-
-                                                }
-                                                PlListVIew.setSelection(0);
                                                 view.setEnabled(true);
                                                 PLText.setText("");
                                                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
@@ -675,22 +639,10 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if (currentLayout.getVisibility() == View.GONE) {
-                                                    currentLayout.setVisibility(View.VISIBLE);
-                                                }
                                                 if (!"0".equals(hashMap.get("yundousum"))) {
                                                     YunDouAwardDialog.show(GongYangDetail.this, "每日评论", hashMap.get("yundousum"));
                                                 }
                                                 ToastUtil.showToastShort(mApplication.ST(getString(R.string.commitCommentSuccess)));
-                                                TextView                  textView     = new TextView(GongYangDetail.this);
-                                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                                layoutParams.setMargins(0, DimenUtils.dip2px(GongYangDetail.this, 5), 0, DimenUtils.dip2px(GongYangDetail.this, 5));
-                                                textView.setLayoutParams(layoutParams);
-                                                String                 pet_name = sp.getString("pet_name", "");
-                                                SpannableStringBuilder ssb      = new SpannableStringBuilder(mApplication.ST(pet_name + ":" + content));
-                                                ssb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(GongYangDetail.this, R.color.main_color)), 0, pet_name.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                                                textView.setText(ssb);
-                                                currentLayout.addView(textView);
                                                 PLText.setText("");
                                                 PLText.setHint(mApplication.ST("您的留言（300字以内）"));
                                                 imm.hideSoftInputFromWindow(PLText.getWindowToken(), 0);
@@ -698,24 +650,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                                                 PlListVIew.setSelection(currentPosition);
                                                 fasong.setEnabled(true);
                                                 isPLing = false;
-                                                try {
-                                                    JSONArray  jsonArray  = new JSONArray(adapter.mlist.get(currentPosition).get("reply"));
-                                                    JSONObject jsonObject = new JSONObject();
-                                                    jsonObject.put("id", hashMap.get("id"));
-                                                    jsonObject.put("pet_name", pet_name);
-                                                    if (sp.getString("role", "").equals("3")) {
-                                                        jsonObject.put("role", "3");
-                                                    } else {
-                                                        jsonObject.put("role", "0");
-                                                    }
-                                                    jsonObject.put("ct_contents", content);
-                                                    jsonObject.put("user_id", sp.getString("user_id", ""));
-                                                    jsonArray.put(jsonObject);
-                                                    adapter.mlist.get(currentPosition).put("reply", jsonArray.toString());
-                                                    adapter.notifyDataSetChanged();
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
+//
                                                 ProgressUtil.dismiss();
                                             }
                                         });
@@ -851,7 +786,7 @@ public class GongYangDetail extends AndroidPopupActivity implements View.OnClick
                 mApplication.openPayLayout(this, payParams);
 
                 break;
-            case R.id.xuanzhe_back:
+            case R.id.title_back:
                 finish();
                 break;
         }

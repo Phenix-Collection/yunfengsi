@@ -181,8 +181,8 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
         int screenHeight=getResources().getDisplayMetrics().heightPixels;
         final AlertDialog dilog=new AlertDialog.Builder(this).create();
         View view=LayoutInflater.from(this).inflate(R.layout.layout_grid_cupture_dialog,null);
-        final ImageView i= (ImageView) view.findViewById(R.id.grid_pre_img);
-        final TextView t1= (TextView) view.findViewById(R.id.grid_pre_text);
+        final ImageView i= view.findViewById(R.id.grid_pre_img);
+        final TextView t1= view.findViewById(R.id.grid_pre_text);
 //
 //        LinearLayout l=new LinearLayout(this);
 //        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -373,13 +373,13 @@ public class PhotoPicker extends AppCompatActivity implements View.OnClickListen
 
     private void initView() {
         allowChooseNum=getIntent().getIntExtra("max",3);
-        ImageView back = (ImageView) findViewById(R.id.photo_picker_back);
-        fasong = (TextView) findViewById(R.id.photo_picker_fasong);
-        chooseFile = (TextView) findViewById(R.id.photo_picker_choose_file);
-        Grid = (GridView) findViewById(R.id.photo_picker_grid);
+        ImageView back = findViewById(R.id.photo_picker_back);
+        fasong = findViewById(R.id.photo_picker_fasong);
+        chooseFile = findViewById(R.id.photo_picker_choose_file);
+        Grid = findViewById(R.id.photo_picker_grid);
         mDirPaths = new HashSet<>();//判断是否扫描同一个文件夹
         mImageFloders = new ArrayList<>();//包含所有文件信息的list
-        totalNum = (TextView) findViewById(R.id.photo_picker_totalNum);
+        totalNum = findViewById(R.id.photo_picker_totalNum);
         back.setOnClickListener(this);
         fasong.setOnClickListener(this);
         chooseFile.setOnClickListener(this);

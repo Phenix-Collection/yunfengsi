@@ -64,9 +64,9 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_ganyu);
         mApplication.getInstance().addActivity(this);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
-        wangzhan = (TextView) findViewById(R.id.guanfangwangzhan);
-        qq = (TextView) findViewById(R.id.QQqun);
-        email = (TextView) findViewById(R.id.user_email);
+        wangzhan = findViewById(R.id.guanfangwangzhan);
+        qq = findViewById(R.id.QQqun);
+        email = findViewById(R.id.user_email);
         ((TextView) findViewById(R.id.title)).setText(mApplication.ST("关于"));
         ((TextView) findViewById(R.id.name)).setText(mApplication.ST(getResources().getString(R.string.app_name)));
         ((TextView) findViewById(R.id.guanwang)).setText(mApplication.ST("官方网站"));
@@ -75,10 +75,10 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
         ((TextView) findViewById(R.id.wechat)).setText(mApplication.ST("客服微信"));
         ((TextView) findViewById(R.id.banquan)).setText(mApplication.ST("Copyright 2016-2018 成都因陀罗网络科技有限公司 版权所有"));
         ((ImageView) findViewById(R.id.logo)).setImageBitmap(ImageUtil.readBitMap(this, R.drawable.indra));
-        TextView gengxin = (TextView) findViewById(R.id.gengxin);
-        TextView pingfen = (TextView) findViewById(R.id.pingfen);
-        TextView xieyi   = (TextView) findViewById(R.id.xieyi);
-        TextView zhengce = (TextView) findViewById(R.id.zhengce);
+        TextView gengxin = findViewById(R.id.gengxin);
+        TextView pingfen = findViewById(R.id.pingfen);
+        TextView xieyi   = findViewById(R.id.xieyi);
+        TextView zhengce = findViewById(R.id.zhengce);
         gengxin.setText(mApplication.ST("检查更新"));
         pingfen.setText(mApplication.ST("去评分"));
         xieyi.setText(mApplication.ST("用户协议"));
@@ -143,7 +143,7 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
                                         });
                                     }
                                     if(!map.get("wxid").equals("")){
-                                        ((TextView) findViewById(R.id.weixin)).setOnClickListener(new View.OnClickListener() {
+                                        findViewById(R.id.weixin).setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
                                                 ClipboardManager clipboardManager= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -208,10 +208,10 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
 //
                         if (prol != null && !prol.equals("")) {
                             View view = LayoutInflater.from(this).inflate(R.layout.activity_confirm_dialog, null);
-                            final WebView web = (WebView) view.findViewById(R.id.web);
-                            TextView cancle = (TextView) view.findViewById(R.id.cancle);
+                            final WebView web = view.findViewById(R.id.web);
+                            TextView cancle = view.findViewById(R.id.cancle);
                             cancle.setText(mApplication.ST("确定"));
-                            final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                            final TextView baoming = view.findViewById(R.id.baoming);
                             baoming.setEnabled(false);
                             baoming.setVisibility(View.GONE);
 
@@ -263,10 +263,10 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
 //
                         if (secret != null && !secret.equals("")) {
                             View view = LayoutInflater.from(this).inflate(R.layout.activity_confirm_dialog, null);
-                            final WebView web = (WebView) view.findViewById(R.id.web);
-                            TextView cancle = (TextView) view.findViewById(R.id.cancle);
+                            final WebView web = view.findViewById(R.id.web);
+                            TextView cancle = view.findViewById(R.id.cancle);
                             cancle.setText(mApplication.ST("确定"));
-                            final TextView baoming = (TextView) view.findViewById(R.id.baoming);
+                            final TextView baoming = view.findViewById(R.id.baoming);
                             baoming.setEnabled(false);
                             baoming.setVisibility(View.GONE);
 //                            final CountDownTimer cdt = new CountDownTimer(10000, 1000) {
@@ -442,11 +442,11 @@ public class GanyuActivity extends AppCompatActivity implements View.OnClickList
         final AlertDialog dialog = builder.create();
         final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.update_alet_layout, null);
         ((TextView) view.findViewById(R.id.version_update_title)).setText("检测到新版本安装包：" + appname.substring(Constants.NAME_CHAR_NUM, appname.length() - 4));
-        final TextView textView = (TextView) view.findViewById(R.id.version_update_content);
+        final TextView textView = view.findViewById(R.id.version_update_content);
         textView.setText(content.equals("") ? "是否需要更新？" : content);
-        TextView update = (TextView) view.findViewById(R.id.version_update_update);
+        TextView update = view.findViewById(R.id.version_update_update);
         update.setText(ST("更新"));
-        TextView cancle = (TextView) view.findViewById(R.id.version_update_cancel);
+        TextView cancle = view.findViewById(R.id.version_update_cancel);
         cancle.setText(ST("取消"));
         view.findViewById(R.id.version_update_update).setOnClickListener(new View.OnClickListener() {
             @Override

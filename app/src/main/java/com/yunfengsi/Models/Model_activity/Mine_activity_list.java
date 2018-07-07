@@ -94,7 +94,7 @@ public class Mine_activity_list extends AndroidPopupActivity implements LoadMore
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fund_people_list);
         initView();
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setColorSchemeResources(R.color.main_color);
         swip.setOnRefreshListener(this);
         swip.post(new Runnable() {
@@ -221,15 +221,15 @@ public class Mine_activity_list extends AndroidPopupActivity implements LoadMore
     }
 
     private void initView() {
-        ImageView back = (ImageView) findViewById(R.id.title_back);
+        ImageView back = findViewById(R.id.title_back);
         back.setImageResource(R.drawable.back);
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);
-        TextView title = (TextView) findViewById(R.id.title_title);
+        TextView title = findViewById(R.id.title_title);
         title.setText(mApplication.ST("我的活动"));
         ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("修行经历"));
-        ((TextView) findViewById(R.id.handle_right)).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.handle_right)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
+        findViewById(R.id.handle_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Mine_activity_list.this,ActivityHistory.class));
@@ -238,12 +238,12 @@ public class Mine_activity_list extends AndroidPopupActivity implements LoadMore
 
 
 
-        listView = (LoadMoreListView) findViewById(R.id.fund_people_list);
+        listView = findViewById(R.id.fund_people_list);
         listView.setLoadMoreListen(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView title = (TextView) view.findViewById(R.id.fund_list_item_name);
+                TextView title = view.findViewById(R.id.fund_list_item_name);
                 if (title != null && title.getTag() != null) {
                     Intent intent = new Intent(Mine_activity_list.this, ActivityDetail.class);
                     intent.putExtra("id", ((String) title.getTag()));
@@ -252,8 +252,8 @@ public class Mine_activity_list extends AndroidPopupActivity implements LoadMore
             }
         });
 
-        t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
-        p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
+        t = listView.footer.findViewById(R.id.load_more_text);
+        p = listView.footer.findViewById(R.id.load_more_bar);
 
     }
 
@@ -334,11 +334,11 @@ public class Mine_activity_list extends AndroidPopupActivity implements LoadMore
             if (view == null) {
                 holder = new viewHolder();
                 view = LayoutInflater.from(context).inflate(R.layout.mine_activity_item, parent, false);
-                holder.head = (ImageView) view.findViewById(R.id.fund_list_item_head);
-                holder.name = (TextView) view.findViewById(R.id.fund_list_item_name);
-                holder.money = (TextView) view.findViewById(R.id.fund_list_item_money);
-                holder.time = (TextView) view.findViewById(R.id.fund_list_item_time);
-                holder.sign = (TextView) view.findViewById(R.id.signact);
+                holder.head = view.findViewById(R.id.fund_list_item_head);
+                holder.name = view.findViewById(R.id.fund_list_item_name);
+                holder.money = view.findViewById(R.id.fund_list_item_money);
+                holder.time = view.findViewById(R.id.fund_list_item_time);
+                holder.sign = view.findViewById(R.id.signact);
                 view.setTag(holder);
             } else {
                 holder = (viewHolder) view.getTag();

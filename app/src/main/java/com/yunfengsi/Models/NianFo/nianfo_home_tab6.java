@@ -97,26 +97,26 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.fragment_nianfo_home_tab6);
-        listView = (LoadMoreListView) findViewById(R.id.nianfo_home_tab1_listview);
+        listView = findViewById(R.id.nianfo_home_tab1_listview);
         listView.setLoadMoreListen(this);
         listView.setFooterDividersEnabled(false);
-        swip = (SwipeRefreshLayout) findViewById(R.id.nianfo_1_swip);
+        swip = findViewById(R.id.nianfo_1_swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
         adapter = new FayuanAdapter();
         typelist = new ArrayList<>();
-        type = (EditText) findViewById(R.id.nianfo_home_tab1_type);
+        type = findViewById(R.id.nianfo_home_tab1_type);
         type.setFocusable(false);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         int screeWidth = getResources().getDisplayMetrics().widthPixels;
         sp = getSharedPreferences("user", Context.MODE_PRIVATE);
-        sb2 = (TextView) findViewById(R.id.sb2);
-        sb = (TextView) findViewById(R.id.sb);
-        username = (TextView) findViewById(R.id.nianfo_home_tab1_mName);
-        TextView commit = (TextView) findViewById(R.id.nianfo_home_tab1_commit);
+        sb2 = findViewById(R.id.sb2);
+        sb = findViewById(R.id.sb);
+        username = findViewById(R.id.nianfo_home_tab1_mName);
+        TextView commit = findViewById(R.id.nianfo_home_tab1_commit);
         num = (EditText) findViewById(R.id.nianfo_home_tab1_num);
-        chengji = (TextView) findViewById(R.id.nianfo_home_tab1_chaxunchengji);
+        chengji = findViewById(R.id.nianfo_home_tab1_chaxunchengji);
         username.setText(sp.getString("pet_name", ""));
         swip.post(new Runnable() {
             @Override
@@ -186,8 +186,8 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
             @Override
             public void run() {
                 try {
-                    final ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
-                    final TextView t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
+                    final ProgressBar p = listView.footer.findViewById(R.id.load_more_bar);
+                    final TextView t = listView.footer.findViewById(R.id.load_more_text);
                     JSONObject js = new JSONObject();
                     try {
                         js.put("page", page);
@@ -210,7 +210,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                                 @Override
                                 public void run() {
 //                                    ProgressUtil.dismiss();
-                                    TextView t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
+                                    TextView t = listView.footer.findViewById(R.id.load_more_text);
                                     if (adapter.mlist.size() == 0) {
                                         adapter.addList(list1);
                                         LogUtil.e(list1 + "");
@@ -231,7 +231,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                                             adapter.mlist.addAll(list1);
                                             adapter.notifyDataSetChanged();
 
-                                            ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
+                                            ProgressBar p = listView.footer.findViewById(R.id.load_more_bar);
                                             if (endPage.equals(page)) {
                                                 p.setVisibility(View.GONE);
                                                 t.setText(mApplication.ST("没有更多数据了"));
@@ -330,7 +330,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                                 @Override
                                 public void run() {
                                     View view = LayoutInflater.from(nianfo_home_tab6.this).inflate(R.layout.nianfo_type_dialog, null);
-                                    ListView list = (ListView) view.findViewById(R.id.nianfo_type_listview);
+                                    ListView list = view.findViewById(R.id.nianfo_type_listview);
                                     AlertDialog.Builder builder = new AlertDialog.Builder(nianfo_home_tab6.this);
                                     builder.setView(view);
 
@@ -432,7 +432,7 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
                             + num.getText().toString() + sb.getText().toString() + "\n\n截止日期:" + targetTime + "(农历7月15日)";
                     AlertDialog.Builder builder = new AlertDialog.Builder(nianfo_home_tab6.this);
                     View view = LayoutInflater.from(nianfo_home_tab6.this).inflate(R.layout.fayuan_dialog, null);
-                    TextView c = (TextView) view.findViewById(R.id.content);
+                    TextView c = view.findViewById(R.id.content);
                     ((TextView) view.findViewById(R.id.title)).setText("请确认您的发愿信息");
                     c.setText(content);
                     builder.setView(view);
@@ -652,14 +652,14 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
             if (view == null) {
                 holder = new Holder();
                 view = LayoutInflater.from(nianfo_home_tab6.this).inflate(R.layout.nianfo_item_fayuan, null);
-                holder.imageView = (ImageView) view.findViewById(R.id.nianfo_item_ima);
-                holder.txt_date = (TextView) view.findViewById(R.id.nianfo_item_date);
-                holder.txt_desc = (TextView) view.findViewById(R.id.nianfo_item_desc);
-                holder.txt_name = (TextView) view.findViewById(R.id.nianfo_item_name);
-                holder.txt_share = (TextView) view.findViewById(R.id.nianfo_item_share);
-                holder.text_status = (TextView) view.findViewById(R.id.nianfo_item_status);
-                holder.swipeview = (SwipeMenuLayout) view.findViewById(R.id.swipview);
-                holder.text_delete = (TextView) view.findViewById(R.id.delete);
+                holder.imageView = view.findViewById(R.id.nianfo_item_ima);
+                holder.txt_date = view.findViewById(R.id.nianfo_item_date);
+                holder.txt_desc = view.findViewById(R.id.nianfo_item_desc);
+                holder.txt_name = view.findViewById(R.id.nianfo_item_name);
+                holder.txt_share = view.findViewById(R.id.nianfo_item_share);
+                holder.text_status = view.findViewById(R.id.nianfo_item_status);
+                holder.swipeview = view.findViewById(R.id.swipview);
+                holder.text_delete = view.findViewById(R.id.delete);
                 view.setTag(holder);
             } else {
                 holder = (Holder) view.getTag();
@@ -849,8 +849,8 @@ public class nianfo_home_tab6 extends Activity implements View.OnClickListener, 
         if (!endPage.equals(page)) {
             page = String.valueOf(Integer.parseInt(page) + 1);
         } else {
-            final ProgressBar p = (ProgressBar) (listView.footer.findViewById(R.id.load_more_bar));
-            final TextView t = (TextView) (listView.footer.findViewById(R.id.load_more_text));
+            final ProgressBar p = listView.footer.findViewById(R.id.load_more_bar);
+            final TextView t = listView.footer.findViewById(R.id.load_more_text);
             p.setVisibility(View.GONE);
             t.setText(mApplication.ST("没有更多数据了"));
             return;

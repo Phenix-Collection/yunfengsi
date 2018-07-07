@@ -120,14 +120,14 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
             holder = new viewHolder();
 
          View   view = LayoutInflater.from(context).inflate(R.layout.nianfo_home_chanhui_item, parent, false);
-            holder.time = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_time);
-            holder.username = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_username);
-            holder.head = (ImageView) view.findViewById(R.id.nianfo_home_chanhui_item_head);
-            holder.content = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_content);
-            holder.tip = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_tip);
-            holder.dianzan = (TextView) view.findViewById(R.id.nianfo_home_chanhui_item_dianzan);
-            holder.swipeview = (SwipeMenuLayout) view.findViewById(R.id.swipview);
-            holder.text_delete = (TextView) view.findViewById(R.id.delete);
+            holder.time = view.findViewById(R.id.nianfo_home_chanhui_item_time);
+            holder.username = view.findViewById(R.id.nianfo_home_chanhui_item_username);
+            holder.head = view.findViewById(R.id.nianfo_home_chanhui_item_head);
+            holder.content = view.findViewById(R.id.nianfo_home_chanhui_item_content);
+            holder.tip = view.findViewById(R.id.nianfo_home_chanhui_item_tip);
+            holder.dianzan = view.findViewById(R.id.nianfo_home_chanhui_item_dianzan);
+            holder.swipeview = view.findViewById(R.id.swipview);
+            holder.text_delete = view.findViewById(R.id.delete);
 
 
 
@@ -147,7 +147,7 @@ public class nianfo_home_chanhui_adapter extends BaseAdapter {
                         return;
                     }
                     final View view1 = parent.getChildAt(p - ((ListView) parent).getFirstVisiblePosition());
-                    final TextView tip = (TextView) view1.findViewById(R.id.nianfo_home_chanhui_item_tip);
+                    final TextView tip = view1.findViewById(R.id.nianfo_home_chanhui_item_tip);
                     ProgressUtil.show(context, "", "请稍等");
                     new Thread(new Runnable() {
                         @Override

@@ -2,6 +2,7 @@ package com.yunfengsi.View;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.AnimRes;
@@ -21,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yunfengsi.Utils.LogUtil;
@@ -41,12 +44,13 @@ public class ListDialog {
     public static final int WITH_LIST = 1;
     private WeakReference<Activity> weakReference;
     private Activity                activity;
-    private List                 list;
+    private List                    list;
 
-    private HandleCallBack callBack;
-    private View              view;
-    private View              itemView;
-    private RecyclerView      recyclerView;
+    private HandleListCallBack handleListCallBack;
+    private DialogCallBack     callBack;
+    private View               view;
+    private View               itemView;
+    private RecyclerView       recyclerView;
     @LayoutRes
     private int     mRes       = -1;
     @LayoutRes
@@ -56,6 +60,12 @@ public class ListDialog {
     private boolean hasList    = false;
     private String  defaultKey = "";
 
+    /**
+     * 如果显示的调用过软键盘的化 edt则有值
+     */
+    private EditText           edt;
+    private InputMethodManager imm;
+
     @IntDef({DEFAULT, WITH_LIST})
     @Retention(RetentionPolicy.SOURCE)
     public @interface DIALOG_MODE {
@@ -63,13 +73,13 @@ public class ListDialog {
     }
 
     @IntDef({android.view.Gravity.TOP, android.view.Gravity.BOTTOM, android.view.Gravity.LEFT
-            , android.view.Gravity.RIGHT})
+            , android.view.Gravity.RIGHT, android.view.Gravity.CENTER})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Gravity {
 
     }
 
-    private int defaultTextsize   = 18;//textSize for default list item ;
+    private int defaultTextsize = 18;//textSize for default list item ;
 
     public ListDialog setDialogHeight(int dialogHeight) {
         wl.height = dialogHeight;
@@ -93,7 +103,7 @@ public class ListDialog {
     }
 
 
-    private int                                        mode;
+    private int mode = DEFAULT;
     private android.support.v7.app.AlertDialog.Builder builder;
     private android.support.v7.app.AlertDialog         dialog;
     private Window                                     window;
@@ -106,7 +116,7 @@ public class ListDialog {
     public static ListDialog create(Activity activity) {
         ListDialog listDialog = new ListDialog();
         listDialog.weakReference = new WeakReference<>(activity);
-        listDialog.activity = (Activity) listDialog.weakReference.get();
+        listDialog.activity = listDialog.weakReference.get();
         listDialog.builder = new android.support.v7.app.AlertDialog.Builder(listDialog.activity);
         listDialog.denisty = activity.getResources().getDisplayMetrics().density;
         return listDialog;
@@ -128,8 +138,9 @@ public class ListDialog {
         window.setBackgroundDrawableResource(android.R.color.transparent);
 
         wl = window.getAttributes();
-        wl.width=activity.getResources().getDisplayMetrics().widthPixels;
-        wl.gravity= android.view.Gravity.BOTTOM;
+        wl.width = activity.getResources().getDisplayMetrics().widthPixels;
+        wl.gravity = android.view.Gravity.BOTTOM;
+
     }
 
     public ListDialog setGravity(@Gravity int gravity) {
@@ -151,10 +162,66 @@ public class ListDialog {
         view.findViewById(cancelViewId).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //如果调起过软键盘  dialog消失时移除软键盘
+
+                if (edt != null) {
+                    imm.hideSoftInputFromWindow(edt.getWindowToken(), 0);
+                }
                 dialog.dismiss();
-                callBack.onCancelClick(dialog);
+                if (callBack != null) {
+                    callBack.onCancelClick(dialog);
+                }
             }
         });
+        return this;
+    }
+
+    public ListDialog setCommitId(@IdRes int commitId) {
+        if (view == null) {
+            throw new NullPointerException("@@@@@@ListDialog \nCan not found the root resource !!! Please set the root view !!!");
+        }
+        view.findViewById(commitId).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //如果调起过软键盘  dialog消失时移除软键盘
+
+                if (edt != null) {
+                    imm.hideSoftInputFromWindow(edt.getWindowToken(), 0);
+                }
+                if (callBack != null) {
+                    callBack.onCommit(dialog, view);
+                }
+            }
+        });
+        return this;
+    }
+
+    public ListDialog setCommitId(@IdRes int commitId, final DialogCallBack callBack) {
+        this.callBack=callBack;
+       setCommitId(commitId);
+        return this;
+    }
+
+
+    /**
+     * @param edtId 需要使用edttext实例调起软键盘
+     */
+    public ListDialog showSoftKeyboard(@IdRes int edtId) {
+        dialog.setCanceledOnTouchOutside(false);
+
+        edt = view.findViewById(edtId);
+        edt.post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        return this;
+    }
+
+    public ListDialog setCancelViewId(@IdRes int cancelViewId, final DialogCallBack callBack) {
+        this.callBack = callBack;
+        setCancelViewId(cancelViewId);
         return this;
     }
 
@@ -200,7 +267,20 @@ public class ListDialog {
         } else {
 
         }
+
         dialog.show();
+        if(edt!=null){
+            edt.post(new Runnable() {
+                @Override
+                public void run() {
+                    imm = ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE));
+//                    imm.showSoftInput(edt, InputMethodManager.SHOW_FORCED);
+                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            });
+
+        }
+
     }
 
     /**
@@ -230,6 +310,16 @@ public class ListDialog {
     }
 
     /**
+     * @param resId 需要隐藏的id
+     * @param flag  是否影藏
+     * @return
+     */
+    public ListDialog setVisible(@IdRes int resId, boolean flag) {
+        view.findViewById(resId).setVisibility(flag ? View.VISIBLE : View.GONE);
+        return this;
+    }
+
+    /**
      * just be useful when {mode==WITH_LIST}
      *
      * @param adapter custom adapter
@@ -248,11 +338,14 @@ public class ListDialog {
         return this;
     }
 
-    public ListDialog setCallBack(HandleCallBack callBack) {
-        this.callBack = callBack;
+    public ListDialog setHandleListCallBack(HandleListCallBack handleListCallBack) {
+        this.handleListCallBack = handleListCallBack;
         return this;
     }
 
+    public void setCallBack(DialogCallBack callBack) {
+        this.callBack = callBack;
+    }
 
     public ListDialog setList(@Nullable List list) {
         if (mode == WITH_LIST) {
@@ -264,7 +357,7 @@ public class ListDialog {
         return this;
     }
 
-    public ListDialog setList(@Nullable String [] args) {
+    public ListDialog setList(@Nullable String[] args) {
         if (mode == WITH_LIST) {
             this.list = args == null ? new ArrayList() : Arrays.asList(args);
         } else {
@@ -291,13 +384,25 @@ public class ListDialog {
     }
 
 
-    public abstract static class HandleCallBack<T> {
+    public interface DialogCallBack {
+        void onCancelClick(android.support.v7.app.AlertDialog dialog);
+
+        void onCommit(android.support.v7.app.AlertDialog dialog, View view);
+    }
+
+
+    public abstract static class HandleListCallBack<T> implements DialogCallBack {
         public abstract void onItemClick(T item, int pos, AlertDialog dialog);
 
-        public void onCancelClick(android.support.v7.app.AlertDialog dialog) {
+        @Override
+        public void onCancelClick(AlertDialog dialog) {
 
         }
 
+        @Override
+        public void onCommit(AlertDialog dialog, View view) {
+
+        }
     }
 
     public ListDialog setItemDefaultTextsize(@IntRange(from = 12, to = 28) int defaultTextsize) {
@@ -327,13 +432,13 @@ public class ListDialog {
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
             final Object object = list.get(position);
             if (defaultKey != null && !defaultKey.equals("")) {
-                if(object instanceof Map){
+                if (object instanceof Map) {
                     ((TextView) holder.itemView).setText(String.valueOf(((Map) object).get(defaultKey)));
                 }
             }
-            if(object instanceof String){
+            if (object instanceof String) {
                 ((TextView) holder.itemView).setText(String.valueOf(object));
-            }else{
+            } else {
                 LogUtil.e("Can not setText effectively");
             }
             holder.itemView.setOnTouchListener(new View.OnTouchListener() {
@@ -342,21 +447,18 @@ public class ListDialog {
 
 
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        LogUtil.e("DOWN");
 
                         downTime = System.currentTimeMillis();
                         v.setBackgroundColor(Color.parseColor("#e6e6e6"));
                     } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        LogUtil.e("UPPPPPPPP");
 //                        if (System.currentTimeMillis() - downTime <= ViewConfiguration.getTapTimeout()) {
-                            callBack.onItemClick(object, holder.getAdapterPosition(),dialog);
+                        handleListCallBack.onItemClick(object, holder.getAdapterPosition(), dialog);
 //                        }
                         v.setBackgroundColor(Color.WHITE);
-                        downTime=0;
+                        downTime = 0;
                     } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                        LogUtil.e("Cancel");
                         v.setBackgroundColor(Color.WHITE);
-                        downTime=0;
+                        downTime = 0;
                     }
                     return true;
                 }

@@ -104,7 +104,7 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         edit = findViewById(R.id.search_edit);
         TextView search = findViewById(R.id.search);
         search.setOnClickListener(this);
-        ((ImageView) findViewById(R.id.back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -122,11 +122,11 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
         treeRecycle.setLayoutManager(new LinearLayoutManager(this));
         treeRecycle.addItemDecoration(new mItemDecoration(this));
 
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setColorSchemeResources(R.color.main_color);
         swip.setOnRefreshListener(this);
 
-        recyclerView = (BookRecyclerView) findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
         mainList = new ArrayList<>();
@@ -885,9 +885,9 @@ public class BookList extends AppCompatActivity implements SwipeRefreshLayout.On
 
         @Override
         protected void convert(final BaseViewHolder holder, final HashMap<String, Object> map) {
-            TextView item1 = ((TextView) holder.getView(R.id.item1));
-            TextView item2 = ((TextView) holder.getView(R.id.item2));
-            TextView item3 = ((TextView) holder.getView(R.id.item3));
+            TextView item1 = holder.getView(R.id.item1);
+            TextView item2 = holder.getView(R.id.item2);
+            TextView item3 = holder.getView(R.id.item3);
 
             int column = getData().indexOf(map) + 1;//当前行数
 

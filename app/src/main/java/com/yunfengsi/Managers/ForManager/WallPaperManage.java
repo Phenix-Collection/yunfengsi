@@ -69,7 +69,7 @@ public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLa
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.comment_manage);
 
-        ((ImageView) findViewById(R.id.title_back)).setVisibility(View.VISIBLE);
+        findViewById(R.id.title_back).setVisibility(View.VISIBLE);
 //        findViewById(R.id.handle_right).setVisibility(View.VISIBLE);
 //        ((TextView) findViewById(R.id.handle_right)).setText(mApplication.ST("禁言列表"));
 //        findViewById(R.id.handle_right).setOnClickListener(new View.OnClickListener() {
@@ -79,7 +79,7 @@ public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLa
 //            }
 //        });
         ((TextView) findViewById(R.id.title_title)).setText("壁纸管理");
-        ((ImageView) findViewById(R.id.title_back)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -93,11 +93,11 @@ public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLa
         findViewById(R.id.bottomLayout).setVisibility(View.GONE);
         findViewById(R.id.line2).setVisibility(View.GONE);
 
-        swip = (SwipeRefreshLayout) findViewById(R.id.swip);
+        swip = findViewById(R.id.swip);
         swip.setOnRefreshListener(this);
         swip.setColorSchemeResources(R.color.main_color);
 
-        RecyclerView        recyclerView        = (RecyclerView) findViewById(R.id.recycle);
+        RecyclerView        recyclerView        = findViewById(R.id.recycle);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -280,7 +280,7 @@ public class WallPaperManage extends AppCompatActivity implements SwipeRefreshLa
                                 .setGravity(Gravity.BOTTOM)
                                 .setItemDefaultTextsize(16)
                                 .setAnimResId(R.style.dialogWindowAnim)
-                                .setCallBack(new ListDialog.HandleCallBack<HashMap<String, String>>() {
+                                .setHandleListCallBack(new ListDialog.HandleListCallBack<HashMap<String, String>>() {
                                     @Override
                                     public void onItemClick(HashMap<String, String> item, int pos,AlertDialog dialog) {
                                         dialog.dismiss();

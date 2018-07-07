@@ -4,49 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/main_color"
-        >
-        <ImageView
-            android:id="@+id/img_titlebar_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:background="@drawable/back_sel"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/back"
-            />
-
-        <TextView
-            android:id="@+id/tv_title_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="45dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-             />
-        <ImageView
-            android:id="@+id/fund_detail_shoucang"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/shoucang_selector"
-            android:layout_marginRight="5dp"
-            />
-    </RelativeLayout>
-
+   <include layout="@layout/title_default"/>
 
     <FrameLayout
         android:id="@+id/content"

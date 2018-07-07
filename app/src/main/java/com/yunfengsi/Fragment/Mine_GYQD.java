@@ -75,13 +75,13 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         StatusBarCompat.compat(this, getResources().getColor(R.color.main_color));
         setContentView(R.layout.mine_shoucang_fragment);
-        listView = (mPLlistview2)findViewById(R.id.mine_shoucang_listview);
-        ImageView back= (ImageView) findViewById(R.id.title_back);
+        listView = findViewById(R.id.mine_shoucang_listview);
+        ImageView back= findViewById(R.id.title_back);
         back.setVisibility(View.VISIBLE);
         back.setImageBitmap(ImageUtil.readBitMap(this, R.drawable.back));
         back.setOnClickListener(this);
         ((TextView) findViewById(R.id.title_title)).setText(mApplication.ST("功德"));
-        tip = (TextView) findViewById(R.id.mine_shoucang_tip);
+        tip = findViewById(R.id.mine_shoucang_tip);
         Drawable d= ContextCompat.getDrawable(this, R.drawable.indra);
         d.setBounds(0,0,200,200);
         tip.setCompoundDrawables(null,d,null,null);
@@ -103,7 +103,7 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView title= (TextView) view.findViewById(R.id.title);
+                TextView title= view.findViewById(R.id.title);
                 if(title.getTag()!=null){
                     if("4".equals(title.getTag(R.id.sut_type))){
                         Intent intent=new Intent(Mine_GYQD.this, WebInteraction.class);
@@ -166,7 +166,8 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
                     try {
                         js.put("m_id", Constants.M_id);
                         js.put("page",page);
-                        js.put("user_id", sp.getString("user_id", ""));
+                        //如果未传入user_id  调自己的功德列表  传入则调相应user_id的功德列表
+                        js.put("user_id", getIntent().getStringExtra("user_id")==null?sp.getString("user_id", ""):getIntent().getStringExtra("user_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -257,12 +258,12 @@ public class Mine_GYQD extends AppCompatActivity implements View.OnClickListener
             if(view==null){
                 holder=new Holder();
                 view=LayoutInflater.from(Mine_GYQD.this).inflate(R.layout.mine_gyqd,parent,false);
-                holder.image= (TextView) view.findViewById(R.id.image);
-                holder.title= (TextView) view.findViewById(R.id.title);
-               holder.danjia= (TextView) view.findViewById(R.id.danjia);
-               holder.num= (TextView) view.findViewById(R.id.num);
-               holder.time= (TextView) view.findViewById(R.id.time);
-                holder.total= (TextView) view.findViewById(R.id.total);
+                holder.image= view.findViewById(R.id.image);
+                holder.title= view.findViewById(R.id.title);
+               holder.danjia= view.findViewById(R.id.danjia);
+               holder.num= view.findViewById(R.id.num);
+               holder.time= view.findViewById(R.id.time);
+                holder.total= view.findViewById(R.id.total);
                 view.setTag(holder);
             }else{
                 holder= (Holder) view.getTag();
