@@ -24,8 +24,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yunfengsi.Utils.LogUtil;
 
 import java.lang.annotation.Retention;
@@ -33,6 +35,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +66,9 @@ public class ListDialog {
     /**
      * 如果显示的调用过软键盘的化 edt则有值
      */
-    private EditText           edt;
-    private InputMethodManager imm;
+    private EditText                   edt;
+    private InputMethodManager         imm;
+    private HashMap<String, ImageView> imageViewHashMap;
 
     @IntDef({DEFAULT, WITH_LIST})
     @Retention(RetentionPolicy.SOURCE)
@@ -197,8 +201,8 @@ public class ListDialog {
     }
 
     public ListDialog setCommitId(@IdRes int commitId, final DialogCallBack callBack) {
-        this.callBack=callBack;
-       setCommitId(commitId);
+        this.callBack = callBack;
+        setCommitId(commitId);
         return this;
     }
 
@@ -251,6 +255,31 @@ public class ListDialog {
         return this;
     }
 
+    public ListDialog setClickListener(@IdRes int resId, String text, View.OnClickListener listener) {
+        View subView = view.findViewById(resId);
+        if (subView instanceof TextView) {
+            ((TextView) subView).setText(text);
+        }
+        subView.setOnClickListener(listener);
+        return this;
+    }
+
+    public ListDialog setClickListener(@IdRes int resId, View.OnClickListener listener) {
+        View subView = view.findViewById(resId);
+        subView.setOnClickListener(listener);
+        return this;
+    }
+
+    public ListDialog setImage(@IdRes int resId, String path) {
+        if (imageViewHashMap == null) {
+            imageViewHashMap = new HashMap<>();
+        }
+        imageViewHashMap.put(path, (ImageView) view.findViewById(resId));
+
+        return this;
+    }
+
+
     public void show() {
 
         window.setAttributes(wl);
@@ -269,12 +298,16 @@ public class ListDialog {
         }
 
         dialog.show();
-        if(edt!=null){
+        if (imageViewHashMap != null) {
+            for (String key : imageViewHashMap.keySet()) {
+                Glide.with(activity).load(key).into(imageViewHashMap.get(key));
+            }
+        }
+        if (edt != null) {
             edt.post(new Runnable() {
                 @Override
                 public void run() {
                     imm = ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE));
-//                    imm.showSoftInput(edt, InputMethodManager.SHOW_FORCED);
                     imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                 }
             });

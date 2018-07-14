@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/title_default" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        >
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/cancle"
+            android:paddingLeft="15dp"
+            android:textSize="14dp"
+            android:hint="输入昵称 首字母搜索"
+            android:paddingRight="15dp"
+            android:background="@drawable/edittext_background"/>
+
+    </RelativeLayout>
+
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/ask_swip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp">
+
+        <com.yunfengsi.View.LoadMoreListViewExpand
+            android:id="@+id/fund_people_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/mdivider"
+            android:padding="5dp">
+
+        </com.yunfengsi.View.LoadMoreListViewExpand>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</FrameLayout>

@@ -72,6 +72,7 @@ import com.yunfengsi.Models.Model_activity.activity_fragment;
 import com.yunfengsi.Models.Model_zhongchou.FundFragment;
 import com.yunfengsi.Models.Model_zhongchou.FundingDetailActivity;
 import com.yunfengsi.Models.NianFo.NianFo;
+import com.yunfengsi.Models.Pretend_IM.ForumHome;
 import com.yunfengsi.Models.ZiXun_Detail;
 import com.yunfengsi.Setting.AD;
 import com.yunfengsi.Setting.Search;
@@ -768,11 +769,55 @@ public class MainActivity extends AppCompatActivity {
 
 
         // TODO: 2017/12/19 测试使用
+        findViewById(R.id.test).setVisibility(View.VISIBLE);
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Verification.setPermission(new File(Environment.getExternalStorageDirectory(), "yunfengsi2.0.0.apk").getPath());
-//                Verification.installApk(MainActivity.this, "yunfengsi2.0.0.apk");
+
+                 Intent intent=new Intent();
+                 intent.setClass(MainActivity.this, ForumHome.class);
+                 startActivity(intent);
+
+                JSONObject js = new JSONObject();
+                try {
+                    js.put("page", 2321321+"圣诞节福利时间段来看");
+                    js.put("m_id", Constants.M_id);
+                    js.put("user_id","我是userId  哈哈哈哈！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ApisSeUtil.M m = ApisSeUtil.i(js);
+                LogUtil.e("测试提交1：：" + js);
+                OkGo.post(Constants.host_Ip+Constants.oooooo+"Ceshi")
+                        .params("key", m.K())
+                        .params("msg", m.M())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                LogUtil.e("测试结果1:::::::"+s);
+                            }
+                        });
+                JSONObject js2 = new JSONObject();
+                try {
+                    js2.put("page", 2321321+"圣诞节福利时间段来看");
+                    js2.put("m_id", Constants.M_id);
+                    js2.put("user_id","我是userId  哈哈哈哈！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ApisSeUtil.M m2 = ApisSeUtil.i(js2);
+                LogUtil.e("测试提交2：：" + js2+"\n"
+                +m2.K());
+                OkGo.post(Constants.host_Ip+Constants.oooooo+"Ceshi1")
+                        .params("key", m2.K())
+                        .params("msg", m2.M())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(String s, Call call, Response response) {
+                                LogUtil.e("测试结果2:::::::"+s);
+                            }
+                        });
+
             }
         });
     }

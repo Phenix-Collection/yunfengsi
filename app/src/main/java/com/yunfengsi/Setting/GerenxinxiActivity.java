@@ -650,7 +650,7 @@ public class GerenxinxiActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void run() {
                                 mtvnc.setText("".equals(map.get("pet_name")) ? "未填写" : map.get("pet_name"));
-                                mtvphone.setText(map.get("phone").equals("") ? mApplication.ST("暂未绑定手机号") : map.get("phone"));
+                                mtvphone.setText("".equals(map.get("phone")) ? mApplication.ST("暂未绑定手机号") : map.get("phone"));
                                 Glide.with(GerenxinxiActivity.this).load(map.get("user_image")).into(mcircleview);
                                 if (map.get("sex").equals("1")) {
                                     mtvxinbie.setText(mApplication.ST("男"));

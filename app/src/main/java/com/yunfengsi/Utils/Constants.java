@@ -695,4 +695,51 @@ public class Constants {
     public static final String BindRefugeCard= host_Ip + oooooo + "Bdconversion";
 
 
+    //论坛列表
+    public static final String Tribunelist= host_Ip + iiiiii + "Tribunelist";
+
+    //主题详情获取
+    public static final String Tribunexq= host_Ip + iiiiii + "Tribunexq";
+    //主题删除
+    public static final String Tribunedelete= host_Ip + iiiiii + "Tribunedelete";
+    //我的主题列表
+    public static final String Tribunept= host_Ip + iiiiii + "Tribunept";
+    //主题评论列表
+    public static final String Tribunepl= host_Ip + iiiiii + "Tribunepl";
+    //主题评论添加
+    public static final String Tribunetjpl= host_Ip + iiiiii + "Tribunetjpl";
+    //主题点赞
+    public static final String Tribunelike= host_Ip + iiiiii + "Tribunelike";
+    //主题评论回复
+    public static final String TribuneCommentReply= host_Ip + oooooo + "Pinglun_hf2";
+
+
+
+
+
+
+
+
+
+    //搜索用户
+    public static final String search_User_Ip = host_Ip + oooooo + "Cxuser";
+
+    //请求添加好友
+    public static final String ADD_Friend_Ip = host_Ip + oooooo + "Qqfriend";
+    //消息通知显示
+    public static final String TongzhiList_Ip = host_Ip + oooooo + "Msgtz";
+    //消息通知删除
+    public static final String TongzhiDelete_Ip = host_Ip + oooooo + "Shanchutz";
+    //接受好友请求
+    public static final String TongzhiAgree_Ip = host_Ip + oooooo + "Jsfriend";
+    //好友列表
+    public static final String FridendList = host_Ip + oooooo + "Friendlist";
+    //删除好友
+    public static final String FridendDelete = host_Ip + oooooo + "Scfriend";
+    //私聊列表接口
+    public static final String Chat_List = host_Ip + oooooo + "Siliao";
+    //私聊文字接口
+    public static final String Chat_Content_UpLoad = host_Ip + oooooo + "Fsxiaoxi";
+    //私聊对象
+    public static final String Chat_Message = host_Ip + oooooo + "Siliaolist";
 }

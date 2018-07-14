@@ -6,7 +6,7 @@
     <color name="light_huise">#e1e1e1</color>
     <color name="line_bg_press">#e6e6e6</color>
     <color name="windowBackground">@color/white</color>
-
+    <color name="window_light_gray_bg">#f0f0f0</color>
     <color name="textOnImg_bg">#22000000</color>
 
 

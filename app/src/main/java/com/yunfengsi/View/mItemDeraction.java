@@ -10,8 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.yunfengsi.Utils.LogUtil;
-
 /**
  * Created by Administrator on 2017/5/10.
  */
@@ -64,8 +62,6 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(Rect outRect, View view,
                                    RecyclerView parent, RecyclerView.State state) {
-            LogUtil.e("获取边界的偏移量");
-
 
             if (parent.getLayoutManager() != null) {
                 if (parent.getLayoutManager() instanceof LinearLayoutManager && !(parent.getLayoutManager() instanceof GridLayoutManager)) {
@@ -88,7 +84,6 @@ public class mItemDeraction extends RecyclerView.ItemDecoration {
         @Override
         public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
             super.onDraw(c, parent, state);
-            LogUtil.e("绘制装饰线");
             if (parent.getLayoutManager() != null) {
                 if (parent.getLayoutManager() instanceof LinearLayoutManager && !(parent.getLayoutManager() instanceof GridLayoutManager)) {
                     if (((LinearLayoutManager) parent.getLayoutManager()).getOrientation() == LinearLayoutManager.HORIZONTAL) {
